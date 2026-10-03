@@ -123,6 +123,45 @@
       min-height:18px;
     }
 
+    .search-results{
+      display:grid;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .search-result-link{
+      display:block;
+      text-decoration:none;
+      color:var(--text);
+      background:#ffffff;
+      border:2px solid #9fc8ef;
+      border-radius:14px;
+      padding:14px 16px;
+      box-shadow:0 4px 12px rgba(7,26,46,.05);
+    }
+
+    .search-result-link:hover{
+      background:#eef7ff;
+      border-color:var(--electric);
+    }
+
+    .search-result-link strong{
+      display:block;
+      color:var(--navy);
+      font-size:18px;
+      margin-bottom:4px;
+    }
+
+    .search-result-link span{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .learning-path.searching{
+      display:none;
+    }
+
     .path-grid{
       display:grid;
       grid-template-columns:repeat(3,minmax(0,1fr));
@@ -903,6 +942,7 @@
         <button id="clearTopicSearch" class="search-clear" type="button">Clear</button>
       </div>
       <div id="searchStatus" class="search-status">Showing all topics.</div>
+      <div id="searchResults" class="search-results" aria-live="polite"></div>
     </section>
 
     <section class="learning-path">
@@ -1532,18 +1572,29 @@
     const topicSearch = document.getElementById("topicSearch");
     const clearTopicSearch = document.getElementById("clearTopicSearch");
     const searchStatus = document.getElementById("searchStatus");
+    const searchResults = document.getElementById("searchResults");
+    const learningPath = document.querySelector(".learning-path");
     const searchableTabs = [...document.querySelectorAll(".nav-category .tab")];
 
     function filterTopics(){
       const q = topicSearch.value.trim().toLowerCase();
-      let shown = 0;
+      const matches = [];
 
       searchableTabs.forEach(item => {
         const key = item.getAttribute("href") || item.dataset.panel || "";
         const haystack = (item.textContent + " " + key + " " + (topicKeywords[key] || "")).toLowerCase();
         const match = !q || haystack.includes(q);
         item.classList.toggle("search-hidden", !match);
-        if(match) shown++;
+
+        if(q && match){
+          const category = item.closest(".nav-category");
+          const categoryName = category?.querySelector("h2")?.textContent || "All Things Electrical";
+          matches.push({
+            label:item.textContent.trim(),
+            href:item.getAttribute("href") || "#",
+            category:categoryName
+          });
+        }
       });
 
       document.querySelectorAll(".nav-category").forEach(category => {
@@ -1551,9 +1602,24 @@
         category.classList.toggle("search-hidden", !visible);
       });
 
-      searchStatus.textContent = q
-        ? (shown ? shown + " matching topic" + (shown === 1 ? "" : "s") + "." : "No matching topic. Try a broader word.")
-        : "Showing all topics.";
+      learningPath?.classList.toggle("searching", Boolean(q));
+
+      if(!q){
+        searchStatus.textContent = "Showing all topics.";
+        searchResults.innerHTML = "";
+        return;
+      }
+
+      searchStatus.textContent = matches.length
+        ? matches.length + " matching topic" + (matches.length === 1 ? "." : "s.")
+        : "No matching topic. Try a broader word.";
+
+      searchResults.innerHTML = matches.map(result =>
+        '<a class="search-result-link" href="' + result.href + '">' +
+          '<strong>' + result.label + '</strong>' +
+          '<span>' + result.category + ' · Tap to open</span>' +
+        '</a>'
+      ).join("");
     }
 
     topicSearch.addEventListener("input", filterTopics);
