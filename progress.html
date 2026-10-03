@@ -14,7 +14,9 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </style>
 <style>
 .progressbar{height:18px;background:#e5edf4;border-radius:999px;overflow:hidden;margin:10px 0}.progressbar>div{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue2));width:0}.topic-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--border);border-radius:12px;padding:12px;margin:8px 0;background:#fff}.topic-row.done{background:#eaf7ef;border-color:#9ed0b3}.topic-row a{text-decoration:none;color:var(--navy);font-weight:800}.topic-row button{flex:0 0 auto}.quiz-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.quiz-stat{background:#eef7ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.quiz-stat strong{display:block;color:var(--navy);font-size:19px}@media(max-width:760px){.quiz-grid{grid-template-columns:1fr}.topic-row{align-items:flex-start;flex-direction:column}.topic-row button{width:100%}}
-</style></head><body>
+</style>  <link rel="stylesheet" href="app-enhancements.css">
+  <script src="app-enhancements.js" defer></script>
+</head><body>
 <header><h1>My Progress</h1><p>Track completed learning sections and your best quiz scores on this device.</p></header><nav class="nav"><a href="index.html">All Things Electrical</a><a href="glossary.html">Glossary</a><a href="quizzes.html">Quizzes</a><a href="progress.html">My Progress</a></nav>
 <main>
 <section class="panel"><h2>Overall Progress</h2><div class="progressbar"><div id="bar"></div></div><div id="summary" class="result"></div><p class="note">Progress is stored locally on this device/browser. No account is required.</p></section>
