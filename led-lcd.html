@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>LEDs & LCDs Explorer</title>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--bg:#eef3f7;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1000px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}h3{color:var(--navy);margin:0 0 7px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;line-height:1.5;color:#33495b}.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input,select,button{font:inherit}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px}input[type=range]{padding:0;border:0}.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700}.result strong{font-size:clamp(20px,4vw,28px);color:var(--navy)}.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.status{margin-top:12px;padding:11px 12px;border-radius:10px;background:#eef7ff;border:1px solid #b9d7f5;font-weight:800;color:var(--navy)}.status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}.status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left}th{background:#eef7ff;color:var(--navy)}
+.demo{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(0,1.2fr);gap:16px;align-items:center}.stage{min-height:230px;border-radius:16px;background:#06182a;display:grid;place-items:center;padding:18px}.bulb{width:110px;height:110px;border-radius:50%;background:#ffcf33;border:7px solid #495461;box-shadow:0 0 30px rgba(255,207,51,.65);transition:.15s}.stage-label{text-align:center;color:#dcecff;margin-top:14px;font-weight:800}
+.seven-wrap{display:grid;grid-template-columns:minmax(220px,320px) minmax(0,1fr);gap:18px;align-items:center}.seven{position:relative;width:220px;height:360px;margin:auto;background:#0a1724;border-radius:20px;border:4px solid #24384d}.seg{position:absolute;background:#2b3640;border-radius:10px;transition:.12s}.seg.on{background:#ff3b30;box-shadow:0 0 16px rgba(255,59,48,.8)}.h{width:125px;height:22px;left:47px}.v{width:22px;height:120px}.a{top:26px}.g{top:166px}.d{bottom:26px}.f{left:27px;top:55px}.b{right:27px;top:55px}.e{left:27px;bottom:55px}.c{right:27px;bottom:55px}.digits{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.btn{min-height:42px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;cursor:pointer}.btn.active{background:var(--yellow);border-color:#e4ba16}
+.lcd{border:10px solid #3c4a57;border-radius:16px;background:#b9c987;padding:18px;min-height:210px}.screen{min-height:150px;border:2px solid #607044;border-radius:6px;padding:14px;display:grid;grid-template-columns:repeat(16,1fr);gap:3px;align-content:center}.pixel{aspect-ratio:1;border-radius:2px;background:#52633b;opacity:.12}.pixel.on{opacity:.92}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){main{padding:12px}.two,.three,.results,.demo,.seven-wrap{grid-template-columns:1fr}.digits{grid-template-columns:repeat(5,1fr)}}
+</style>
+</head>
+<body>
+<header><h1>LEDs & LCDs Explorer</h1><p>Learn how light-emitting diodes and liquid-crystal displays work, then experiment with current, brightness, segments, pixels, and backlights.</p></header>
+<main>
+<nav class="nav">
+<a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a class="active" href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="vacuum-tubes.html">Vacuum Tubes</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a href="processors.html">Processors</a>
+</nav>
+
+<section class="panel">
+<h2>Beginner Start Here</h2><p class="lead">LEDs and LCDs both display information, but they work in completely different ways.</p>
+<div class="grid two">
+<div class="card"><strong>LED</strong><p>A light-emitting diode produces light when current flows through its semiconductor junction in the correct direction.</p><span class="badge">Makes light</span></div>
+<div class="card"><strong>LCD</strong><p>A liquid-crystal display controls how light passes through polarized layers. The liquid crystal itself does not create light.</p><span class="badge">Controls light</span></div>
+<div class="card"><strong>LED polarity</strong><p>The anode is the positive side and the cathode is the negative side. A normal LED lights only when forward biased.</p><span class="badge">Directional device</span></div>
+<div class="card"><strong>LCD backlight</strong><p>Many LCD panels use LEDs as a backlight. Reflective LCDs can instead use ambient light.</p><span class="badge">Separate light source</span></div>
+</div>
+<div class="formula">Easy way to remember it: an <strong>LED emits light</strong>; an <strong>LCD modulates light</strong>.</div>
+</section>
+
+<section class="panel">
+<h2>LED Resistor Calculator</h2><p class="lead">Estimate a series resistor for one or more LEDs connected in series to a DC supply.</p>
+<div class="grid three">
+<div class="field"><label>Supply voltage (V)</label><input id="supply" type="number" min="0" step="any" value="5"></div>
+<div class="field"><label>LED forward voltage (V)</label><input id="vf" type="number" min="0" step="any" value="2"></div>
+<div class="field"><label>LEDs in series</label><input id="count" type="number" min="1" step="1" value="1"></div>
+<div class="field"><label>Desired current (mA)</label><input id="ma" type="number" min=".1" step="any" value="15"></div>
+</div>
+<div class="results">
+<div class="result"><small>Calculated resistor</small><strong id="rOut">—</strong></div>
+<div class="result"><small>Nearest common value</small><strong id="stdOut">—</strong></div>
+<div class="result"><small>Resistor power</small><strong id="pOut">—</strong></div>
+</div>
+<div id="calcStatus" class="status">Enter values above.</div>
+<div class="formula">R = (V supply − total LED forward voltage) ÷ LED current</div>
+<p class="note">Educational estimate only. Forward voltage changes with LED type, current, and temperature, so check the actual component datasheet.</p>
+</section>
+
+<section class="panel">
+<h2>Typical LED Forward Voltage</h2>
+<table><thead><tr><th>Type</th><th>Approximate range</th><th>Typical use</th></tr></thead><tbody>
+<tr><td>Infrared</td><td>1.2–1.5 V</td><td>Remote controls, sensors</td></tr>
+<tr><td>Red</td><td>1.8–2.2 V</td><td>Indicators, displays</td></tr>
+<tr><td>Yellow / amber</td><td>2.0–2.3 V</td><td>Indicators</td></tr>
+<tr><td>Green</td><td>2.0–3.4 V</td><td>Indicators, displays</td></tr>
+<tr><td>Blue</td><td>2.8–3.4 V</td><td>Indicators, lighting</td></tr>
+<tr><td>White</td><td>2.8–3.4 V</td><td>Lighting, backlights</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>PWM Brightness Simulator</h2><p class="lead">Pulse-width modulation turns an LED on and off rapidly. Duty cycle changes the average light output.</p>
+<div class="demo">
+<div class="stage"><div><div id="bulb" class="bulb"></div><div class="stage-label"><span id="dutyOut">50</span>% duty cycle</div></div></div>
+<div><div class="field"><label>PWM duty cycle</label><input id="duty" type="range" min="0" max="100" value="50"></div>
+<div class="formula">0% = off · 50% = on half the time · 100% = fully on</div><p class="note">This visual simulates average brightness. Real LED brightness and human vision are not perfectly linear.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Seven-Segment LED Display</h2><p class="lead">Seven bar-shaped LEDs can form the digits 0 through 9. Select a digit to see which segments turn on.</p>
+<div class="seven-wrap">
+<div class="seven"><div id="sa" class="seg h a"></div><div id="sb" class="seg v b"></div><div id="sc" class="seg v c"></div><div id="sd" class="seg h d"></div><div id="se" class="seg v e"></div><div id="sf" class="seg v f"></div><div id="sg" class="seg h g"></div></div>
+<div><div id="digits" class="digits"></div><div class="formula">Common-anode and common-cathode displays wire the internal LEDs differently, so their drive logic is different.</div></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>How an LCD Works</h2>
+<div class="grid two">
+<div class="card"><strong>Liquid-crystal layer</strong><p>An electric field changes the orientation of liquid-crystal molecules. Polarizers and that molecular orientation control how much light reaches your eye.</p></div>
+<div class="card"><strong>Segments or pixels</strong><p>Simple LCDs use shaped segments. Graphic LCDs use rows and columns of pixels. TFT LCDs add a transistor at each pixel for improved control.</p></div>
+<div class="card"><strong>Backlight</strong><p>The backlight is a separate light source—often LEDs—behind or along the edge of the panel.</p></div>
+<div class="card"><strong>AC drive</strong><p>Raw passive LCD glass is normally driven with alternating waveforms. A long-term DC bias can damage or degrade the display.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>LCD Pixel & Backlight Simulator</h2><p class="lead">Pixel contrast and backlight brightness are separate controls. Try both.</p>
+<div class="demo">
+<div class="lcd" id="lcd"><div class="screen" id="screen"></div></div>
+<div>
+<div class="field"><label>Pixel contrast</label><input id="contrast" type="range" min="5" max="100" value="80"></div>
+<div class="field" style="margin-top:12px"><label>Backlight brightness</label><input id="backlight" type="range" min="0" max="100" value="75"></div>
+<button id="pattern" class="btn" style="margin-top:12px;padding:9px 14px">Change Pattern</button>
+<div class="formula">The LCD pixels control transmission; the backlight supplies illumination.</div>
+</div>
+</div>
+</section>
+
+<section class="panel">
+<h2>LED vs. LCD</h2>
+<table><thead><tr><th>Feature</th><th>LED</th><th>LCD</th></tr></thead><tbody>
+<tr><td>Produces light?</td><td>Yes</td><td>No, not by itself</td></tr>
+<tr><td>Needs current limiting?</td><td>Usually yes</td><td>Driven by display electronics</td></tr>
+<tr><td>Common form</td><td>Indicator, lamp, matrix, seven-segment</td><td>Segmented panel, character module, TFT screen</td></tr>
+<tr><td>Polarity / drive</td><td>Forward-biased diode</td><td>Controlled electric field, often AC-driven at the glass</td></tr>
+<tr><td>Typical role together</td><td>Provides the backlight</td><td>Forms or modulates the image</td></tr>
+</tbody></table>
+</section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+<script>
+const common=[100,120,150,180,220,270,330,390,470,560,680,820,1000,1200,1500,1800,2200,2700,3300,3900,4700,5600,6800,8200,10000,12000,15000,18000,22000,27000,33000,39000,47000];
+const fmtR=v=>v>=1000?(v/1000).toFixed(v%1000?1:0)+" kΩ":Math.round(v)+" Ω";
+function calc(){
+ const vs=+supply.value,vf1=+vf.value,n=Math.max(1,+count.value||1),i=(+ma.value)/1000,drop=vs-vf1*n;
+ if(!(vs>0&&vf1>0&&i>0)){calcStatus.className="status warn";calcStatus.textContent="Enter positive values.";rOut.textContent=stdOut.textContent=pOut.textContent="—";return}
+ if(drop<=0){calcStatus.className="status warn";calcStatus.textContent="The supply voltage is not high enough for that LED string.";rOut.textContent=stdOut.textContent=pOut.textContent="—";return}
+ const r=drop/i,p=drop*i;let std=common.find(x=>x>=r)||Math.ceil(r/1000)*1000;
+ rOut.textContent=fmtR(r);stdOut.textContent=fmtR(std);pOut.textContent=(p*1000).toFixed(1)+" mW";
+ calcStatus.className="status good";calcStatus.textContent="A higher standard resistor value is the safer direction because it reduces LED current.";
+}
+[supply,vf,count,ma].forEach(x=>x.addEventListener("input",calc));calc();
+
+function setDuty(){const d=+duty.value;dutyOut.textContent=d;bulb.style.opacity=.12+.88*d/100;bulb.style.boxShadow="0 0 "+(4+d*.45)+"px rgba(255,207,51,"+(.15+.65*d/100)+")"}duty.addEventListener("input",setDuty);setDuty();
+
+const map={0:"abcdef",1:"bc",2:"abdeg",3:"abcdg",4:"bcfg",5:"acdfg",6:"acdefg",7:"abc",8:"abcdefg",9:"abcdfg"};
+const ids={a:sa,b:sb,c:sc,d:sd,e:se,f:sf,g:sg};
+for(let n=0;n<10;n++){const b=document.createElement("button");b.className="btn";b.textContent=n;b.onclick=()=>showDigit(n,b);digits.appendChild(b)}
+function showDigit(n,b){Object.values(ids).forEach(x=>x.classList.remove("on"));[...map[n]].forEach(k=>ids[k].classList.add("on"));document.querySelectorAll("#digits .btn").forEach(x=>x.classList.remove("active"));b.classList.add("active")}
+showDigit(8,digits.children[8]);
+
+let pat=0;const patterns=[
+(i)=>[17,18,19,20,21,34,37,50,53,66,67,68,69,70,82,85,98,101,114,117,130,133,146,149,162,163,164,165,166].includes(i),
+(i)=>(Math.floor(i/16)+i%16)%2===0,
+(i)=>i%17===0||i%15===0
+];
+for(let i=0;i<128;i++){const p=document.createElement("div");p.className="pixel";screen.appendChild(p)}
+function draw(){[...screen.children].forEach((p,i)=>p.classList.toggle("on",patterns[pat](i)));screen.style.filter="contrast("+(+contrast.value/35)+")";lcd.style.filter="brightness("+(0.25+backlight.value/100)+")"}
+pattern.onclick=()=>{pat=(pat+1)%patterns.length;draw()};contrast.oninput=draw;backlight.oninput=draw;draw();
+</script>
+</body>
+</html>
