@@ -800,3 +800,27 @@ A DONCO-BAYCITY™ App
 - Warns never to rely on conductor color alone
 - Added to Home/search and cross-linked from Wiring & Installation, Protection Devices, and Grounding & Bonding
 - Appended as Electricity 101 step 11 so existing saved progress positions are preserved
+
+
+## Lugs, Ferrules & Splices
+- New dedicated termination lesson
+- Covers:
+  - compression/ring lugs
+  - mechanical lugs
+  - wire ferrules
+  - butt splices
+  - common splice connector families
+- Explains what must match:
+  - conductor size
+  - copper/aluminum material
+  - strand class
+  - approved crimp tool/die
+  - strip length
+  - terminal torque
+  - temperature/environment
+  - connector/equipment listing and manufacturer instructions
+- Includes ferrule warning: not every terminal permits ferrules
+- Includes splice warning: choose connector by rating/application, not just physical fit
+- Added to Home/search
+- Cross-linked from Wiring & Installation, Component Pictures, and Home Wiring Overview
+- Appended as Electricity 101 step 12 so previous saved step positions remain unchanged
