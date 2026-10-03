@@ -368,6 +368,66 @@
       color:#8a1c13;
     }
 
+    .graph-card{
+      margin-top:14px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px;
+      background:#fbfdff;
+    }
+
+    .graph-card strong{
+      color:var(--navy);
+    }
+
+    .response-graph{
+      width:100%;
+      height:auto;
+      margin-top:10px;
+      display:block;
+      background:white;
+      border:1px solid #d7e1ea;
+      border-radius:10px;
+    }
+
+    .graph-key{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:8px;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .graph-key span{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+    }
+
+    .key-line{
+      width:22px;
+      height:3px;
+      border-radius:999px;
+      display:inline-block;
+      background:var(--electric);
+    }
+
+    .key-cutoff{
+      background:var(--yellow);
+      border:1px solid #caa800;
+      height:4px;
+    }
+
+    .key-test{
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background:var(--danger);
+      display:inline-block;
+    }
+
     footer{
       text-align:center;
       color:#dbe8f5;
@@ -885,6 +945,129 @@
     </section>
 
     <section class="panel">
+      <h2>Discharge Time / Bleeder Resistor</h2>
+      <p class="lead">Estimate how long a capacitor takes to fall from a starting voltage to a chosen target voltage through a resistor.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label>Capacitance</label>
+          <div class="unit-row">
+            <input id="disC" type="number" min="0.000001" step="any" value="1000" />
+            <select id="disCU">
+              <option value="1e-12">pF</option>
+              <option value="1e-9">nF</option>
+              <option value="1e-6" selected>µF</option>
+              <option value="1e-3">mF</option>
+              <option value="1">F</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Bleeder resistance</label>
+          <div class="unit-row">
+            <input id="disR" type="number" min="0.000001" step="any" value="10" />
+            <select id="disRU">
+              <option value="1">Ω</option>
+              <option value="1000" selected>kΩ</option>
+              <option value="1000000">MΩ</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="disStartV">Starting voltage (V)</label>
+          <input id="disStartV" type="number" min="0.000001" step="any" value="50" />
+        </div>
+
+        <div class="field">
+          <label for="disTargetV">Target voltage (V)</label>
+          <input id="disTargetV" type="number" min="0" step="any" value="5" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Time to target voltage</small>
+          <strong id="disTime">23.03 s</strong>
+        </div>
+        <div class="result">
+          <small>Initial resistor power</small>
+          <strong id="disPower">250 mW</strong>
+        </div>
+        <div class="result">
+          <small>Initial stored energy</small>
+          <strong id="disEnergy">1.25 J</strong>
+        </div>
+      </div>
+
+      <div id="disStatus" class="status good">Target voltage is below the starting voltage.</div>
+      <div id="disFormula" class="formula">t = −RC ln(Vtarget ÷ Vstart)</div>
+      <div class="warning">Bleeder resistors may need adequate voltage and power ratings. Capacitors can retain hazardous charge; verify voltage with appropriate test equipment before handling real circuits.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Leakage & Self-Discharge</h2>
+      <p class="lead">Model a capacitor's self-discharge using an equivalent leakage resistance.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label>Capacitance</label>
+          <div class="unit-row">
+            <input id="leakC" type="number" min="0.000001" step="any" value="1000" />
+            <select id="leakCU">
+              <option value="1e-12">pF</option>
+              <option value="1e-9">nF</option>
+              <option value="1e-6" selected>µF</option>
+              <option value="1e-3">mF</option>
+              <option value="1">F</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Equivalent leakage resistance</label>
+          <div class="unit-row">
+            <input id="leakR" type="number" min="0.000001" step="any" value="1" />
+            <select id="leakRU">
+              <option value="1">Ω</option>
+              <option value="1000">kΩ</option>
+              <option value="1000000" selected>MΩ</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="leakStartV">Starting voltage (V)</label>
+          <input id="leakStartV" type="number" min="0" step="any" value="12" />
+        </div>
+
+        <div class="field">
+          <label for="leakMinutes">Elapsed time (minutes)</label>
+          <input id="leakMinutes" type="number" min="0" step="any" value="10" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Voltage after elapsed time</small>
+          <strong id="leakVoltage">6.586 V</strong>
+        </div>
+        <div class="result">
+          <small>Initial leakage current</small>
+          <strong id="leakCurrent">12 µA</strong>
+        </div>
+        <div class="result">
+          <small>Time constant</small>
+          <strong id="leakTau">16.67 min</strong>
+        </div>
+      </div>
+
+      <div id="leakFormula" class="formula">V(t) = V₀e^(−t/RC)</div>
+      <p class="note">Equivalent leakage resistance is a simplified model. Real leakage depends on capacitor chemistry, age, temperature, applied voltage, and time since voltage was applied.</p>
+    </section>
+
+    <section class="panel">
       <h2>RC Low-Pass / High-Pass Filter</h2>
       <p class="lead">Calculate cutoff frequency and see the ideal response of a first-order RC filter at a selected test frequency.</p>
 
@@ -945,6 +1128,24 @@
       </div>
 
       <div id="filterFormula" class="formula">fc = 1 ÷ (2πRC). At the cutoff frequency, an ideal first-order RC filter is about −3.01 dB.</div>
+      <div class="graph-card">
+        <strong>Interactive Filter Response</strong>
+        <p class="note">The curve automatically updates when you change the filter type, R, C, or test frequency.</p>
+        <svg id="filterGraph" class="response-graph" viewBox="0 0 680 300" role="img" aria-label="RC filter response graph">
+          <rect x="0" y="0" width="680" height="300" fill="white"></rect>
+          <g id="filterGrid"></g>
+          <path id="filterCurve" d="" fill="none" stroke="#0b63ce" stroke-width="4" stroke-linecap="round"></path>
+          <line id="filterCutoffLine" x1="340" y1="30" x2="340" y2="250" stroke="#d1aa00" stroke-width="3" stroke-dasharray="7 6"></line>
+          <circle id="filterTestDot" cx="340" cy="100" r="6" fill="#b42318"></circle>
+          <text id="filterGraphLabel" x="18" y="22" font-size="13" font-weight="700" fill="#071a2e"></text>
+        </svg>
+        <div class="graph-key">
+          <span><i class="key-line"></i>Ideal response</span>
+          <span><i class="key-line key-cutoff"></i>Cutoff frequency</span>
+          <span><i class="key-test"></i>Selected test frequency</span>
+        </div>
+      </div>
+
       <p class="note">Ideal first-order response only. Real source impedance, load impedance, component tolerance, ESR, and parasitics can change the result.</p>
     </section>
 
@@ -1347,6 +1548,10 @@
         ": fc = 1 ÷ (2πRC) = " + formatFrequency(fc) +
         ". At " + formatFrequency(f) + ", ideal gain is " +
         fmt(gain * 100,2) + "% (" + fmt(db,2) + " dB).";
+
+      if (typeof drawFilterGraph === "function"){
+        drawFilterGraph(fc,f,mode);
+      }
     }
 
     ["filterMode","filterR","filterRU","filterC","filterCU","filterFreq"].forEach(id => {
@@ -1354,6 +1559,155 @@
       el.addEventListener("input",updateFilter);
       el.addEventListener("change",updateFilter);
     });
+
+    function updateDischarge(){
+      const c = Math.max(1e-15,Number(document.getElementById("disC").value) || 1e-15) *
+        Number(document.getElementById("disCU").value);
+      const r = Math.max(1e-12,Number(document.getElementById("disR").value) || 1e-12) *
+        Number(document.getElementById("disRU").value);
+      const startV = Math.max(1e-12,Number(document.getElementById("disStartV").value) || 1e-12);
+      const targetV = Math.max(0,Number(document.getElementById("disTargetV").value) || 0);
+
+      const status = document.getElementById("disStatus");
+      status.className = "status";
+
+      let time = 0;
+      if (targetV > 0 && targetV < startV){
+        time = -r * c * Math.log(targetV / startV);
+        status.classList.add("good");
+        status.textContent = "Target voltage is below the starting voltage.";
+      } else if (targetV === 0){
+        time = Infinity;
+        status.classList.add("warn");
+        status.textContent = "An ideal RC discharge approaches 0 V but never mathematically reaches exactly zero.";
+      } else {
+        status.classList.add("high");
+        status.textContent = "Target voltage must be lower than the starting voltage.";
+      }
+
+      const initialPower = startV * startV / r;
+      const energy = 0.5 * c * startV * startV;
+
+      document.getElementById("disTime").textContent =
+        Number.isFinite(time) ? formatTime(time) : "Approaches 0 V";
+      document.getElementById("disPower").textContent = formatPower(initialPower);
+      document.getElementById("disEnergy").textContent =
+        energy >= 1 ? fmt(energy,4) + " J" :
+        energy >= 0.001 ? fmt(energy * 1000,4) + " mJ" :
+        fmt(energy * 1000000,4) + " µJ";
+
+      document.getElementById("disFormula").textContent =
+        targetV > 0 && targetV < startV
+          ? "t = −RC ln(Vtarget ÷ Vstart) = " + formatTime(time)
+          : "t = −RC ln(Vtarget ÷ Vstart)";
+    }
+
+    ["disC","disCU","disR","disRU","disStartV","disTargetV"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateDischarge);
+      el.addEventListener("change",updateDischarge);
+    });
+
+    function updateLeakage(){
+      const c = Math.max(1e-15,Number(document.getElementById("leakC").value) || 1e-15) *
+        Number(document.getElementById("leakCU").value);
+      const r = Math.max(1e-12,Number(document.getElementById("leakR").value) || 1e-12) *
+        Number(document.getElementById("leakRU").value);
+      const startV = Math.max(0,Number(document.getElementById("leakStartV").value) || 0);
+      const minutes = Math.max(0,Number(document.getElementById("leakMinutes").value) || 0);
+
+      const tau = r * c;
+      const t = minutes * 60;
+      const voltage = startV * Math.exp(-t / tau);
+      const current = startV / r;
+
+      document.getElementById("leakVoltage").textContent = formatVoltage(voltage);
+      document.getElementById("leakCurrent").textContent = formatCurrent(current);
+      document.getElementById("leakTau").textContent = formatTime(tau);
+      document.getElementById("leakFormula").textContent =
+        "V(t) = V₀e^(−t/RC) = " + formatVoltage(voltage) +
+        " after " + fmt(minutes,2) + " minutes.";
+    }
+
+    ["leakC","leakCU","leakR","leakRU","leakStartV","leakMinutes"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateLeakage);
+      el.addEventListener("change",updateLeakage);
+    });
+
+    function drawFilterGraph(fc, testF, mode){
+      const graph = document.getElementById("filterGraph");
+      if (!graph) return;
+
+      const left = 58;
+      const right = 650;
+      const top = 30;
+      const bottom = 250;
+      const width = right - left;
+      const height = bottom - top;
+      const minRatio = 0.01;
+      const maxRatio = 100;
+
+      let grid = "";
+
+      [0,-10,-20,-30,-40].forEach(db => {
+        const y = top + (-db / 40) * height;
+        grid += '<line x1="' + left + '" y1="' + y + '" x2="' + right + '" y2="' + y + '" stroke="#dfe6ec" stroke-width="1"></line>';
+        grid += '<text x="10" y="' + (y + 4) + '" font-size="11" fill="#62707d">' + db + ' dB</text>';
+      });
+
+      [0.01,0.1,1,10,100].forEach(ratio => {
+        const x = left + ((Math.log10(ratio) + 2) / 4) * width;
+        grid += '<line x1="' + x + '" y1="' + top + '" x2="' + x + '" y2="' + bottom + '" stroke="#edf1f5" stroke-width="1"></line>';
+        grid += '<text x="' + (x - 12) + '" y="274" font-size="11" fill="#62707d">' + ratio + '×</text>';
+      });
+
+      grid += '<line x1="' + left + '" y1="' + bottom + '" x2="' + right + '" y2="' + bottom + '" stroke="#8ca0b3" stroke-width="1.5"></line>';
+      grid += '<line x1="' + left + '" y1="' + top + '" x2="' + left + '" y2="' + bottom + '" stroke="#8ca0b3" stroke-width="1.5"></line>';
+
+      document.getElementById("filterGrid").innerHTML = grid;
+
+      const pts = [];
+      for (let i = 0; i <= 180; i++){
+        const logRatio = -2 + (4 * i / 180);
+        const ratio = Math.pow(10,logRatio);
+        const gain = mode === "low"
+          ? 1 / Math.sqrt(1 + ratio * ratio)
+          : ratio / Math.sqrt(1 + ratio * ratio);
+        const db = Math.max(-40,20 * Math.log10(Math.max(gain,1e-9)));
+        const x = left + ((logRatio + 2) / 4) * width;
+        const y = top + (-db / 40) * height;
+        pts.push((i === 0 ? "M" : "L") + x.toFixed(2) + "," + y.toFixed(2));
+      }
+
+      document.getElementById("filterCurve").setAttribute("d",pts.join(" "));
+
+      const cutoffX = left + 0.5 * width;
+      const cutoffLine = document.getElementById("filterCutoffLine");
+      cutoffLine.setAttribute("x1",cutoffX);
+      cutoffLine.setAttribute("x2",cutoffX);
+      cutoffLine.setAttribute("y1",top);
+      cutoffLine.setAttribute("y2",bottom);
+
+      const rawRatio = testF / fc;
+      const clampedRatio = Math.max(minRatio,Math.min(maxRatio,rawRatio));
+      const testLog = Math.log10(clampedRatio);
+      const testGain = mode === "low"
+        ? 1 / Math.sqrt(1 + rawRatio * rawRatio)
+        : rawRatio / Math.sqrt(1 + rawRatio * rawRatio);
+      const testDb = Math.max(-40,20 * Math.log10(Math.max(testGain,1e-9)));
+      const testX = left + ((testLog + 2) / 4) * width;
+      const testY = top + (-testDb / 40) * height;
+
+      const dot = document.getElementById("filterTestDot");
+      dot.setAttribute("cx",testX);
+      dot.setAttribute("cy",testY);
+
+      document.getElementById("filterGraphLabel").textContent =
+        (mode === "low" ? "Low-pass" : "High-pass") +
+        " • fc " + formatFrequency(fc) +
+        " • test " + formatFrequency(testF);
+    }
 
     updateEquivalent();
     updateRC();
@@ -1364,6 +1718,8 @@
     updateLC();
     updateToleranceRange();
     updateESR();
+    updateDischarge();
+    updateLeakage();
     updateFilter();
     updateSimVisual();
   </script>
