@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Circuit Lab</title>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--bg:#eef3f7;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d;--danger:#b42318}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}
+header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}
+header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1120px;margin:auto;padding:18px}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px}
+input,select,button{font:inherit}
+input,select{width:100%;min-height:44px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff}
+.btn{min-height:44px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}
+.btn.primary{background:var(--yellow);border-color:#e4ba16}
+.btn.danger{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+.palette{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.palette button{min-height:56px}
+.circuit-wrap{overflow-x:auto;padding:8px 2px}
+.circuit{display:flex;align-items:center;gap:0;min-width:max-content;padding:20px 8px}
+.wire{width:34px;height:5px;background:#687f91;flex:0 0 34px;position:relative}
+.wire.live{background:#f3a900;box-shadow:0 0 9px rgba(243,169,0,.55)}
+.component{width:150px;min-height:122px;border:2px solid #9fc8ef;border-radius:15px;background:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:10px;position:relative;cursor:grab;text-align:center}
+.component.dragging{opacity:.5}.component.active{border-color:#e4ba16;background:#fffbed;box-shadow:0 0 16px rgba(255,212,59,.34)}
+.component.blown{border-color:#e4aaa5;background:#fdecea}.component .symbol{font-size:30px;font-weight:900;color:var(--navy);margin-bottom:4px}
+.component .name{font-weight:900;color:var(--navy)}.component .value{font-size:13px;color:var(--muted);margin-top:4px}
+.component .drop{font-size:12px;color:var(--blue);font-weight:800;margin-top:5px}
+.remove{position:absolute;top:5px;right:6px;border:0;background:transparent;color:#8a1c13;font-size:18px;cursor:pointer}
+.results{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:13px;padding:13px}
+.result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}.result strong{font-size:22px;color:var(--navy);word-break:break-word}
+.status{margin-top:12px;border-radius:12px;padding:12px;font-weight:800;background:#eef7ff;border:1px solid #b9d7f5;color:var(--navy)}
+.status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}.status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}.status.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+.editor{display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px}.editor.show{display:block}
+.editor-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}.legend div{background:#f8fbff;border:1px solid var(--border);border-radius:11px;padding:10px;font-size:13px}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:800px){main{padding:12px}.controls,.palette,.results,.editor-grid,.legend{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:460px){.controls,.palette,.results,.editor-grid,.legend{grid-template-columns:1fr}.component{width:136px}.wire{width:22px;flex-basis:22px}}
+</style>
+</head>
+<body>
+<header><h1>Circuit Lab</h1><p>Build a low-voltage series circuit and watch the electrical values change live.</p></header>
+<main>
+<nav class="nav"><a href="index.html">← Home</a><a href="electrical-calculator.html">Electrical Calculator</a><a href="glossary.html">Glossary</a></nav>
+
+<section class="panel">
+<h2>Power Source</h2>
+<p class="lead">This educational lab is intentionally limited to low-voltage DC. It is not a mains-wiring design tool.</p>
+<div class="controls">
+<div class="field"><label for="sourceV">Battery / Supply Voltage</label><input id="sourceV" type="number" min="1" max="24" step="0.1" value="12"></div>
+<div class="field"><label for="powerState">Master Power</label><select id="powerState"><option value="on" selected>ON</option><option value="off">OFF</option></select></div>
+<button class="btn primary" id="presetLamp">Load Lamp Demo</button>
+<button class="btn" id="clearCircuit">Clear Circuit</button>
+</div>
+</section>
+
+<section class="panel">
+<h2>Add Components</h2>
+<p class="lead">Tap a component to add it to the series path. Drag components left or right to rearrange them.</p>
+<div class="palette">
+<button class="btn" data-add="switch">⚡ Switch</button>
+<button class="btn" data-add="resistor">〰 Resistor</button>
+<button class="btn" data-add="lamp">💡 Lamp</button>
+<button class="btn" data-add="led">● LED</button>
+<button class="btn" data-add="motor">Ⓜ Motor</button>
+<button class="btn" data-add="fuse">⏤ Fuse</button>
+<button class="btn" data-add="meter">ⓐ Ammeter</button>
+</div>
+</section>
+
+<section class="panel">
+<h2>Series Circuit</h2>
+<p class="lead">The wire glows when current can flow. Tap a component to edit its value.</p>
+<div class="circuit-wrap"><div id="circuit" class="circuit"></div></div>
+<div id="editor" class="editor">
+<h3 id="editorTitle" style="margin:0 0 10px;color:var(--navy)">Edit Component</h3>
+<div id="editorFields" class="editor-grid"></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Live Measurements</h2>
+<div class="results">
+<div class="result"><small>Source voltage</small><strong id="outV">12 V</strong></div>
+<div class="result"><small>Circuit current</small><strong id="outI">0 A</strong></div>
+<div class="result"><small>Total resistance</small><strong id="outR">0 Ω</strong></div>
+<div class="result"><small>Power used</small><strong id="outP">0 W</strong></div>
+</div>
+<div id="status" class="status">Add a load to begin.</div>
+<div class="legend">
+<div><strong>Lamp:</strong> brightness follows approximate power.</div>
+<div><strong>LED:</strong> uses a simplified forward-voltage model; add a resistor to limit current.</div>
+<div><strong>Motor:</strong> speed indication follows approximate terminal voltage.</div>
+</div>
+</section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+
+<script>
+const circuitEl=document.getElementById("circuit");
+const sourceV=document.getElementById("sourceV");
+const powerState=document.getElementById("powerState");
+const editor=document.getElementById("editor");
+const editorFields=document.getElementById("editorFields");
+const editorTitle=document.getElementById("editorTitle");
+let selectedId=null;
+let seq=1;
+let parts=[];
+
+const defaults={
+ switch:{name:"Switch",symbol:"⚡",closed:true},
+ resistor:{name:"Resistor",symbol:"〰",resistance:100},
+ lamp:{name:"Lamp",symbol:"💡",resistance:24,ratedVoltage:12},
+ led:{name:"LED",symbol:"●",forwardV:2,resistance:15},
+ motor:{name:"Motor",symbol:"Ⓜ",resistance:12,ratedVoltage:12},
+ fuse:{name:"Fuse",symbol:"⏤",rating:1,blown:false},
+ meter:{name:"Ammeter",symbol:"ⓐ",resistance:0.05}
+};
+
+function addPart(type){
+ const d=JSON.parse(JSON.stringify(defaults[type]));
+ parts.push({id:seq++,type,...d});
+ selectedId=parts[parts.length-1].id;
+ render();
+ openEditor();
+}
+
+function fmt(n,d=2){
+ if(!Number.isFinite(n))return "—";
+ if(Math.abs(n)>=1000)return n.toLocaleString(undefined,{maximumFractionDigits:d});
+ return Number(n.toFixed(d)).toString();
+}
+
+function effectiveResistance(p){
+ if(p.type==="switch") return p.closed?0.01:Infinity;
+ if(p.type==="fuse") return p.blown?Infinity:0.02;
+ if(p.type==="led") return Math.max(0.1,Number(p.resistance)||0.1);
+ return Math.max(0.001,Number(p.resistance)||0.001);
+}
+
+function solve(){
+ const V=powerState.value==="on"?Math.min(24,Math.max(0,Number(sourceV.value)||0)):0;
+ const open=parts.some(p=>(p.type==="switch"&&!p.closed)||(p.type==="fuse"&&p.blown));
+ const ledV=parts.filter(p=>p.type==="led").reduce((s,p)=>s+(Number(p.forwardV)||0),0);
+ const resistive=parts.reduce((s,p)=>{const r=effectiveResistance(p);return Number.isFinite(r)?s+r:s},0);
+ let I=0;
+ if(V>0&&!open&&parts.length){
+   I=Math.max(0,(V-ledV)/Math.max(0.001,resistive));
+ }
+ let fuseTripped=false;
+ parts.forEach(p=>{
+   if(p.type==="fuse"&&!p.blown&&I>(Number(p.rating)||0)){
+     p.blown=true;fuseTripped=true;
+   }
+ });
+ if(fuseTripped) I=0;
+ const Rshown=open?Infinity:resistive;
+ const P=V*I;
+ return {V,I,R:Rshown,P,ledV,open:open||fuseTripped};
+}
+
+function partDrop(p,s){
+ if(s.I===0)return 0;
+ if(p.type==="led")return Number(p.forwardV)||0;
+ const r=effectiveResistance(p);
+ return Number.isFinite(r)?s.I*r:0;
+}
+
+function render(){
+ const s=solve();
+ circuitEl.innerHTML="";
+ const start=document.createElement("div");
+ start.className="component active";
+ start.innerHTML='<div class="symbol">🔋</div><div class="name">Source</div><div class="value">'+fmt(s.V,1)+' V DC</div>';
+ circuitEl.appendChild(start);
+ parts.forEach(p=>{
+   const wire=document.createElement("div");wire.className="wire"+(s.I>0?" live":"");circuitEl.appendChild(wire);
+   const el=document.createElement("div");
+   el.className="component"+(s.I>0?" active":"")+(p.blown?" blown":"");
+   el.draggable=true;el.dataset.id=p.id;
+   const value=displayValue(p,s);
+   el.innerHTML='<button class="remove" title="Remove">×</button><div class="symbol">'+p.symbol+'</div><div class="name">'+p.name+'</div><div class="value">'+value+'</div><div class="drop">'+fmt(partDrop(p,s),2)+' V drop</div>';
+   el.querySelector(".remove").onclick=(e)=>{e.stopPropagation();parts=parts.filter(x=>x.id!==p.id);if(selectedId===p.id){selectedId=null;editor.classList.remove("show")}render()};
+   el.onclick=()=>{selectedId=p.id;openEditor()};
+   el.addEventListener("dragstart",()=>el.classList.add("dragging"));
+   el.addEventListener("dragend",()=>el.classList.remove("dragging"));
+   el.addEventListener("dragover",e=>e.preventDefault());
+   el.addEventListener("drop",e=>{e.preventDefault();const from=Number(document.querySelector(".dragging")?.dataset.id);if(!from||from===p.id)return;const a=parts.findIndex(x=>x.id===from),b=parts.findIndex(x=>x.id===p.id);const [m]=parts.splice(a,1);parts.splice(b,0,m);render()});
+   circuitEl.appendChild(el);
+ });
+ const endWire=document.createElement("div");endWire.className="wire"+(s.I>0?" live":"");circuitEl.appendChild(endWire);
+ const ret=document.createElement("div");ret.className="component";ret.innerHTML='<div class="symbol">↩</div><div class="name">Return</div><div class="value">Back to source</div>';circuitEl.appendChild(ret);
+ updateOutputs(s);
+}
+
+function displayValue(p,s){
+ if(p.type==="switch")return p.closed?"CLOSED":"OPEN";
+ if(p.type==="fuse")return p.blown?"BLOWN":fmt(p.rating,2)+" A rating";
+ if(p.type==="resistor")return fmt(p.resistance,2)+" Ω";
+ if(p.type==="lamp"){
+   const drop=partDrop(p,s),ratio=Math.min(1.3,drop/Math.max(.1,p.ratedVoltage));
+   return fmt(p.resistance,1)+" Ω · "+(ratio>0.85?"Bright":ratio>0.35?"Dim":"Off");
+ }
+ if(p.type==="motor"){
+   const drop=partDrop(p,s),ratio=Math.min(1,drop/Math.max(.1,p.ratedVoltage));
+   return fmt(p.resistance,1)+" Ω · "+(ratio>.75?"Running":ratio>.2?"Slow":"Stopped");
+ }
+ if(p.type==="led")return fmt(p.forwardV,1)+" V LED · "+fmt(p.resistance,1)+" Ω";
+ if(p.type==="meter")return "Series current meter";
+ return "";
+}
+
+function updateOutputs(s){
+ document.getElementById("outV").textContent=fmt(s.V,2)+" V";
+ document.getElementById("outI").textContent=fmt(s.I,3)+" A";
+ document.getElementById("outR").textContent=Number.isFinite(s.R)?fmt(s.R,2)+" Ω":"Open";
+ document.getElementById("outP").textContent=fmt(s.P,2)+" W";
+ const st=document.getElementById("status");st.className="status";
+ if(powerState.value==="off"){st.textContent="Master power is OFF.";return}
+ if(!parts.length){st.textContent="Add a load to begin.";return}
+ if(parts.some(p=>p.type==="fuse"&&p.blown)){st.classList.add("bad");st.textContent="Fuse blown — current stopped. Tap the fuse to reset or raise its rating.";return}
+ if(parts.some(p=>p.type==="switch"&&!p.closed)){st.classList.add("warn");st.textContent="Circuit is open at the switch — no current flows.";return}
+ if(s.I>3){st.classList.add("bad");st.textContent="Very high current in this simplified circuit. Increase resistance or reduce source voltage.";return}
+ if(s.I>0){st.classList.add("good");st.textContent="Circuit is complete. Current is flowing through every series component.";return}
+ st.textContent="No current is flowing.";
+}
+
+function openEditor(){
+ const p=parts.find(x=>x.id===selectedId);if(!p){editor.classList.remove("show");return}
+ editor.classList.add("show");editorTitle.textContent="Edit "+p.name;
+ let html="";
+ if(p.type==="switch") html='<button class="btn primary" id="toggleSwitch">'+(p.closed?"Open Switch":"Close Switch")+'</button>';
+ if(["resistor","lamp","motor","meter"].includes(p.type)) html='<div class="field"><label>Resistance (Ω)</label><input id="editR" type="number" min="0.001" step="any" value="'+p.resistance+'"></div>';
+ if(["lamp","motor"].includes(p.type)) html+='<div class="field"><label>Rated Voltage (V)</label><input id="editRated" type="number" min="1" max="24" step="0.1" value="'+p.ratedVoltage+'"></div>';
+ if(p.type==="led") html='<div class="field"><label>Forward Voltage (V)</label><input id="editFV" type="number" min="1" max="5" step="0.1" value="'+p.forwardV+'"></div><div class="field"><label>Series Resistance (Ω)</label><input id="editR" type="number" min="0.1" step="any" value="'+p.resistance+'"></div>';
+ if(p.type==="fuse") html='<div class="field"><label>Fuse Rating (A)</label><input id="editRating" type="number" min="0.05" step="0.05" value="'+p.rating+'"></div><button class="btn" id="resetFuse">Reset Fuse</button>';
+ editorFields.innerHTML=html;
+ const hook=(id,fn)=>{const e=document.getElementById(id);if(e)e.addEventListener("input",fn)};
+ hook("editR",e=>{p.resistance=Math.max(.001,Number(e.target.value)||.001);render()});
+ hook("editRated",e=>{p.ratedVoltage=Math.min(24,Math.max(1,Number(e.target.value)||1));render()});
+ hook("editFV",e=>{p.forwardV=Math.min(5,Math.max(1,Number(e.target.value)||1));render()});
+ hook("editRating",e=>{p.rating=Math.max(.05,Number(e.target.value)||.05);render()});
+ const t=document.getElementById("toggleSwitch");if(t)t.onclick=()=>{p.closed=!p.closed;render();openEditor()};
+ const rf=document.getElementById("resetFuse");if(rf)rf.onclick=()=>{p.blown=false;render();openEditor()};
+}
+
+document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>addPart(b.dataset.add));
+[sourceV,powerState].forEach(e=>e.addEventListener("input",render));
+document.getElementById("clearCircuit").onclick=()=>{parts=[];selectedId=null;editor.classList.remove("show");render()};
+document.getElementById("presetLamp").onclick=()=>{
+ parts=[
+  {id:seq++,type:"switch",...JSON.parse(JSON.stringify(defaults.switch))},
+  {id:seq++,type:"fuse",...JSON.parse(JSON.stringify(defaults.fuse))},
+  {id:seq++,type:"lamp",...JSON.parse(JSON.stringify(defaults.lamp))},
+  {id:seq++,type:"meter",...JSON.parse(JSON.stringify(defaults.meter))}
+ ];
+ sourceV.value=12;powerState.value="on";selectedId=null;editor.classList.remove("show");render();
+};
+document.getElementById("presetLamp").click();
+</script>
+</body>
+</html>
