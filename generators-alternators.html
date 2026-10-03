@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>Generators & Alternators Explorer</title>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}h3{margin:0 0 6px;color:var(--navy)}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input,select,button{font:inherit}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white}.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700}.result strong{font-size:clamp(20px,4vw,28px);color:var(--navy)}.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.gen-stage{display:grid;grid-template-columns:minmax(300px,.9fr) minmax(0,1.1fr);gap:18px;align-items:center}.machine{position:relative;width:300px;height:200px;margin:auto;background:#8898a7;border:8px solid #52616e;border-radius:34px;box-shadow:inset 0 0 0 7px #c7d0d7}.rotor{position:absolute;left:50%;top:50%;width:105px;height:105px;margin:-52px;border-radius:50%;border:18px solid #d39a23;background:#263747}.shaft{position:absolute;left:50%;top:50%;width:150px;height:18px;margin:-9px -75px;background:#dce3e8;border-radius:9px}.coil{position:absolute;left:27px;right:27px;height:18px;background:#b87333;border-radius:10px}.coil.top{top:28px}.coil.bottom{bottom:28px}.spin{animation:spin 1.1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.scope{background:#06182a;border-radius:14px;padding:12px}.scope svg{display:block;width:100%;height:auto}.btn{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(100px,1fr));gap:9px;align-items:center}.block{padding:13px;border:2px solid #9fc8ef;background:#f8fbff;border-radius:12px;text-align:center;font-weight:800;color:var(--navy)}.arrow{text-align:center;font-size:24px;color:var(--blue);font-weight:900}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){main{padding:12px}.two,.three,.results,.gen-stage,.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<header><h1>Generators & Alternators Explorer</h1><p>Electromagnetic induction, field systems, AC and DC generation, frequency, regulation, automotive alternators, portable generators, and generator safety.</p></header>
+<main>
+<nav class="nav">
+<a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="vacuum-tubes.html">Vacuum Tubes</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a href="motors-controls.html">Motors & Controls</a><a class="active" href="generators-alternators.html">Generators & Alternators</a><a href="processors.html">Processors</a>
+</nav>
+
+<section class="panel">
+<h2>Beginner Start Here</h2><p class="lead">A motor turns electricity into motion. A generator does the reverse: motion moves a magnetic field relative to conductors and produces electrical voltage.</p>
+<div class="grid three">
+<div class="card"><strong>Electromagnetic Induction</strong><p>Changing magnetic flux through a conductor induces voltage. Faster change generally produces more induced voltage.</p><span class="badge">Faraday's law</span></div>
+<div class="card"><strong>Rotor</strong><p>The rotating part. Depending on the design, it may carry the magnetic field or the armature winding.</p><span class="badge">Rotating</span></div>
+<div class="card"><strong>Stator</strong><p>The stationary part. In many alternators the stator contains the output windings.</p><span class="badge">Stationary</span></div>
+<div class="card"><strong>Field Winding</strong><p>An electromagnet that creates the main magnetic field. Field current can be adjusted to help regulate output voltage.</p><span class="badge">Magnetic field</span></div>
+<div class="card"><strong>Slip Rings</strong><p>Continuous rings used to transfer current to or from a rotating winding while preserving AC behavior.</p><span class="badge">Rotating connection</span></div>
+<div class="card"><strong>Commutator</strong><p>A segmented mechanical switch used in many DC machines to reverse coil connections and produce DC at the brushes.</p><span class="badge">DC machine</span></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Generator vs. Alternator</h2>
+<table><thead><tr><th>Term</th><th>Typical meaning</th><th>Output method</th></tr></thead><tbody>
+<tr><td>Generator</td><td>Broad term for a machine that converts mechanical energy into electrical energy.</td><td>May produce AC or DC depending on design.</td></tr>
+<tr><td>Alternator</td><td>A generator designed to produce alternating current.</td><td>Usually uses slip rings or a rotating field with stationary output windings.</td></tr>
+<tr><td>DC generator</td><td>A rotating machine arranged to deliver direct current.</td><td>Typically uses a commutator and brushes.</td></tr>
+</tbody></table>
+<div class="formula">In everyday use, “alternator” usually means an AC generator. In automobiles, the alternator makes AC internally and a diode bridge rectifies it to DC for the vehicle electrical system.</div>
+</section>
+
+<section class="panel">
+<h2>Generator Animation</h2><p class="lead">This simplified model shows a rotating magnetic field inside stationary windings.</p>
+<div class="gen-stage">
+<div class="machine"><div class="coil top"></div><div class="coil bottom"></div><div id="genRotor" class="rotor"><div class="shaft"></div></div></div>
+<div><div class="scope"><svg viewBox="0 0 600 220"><path d="M0 110H600" stroke="#28445f"/><path id="wave" d="" fill="none" stroke="#ffd43b" stroke-width="5"/></svg></div><div class="row"><button id="run" class="btn primary">Run</button><button id="slow" class="btn">Slow</button><button id="stop" class="btn">Stop</button></div><p class="note">The waveform animation is illustrative. Real voltage magnitude and waveform shape depend on machine design, speed, excitation, and load.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Frequency / RPM / Pole Calculator</h2><p class="lead">For a synchronous generator, electrical frequency is related to shaft speed and the number of magnetic poles.</p>
+<div class="grid three">
+<div class="field"><label>Frequency (Hz)</label><input id="freq" type="number" value="60" min="1"></div>
+<div class="field"><label>Poles</label><select id="poles"><option>2</option><option selected>4</option><option>6</option><option>8</option><option>10</option><option>12</option></select></div>
+<div class="field"><label>Calculated shaft speed</label><input id="rpmBox" readonly></div>
+</div>
+<div class="results"><div class="result"><small>Required speed</small><strong id="rpmOut">—</strong></div><div class="result"><small>Revolutions per second</small><strong id="rpsOut">—</strong></div><div class="result"><small>Electrical period</small><strong id="periodOut">—</strong></div></div>
+<div class="formula">RPM = 120 × frequency ÷ poles</div>
+</section>
+
+<section class="panel">
+<h2>Mechanical Power to Electrical Power</h2><p class="lead">Estimate electrical output from mechanical input and efficiency.</p>
+<div class="grid three">
+<div class="field"><label>Mechanical input power</label><input id="mech" type="number" value="5" min="0" step="any"></div>
+<div class="field"><label>Unit</label><select id="mechUnit"><option value="1000">kW</option><option value="745.7">hp</option><option value="1">W</option></select></div>
+<div class="field"><label>Efficiency (%)</label><input id="eff" type="number" value="85" min="1" max="100" step="any"></div>
+</div>
+<div class="results"><div class="result"><small>Electrical output</small><strong id="elecOut">—</strong></div><div class="result"><small>Losses</small><strong id="lossOut">—</strong></div><div class="result"><small>Input</small><strong id="inputOut">—</strong></div></div>
+<div class="formula">Electrical output ≈ mechanical input × efficiency</div>
+</section>
+
+<section class="panel">
+<h2>Automotive Alternator</h2>
+<div class="flow">
+<div class="block">Engine / belt</div><div class="arrow">→</div><div class="block">Rotating field</div><div class="arrow">→</div><div class="block">Stator AC</div>
+</div>
+<div class="flow" style="margin-top:10px">
+<div class="block">Diode rectifier</div><div class="arrow">→</div><div class="block">DC bus</div><div class="arrow">→</div><div class="block">Battery + vehicle loads</div>
+</div>
+<div class="grid two" style="margin-top:14px">
+<div class="card"><strong>Voltage Regulator</strong><p>Controls field current to keep system voltage within the required operating range as speed and load change.</p></div>
+<div class="card"><strong>Rectifier Bridge</strong><p>High-current diodes convert the alternator's internally generated AC into DC.</p></div>
+<div class="card"><strong>Rotor Field</strong><p>Current in the rotating field winding creates the magnetic field. Slip rings carry field current into the rotor.</p></div>
+<div class="card"><strong>Stator Windings</strong><p>Usually three-phase windings where AC voltage is induced by the rotating magnetic field.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Portable & Standby Generators</h2>
+<div class="grid three">
+<div class="card"><strong>Prime mover</strong><p>The engine, turbine, water wheel, or other mechanical source that spins the generator.</p></div>
+<div class="card"><strong>Governor</strong><p>Controls engine or turbine speed so frequency remains near its target as load changes.</p></div>
+<div class="card"><strong>AVR</strong><p>An automatic voltage regulator adjusts excitation to help maintain output voltage.</p></div>
+<div class="card"><strong>Exciter</strong><p>Supplies field current to the main generator. Some systems are brushless and use a rotating rectifier assembly.</p></div>
+<div class="card"><strong>Transfer Switch</strong><p>Transfers a building load between utility power and generator power while preventing unsafe source interconnection.</p></div>
+<div class="card"><strong>Grounding / Bonding</strong><p>Depends on system design, equipment configuration, and applicable code. Portable and standby arrangements are not always the same.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Common Generator Parts</h2>
+<table><thead><tr><th>Part</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>Rotor</td><td>Rotating magnetic or armature assembly.</td></tr>
+<tr><td>Stator</td><td>Stationary magnetic or output winding assembly.</td></tr>
+<tr><td>Field winding / permanent magnets</td><td>Create the magnetic field.</td></tr>
+<tr><td>Exciter</td><td>Provides field energy for the main machine.</td></tr>
+<tr><td>Slip rings / brushes</td><td>Transfer current to or from rotating windings in applicable designs.</td></tr>
+<tr><td>Commutator</td><td>Mechanical rectification/switching in many DC generators.</td></tr>
+<tr><td>Voltage regulator / AVR</td><td>Controls excitation to stabilize output voltage.</td></tr>
+<tr><td>Governor</td><td>Controls mechanical speed to stabilize frequency.</td></tr>
+<tr><td>Bearings</td><td>Support the shaft and rotor.</td></tr>
+<tr><td>Cooling fan</td><td>Removes heat from windings and frame.</td></tr>
+<tr><td>Diode bridge</td><td>Rectifies AC to DC in automotive and some excitation systems.</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>Important Generator Safety</h2>
+<div class="warning">Never connect a portable generator directly to building wiring through a receptacle or improvised “backfeed” cord. A proper transfer device and code-compliant installation are required to isolate generator power from utility lines. Generator exhaust also contains carbon monoxide, so engine-driven generators must be operated outdoors in accordance with manufacturer instructions and local requirements.</div>
+</section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+<script>
+const rotor=document.getElementById("genRotor"),wave=document.getElementById("wave");let speed=1.1;
+function wavePath(){let d="M0 110";for(let x=0;x<=600;x+=6){const y=110-70*Math.sin(x/600*Math.PI*4);d+=" L"+x.toFixed(0)+" "+y.toFixed(1)}wave.setAttribute("d",d)}wavePath();
+run.onclick=()=>{rotor.style.animationDuration=speed+"s";rotor.classList.add("spin")};slow.onclick=()=>{speed=2.5;rotor.style.animationDuration=speed+"s";rotor.classList.add("spin")};stop.onclick=()=>rotor.classList.remove("spin");
+
+function freqCalc(){const f=+freq.value,p=+poles.value,rpm=120*f/p;rpmBox.value=rpm.toFixed(0)+" RPM";rpmOut.textContent=rpm.toFixed(0)+" RPM";rpsOut.textContent=(rpm/60).toFixed(2)+" r/s";periodOut.textContent=(1000/f).toFixed(2)+" ms"}freq.oninput=freqCalc;poles.onchange=freqCalc;freqCalc();
+
+function powerCalc(){const pin=+mech.value*+mechUnit.value,e=(+eff.value)/100,pout=pin*e,loss=pin-pout;inputOut.textContent=(pin/1000).toFixed(2)+" kW";elecOut.textContent=(pout/1000).toFixed(2)+" kW";lossOut.textContent=(loss/1000).toFixed(2)+" kW"}[mech,mechUnit,eff].forEach(x=>x.addEventListener("input",powerCalc));powerCalc();
+</script>
+</body>
+</html>
