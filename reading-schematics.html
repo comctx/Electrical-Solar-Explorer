@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How to Read Electrical Schematics</title>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d;--warn:#8a5a00}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}
+header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.94}
+header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1080px;margin:auto;padding:18px}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+h3{color:var(--navy);margin:0 0 7px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:14px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+.rule{background:#fffbed;border:1px solid #e5c94a;border-radius:14px;padding:14px}.rule strong{color:var(--navy)}
+.steps{counter-reset:step;margin:0;padding:0;list-style:none}.steps li{counter-increment:step;position:relative;padding:12px 12px 12px 52px;margin:8px 0;border:1px solid var(--border);border-radius:12px;background:#fff}.steps li:before{content:counter(step);position:absolute;left:12px;top:10px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--yellow);color:var(--navy);font-weight:900}
+.symbol-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.symbol-card{border:1px solid var(--border);border-radius:13px;background:#fff;padding:12px;text-align:center}.symbol-card strong{display:block;color:var(--navy);margin-top:5px}.symbol-card span{font-size:12px;color:var(--muted)}
+.sym{height:60px;color:var(--navy)}.sym svg{width:100%;height:100%;overflow:visible}.wire{stroke:currentColor;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}.thin{stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}.fill{fill:currentColor}
+.example{overflow-x:auto;border:1px solid var(--border);border-radius:14px;background:#f8fbff;padding:14px}.example svg{min-width:680px;width:100%;height:210px}
+.exwire{stroke:#566f82;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}.exwire.live{stroke:#f3a900;filter:drop-shadow(0 0 3px rgba(243,169,0,.55))}.exthin{stroke:#071a2e;stroke-width:3;fill:none}.label{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}.small{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#62707d}
+.btn{min-height:44px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.btnrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.answer{display:none;margin-top:10px;border-radius:12px;padding:12px;background:#eaf7ef;border:1px solid #9ed0b3;color:#185c3b;font-weight:700}.answer.show{display:block}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}.symbol-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:430px){.symbol-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1>How to Read Electrical Schematics</h1><p>Learn how symbols, wires, labels, and current paths tell the story of a circuit.</p></header>
+<main>
+<nav class="nav"><a href="index.html">← Home</a><a href="circuit-lab.html">Circuit Lab</a><a href="electrical-basics.html">Electrical Basics</a></nav>
+
+<section class="panel">
+<h2>What Is a Schematic?</h2>
+<p class="lead">A schematic is a simplified drawing that shows how electrical parts are connected and how the circuit is intended to work. It is about <strong>electrical relationships</strong>, not the physical location or shape of the real parts.</p>
+<div class="grid three">
+<div class="card"><strong>Symbols = Components</strong><p>A lamp, switch, resistor, relay coil, motor, and battery each have a standardized-style symbol.</p></div>
+<div class="card"><strong>Lines = Conductors</strong><p>Lines show electrical connections. A junction dot usually means conductors are connected at that point.</p></div>
+<div class="card"><strong>Labels = Clues</strong><p>Reference names, terminal numbers, voltage labels, and wire identifiers help you follow the circuit.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Start With These Symbols</h2>
+<p class="lead">You do not need to memorize everything at once. Learn the common symbols first and recognize their job in the circuit.</p>
+<div class="symbol-grid">
+<div class="symbol-card"><div class="sym"><svg viewBox="0 0 120 64"><path class="wire" d="M4 32h34M82 32h34"/><path class="wire" d="M46 14v36M58 22v20M70 14v36"/></svg></div><strong>Battery / DC Source</strong><span>Provides electrical potential</span></div>
+<div class="symbol-card"><div class="sym"><svg viewBox="0 0 120 64"><path class="wire" d="M4 32h34M82 32h34"/><circle cx="40" cy="32" r="4" class="fill"/><circle cx="80" cy="32" r="4" class="fill"/><path class="wire" d="M42 32L76 15"/></svg></div><strong>Open Switch</strong><span>Breaks the current path</span></div>
+<div class="symbol-card"><div class="sym"><svg viewBox="0 0 120 64"><path class="wire" d="M4 32h24l7-10 10 20 10-20 10 20 10-20 10 10h31"/></svg></div><strong>Resistor</strong><span>Limits current / drops voltage</span></div>
+<div class="symbol-card"><div class="sym"><svg viewBox="0 0 120 64"><path class="wire" d="M4 32h30M86 32h30"/><circle cx="60" cy="32" r="26" class="thin"/><path class="thin" d="M43 15l34 34M77 15L43 49"/></svg></div><strong>Lamp</strong><span>Converts electrical energy to light</span></div>
+<div class="symbol-card"><div class="sym"><svg viewBox="0 0 120 64"><path class="wire" d="M4 32h28M88 32h28"/><circle cx="60" cy="32" r="28" class="thin"/><text x="48" y="43" font-size="34" font-weight="900" fill="currentColor">M</text></svg></div><strong>Motor</strong><span>Converts electrical energy to motion</span></div>
+<div class="symbol-card"><div class="sym"><svg viewBox="0 0 120 64"><path class="wire" d="M4 32h28M88 32h28"/><circle cx="60" cy="32" r="28" class="thin"/><text x="49" y="43" font-size="34" font-weight="900" fill="currentColor">A</text></svg></div><strong>Ammeter</strong><span>Measures current in series</span></div>
+<div class="symbol-card"><div class="sym"><svg viewBox="0 0 120 64"><path class="wire" d="M4 32h28M88 32h28"/><circle cx="60" cy="32" r="28" class="thin"/><text x="49" y="43" font-size="34" font-weight="900" fill="currentColor">V</text></svg></div><strong>Voltmeter</strong><span>Measures between two points</span></div>
+<div class="symbol-card"><div class="sym"><svg viewBox="0 0 120 64"><path class="wire" d="M4 32h36M80 32h36"/><rect x="40" y="22" width="40" height="20" rx="3" class="thin"/><path class="wire" d="M46 32h28"/></svg></div><strong>Fuse</strong><span>Opens when overcurrent conditions exceed its rating</span></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>The 7-Step Reading Method</h2>
+<ol class="steps">
+<li><strong>Find the power source.</strong> Locate the battery, DC supply, transformer secondary, or AC source.</li>
+<li><strong>Identify the return path.</strong> Find the negative, neutral, common, or other return reference used by that schematic.</li>
+<li><strong>Locate protection.</strong> Look for fuses, circuit breakers, overloads, and other protective devices.</li>
+<li><strong>Find the control device.</strong> Switches, relay contacts, pushbuttons, sensors, and transistor switches decide when current can flow.</li>
+<li><strong>Find the load.</strong> Lamps, motors, heaters, relay coils, solenoids, and electronic circuits use the electrical energy.</li>
+<li><strong>Trace one path at a time.</strong> Follow from source → protection → control → load → return. Do not try to understand the whole drawing at once.</li>
+<li><strong>Check labels and states.</strong> NO/NC contacts are normally shown in their de-energized or normal state unless the drawing says otherwise.</li>
+</ol>
+</section>
+
+<section class="panel">
+<h2>Follow a Simple Series Circuit</h2>
+<p class="lead">Press the button to see the current path. With the switch closed, there is one continuous route from the source through the fuse and lamp and back to the source.</p>
+<div class="example">
+<svg viewBox="0 0 760 210">
+<path id="seriesPath" class="exwire" d="M80 105H155M205 105H275M325 105H390M450 105H525M585 105H680V170H80V105"/>
+<path class="exthin" d="M80 75v60M98 85v40"/>
+<text class="label" x="58" y="58">12 V</text><text class="small" x="42" y="151">Source</text>
+<circle cx="157" cy="105" r="4" fill="#071a2e"/><circle cx="203" cy="105" r="4" fill="#071a2e"/><path id="switchArm" class="exthin" d="M160 105L200 105"/><text class="small" x="158" y="82">Switch</text>
+<rect x="275" y="92" width="50" height="26" rx="3" class="exthin"/><path class="exthin" d="M283 105h34"/><text class="small" x="282" y="82">Fuse</text>
+<circle cx="420" cy="105" r="28" class="exthin"/><path class="exthin" d="M400 85l40 40M440 85l-40 40"/><text class="small" x="402" y="153">Lamp</text>
+<circle cx="555" cy="105" r="28" class="exthin"/><text class="label" x="544" y="112">A</text><text class="small" x="530" y="153">Ammeter</text>
+</svg>
+</div>
+<div class="btnrow"><button id="traceBtn" class="btn primary">Show Current Path</button><button id="openBtn" class="btn">Open Switch</button></div>
+<div id="seriesAnswer" class="answer">Current has one continuous path. In a series circuit, the same current flows through every series component.</div>
+</section>
+
+<section class="panel">
+<h2>Series vs. Parallel</h2>
+<div class="grid two">
+<div class="card"><strong>Series</strong><p>Components are arranged one after another in the same path. The same current flows through each series component. Opening one point stops the entire path.</p></div>
+<div class="card"><strong>Parallel</strong><p>Loads connect across the same two nodes. Each active branch has the branch voltage across it, and the branch currents add together at the source.</p></div>
+</div>
+<div class="rule" style="margin-top:12px"><strong>Reading trick:</strong> If the drawing splits into two or more paths and later rejoins, you are looking at parallel branches.</div>
+</section>
+
+<section class="panel">
+<h2>Junctions, Crossings, and Nodes</h2>
+<div class="grid two">
+<div class="card"><strong>Junction Dot</strong><p>When conductors meet with a solid dot, that dot represents a common electrical node.</p></div>
+<div class="card"><strong>Crossing Lines</strong><p>Do not assume crossing lines are connected. Use the drawing's junction-dot convention and legend.</p></div>
+</div>
+<div class="rule" style="margin-top:12px"><strong>Important:</strong> Schematic conventions can vary by drawing standard and manufacturer. Always check the drawing legend, notes, and device documentation.</div>
+</section>
+
+<section class="panel">
+<h2>Reference Designators</h2>
+<p class="lead">Schematics often use letters and numbers to identify individual parts. Exact conventions vary, but these are common examples.</p>
+<div class="grid three">
+<div class="card"><strong>R1, R2…</strong><p>Resistors</p></div>
+<div class="card"><strong>C1, C2…</strong><p>Capacitors</p></div>
+<div class="card"><strong>D1, D2…</strong><p>Diodes</p></div>
+<div class="card"><strong>Q1, Q2…</strong><p>Transistors</p></div>
+<div class="card"><strong>K1 / CR1</strong><p>Relay or control relay, depending on the drawing convention</p></div>
+<div class="card"><strong>F1 / CB1</strong><p>Fuse / circuit breaker</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Relay Schematics: Coil and Contacts</h2>
+<p class="lead">A relay can appear in more than one place on a schematic. The coil and its contacts may be separated on the page but tied together by the same reference label.</p>
+<div class="grid two">
+<div class="card"><strong>Relay Coil K1</strong><p>When the coil is energized, the relay changes the state of contacts labeled K1 elsewhere in the drawing.</p></div>
+<div class="card"><strong>NO / NC Contacts</strong><p>Normally Open and Normally Closed describe the contact state in its normal, de-energized condition unless the drawing notes otherwise.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Try This Reading Exercise</h2>
+<p class="lead">A 12 V source feeds a fuse, then a closed switch, then a lamp, then returns to the source. Where would you first look if the lamp is dark but the source measures 12 V?</p>
+<div class="btnrow"><button id="answerBtn" class="btn primary">Show Answer</button><a class="btn" href="circuit-lab.html" style="text-decoration:none;display:inline-grid;place-items:center">Practice in Circuit Lab</a></div>
+<div id="exerciseAnswer" class="answer">Trace the path one section at a time: check both sides of the fuse, then both sides of the switch, then the lamp connections and return path. The first point where the expected voltage disappears helps locate the open or faulty section.</div>
+</section>
+
+<section class="panel">
+<h2>Safety Note</h2>
+<p class="lead">Use schematics to understand circuit operation, not as permission to work on energized equipment. Real equipment may contain hazardous voltage, stored energy, multiple sources, interlocks, and manufacturer-specific requirements. Follow applicable procedures, manufacturer instructions, and qualified-person requirements.</p>
+</section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+<script>
+let traced=false,opened=false;
+const traceBtn=document.getElementById("traceBtn"),openBtn=document.getElementById("openBtn"),path=document.getElementById("seriesPath"),arm=document.getElementById("switchArm"),answer=document.getElementById("seriesAnswer");
+function refresh(){
+ path.classList.toggle("live",traced&&!opened);
+ arm.setAttribute("d",opened?"M160 105L198 82":"M160 105L200 105");
+ openBtn.textContent=opened?"Close Switch":"Open Switch";
+ answer.classList.toggle("show",traced&&!opened);
+ if(traced&&opened){answer.classList.add("show");answer.textContent="The switch is open, so the current path is broken and current stops."}
+ else answer.textContent="Current has one continuous path. In a series circuit, the same current flows through every series component.";
+}
+traceBtn.onclick=()=>{traced=!traced;traceBtn.textContent=traced?"Hide Current Path":"Show Current Path";refresh()};
+openBtn.onclick=()=>{opened=!opened;refresh()};
+answerBtn.onclick=()=>exerciseAnswer.classList.toggle("show");
+</script>
+</body>
+</html>
