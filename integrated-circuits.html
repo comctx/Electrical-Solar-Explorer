@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Integrated Circuits Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+      --good:#1f7a4d;--danger:#b42318;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;padding:24px 18px 20px;text-align:center;
+    }
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1000px;margin:0 auto;padding:18px}
+    .page-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .page-nav a{
+      text-decoration:none;min-height:46px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:11px;padding:10px 14px;font-weight:800;border:1px solid #9fc8ef;
+      background:#eef7ff;color:var(--navy);
+    }
+    .page-nav a.active{background:var(--yellow);border-color:#e4ba16}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px;
+    }
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    h3{margin:0 0 8px;color:var(--navy)}
+    .lead,.note{color:var(--muted);line-height:1.5}
+    .lead{margin:0 0 16px}.note{font-size:13px;margin:10px 0 0}
+    .grid{display:grid;gap:12px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input,select,button{font:inherit}
+    input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white;color:var(--text)}
+    input:focus,select:focus,button:focus{outline:3px solid rgba(11,99,206,.22);outline-offset:2px}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px;min-width:0}
+    .result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .result strong{color:var(--navy);font-size:clamp(20px,4vw,28px);word-break:break-word}
+    .formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+    .warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:10px;padding:10px 12px;color:#6a4300;font-weight:700;line-height:1.45}
+    .status{margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy);line-height:1.45}
+    .status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+    .status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
+    .status.high{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+
+    .beginner-panel{background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:2px solid #b9d7f5}
+    .beginner-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .beginner-card{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:13px;padding:13px}
+    .beginner-card strong{display:block;color:var(--navy);margin-bottom:5px;font-size:16px}
+    .beginner-card p{margin:0;color:#33495b;line-height:1.5;font-size:14px}
+    .other-words{margin-top:14px;background:#fff7cc;border:1px solid #e5c94a;border-radius:13px;padding:14px}
+    .other-words strong{display:block;color:var(--navy);font-size:17px;margin-bottom:8px}
+    .other-words-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .other-words-item{background:white;border:1px solid #eadb82;border-radius:10px;padding:10px;font-weight:800;color:#263b4c;line-height:1.4}
+    .beginner-tip{margin-top:12px;border-left:5px solid var(--electric);background:#eef7ff;border-radius:10px;padding:11px 13px;line-height:1.5;color:#25394b;font-weight:700}
+
+    .dip-wrap{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(0,1.2fr);gap:18px;align-items:center;margin-top:14px}
+    .dip-stage{border:1px solid var(--border);background:#fbfdff;border-radius:16px;padding:18px;display:flex;justify-content:center;align-items:center;min-height:330px}
+    .dip-chip{position:relative;width:230px;min-height:250px;background:#1e2a34;border-radius:14px;border:4px solid #0b1118;display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:26px 20px}
+    .dip-notch{position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:62px;height:26px;background:#fbfdff;border-radius:0 0 34px 34px;border-left:4px solid #0b1118;border-right:4px solid #0b1118;border-bottom:4px solid #0b1118}
+    .dip-dot{position:absolute;left:28px;top:28px;width:15px;height:15px;border-radius:50%;background:#82909b}
+    .pin-col{display:flex;flex-direction:column;justify-content:space-between}
+    .pin-col.right{align-items:flex-end}
+    .dip-pin{display:flex;align-items:center;gap:6px;color:white;font-weight:900;font-size:12px}
+    .pin-leg{width:34px;height:9px;background:#b8c2c9;border-radius:2px}
+    .dip-number{min-width:22px;text-align:center}
+    .pin-info{display:grid;gap:10px}
+    .pin-rule{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px;line-height:1.45}
+    .pin-rule strong{color:var(--navy)}
+
+    .button-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .action{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}
+    .action.primary{background:var(--yellow);border-color:#e4ba16}
+
+    .type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .type-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:13px}
+    .type-card strong{display:block;color:var(--navy);margin-bottom:5px}
+    .type-card small{display:block;color:var(--muted);line-height:1.45}
+    .badge{display:inline-block;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#e9f3ff;color:var(--navy);border:1px solid #b9d7f5}
+
+    .comparison-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .comparison-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .comparison-card h3{margin:0 0 8px}.comparison-card ul{margin:8px 0 0 20px;padding:0;color:#33495b;line-height:1.5}
+
+    @media(max-width:760px){
+      main{padding:12px}.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .result-grid,.beginner-grid,.other-words-grid,.comparison-grid{grid-template-columns:1fr}
+      .type-grid{grid-template-columns:1fr 1fr}
+      .dip-wrap{grid-template-columns:1fr}
+    }
+    @media(max-width:420px){.type-grid{grid-template-columns:1fr}}
+    footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Integrated Circuits Explorer</h1>
+    <p>IC basics, pin numbering, 555 timers, op-amps, regulators, packages, decoupling, and common IC families.</p>
+  </header>
+
+  <main>
+    <nav class="page-nav" aria-label="App pages">
+      <a href="index.html">All Things Electrical</a>
+      <a href="capacitor.html">Capacitors</a>
+      <a href="inductors.html">Inductors & Coils</a>
+      <a href="transformers.html">Transformers</a>
+      <a href="diodes.html">Diodes</a>
+      <a href="transistors.html">Transistors</a>
+      <a href="relays.html">Relays & Contactors</a>
+      <a href="integrated-circuits.html" class="active">Integrated Circuits</a>
+    </nav>
+
+    <section class="panel beginner-panel">
+      <h2>Beginner Start Here</h2>
+      <p class="lead">An integrated circuit, or IC, puts many electronic components together inside one package. Some ICs contain dozens of transistors; others contain millions or billions.</p>
+      <div class="beginner-grid">
+        <div class="beginner-card"><strong>What is an IC?</strong><p>An integrated circuit is a complete electronic function built onto a small semiconductor chip and connected to external pins or pads.</p></div>
+        <div class="beginner-card"><strong>Why use ICs?</strong><p>They make circuits smaller, more repeatable, and easier to build by combining many transistors, resistors, diodes, and other structures into one device.</p></div>
+        <div class="beginner-card"><strong>Analog vs. digital</strong><p>Analog ICs process continuously varying signals. Digital ICs work with logic states. Mixed-signal ICs combine both.</p></div>
+        <div class="beginner-card"><strong>Power pins matter</strong><p>Most ICs need one or more supply pins plus ground. Applying the wrong voltage or reversing supply polarity can damage the device.</p></div>
+        <div class="beginner-card"><strong>Pin 1 matters</strong><p>Package orientation is identified by a notch, dot, bevel, or marking. Pin numbering follows a defined pattern, but the function of each pin comes from the datasheet.</p></div>
+        <div class="beginner-card"><strong>Datasheets are essential</strong><p>Part number, package, supply range, pinout, limits, timing, thermal data, and application circuits can differ greatly even between similar-looking ICs.</p></div>
+      </div>
+      <div class="other-words">
+        <strong>In Other Words</strong>
+        <div class="other-words-grid">
+          <div class="other-words-item">An IC is many electronic functions packed into one chip.</div>
+          <div class="other-words-item">The package tells you where the pins are, not what each pin does.</div>
+          <div class="other-words-item">The datasheet is the map for using the exact part correctly.</div>
+        </div>
+      </div>
+      <div class="beginner-tip">Start with the <strong>DIP Pin Numbering Guide</strong>, then try the 555 timer, op-amp, and voltage-regulator calculators.</div>
+    </section>
+
+    <section class="panel">
+      <h2>DIP Pin Numbering Guide</h2>
+      <p class="lead">Choose a common dual-inline package size and see how the pins are numbered when viewed from the top.</p>
+      <div class="dip-wrap">
+        <div class="dip-stage">
+          <div class="dip-chip">
+            <div class="dip-notch"></div>
+            <div class="dip-dot"></div>
+            <div id="leftPins" class="pin-col"></div>
+            <div id="rightPins" class="pin-col right"></div>
+          </div>
+        </div>
+        <div class="pin-info">
+          <div class="field">
+            <label for="dipCount">DIP pin count</label>
+            <select id="dipCount">
+              <option value="8">8 pins</option>
+              <option value="14" selected>14 pins</option>
+              <option value="16">16 pins</option>
+              <option value="18">18 pins</option>
+              <option value="20">20 pins</option>
+            </select>
+          </div>
+          <div class="pin-rule"><strong>Viewed from the top:</strong> find the notch or Pin-1 dot. Pin 1 is beside that marker, and numbering proceeds counterclockwise around the package.</div>
+          <div class="pin-rule"><strong>Important:</strong> pin numbers are physical positions. Their functions—power, ground, input, output, reset, clock, etc.—must be checked in the exact part datasheet.</div>
+          <div id="dipSummary" class="formula">14-pin DIP: pins 1–7 run down the left side, then pins 8–14 run up the right side.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>555 Timer Calculator</h2>
+      <p class="lead">Explore two classic 555 timer arrangements: astable oscillator and monostable one-shot.</p>
+      <div class="grid four">
+        <div class="field"><label for="timerMode">Mode</label>
+          <select id="timerMode">
+            <option value="astable">Astable oscillator</option>
+            <option value="mono">Monostable one-shot</option>
+          </select>
+        </div>
+        <div class="field"><label for="timerR1">R1 (kΩ)</label><input id="timerR1" type="number" min="0.001" step="any" value="10"></div>
+        <div class="field"><label for="timerR2">R2 (kΩ)</label><input id="timerR2" type="number" min="0.001" step="any" value="47"></div>
+        <div class="field"><label for="timerC">C (µF)</label><input id="timerC" type="number" min="0.000001" step="any" value="1"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small id="timerResult1Label">Frequency</small><strong id="timerResult1">—</strong></div>
+        <div class="result"><small id="timerResult2Label">High time</small><strong id="timerResult2">—</strong></div>
+        <div class="result"><small id="timerResult3Label">Low time</small><strong id="timerResult3">—</strong></div>
+        <div class="result"><small id="timerResult4Label">Duty cycle</small><strong id="timerResult4">—</strong></div>
+      </div>
+      <div id="timerFormula" class="formula">Astable: f ≈ 1.44 ÷ ((R1 + 2R2)C).</div>
+      <p class="note">These are classic approximate equations. Different 555 variants and real component tolerances, leakage, supply voltage, and loading can shift timing.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Op-Amp Gain Calculator</h2>
+      <p class="lead">Calculate ideal closed-loop gain for common inverting and non-inverting op-amp configurations.</p>
+      <div class="grid four">
+        <div class="field"><label for="opMode">Configuration</label>
+          <select id="opMode">
+            <option value="noninv">Non-inverting</option>
+            <option value="inv">Inverting</option>
+          </select>
+        </div>
+        <div class="field"><label for="opRin">Rin / Rg (kΩ)</label><input id="opRin" type="number" min="0.000001" step="any" value="10"></div>
+        <div class="field"><label for="opRf">Feedback Rf (kΩ)</label><input id="opRf" type="number" min="0" step="any" value="90"></div>
+        <div class="field"><label for="opVin">Input voltage (V)</label><input id="opVin" type="number" step="any" value="0.2"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Ideal voltage gain</small><strong id="opGain">—</strong></div>
+        <div class="result"><small>Ideal output voltage</small><strong id="opVout">—</strong></div>
+        <div class="result"><small>Output polarity</small><strong id="opPolarity">—</strong></div>
+      </div>
+      <div id="opFormula" class="formula">Non-inverting gain = 1 + Rf ÷ Rg.</div>
+      <div class="warning">Real op-amps cannot produce arbitrary output voltage. Supply rails, input common-mode range, output swing, gain-bandwidth, slew rate, load current, offset, and stability all limit actual behavior.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Comparator Simulator</h2>
+      <p class="lead">See the basic idea of an analog comparator: it decides which input voltage is higher.</p>
+      <div class="grid three">
+        <div class="field"><label for="compPlus">Non-inverting input V+ (V)</label><input id="compPlus" type="number" step="any" value="3"></div>
+        <div class="field"><label for="compMinus">Inverting input V− (V)</label><input id="compMinus" type="number" step="any" value="2.5"></div>
+        <div class="field"><label for="compSupply">Logic / output supply example (V)</label><input id="compSupply" type="number" min="0" step="any" value="5"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Comparison</small><strong id="compRelation">—</strong></div>
+        <div class="result"><small>Idealized output state</small><strong id="compState">—</strong></div>
+        <div class="result"><small>Idealized output level</small><strong id="compOut">—</strong></div>
+      </div>
+      <div id="compStatus" class="status">Enter comparator input voltages.</div>
+      <p class="note">Real comparators may have open-collector/open-drain outputs, input common-mode limits, propagation delay, hysteresis, output saturation, and specific supply requirements.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Linear Voltage Regulator Power & Heat</h2>
+      <p class="lead">Estimate the power a linear regulator must dissipate and a simple junction-temperature rise.</p>
+      <div class="grid four">
+        <div class="field"><label for="regVin">Input voltage (V)</label><input id="regVin" type="number" min="0" step="any" value="12"></div>
+        <div class="field"><label for="regVout">Output voltage (V)</label><input id="regVout" type="number" min="0" step="any" value="5"></div>
+        <div class="field"><label for="regCurrent">Load current (A)</label><input id="regCurrent" type="number" min="0" step="any" value="0.2"></div>
+        <div class="field"><label for="regTheta">Thermal resistance θJA (°C/W)</label><input id="regTheta" type="number" min="0" step="any" value="50"></div>
+        <div class="field"><label for="regAmbient">Ambient temperature (°C)</label><input id="regAmbient" type="number" step="any" value="25"></div>
+        <div class="field"><label for="regMax">Maximum junction temperature (°C)</label><input id="regMax" type="number" step="any" value="125"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Regulator dissipation</small><strong id="regLoss">—</strong></div>
+        <div class="result"><small>Load output power</small><strong id="regLoadPower">—</strong></div>
+        <div class="result"><small>Approx. efficiency</small><strong id="regEfficiency">—</strong></div>
+        <div class="result"><small>Estimated junction temperature</small><strong id="regJunction">—</strong></div>
+      </div>
+      <div id="regStatus" class="status">Enter regulator values.</div>
+      <div id="regFormula" class="formula">Preg ≈ (Vin − Vout) × Iload.</div>
+      <p class="note">This assumes a linear regulator and ignores quiescent current. Dropout voltage, package thermal performance, PCB copper area, heatsinking, airflow, current limit, and transient conditions must be checked in the exact regulator datasheet.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Power Pins & Decoupling Basics</h2>
+      <p class="lead">ICs usually work best when their supply pins see a clean, low-impedance local source of energy.</p>
+      <div class="comparison-grid">
+        <div class="comparison-card">
+          <h3>Power Pins</h3>
+          <ul>
+            <li>Names may include VCC, VDD, VS, AVDD, DVDD, VEE, VSS, GND, or others.</li>
+            <li>Some ICs use multiple supply voltages or separate analog and digital supplies.</li>
+            <li>Never assume a standard pin number for power and ground across unrelated ICs.</li>
+            <li>Check absolute maximum ratings and recommended operating conditions.</li>
+          </ul>
+        </div>
+        <div class="comparison-card">
+          <h3>Decoupling / Bypass Capacitors</h3>
+          <ul>
+            <li>A small ceramic capacitor close to the supply pin is very common.</li>
+            <li>0.1 µF is a common example, but the datasheet recommendation takes priority.</li>
+            <li>Larger bulk capacitance may also be used nearby for slower current changes.</li>
+            <li>Placement, grounding, trace inductance, and frequency behavior matter.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="warning">Do not copy a generic capacitor value blindly into every design. High-speed, RF, ADC/DAC, regulator, and mixed-signal ICs can have very specific decoupling and layout requirements.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Package & Marking Guide</h2>
+      <p class="lead">The same IC function can appear in many different physical packages.</p>
+      <div class="type-grid">
+        <div class="type-card"><strong>DIP</strong><small>Through-hole dual-inline package, common in education, prototyping, and older equipment.</small><span class="badge">Through-hole</span></div>
+        <div class="type-card"><strong>SOIC / SOP</strong><small>Surface-mount packages with gull-wing leads on two sides.</small><span class="badge">Surface mount</span></div>
+        <div class="type-card"><strong>TSSOP / SSOP</strong><small>Smaller-pitch leaded packages used when board space matters.</small><span class="badge">Fine pitch</span></div>
+        <div class="type-card"><strong>QFP</strong><small>Leads on four sides, common for microcontrollers and digital ICs.</small><span class="badge">Many pins</span></div>
+        <div class="type-card"><strong>QFN / DFN</strong><small>Leadless surface-mount packages with pads underneath or around the perimeter.</small><span class="badge">Compact</span></div>
+        <div class="type-card"><strong>BGA</strong><small>Solder balls underneath the package provide very high pin counts and compact routing.</small><span class="badge">High density</span></div>
+      </div>
+      <div class="formula">Part markings can be abbreviated. Manufacturer logo, top-mark code, lot/date code, and package code may all appear. Use the full part number and package information whenever possible.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Common Integrated Circuit Families</h2>
+      <p class="lead">ICs cover a huge range of functions. These are some of the most useful groups to recognize.</p>
+      <div class="type-grid">
+        <div class="type-card"><strong>Op-Amps</strong><small>Analog amplifiers used for gain, filtering, buffering, sensing, and signal conditioning.</small><span class="badge">Analog</span></div>
+        <div class="type-card"><strong>Comparators</strong><small>Compare two analog voltages and switch an output state.</small><span class="badge">Analog / digital boundary</span></div>
+        <div class="type-card"><strong>555 Timers</strong><small>Classic timing and oscillator IC family used for delays, pulses, and square-wave generation.</small><span class="badge">Timing</span></div>
+        <div class="type-card"><strong>Voltage Regulators</strong><small>Maintain a controlled output voltage. Includes linear regulators and switching-regulator controllers.</small><span class="badge">Power</span></div>
+        <div class="type-card"><strong>Logic ICs</strong><small>Gates, flip-flops, counters, multiplexers, registers, buffers, and many other digital functions.</small><span class="badge">Digital</span></div>
+        <div class="type-card"><strong>ADC / DAC</strong><small>Convert between analog voltages or currents and digital numbers.</small><span class="badge">Mixed signal</span></div>
+        <div class="type-card"><strong>Driver ICs</strong><small>Provide current or voltage drive for motors, MOSFETs, LEDs, relays, displays, and communication lines.</small><span class="badge">Interface</span></div>
+        <div class="type-card"><strong>Sensor ICs</strong><small>Measure temperature, acceleration, magnetic field, pressure, light, current, and more.</small><span class="badge">Sensing</span></div>
+        <div class="type-card"><strong>Audio Amplifier ICs</strong><small>Provide integrated small-signal or power amplification for speakers and headphones.</small><span class="badge">Audio</span></div>
+        <div class="type-card"><strong>Microcontrollers</strong><small>Programmable ICs containing a CPU, memory, timers, and input/output peripherals.</small><span class="badge">Programmable</span></div>
+        <div class="type-card"><strong>Memory ICs</strong><small>RAM, EEPROM, flash, and other devices store digital information.</small><span class="badge">Storage</span></div>
+        <div class="type-card"><strong>Communication ICs</strong><small>Handle interfaces such as UART, USB, Ethernet, CAN, RS-485, wireless, and many others.</small><span class="badge">Connectivity</span></div>
+      </div>
+      <div class="warning">Similar-looking ICs are not automatically interchangeable. Verify supply voltage, logic levels, pinout, package, speed, current capability, thermal limits, and all relevant datasheet conditions.</div>
+    </section>
+  </main>
+
+  <footer>A DONCO-BAYCITY™ App</footer>
+
+  <script>
+    function fmt(n,d=3){
+      if(!Number.isFinite(n))return "—";
+      return n.toLocaleString(undefined,{maximumFractionDigits:d});
+    }
+    function formatTime(s){
+      if(s>=1)return fmt(s,4)+" s";
+      if(s>=.001)return fmt(s*1000,4)+" ms";
+      if(s>=.000001)return fmt(s*1e6,4)+" µs";
+      return fmt(s*1e9,4)+" ns";
+    }
+    function formatFreq(hz){
+      if(hz>=1e6)return fmt(hz/1e6,4)+" MHz";
+      if(hz>=1e3)return fmt(hz/1e3,4)+" kHz";
+      return fmt(hz,4)+" Hz";
+    }
+    function formatPower(w){
+      const a=Math.abs(w);
+      if(a>=1000)return fmt(w/1000,3)+" kW";
+      if(a>=1)return fmt(w,3)+" W";
+      if(a>=.001)return fmt(w*1000,3)+" mW";
+      return fmt(w*1e6,3)+" µW";
+    }
+    function formatV(v){
+      const a=Math.abs(v);
+      if(a>=1)return fmt(v,4)+" V";
+      if(a>=.001)return fmt(v*1000,4)+" mV";
+      return fmt(v*1e6,4)+" µV";
+    }
+
+    function updateDip(){
+      const count=Number(document.getElementById("dipCount").value);
+      const half=count/2;
+      const left=document.getElementById("leftPins");
+      const right=document.getElementById("rightPins");
+      left.innerHTML="";
+      right.innerHTML="";
+      for(let i=1;i<=half;i++){
+        const row=document.createElement("div");
+        row.className="dip-pin";
+        row.innerHTML='<span class="pin-leg"></span><span class="dip-number">'+i+'</span>';
+        left.appendChild(row);
+      }
+      for(let i=count;i>half;i--){
+        const row=document.createElement("div");
+        row.className="dip-pin";
+        row.innerHTML='<span class="dip-number">'+i+'</span><span class="pin-leg"></span>';
+        right.appendChild(row);
+      }
+      document.getElementById("dipSummary").textContent=
+        count+"-pin DIP: pins 1–"+half+" run down the left side, then pins "+(half+1)+"–"+count+" run up the right side when viewed from the top.";
+    }
+    document.getElementById("dipCount").addEventListener("change",updateDip);
+
+    function updateTimer(){
+      const mode=document.getElementById("timerMode").value;
+      const r1=Math.max(1e-9,Number(document.getElementById("timerR1").value)||1e-9)*1000;
+      const r2=Math.max(1e-9,Number(document.getElementById("timerR2").value)||1e-9)*1000;
+      const c=Math.max(1e-15,Number(document.getElementById("timerC").value)||1e-15)*1e-6;
+      if(mode==="astable"){
+        const high=.693*(r1+r2)*c;
+        const low=.693*r2*c;
+        const period=high+low;
+        const f=1/period;
+        const duty=high/period*100;
+        document.getElementById("timerResult1Label").textContent="Frequency";
+        document.getElementById("timerResult2Label").textContent="High time";
+        document.getElementById("timerResult3Label").textContent="Low time";
+        document.getElementById("timerResult4Label").textContent="Duty cycle";
+        document.getElementById("timerResult1").textContent=formatFreq(f);
+        document.getElementById("timerResult2").textContent=formatTime(high);
+        document.getElementById("timerResult3").textContent=formatTime(low);
+        document.getElementById("timerResult4").textContent=fmt(duty,2)+"%";
+        document.getElementById("timerFormula").textContent=
+          "Astable: high ≈ 0.693(R1 + R2)C, low ≈ 0.693R2C, f ≈ "+formatFreq(f)+".";
+      }else{
+        const pulse=1.1*r1*c;
+        document.getElementById("timerResult1Label").textContent="Pulse width";
+        document.getElementById("timerResult2Label").textContent="R used";
+        document.getElementById("timerResult3Label").textContent="C used";
+        document.getElementById("timerResult4Label").textContent="Mode";
+        document.getElementById("timerResult1").textContent=formatTime(pulse);
+        document.getElementById("timerResult2").textContent=fmt(r1/1000,3)+" kΩ";
+        document.getElementById("timerResult3").textContent=fmt(c*1e6,6)+" µF";
+        document.getElementById("timerResult4").textContent="One-shot";
+        document.getElementById("timerFormula").textContent=
+          "Monostable: pulse width ≈ 1.1 × R1 × C = "+formatTime(pulse)+". R2 is not used in this simplified mode.";
+      }
+    }
+    ["timerMode","timerR1","timerR2","timerC"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateTimer);el.addEventListener("change",updateTimer);
+    });
+
+    function updateOpAmp(){
+      const mode=document.getElementById("opMode").value;
+      const rin=Math.max(1e-12,Number(document.getElementById("opRin").value)||1e-12)*1000;
+      const rf=Math.max(0,Number(document.getElementById("opRf").value)||0)*1000;
+      const vin=Number(document.getElementById("opVin").value)||0;
+      let gain,vout,polarity;
+      if(mode==="inv"){
+        gain=-(rf/rin);
+        vout=gain*vin;
+        polarity="Inverted";
+        document.getElementById("opFormula").textContent=
+          "Inverting gain = −Rf ÷ Rin = "+fmt(gain,4)+". Ideal Vout = "+formatV(vout)+".";
+      }else{
+        gain=1+(rf/rin);
+        vout=gain*vin;
+        polarity="Same polarity";
+        document.getElementById("opFormula").textContent=
+          "Non-inverting gain = 1 + Rf ÷ Rg = "+fmt(gain,4)+". Ideal Vout = "+formatV(vout)+".";
+      }
+      document.getElementById("opGain").textContent=fmt(gain,4);
+      document.getElementById("opVout").textContent=formatV(vout);
+      document.getElementById("opPolarity").textContent=polarity;
+    }
+    ["opMode","opRin","opRf","opVin"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateOpAmp);el.addEventListener("change",updateOpAmp);
+    });
+
+    function updateComparator(){
+      const plus=Number(document.getElementById("compPlus").value)||0;
+      const minus=Number(document.getElementById("compMinus").value)||0;
+      const supply=Math.max(0,Number(document.getElementById("compSupply").value)||0);
+      let relation,state,out,statusClass,statusText;
+      if(Math.abs(plus-minus)<1e-12){
+        relation="V+ = V−";state="At threshold";out="Indeterminate";
+        statusClass="warn";statusText="The inputs are essentially equal in this ideal model. Tiny offsets, noise, or hysteresis determine the real output.";
+      }else if(plus>minus){
+        relation="V+ > V−";state="HIGH";out=formatV(supply);
+        statusClass="good";statusText="The non-inverting input is higher, so the idealized comparator output is HIGH.";
+      }else{
+        relation="V+ < V−";state="LOW";out="0 V";
+        statusClass="";statusText="The inverting input is higher, so the idealized comparator output is LOW.";
+      }
+      document.getElementById("compRelation").textContent=relation;
+      document.getElementById("compState").textContent=state;
+      document.getElementById("compOut").textContent=out;
+      const status=document.getElementById("compStatus");
+      status.className="status "+statusClass;status.textContent=statusText;
+    }
+    ["compPlus","compMinus","compSupply"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateComparator);el.addEventListener("change",updateComparator);
+    });
+
+    function updateRegulator(){
+      const vin=Math.max(0,Number(document.getElementById("regVin").value)||0);
+      const vout=Math.max(0,Number(document.getElementById("regVout").value)||0);
+      const current=Math.max(0,Number(document.getElementById("regCurrent").value)||0);
+      const theta=Math.max(0,Number(document.getElementById("regTheta").value)||0);
+      const ambient=Number(document.getElementById("regAmbient").value)||0;
+      const maxT=Number(document.getElementById("regMax").value)||0;
+      const loss=Math.max(0,vin-vout)*current;
+      const loadPower=vout*current;
+      const inputPower=vin*current;
+      const eff=inputPower>0?loadPower/inputPower*100:0;
+      const tj=ambient+loss*theta;
+      document.getElementById("regLoss").textContent=formatPower(loss);
+      document.getElementById("regLoadPower").textContent=formatPower(loadPower);
+      document.getElementById("regEfficiency").textContent=fmt(eff,2)+"%";
+      document.getElementById("regJunction").textContent=fmt(tj,2)+" °C";
+      document.getElementById("regFormula").textContent=
+        "Preg ≈ ("+formatV(vin)+" − "+formatV(vout)+") × "+fmt(current,4)+" A = "+formatPower(loss)+".";
+      const status=document.getElementById("regStatus");
+      status.className="status";
+      if(vout>vin){
+        status.classList.add("high");status.textContent="A basic linear regulator cannot produce an output voltage above its input.";
+      }else if(tj>=maxT){
+        status.classList.add("high");status.textContent="The simple thermal estimate reaches or exceeds the entered maximum junction temperature.";
+      }else if(maxT-tj<20){
+        status.classList.add("warn");status.textContent="The estimated junction temperature is within 20 °C of the entered maximum. Check package and thermal conditions carefully.";
+      }else{
+        status.classList.add("good");status.textContent="The simplified estimate is below the entered maximum junction temperature.";
+      }
+    }
+    ["regVin","regVout","regCurrent","regTheta","regAmbient","regMax"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateRegulator);el.addEventListener("change",updateRegulator);
+    });
+
+    updateDip();
+    updateTimer();
+    updateOpAmp();
+    updateComparator();
+    updateRegulator();
+  </script>
+</body>
+</html>
