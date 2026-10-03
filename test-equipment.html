@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>Test Equipment Explorer</title>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input,select,button{font:inherit}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff}.result{margin-top:12px;background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+.meter{max-width:430px;margin:auto;background:#2f3944;border:8px solid #171d22;border-radius:24px;padding:18px;color:#fff}.display{background:#b9c987;color:#17210f;border:4px inset #7d8a60;border-radius:8px;padding:18px;font-family:monospace;font-size:34px;text-align:right;min-height:78px}.dial{margin:18px auto;width:150px;height:150px;border-radius:50%;background:#596773;border:12px solid #111820;display:grid;place-items:center;font-weight:900}.probe-row{display:flex;justify-content:space-between;gap:10px}.probe{flex:1;padding:10px;border-radius:10px;text-align:center;font-weight:800}.red{background:#b42318}.black{background:#111820}
+.scope{background:#06182a;border-radius:16px;padding:12px}.scope svg{display:block;width:100%;height:auto}.btn{min-height:42px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1>Test Equipment Explorer</h1><p>Multimeters, clamp meters, oscilloscopes, continuity and diode testing, insulation resistance, logic probes, and safe measurement concepts.</p></header>
+<main>
+<nav class="nav">
+<a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="vacuum-tubes.html">Vacuum Tubes</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a href="motors-controls.html">Motors & Controls</a><a href="generators-alternators.html">Generators & Alternators</a><a href="solar-power-electronics.html">Solar Power Electronics</a><a href="sensors-switches.html">Sensors & Switches</a><a href="fiber-optics.html">Fiber Optics</a><a href="power-electronics-modules.html">Power Electronics & Modules</a><a href="solid-state-switching.html">Solid-State Switching</a><a class="active" href="test-equipment.html">Test Equipment</a><a href="processors.html">Processors</a>
+</nav>
+
+<section class="panel">
+<h2>Beginner Start Here</h2>
+<div class="grid three">
+<div class="card"><strong>Digital Multimeter</strong><p>Measures voltage, resistance, continuity, and often current, diode drop, capacitance, frequency, and temperature.</p><span class="badge">General-purpose</span></div>
+<div class="card"><strong>Clamp Meter</strong><p>Measures current by sensing the magnetic field around a conductor, usually without opening the circuit.</p><span class="badge">Current measurement</span></div>
+<div class="card"><strong>Oscilloscope</strong><p>Displays voltage versus time so you can see waveform shape, frequency, amplitude, noise, and timing.</p><span class="badge">Waveforms</span></div>
+<div class="card"><strong>Megohmmeter</strong><p>Applies a higher test voltage to measure insulation resistance in megohms or gigohms.</p><span class="badge">Insulation testing</span></div>
+<div class="card"><strong>Logic Probe</strong><p>Shows digital HIGH, LOW, and sometimes pulse activity in logic circuits.</p><span class="badge">Digital troubleshooting</span></div>
+<div class="card"><strong>Continuity Tester</strong><p>Indicates whether a low-resistance electrical path exists between two points.</p><span class="badge">Open/closed path</span></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Virtual Multimeter</h2>
+<p class="lead">Choose a meter function and a simulated circuit condition.</p>
+<div class="grid two">
+<div class="meter">
+<div id="meterDisplay" class="display">0.000 V</div>
+<div class="dial" id="dialLabel">DC V</div>
+<div class="probe-row"><div class="probe black">COM</div><div class="probe red">V Ω</div></div>
+</div>
+<div>
+<div class="field"><label>Meter function</label><select id="meterMode"><option value="dcv">DC volts</option><option value="acv">AC volts</option><option value="ohms">Resistance</option><option value="continuity">Continuity</option><option value="diode">Diode test</option></select></div>
+<div class="field" style="margin-top:10px"><label>Simulated condition</label><select id="meterCase"></select></div>
+<div id="meterExplain" class="result"></div>
+<div class="formula">Voltage is measured across two points. Current is measured through a circuit path. Resistance/continuity testing is normally done on de-energized circuits.</div>
+</div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Oscilloscope Explorer</h2>
+<div class="grid two">
+<div class="scope">
+<svg viewBox="0 0 700 300">
+<defs><pattern id="grid" width="35" height="30" patternUnits="userSpaceOnUse"><path d="M35 0H0V30" fill="none" stroke="#17334e" stroke-width="1"/></pattern></defs>
+<rect width="700" height="300" fill="url(#grid)"/><line x1="0" y1="150" x2="700" y2="150" stroke="#365a7a"/>
+<path id="scopeWave" d="" fill="none" stroke="#ffd43b" stroke-width="5"/>
+</svg>
+</div>
+<div>
+<div class="field"><label>Waveform</label><select id="waveType"><option value="sine">Sine wave</option><option value="square">Square wave</option><option value="triangle">Triangle wave</option></select></div>
+<div class="field" style="margin-top:10px"><label>Frequency (Hz)</label><input id="scopeFreq" type="number" value="60" min="0.1" step="any"></div>
+<div class="field" style="margin-top:10px"><label>Peak amplitude (V)</label><input id="scopeAmp" type="number" value="5" min="0" step="any"></div>
+<div id="scopeReadout" class="result"></div>
+</div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Clamp Meter Concepts</h2>
+<div class="grid two">
+<div class="card"><strong>Clamp one conductor</strong><p>For ordinary current measurement, the clamp surrounds one current-carrying conductor so its magnetic field can be measured.</p></div>
+<div class="card"><strong>Do not clamp the whole cord</strong><p>If equal current flows out and back through conductors inside the same clamp, their magnetic fields largely cancel.</p></div>
+<div class="card"><strong>AC clamp meters</strong><p>Traditional transformer-style clamps measure AC current. Many modern meters also measure DC using Hall-effect sensing.</p></div>
+<div class="card"><strong>Inrush mode</strong><p>Some clamp meters capture short starting-current events from motors, transformers, and other loads.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Continuity & Diode Test</h2>
+<table><thead><tr><th>Mode</th><th>What it tells you</th></tr></thead><tbody>
+<tr><td>Continuity</td><td>Checks for a low-resistance path. Many meters beep below a manufacturer-defined threshold.</td></tr>
+<tr><td>Resistance</td><td>Measures opposition to DC test current from the meter.</td></tr>
+<tr><td>Diode test</td><td>Applies a small current and displays forward voltage drop when the semiconductor junction conducts.</td></tr>
+<tr><td>Open circuit</td><td>Meter may show OL, over-range, or a very large resistance value.</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>Insulation Resistance Testing</h2>
+<div class="grid two">
+<div class="card"><strong>Megohmmeter</strong><p>Applies a specified DC test voltage and measures very high resistance through insulation.</p></div>
+<div class="card"><strong>Why ordinary ohms mode differs</strong><p>A normal multimeter uses a much lower test voltage and cannot stress insulation the same way.</p></div>
+</div>
+<div class="warning">Insulation testers can generate hundreds or thousands of volts. Equipment must be isolated, discharged, and tested according to manufacturer and safety procedures. Sensitive electronics can be damaged if they are left connected.</div>
+</section>
+
+<section class="panel">
+<h2>Logic Probe Basics</h2>
+<div class="grid three">
+<div class="card"><strong>LOW</strong><p>Input voltage falls within the probe's recognized low logic range.</p></div>
+<div class="card"><strong>HIGH</strong><p>Input voltage falls within the recognized high logic range.</p></div>
+<div class="card"><strong>Pulse</strong><p>The signal is changing too quickly to interpret as a steady high or low with a simple indicator.</p></div>
+</div>
+<p class="note">Logic thresholds depend on the logic family and supply voltage. TTL, CMOS, and modern low-voltage logic families do not all use the same thresholds.</p>
+</section>
+
+<section class="panel">
+<h2>Common Measurement Mistakes</h2>
+<table><thead><tr><th>Mistake</th><th>Why it matters</th></tr></thead><tbody>
+<tr><td>Current lead left in amp jack</td><td>Trying to measure voltage with the lead still in a current input can create a short circuit.</td></tr>
+<tr><td>Resistance test on energized circuit</td><td>Can damage the meter and produce meaningless readings.</td></tr>
+<tr><td>Wrong CAT rating</td><td>Meter category and voltage ratings must be appropriate for the measurement environment and transient energy.</td></tr>
+<tr><td>Unfused or improperly fused current input</td><td>Can make a current-measurement mistake much more dangerous.</td></tr>
+<tr><td>Scope ground clip on the wrong point</td><td>Bench oscilloscopes often have earth-referenced grounds; incorrect connection can short a circuit to earth.</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>Measurement Safety</h2>
+<div class="warning">Use test equipment rated for the circuit and environment. Inspect leads and probes, use the correct meter jacks and function, de-energize whenever practical, and verify absence of voltage with an appropriate procedure. For mains or high-energy systems, measurement technique, PPE, instrument category rating, and applicable safe-work procedures are critical.</div>
+</section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+<script>
+const cases={
+ dcv:[["12 V battery","12.60 V","A healthy 12 V battery at rest may read around this value depending on chemistry and state of charge."],["5 V supply","5.02 V","A regulated low-voltage DC supply."],["Open lead","0.000 V","No simulated potential difference between the selected points."]],
+ acv:[["120 V AC source","120.0 V","Typical nominal North American branch-circuit voltage."],["24 V control transformer","24.2 V","Typical low-voltage control AC example."],["No source","0.0 V","No AC voltage present in this simulation."]],
+ ohms:[["1 kΩ resistor","1.002 kΩ","Measured resistance is close to nominal value."],["Closed switch","0.3 Ω","Very low resistance path."],["Open circuit","OL","No conducting path in this simulation."]],
+ continuity:[["Closed wire","BEEP","Low-resistance path detected."],["Open switch","OL","No continuity."],["Long wire","1.2 Ω","Continuity exists with some resistance."]],
+ diode:[["Silicon diode forward","0.672 V","Typical forward drop for a silicon junction at the meter's test current."],["LED forward","1.91 V","A red LED may show a higher forward drop than a silicon diode."],["Reverse direction","OL","The junction is not conducting in this direction at the test voltage."]]
+};
+function loadMeterCases(){meterCase.innerHTML="";cases[meterMode.value].forEach((x,i)=>{const o=document.createElement("option");o.value=i;o.textContent=x[0];meterCase.appendChild(o)});drawMeter()}
+function drawMeter(){const x=cases[meterMode.value][+meterCase.value||0];meterDisplay.textContent=x[1];dialLabel.textContent={dcv:"DC V",acv:"AC V",ohms:"Ω",continuity:"BEEP",diode:"DIODE"}[meterMode.value];meterExplain.textContent=x[2]}
+meterMode.onchange=loadMeterCases;meterCase.onchange=drawMeter;loadMeterCases();
+
+function drawScope(){
+ const type=waveType.value,f=+scopeFreq.value,a=+scopeAmp.value;let d="";
+ for(let x=0;x<=700;x+=4){const phase=x/700*Math.PI*4;let yv=0;if(type==="sine")yv=Math.sin(phase);else if(type==="square")yv=Math.sin(phase)>=0?1:-1;else yv=2/Math.PI*Math.asin(Math.sin(phase));const y=150-yv*90;d+=(x===0?"M":" L")+x+" "+y.toFixed(1)}
+ scopeWave.setAttribute("d",d);const period=1000/f;scopeReadout.textContent="Frequency: "+f.toFixed(2)+" Hz · Period: "+period.toFixed(3)+" ms · Peak-to-peak: "+(2*a).toFixed(2)+" V";
+}
+[waveType,scopeFreq,scopeAmp].forEach(x=>x.addEventListener("input",drawScope));drawScope();
+</script>
+</body>
+</html>
