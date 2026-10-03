@@ -628,3 +628,16 @@ A DONCO-BAYCITY™ App
 - Live frequency, period, peak-to-peak, and cycles-on-screen readouts
 - Preset learning examples and a quick frequency/period check
 - Linked from Home/search, Test Equipment, and Circuit Lab
+
+
+## In-Page Search, Motor Starter & Package Recognition
+- Shared Find on This Page tool added to lesson pages
+- Searches section text and jumps directly to the matching lesson section
+- Motor Starter Trainer added
+- Three-wire Start/Stop control explanation
+- Seal-in auxiliary contact, overload contact, contactor coil, and conceptual three-phase main contacts
+- Fault challenges with simulated control-voltage measurements
+- Added to Motors & Industrial Controls guided course and Continue Learning
+- Component Pictures & Identifiers expanded with common package-shape recognition
+- Package examples include axial, radial electrolytic, ceramic disc, TO-92, TO-220, DIP, SMD chip, cube relay, DIN contactor, terminal block, M12-style sensor, and cartridge fuse
+- Added marking guide for part numbers, ratings, terminal labels, polarity marks, reference designators, and package limitations
