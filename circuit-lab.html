@@ -18,6 +18,11 @@ main{max-width:1140px;margin:auto;padding:18px}
 h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
 h3{color:var(--navy)}
 .lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.instructions{background:#fffbed;border:1px solid #e5c94a;border-radius:16px;padding:16px;margin-bottom:16px}
+.instructions h2{margin-bottom:10px}
+.instructions ol{margin:0;padding-left:22px;line-height:1.6}
+.instructions li{margin-bottom:5px}
+.instructions .tip{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:10px;padding:10px 12px;font-weight:800;color:var(--navy)}
 .controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px}
 input,select,button{font:inherit}
@@ -63,6 +68,19 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <header><h1>Circuit Lab</h1><p>Build series and parallel low-voltage DC circuits and measure them with virtual instruments.</p></header>
 <main>
 <nav class="nav"><a href="index.html">← Home</a><a href="electrical-calculator.html">Electrical Calculator</a><a href="glossary.html">Glossary</a></nav>
+
+<section class="instructions">
+<h2>How to Use Circuit Lab</h2>
+<ol>
+<li><strong>Choose a voltage</strong> — 12 V is a good place to start.</li>
+<li><strong>Add components</strong> — tap Switch, Resistor, Lamp, LED, Motor, Fuse, or Ammeter.</li>
+<li><strong>Tap a component to edit it</strong> — change resistance, ratings, or open/close a switch.</li>
+<li><strong>Watch the live readings</strong> — current, resistance, power, and voltage drops update automatically.</li>
+<li><strong>Use the voltmeter</strong> — choose the red or black probe, then tap circuit nodes to move it.</li>
+<li><strong>Try the Parallel Branch Lab</strong> — turn branches on and off and watch the branch currents add together.</li>
+</ol>
+<div class="tip">Tip: Start with the <strong>Series Lamp Demo</strong> or <strong>Parallel Lamp Demo</strong> to see a working circuit before building your own.</div>
+</section>
 
 <section class="panel">
 <h2>Power Source</h2>
