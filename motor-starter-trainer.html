@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Motor Starter Trainer</title>
+<link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.94}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1120px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.start{background:#fffbed;border:1px solid #e5c94a;border-radius:16px;padding:16px;margin-bottom:16px}.start ol{margin:0;padding-left:22px;line-height:1.6}.start li{margin-bottom:5px}
+.schem-wrap{overflow-x:auto}.schematic{width:100%;min-width:850px;height:470px;background:#fff;border:1px solid #d9e2ea;border-radius:14px}.wire{stroke:#586f80;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}.wire.live{stroke:#f3a900;filter:drop-shadow(0 0 3px rgba(243,169,0,.5))}.thin{stroke:#071a2e;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}.thin.bad{stroke:#b42318}.label{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}.small{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#62707d}
+.controls{display:flex;gap:9px;flex-wrap:wrap}.btn{min-height:44px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.btn.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}.btn.good{background:#eaf7ef;border-color:#9ed0b3}
+.states{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.state{border:1px solid var(--border);border-radius:12px;padding:11px;background:#f8fbff}.state strong{display:block;color:var(--navy);font-size:17px}.state.on{background:#eaf7ef;border-color:#9ed0b3}.state.off{background:#fdecea;border-color:#e4aaa5}.meter-grid{display:grid;grid-template-columns:1fr 1fr 140px;gap:10px;align-items:end}.field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px}select{width:100%;min-height:44px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}.meter{background:#263241;color:#fff;border-radius:14px;padding:14px;text-align:center}.meter strong{display:block;background:#d7f6d1;color:#143a16;border-radius:9px;padding:12px;font:900 28px monospace}
+.result{margin-top:12px;background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.result.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}.result.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}.faults{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+@media(max-width:800px){.states{grid-template-columns:repeat(2,minmax(0,1fr))}.meter-grid,.faults{grid-template-columns:1fr}}footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+</style>
+</head>
+<body>
+<header><h1>Motor Starter Trainer</h1><p>Learn a basic three-wire Start/Stop starter, then diagnose faults with measurements.</p></header>
+<main>
+<nav class="nav"><a href="index.html">← Home</a><a href="motors-controls.html">Motors & Controls</a><a href="relay-contactor-simulator.html">Relay Simulator</a><a href="troubleshooting-trainer.html">Troubleshooting Trainer</a></nav>
+
+<section class="start"><h2>Beginner Start Here</h2><ol>
+<li><strong>STOP is normally closed.</strong> It passes control power until pressed.</li>
+<li><strong>START is normally open.</strong> Pressing it energizes starter coil M.</li>
+<li><strong>M auxiliary NO closes.</strong> It bypasses the released Start button and “seals in” the coil.</li>
+<li><strong>Overload OL is normally closed.</strong> If it trips, the coil drops out.</li>
+<li><strong>M main contacts</strong> switch the motor power circuit.</li>
+</ol></section>
+
+<section class="panel">
+<h2>Starter Schematic</h2>
+<p class="lead">The upper line is a simplified 24 V DC control circuit. The lower drawing represents the three-phase power path conceptually.</p>
+<div class="schem-wrap"><svg class="schematic" viewBox="0 0 920 470">
+<text class="label" x="36" y="42">24 V CONTROL</text>
+<path id="c1" class="wire" d="M65 90H145"/><path id="c2" class="wire" d="M205 90H285"/><path id="c3" class="wire" d="M345 90H435"/><path id="c4" class="wire" d="M495 90H590"/><path id="c5" class="wire" d="M685 90H835V205H65V90"/>
+<circle cx="147" cy="90" r="4" fill="#071a2e"/><circle cx="203" cy="90" r="4" fill="#071a2e"/><path id="stopSym" class="thin" d="M151 90H199"/><text class="small" x="150" y="66">STOP NC</text>
+<circle cx="287" cy="90" r="4" fill="#071a2e"/><circle cx="343" cy="90" r="4" fill="#071a2e"/><path id="startSym" class="thin" d="M291 90L339 68"/><text class="small" x="291" y="66">START NO</text>
+<path class="wire" d="M285 90V155H345V90"/><circle cx="296" cy="155" r="4" fill="#071a2e"/><circle cx="334" cy="155" r="4" fill="#071a2e"/><path id="auxSym" class="thin" d="M300 155L330 137"/><text class="small" x="276" y="180">M AUX NO</text>
+<circle cx="437" cy="90" r="4" fill="#071a2e"/><circle cx="493" cy="90" r="4" fill="#071a2e"/><path id="olSym" class="thin" d="M441 90H489"/><text class="small" x="449" y="66">OL NC</text>
+<path id="coilSym" class="thin" d="M595 90c0-26 18-26 18 0 0-26 18-26 18 0 0-26 18-26 18 0 0-26 18-26 18 0"/><text class="small" x="613" y="135">M COIL</text>
+<text class="small" x="56" y="226">0 V return</text>
+
+<text class="label" x="36" y="275">THREE-PHASE POWER (conceptual)</text>
+<text class="small" x="70" y="315">L1</text><text class="small" x="70" y="355">L2</text><text class="small" x="70" y="395">L3</text>
+<path id="p1a" class="wire" d="M95 310H285"/><path id="p1b" class="wire" d="M345 310H720"/>
+<path id="p2a" class="wire" d="M95 350H285"/><path id="p2b" class="wire" d="M345 350H720"/>
+<path id="p3a" class="wire" d="M95 390H285"/><path id="p3b" class="wire" d="M345 390H720"/>
+<circle cx="287" cy="310" r="4" fill="#071a2e"/><circle cx="343" cy="310" r="4" fill="#071a2e"/><path id="m1" class="thin" d="M291 310L339 288"/>
+<circle cx="287" cy="350" r="4" fill="#071a2e"/><circle cx="343" cy="350" r="4" fill="#071a2e"/><path id="m2" class="thin" d="M291 350L339 328"/>
+<circle cx="287" cy="390" r="4" fill="#071a2e"/><circle cx="343" cy="390" r="4" fill="#071a2e"/><path id="m3" class="thin" d="M291 390L339 368"/>
+<text class="small" x="282" y="425">M main contacts</text>
+<circle cx="770" cy="350" r="50" class="thin"/><text class="label" x="753" y="358" style="font-size:30px">M</text><text class="small" x="743" y="420">Motor</text>
+<path class="wire" d="M720 310H745M720 350H720M720 390H745"/><path class="wire" d="M745 310V325M745 390V375"/>
+</svg></div>
+<div class="controls"><button id="startBtn" class="btn primary">Press START</button><button id="stopBtn" class="btn">Press STOP</button><button id="tripBtn" class="btn bad">Trip Overload</button><button id="resetBtn" class="btn">Reset Overload</button><button id="newFault" class="btn">New Fault Challenge</button></div>
+</section>
+
+<section class="panel"><h2>Live Starter States</h2><div class="states">
+<div id="coilState" class="state"><strong>M Coil</strong><span>Off</span></div>
+<div id="auxState" class="state"><strong>M Aux</strong><span>Open</span></div>
+<div id="mainState" class="state"><strong>Main Contacts</strong><span>Open</span></div>
+<div id="olState" class="state"><strong>Overload</strong><span>Normal</span></div>
+<div id="motorState" class="state"><strong>Motor</strong><span>Stopped</span></div>
+</div><div id="stateExplain" class="result">Press START to run the starter.</div></section>
+
+<section class="panel"><h2>Fault Challenge Meter</h2><p class="lead">When a fault challenge is active, measure the control voltage from each point to 0 V. Find where expected voltage disappears.</p>
+<div class="meter-grid"><div class="field"><label for="point">Test Point</label><select id="point"><option value="source">Control source</option><option value="afterStop">After STOP</option><option value="afterStart">After START / seal-in branch</option><option value="afterOL">After overload</option><option value="coil">At M coil</option></select></div><button id="measure" class="btn primary">Measure</button><div class="meter"><strong id="meterRead">0.0 V</strong></div></div>
+<div id="meterHistory" class="note" style="margin-top:10px"></div></section>
+
+<section class="panel"><h2>Diagnose the Fault</h2><div id="faultChoices" class="faults"></div><div id="faultFeedback" class="result">Normal operation mode. Press “New Fault Challenge” when you are ready.</div></section>
+
+<section class="panel"><h2>Safety Note</h2><p class="lead">This is an educational simulation. Real motor starters may control hazardous voltages and moving machinery. Use qualified-person procedures, lockout/tagout where required, manufacturer instructions, and applicable electrical code for real work.</p></section>
+</main><footer>A DONCO-BAYCITY™ App</footer>
+<script>
+const faults=[
+{id:"stop",name:"Open STOP circuit",nodes:{source:24,afterStop:0,afterStart:0,afterOL:0,coil:0}},
+{id:"start",name:"START / seal-in path open",nodes:{source:24,afterStop:24,afterStart:0,afterOL:0,coil:0}},
+{id:"ol",name:"Overload contact open",nodes:{source:24,afterStop:24,afterStart:24,afterOL:0,coil:0}},
+{id:"coil",name:"Open M coil",nodes:{source:24,afterStop:24,afterStart:24,afterOL:24,coil:24}}
+];
+let running=false,overload=false,fault=null,tests=0;
+function energized(){return running&&!overload&&!fault}
+function setState(el,on,onText,offText){el.className="state "+(on?"on":"off");el.querySelector("span").textContent=on?onText:offText}
+function render(){
+ const on=energized();
+ [c1,c2,c3,c4,c5,p1a,p1b,p2a,p2b,p3a,p3b].forEach(x=>x.classList.toggle("live",on));
+ auxSym.setAttribute("d",on?"M300 155H330":"M300 155L330 137");
+ [m1,m2,m3].forEach((x,i)=>x.setAttribute("d",on?("M291 "+(310+i*40)+"H339"):("M291 "+(310+i*40)+"L339 "+(288+i*40))));
+ olSym.setAttribute("d",overload?"M441 90L489 68":"M441 90H489");
+ setState(coilState,on,"Energized","De-energized");setState(auxState,on,"Closed","Open");setState(mainState,on,"Closed","Open");setState(olState,!overload,"Normal / Closed","Tripped / Open");setState(motorState,on,"Running","Stopped");
+ if(fault){stateExplain.className="result bad";stateExplain.textContent="Fault challenge active. The motor will not start. Use the meter to find why."}
+ else if(overload){stateExplain.className="result bad";stateExplain.textContent="Overload is tripped. The NC overload contact is open, so M cannot energize."}
+ else if(on){stateExplain.className="result good";stateExplain.textContent="M is energized. The auxiliary contact seals in the control circuit and the three main contacts feed the motor."}
+ else{stateExplain.className="result";stateExplain.textContent="Starter is ready. Press START to energize M."}
+}
+startBtn.onclick=()=>{if(!overload&&!fault)running=true;render()};stopBtn.onclick=()=>{running=false;render()};tripBtn.onclick=()=>{overload=true;running=false;fault=null;resetChallengeText();render()};resetBtn.onclick=()=>{overload=false;render()};
+function resetChallengeText(){faultChoices.innerHTML="";faultFeedback.className="result";faultFeedback.textContent="Normal operation mode. Press “New Fault Challenge” when you are ready.";meterHistory.textContent="";meterRead.textContent="0.0 V"}
+newFault.onclick=()=>{running=false;overload=false;fault=faults[Math.floor(Math.random()*faults.length)];tests=0;meterHistory.textContent="";meterRead.textContent="0.0 V";faultChoices.innerHTML=faults.map(f=>'<button class="btn" data-fault="'+f.id+'">'+f.name+'</button>').join("");faultChoices.querySelectorAll("button").forEach(b=>b.onclick=()=>guess(b.dataset.fault));faultFeedback.className="result";faultFeedback.textContent="Fault inserted. Take measurements before choosing.";render()};
+measure.onclick=()=>{const v=fault?fault.nodes[point.value]:(energized()?24:(point.value==="source"?24:overload&&["source","afterStop","afterStart"].includes(point.value)?24:0));tests++;meterRead.textContent=v.toFixed(1)+" V";meterHistory.textContent="Test "+tests+": "+point.options[point.selectedIndex].text+" to 0 V = "+v.toFixed(1)+" V · "+meterHistory.textContent};
+function guess(id){if(!fault)return;if(id===fault.id){faultFeedback.className="result good";faultFeedback.textContent="Correct — "+fault.name+". You used "+tests+" measurement"+(tests===1?"":"s")+"."}else{faultFeedback.className="result bad";faultFeedback.textContent="Not quite. Look for the first point where 24 V disappears, then try again."}}
+render();
+</script>
+</body>
+</html>
