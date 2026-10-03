@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Electrical Glossary & A–Z Index</title><style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+input,select,button{font:inherit}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff}.btn{min-height:42px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.btn.good{background:#eaf7ef;border-color:#9ed0b3}
+.result{margin-top:12px;background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}}
+</style>
+<style>
+.alpha{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.alpha button{width:38px;height:38px;border:1px solid #9fc8ef;border-radius:9px;background:#eef7ff;color:var(--navy);font-weight:900;cursor:pointer}.alpha button.active{background:var(--yellow);border-color:#e4ba16}
+.entry{border:1px solid var(--border);border-radius:13px;padding:14px;margin-bottom:10px;background:#fff}.entry h3{margin:0 0 5px;color:var(--navy)}.entry p{margin:0 0 8px;line-height:1.5;color:#33495b}.entry a{text-decoration:none;color:var(--blue);font-weight:800}.count{color:var(--muted);font-weight:700;font-size:13px;margin-top:8px}
+</style></head><body>
+<header><h1>Electrical Glossary & A–Z Index</h1><p>Search terms, learn what they mean, and jump straight to the right Explorer page.</p></header><nav class="nav"><a href="index.html">All Things Electrical</a><a href="glossary.html">Glossary</a><a href="quizzes.html">Quizzes</a><a href="progress.html">My Progress</a></nav>
+<main>
+<section class="panel"><h2>Find a Term</h2><p class="lead">Search by abbreviation, device name, measurement, or concept.</p><input id="gSearch" type="search" placeholder="Try: IGBT, ampacity, SWR, PLC, CT, MPPT..." autocomplete="off"><div class="alpha" id="alpha"></div><div id="gCount" class="count"></div></section>
+<section class="panel"><h2>A–Z Electrical Index</h2><div id="entries"></div></section>
+</main><footer>A DONCO-BAYCITY™ App</footer>
+<script>
+const terms=[
+["AC","Alternating current reverses direction periodically.","electrical-basics.html"],
+["ADC","Analog-to-digital converter turns an analog signal into a digital value.","digital-logic.html"],
+["AFCI","Arc-fault circuit interrupter detects signatures associated with dangerous arcing.","protection-devices.html"],
+["Ampacity","Maximum current a conductor can carry under specified conditions.","wiring-installation.html"],
+["Ampere","Unit of electric current.","electrical-basics.html"],
+["Antenna","Converts RF electrical energy to electromagnetic waves or received waves back to electrical signals.","radio-rf.html"],
+["Autotransformer","Transformer using a shared winding; it changes voltage without galvanic isolation.","advanced-transformers-distribution.html"],
+["AWG","American Wire Gauge system used to describe conductor size.","wiring-installation.html"],
+["Ballast","Controls current and starting conditions in fluorescent or HID lighting.","lighting-lamps.html"],
+["Bonding","Electrically connects conductive parts to maintain continuity and a fault-current path.","grounding-bonding-shielding.html"],
+["Busbar","Low-resistance conductor used as a common high-current connection point.","power-electronics-modules.html"],
+["Capacitance","Ability to store electric charge, measured in farads.","capacitor.html"],
+["Capacitor","Component that stores energy in an electric field.","capacitor.html"],
+["Circuit Breaker","Resettable overcurrent protective device.","protection-devices.html"],
+["Clamp Meter","Meter that senses current from the magnetic field around a conductor.","test-equipment.html"],
+["Comparator","Circuit that changes output according to which input voltage is higher.","op-amps-analog.html"],
+["Contactor","Electrically operated switch designed for frequent control of power loads such as motors.","relays.html"],
+["CT","Current transformer that produces a scaled current for metering or protection.","advanced-transformers-distribution.html"],
+["Current","Rate of electric charge flow, measured in amperes.","electrical-basics.html"],
+["DC","Direct current flows with fixed polarity.","electrical-basics.html"],
+["DC Link","High-power DC bus between conversion stages, often supported by large capacitors.","power-electronics-modules.html"],
+["DIAC","Two-terminal trigger device commonly used with TRIAC phase-control circuits.","solid-state-switching.html"],
+["Diode","Semiconductor junction designed to conduct primarily in one direction.","diodes.html"],
+["DPDT","Double-pole, double-throw switch: two circuits each select between two paths.","sensors-switches.html"],
+["Duty Cycle","Percentage of a repetitive period that a signal remains active.","led-lcd.html"],
+["EMI","Electromagnetic interference: unwanted electrical or RF energy affecting a circuit.","grounding-bonding-shielding.html"],
+["Farad","Unit of capacitance.","capacitor.html"],
+["Fiber Optic","Transmission medium that carries information as light through glass or plastic fiber.","fiber-optics.html"],
+["Flip-Flop","Digital circuit that stores one bit of state.","digital-logic.html"],
+["Frequency","Number of cycles per second, measured in hertz.","crystals-oscillators.html"],
+["Fuse","Overcurrent device that melts open when current exceeds its time-current capability.","protection-devices.html"],
+["GFCI","Ground-fault circuit interrupter that detects current imbalance associated with leakage to ground.","protection-devices.html"],
+["Ground Loop","Unwanted current path caused by multiple ground/reference connections.","grounding-bonding-shielding.html"],
+["Hall Sensor","Sensor that responds to magnetic field and is often used for position or current sensing.","sensors-switches.html"],
+["HMI","Human-machine interface used to monitor and control automation systems.","plc-automation.html"],
+["IGBT","Insulated-gate bipolar transistor used as a high-power electronic switch.","power-electronics-modules.html"],
+["Impedance","AC opposition to current that includes resistance and reactance.","radio-rf.html"],
+["Inductance","Property that opposes changes in current through magnetic-field energy storage.","inductors.html"],
+["Inductor","Component that stores energy in a magnetic field.","inductors.html"],
+["Inverter","Converts DC electrical power into AC electrical power.","solar-power-electronics.html"],
+["IPM","Intelligent power module combining power switches with driver/protection functions.","power-electronics-modules.html"],
+["LCD","Liquid-crystal display controls light through liquid-crystal cells.","led-lcd.html"],
+["LED","Light-emitting diode that produces light when forward current flows.","led-lcd.html"],
+["Limit Switch","Mechanically actuated switch used to detect position or end-of-travel.","sensors-switches.html"],
+["Logic Gate","Digital circuit that performs a Boolean operation such as AND, OR, or NOT.","digital-logic.html"],
+["Megohmmeter","Instrument that applies a test voltage to measure very high insulation resistance.","test-equipment.html"],
+["MOSFET","Voltage-controlled semiconductor switch widely used in electronics and power conversion.","transistors.html"],
+["MPPT","Maximum power point tracking used by solar controllers/inverters to operate PV near an efficient power point.","solar-power-electronics.html"],
+["Multimeter","General-purpose instrument for voltage, resistance, continuity, current, and other measurements.","test-equipment.html"],
+["NPN","Transistor/sensor output convention commonly associated with sinking current toward 0 V.","sensors-switches.html"],
+["Ohm","Unit of electrical resistance.","electrical-basics.html"],
+["Op-Amp","Operational amplifier used with feedback for amplification, filtering, comparison, and signal conditioning.","op-amps-analog.html"],
+["Oscilloscope","Instrument that displays voltage as a function of time.","test-equipment.html"],
+["PLC","Programmable logic controller used for industrial machine and process automation.","plc-automation.html"],
+["PNP","Transistor/sensor output convention commonly associated with sourcing positive voltage/current.","sensors-switches.html"],
+["Power Factor","Ratio of real power to apparent power in AC systems.","advanced-transformers-distribution.html"],
+["PWM","Pulse-width modulation controls average energy by varying duty cycle.","led-lcd.html"],
+["Relay","Electrically operated switch that uses a coil to move contacts.","relays.html"],
+["Resistance","Opposition to electric current, measured in ohms.","electrical-basics.html"],
+["Resonator","Frequency-selective timing element such as a ceramic resonator.","crystals-oscillators.html"],
+["SCR","Silicon-controlled rectifier; a latching thyristor power switch.","solid-state-switching.html"],
+["SFP","Small form-factor pluggable optical/electrical transceiver module.","fiber-optics.html"],
+["Shielding","Conductive or magnetic methods used to reduce electromagnetic coupling/noise.","grounding-bonding-shielding.html"],
+["Sinking Output","Output that provides a path toward 0 V when active.","sensors-switches.html"],
+["Sourcing Output","Output that supplies positive voltage/current when active.","sensors-switches.html"],
+["SPDT","Single-pole, double-throw switch: one common selects between two outputs.","sensors-switches.html"],
+["SSR","Solid-state relay: electronically controlled switch with no moving power contacts.","solid-state-switching.html"],
+["SWR","Standing wave ratio: measure related to impedance mismatch on an RF transmission line.","radio-rf.html"],
+["TCXO","Temperature-compensated crystal oscillator.","crystals-oscillators.html"],
+["Three-Phase","AC system with three phase waveforms separated by 120 electrical degrees.","advanced-transformers-distribution.html"],
+["Transformer","Magnetic device that transfers AC energy between windings and can change voltage/current ratio.","transformers.html"],
+["TRIAC","Bidirectional thyristor commonly used for AC power control.","solid-state-switching.html"],
+["VFD","Variable-frequency drive controls AC motor speed by synthesizing variable-frequency power.","motors-controls.html"],
+["Voltage","Electric potential difference, measured in volts.","electrical-basics.html"],
+["Watt","Unit of real electrical power.","electrical-basics.html"],
+["Wavelength","Distance a wave travels during one cycle.","radio-rf.html"],
+["Wye","Three-phase connection with three phase windings joined at a common point.","advanced-transformers-distribution.html"],
+["Zener Diode","Diode designed to operate in reverse breakdown for voltage reference or clamping.","diodes.html"]
+].sort((a,b)=>a[0].localeCompare(b[0]));
+
+let letter="ALL";
+const alpha=document.getElementById("alpha"),entries=document.getElementById("entries"),search=document.getElementById("gSearch"),count=document.getElementById("gCount");
+["ALL",..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"].forEach(l=>{const b=document.createElement("button");b.textContent=l==="ALL"?"All":l;b.dataset.letter=l;b.onclick=()=>{letter=l;[...alpha.children].forEach(x=>x.classList.toggle("active",x===b));render()};if(l==="ALL")b.classList.add("active");alpha.appendChild(b)});
+function render(){const q=search.value.trim().toLowerCase();const filtered=terms.filter(t=>(letter==="ALL"||t[0][0].toUpperCase()===letter)&&(!q||(t[0]+" "+t[1]).toLowerCase().includes(q)));count.textContent=filtered.length+" term"+(filtered.length===1?"":"s");entries.innerHTML=filtered.map(t=>'<article class="entry"><h3>'+t[0]+'</h3><p>'+t[1]+'</p><a href="'+t[2]+'">Open related Explorer →</a></article>').join("")||'<p class="note">No matching terms. Try a broader search.</p>'}
+search.addEventListener("input",render);render();
+</script></body></html>
