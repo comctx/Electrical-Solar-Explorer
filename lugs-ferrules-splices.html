@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lugs, Ferrules & Splices</title>
+<link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.94}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1100px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.start{background:#fffbed;border:1px solid #e5c94a;border-radius:16px;padding:16px;margin-bottom:16px}.start ol{margin:0;padding-left:22px;line-height:1.6}.start li{margin-bottom:5px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{border:1px solid var(--border);border-radius:16px;background:#f8fbff;padding:15px}.card svg{width:100%;height:150px}.card h3{margin:8px 0 6px;color:var(--navy)}.card p{margin:0;color:#40566a;line-height:1.5}.metal{fill:#b8c3cc;stroke:#6f7d87;stroke-width:2}.copper{stroke:#b86e32;stroke-width:8;fill:none;stroke-linecap:round}.insul{fill:#2563a8}.black{fill:#2d3338}.thin{stroke:#071a2e;stroke-width:3;fill:none}.tip{fill:#e6edf2;stroke:#6f7d87;stroke-width:2}.grid{display:grid;gap:10px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.rule{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}.rule strong{display:block;color:var(--navy);margin-bottom:4px}.rule span{font-size:13px;line-height:1.45;color:#40566a}.btn{min-height:44px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}.btn.good{background:#eaf7ef;border-color:#9ed0b3}.feedback{margin-top:12px;background:#eef7ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.feedback.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}.feedback.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+.warn{background:#fff3d6;border:1px solid #e5a84a;color:#6a4300;border-radius:12px;padding:13px;line-height:1.5}
+@media(max-width:800px){.cards{grid-template-columns:1fr}.two,.three{grid-template-columns:1fr}}footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+</style></head><body>
+<header><h1>Lugs, Ferrules & Splices</h1><p>Recognize common conductor terminations and understand when each type is used.</p></header><main>
+<nav class="nav"><a href="index.html">← Home</a><a href="wiring-installation.html">Wiring & Installation</a><a href="component-identification.html">Component Pictures</a><a href="home-wiring-overview.html">Home Wiring Overview</a></nav>
+
+<section class="start"><h2>Beginner Start Here</h2><ol>
+<li>A termination must be listed/rated for the conductor material, size, strand type, temperature, and application.</li>
+<li><strong>Lugs</strong> connect conductors to studs, bus bars, equipment terminals, or other bolted points.</li>
+<li><strong>Ferrules</strong> consolidate fine-stranded wire into a neat end for terminals designed to accept them.</li>
+<li><strong>Splices</strong> join two or more conductors together.</li>
+<li>Correct preparation, approved tooling, crimp method, strip length, and torque come from the connector/tool/equipment manufacturer.</li>
+</ol></section>
+
+<section class="panel"><h2>What They Look Like</h2><div class="cards">
+<article class="card"><svg viewBox="0 0 260 150"><path class="copper" d="M10 75H85"/><rect x="75" y="59" width="70" height="32" rx="6" class="metal"/><path d="M145 59h55c28 0 40 32 15 47-9 5-20 6-32 6h-38z" class="metal"/><circle cx="190" cy="86" r="16" fill="#fff" stroke="#6f7d87" stroke-width="3"/></svg><h3>Compression / Ring Lug</h3><p>Common on larger conductors and bolted connections. Exact lug type may be copper-only, aluminum-rated, dual-rated, or application-specific.</p></article>
+<article class="card"><svg viewBox="0 0 260 150"><path class="copper" d="M20 75H105"/><rect x="100" y="55" width="72" height="40" rx="6" class="insul"/><rect x="162" y="59" width="58" height="32" rx="3" class="tip"/></svg><h3>Wire Ferrule</h3><p>A metal sleeve, often with an insulating collar, crimped onto fine-stranded wire before insertion into a compatible terminal.</p></article>
+<article class="card"><svg viewBox="0 0 260 150"><path class="copper" d="M15 75H92M168 75H245"/><rect x="82" y="55" width="96" height="40" rx="7" class="metal"/><rect x="95" y="50" width="70" height="50" rx="8" fill="none" stroke="#2563a8" stroke-width="8"/></svg><h3>Butt Splice</h3><p>Joins two conductor ends in line. Insulated, non-insulated, heat-shrink, and other versions exist for different environments.</p></article>
+</div></section>
+
+<section class="panel"><h2>Common Types</h2><div class="grid three">
+<div class="rule"><strong>Lugs</strong><span>Ring lugs, fork/spade lugs, pin lugs, mechanical set-screw lugs, compression lugs, multi-tap connectors.</span></div>
+<div class="rule"><strong>Ferrules</strong><span>Single-wire ferrules and twin ferrules for terminals specifically intended to accept that conductor preparation.</span></div>
+<div class="rule"><strong>Splices</strong><span>Butt splices, crimp sleeves, wire connectors, lever connectors, split-bolt/mechanical connectors, and listed in-line connectors.</span></div>
+</div></section>
+
+<section class="panel"><h2>Match the Connector to the Job</h2><div class="grid three">
+<button class="btn quiz" data-a="lug">Bolted equipment terminal / stud</button>
+<button class="btn quiz" data-a="ferrule">Fine-stranded control wire into a compatible screw/clamp terminal</button>
+<button class="btn quiz" data-a="splice">Join two conductor ends together</button>
+</div><div id="quizOut" class="feedback">Choose an application to see the usual connector family.</div></section>
+
+<section class="panel"><h2>What Must Match</h2><div class="grid two">
+<div class="rule"><strong>Conductor size</strong><span>The connector must be listed for the actual conductor size or range.</span></div>
+<div class="rule"><strong>Conductor material</strong><span>Copper and aluminum require connectors marked/listed for that material. Do not assume a copper lug accepts aluminum.</span></div>
+<div class="rule"><strong>Stranding</strong><span>Fine-stranded flexible conductors may need terminals/lugs specifically approved for that strand class.</span></div>
+<div class="rule"><strong>Tool & die</strong><span>Compression connectors require the specified crimping tool/die system and crimp pattern.</span></div>
+<div class="rule"><strong>Strip length</strong><span>Too short can reduce contact area; too long can leave exposed conductor. Follow connector markings/instructions.</span></div>
+<div class="rule"><strong>Torque</strong><span>Mechanical lugs and equipment terminals must be tightened to the specified value—not guessed by feel.</span></div>
+<div class="rule"><strong>Temperature / environment</strong><span>Connector and insulation ratings must fit heat, moisture, corrosion, vibration, and enclosure conditions.</span></div>
+<div class="rule"><strong>Listing / equipment instructions</strong><span>The equipment terminal has to be identified for the conductor and preparation being used, including ferrules where applicable.</span></div>
+</div></section>
+
+<section class="panel"><h2>Ferrules: Important Detail</h2><p class="lead">Ferrules can make fine-stranded conductors easier to insert cleanly into certain terminal blocks and control devices, but they are <strong>not automatically correct for every screw terminal or equipment lug</strong>. The terminal/device must permit that conductor preparation, and the ferrule must be correctly sized and crimped.</p></section>
+
+<section class="panel"><h2>Splices: Important Detail</h2><p class="lead">A splice is only as reliable as the connector and installation method. The connector must be appropriate for conductor material, size/count, environment, enclosure, and intended voltage/current application. Some splices require accessibility; some specialized systems are listed for specific concealed or underground uses.</p></section>
+
+<section class="panel"><h2>Safety Rule</h2><div class="warn"><strong>Never choose a lug, ferrule, or splice only because it “fits.”</strong> Use the connector markings, manufacturer instructions, approved tool/die, and equipment terminal requirements. For premises wiring, applicable electrical code and inspection requirements also apply.</div></section>
+</main><footer>A DONCO-BAYCITY™ App</footer>
+<script>
+const text={lug:"Usually a lug or listed mechanical/compression terminal designed for a bolted or equipment connection.",ferrule:"Usually a correctly sized ferrule—only when the terminal manufacturer permits ferrules and the crimp is made with the proper tool.",splice:"Usually a listed splice connector selected for the conductor material, size/count, and environment."};
+document.querySelectorAll(".quiz").forEach(b=>b.onclick=()=>{quizOut.className="feedback good";quizOut.textContent=text[b.dataset.a]});
+</script></body></html>
