@@ -31,23 +31,23 @@ input,select{width:100%;min-height:44px;border:1px solid var(--border);border-ra
 .btn.primary{background:var(--yellow);border-color:#e4ba16}.btn.good{background:#eaf7ef;border-color:#9ed0b3}.btn.danger{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
 .palette{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.palette button{min-height:56px}
 .circuit-wrap{overflow-x:auto;padding:8px 2px}
-.circuit{display:flex;align-items:flex-start;gap:0;min-width:max-content;padding:22px 8px 58px;position:relative}
-.wire{width:34px;height:4px;background:#687f91;flex:0 0 34px;position:relative;margin-top:31px}.wire.live{background:#f3a900;box-shadow:0 0 9px rgba(243,169,0,.55)}
-.component{width:138px;min-height:138px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;padding:0 6px 8px;position:relative;cursor:grab;text-align:center}
-.component.dragging{opacity:.45}.component.active{background:transparent;box-shadow:none}.component.blown{background:transparent}
-.schematic-symbol{width:120px;height:64px;color:var(--navy);margin:0 auto 6px}
-.schematic-symbol svg{display:block;width:100%;height:100%;overflow:visible}
-.schematic-symbol .wire-stroke{stroke:currentColor;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.schematic-symbol .thin-stroke{stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.schematic-symbol .symbol-fill{fill:currentColor}
-.component.active .schematic-symbol{color:#c88200;filter:drop-shadow(0 0 4px rgba(243,169,0,.35))}
-.component.blown .schematic-symbol{color:#b42318;filter:none}
-.component:hover .schematic-symbol{transform:translateY(-1px)}
-.component .name{font-weight:900;color:var(--navy);margin-top:2px}.component .value{font-size:13px;color:var(--muted);margin-top:4px;white-space:nowrap}.component .drop{font-size:12px;color:var(--blue);font-weight:800;margin-top:5px;white-space:nowrap}
-.remove{position:absolute;top:-4px;right:7px;border:0;background:transparent;color:#8a1c13;font-size:17px;cursor:pointer;opacity:.72}
-.remove:hover{opacity:1}
-.circuit:after{content:"";position:absolute;left:8px;right:8px;bottom:34px;height:3px;background:#d9e2ea;border-radius:999px;z-index:0}
-.component,.wire{z-index:1}
+.circuit{min-width:720px}
+.schematic-canvas{display:block;width:100%;min-width:720px;height:auto;background:#fff;border:1px solid #d9e2ea;border-radius:14px}
+.schem-wire{stroke:#586f80;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.schem-wire.live{stroke:#f3a900;filter:drop-shadow(0 0 4px rgba(243,169,0,.5))}
+.schem-part{cursor:pointer;color:var(--navy)}
+.schem-part:hover{color:#0b63ce}
+.schem-part.selected{color:#0b63ce}
+.schem-part.blown{color:#b42318}
+.schem-part .main{stroke:currentColor;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.schem-part .thin{stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.schem-part .fill{fill:currentColor}
+.schem-label{font:800 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e;text-anchor:middle}
+.schem-value{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#62707d;text-anchor:middle}
+.schem-drop{font:700 12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#0b63ce;text-anchor:middle}
+.source-label{font:800 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}
+.source-value{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#62707d}
+.edit-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.edit-actions .btn{flex:1 1 120px}
 .results{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:13px;padding:13px}.result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}.result strong{font-size:22px;color:var(--navy);word-break:break-word}
 .status{margin-top:12px;border-radius:12px;padding:12px;font-weight:800;background:#eef7ff;border:1px solid #b9d7f5;color:var(--navy)}.status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}.status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}.status.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
 .editor{display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px}.editor.show{display:block}.editor-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -106,7 +106,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 
 <section class="panel">
 <h2>Add Series Components</h2>
-<p class="lead">Tap a component to add it to the series path. Drag components left or right to rearrange them.</p>
+<p class="lead">Tap a component to add it to the circuit. Then tap its schematic symbol to edit, move, or remove it.</p>
 <div class="palette">
 <button class="btn" data-add="switch">⚡ Switch</button>
 <button class="btn" data-add="resistor">〰 Resistor</button>
@@ -120,7 +120,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 
 <section class="panel">
 <h2>Series Circuit</h2>
-<p class="lead">A schematic-style view of the circuit. Symbols sit directly on the conductor path; the energized path glows when current flows. Tap a symbol to edit it.</p>
+<p class="lead">A traditional closed-loop schematic like you would see in a basic electrical diagram. Tap any symbol to edit that component.</p>
 <div class="circuit-wrap"><div id="circuit" class="circuit"></div></div>
 <div id="editor" class="editor">
 <h3 id="editorTitle">Edit Component</h3>
@@ -290,24 +290,75 @@ function schematicSymbol(type,p={}){
  return wrap('<path class="wire-stroke" d="M4 32h112"/>');
 }
 
-function render(){
- const s=solveSeries();circuitEl.innerHTML="";
- const start=document.createElement("div");start.className="component active";start.innerHTML=schematicSymbol("source")+'<div class="name">Source</div><div class="value">'+fmt(s.V,1)+' V DC</div>';circuitEl.appendChild(start);
- parts.forEach(p=>{
-  const wire=document.createElement("div");wire.className="wire"+(s.I>0?" live":"");circuitEl.appendChild(wire);
-  const el=document.createElement("div");el.className="component"+(s.I>0?" active":"")+(p.blown?" blown":"");el.draggable=true;el.dataset.id=p.id;
-  el.innerHTML='<button class="remove" title="Remove">×</button>'+schematicSymbol(p.type,p)+'<div class="name">'+p.name+'</div><div class="value">'+displayValue(p,s)+'</div><div class="drop">'+fmt(partDrop(p,s),2)+' V drop</div>';
-  el.querySelector(".remove").onclick=e=>{e.stopPropagation();parts=parts.filter(x=>x.id!==p.id);selectedId=null;editor.classList.remove("show");render()};
-  el.onclick=()=>{selectedId=p.id;openEditor()};
-  el.addEventListener("dragstart",()=>el.classList.add("dragging"));el.addEventListener("dragend",()=>el.classList.remove("dragging"));el.addEventListener("dragover",e=>e.preventDefault());
-  el.addEventListener("drop",e=>{e.preventDefault();const from=+document.querySelector(".dragging")?.dataset.id;if(!from||from===p.id)return;const a=parts.findIndex(x=>x.id===from),b=parts.findIndex(x=>x.id===p.id);const[m]=parts.splice(a,1);parts.splice(b,0,m);render()});
-  circuitEl.appendChild(el);
- });
- const ew=document.createElement("div");ew.className="wire"+(s.I>0?" live":"");circuitEl.appendChild(ew);
- const ret=document.createElement("div");ret.className="component";ret.innerHTML=schematicSymbol("return")+'<div class="name">Return</div><div class="value">Source − / 0 V</div>';circuitEl.appendChild(ret);
- updateSeriesOutputs(s);renderNodes(s);renderParallel();
+function svgPart(p,x,y,s){
+ const selected=p.id===selectedId?" selected":"";
+ const blown=p.blown?" blown":"";
+ const cls='schem-part'+selected+blown;
+ const left='<path class="main" d="M-54 0h24"/>';
+ const right='<path class="main" d="M30 0h24"/>';
+ let symbol="";
+ if(p.type==="switch"){
+   symbol=left+right+'<circle cx="-28" cy="0" r="4" class="fill"/><circle cx="28" cy="0" r="4" class="fill"/>'+
+     (p.closed?'<path class="main" d="M-24 0H24"/>':'<path class="main" d="M-24 0L22 -22"/>');
+ }else if(p.type==="fuse"){
+   symbol='<path class="main" d="M-54 0h18M36 0h18"/><rect x="-36" y="-11" width="72" height="22" rx="3" class="thin"/>'+
+     (p.blown?'<path class="main" d="M-28 0h16M12 0h16"/>':'<path class="main" d="M-28 0h56"/>');
+ }else if(p.type==="lamp"){
+   symbol='<path class="main" d="M-54 0h28M26 0h28"/><circle cx="0" cy="0" r="26" class="thin"/><path class="thin" d="M-18 -18L18 18M18 -18L-18 18"/>';
+ }else if(p.type==="resistor"){
+   symbol='<path class="main" d="M-54 0h18l8-12 12 24 12-24 12 24 12-24 12 12h22"/>';
+ }else if(p.type==="led"){
+   symbol='<path class="main" d="M-54 0h20M34 0h20"/><path class="thin" d="M-32 -18L12 0L-32 18Z"/><path class="main" d="M18 -24v48"/><path class="thin" d="M10 -22l18 -12M18 -12l18 -12"/>';
+ }else if(p.type==="motor"){
+   symbol='<path class="main" d="M-54 0h28M26 0h28"/><circle cx="0" cy="0" r="26" class="thin"/><text x="-13" y="10" font-size="30" font-weight="900" fill="currentColor">M</text>';
+ }else if(p.type==="meter"){
+   symbol='<path class="main" d="M-54 0h28M26 0h28"/><circle cx="0" cy="0" r="26" class="thin"/><text x="-12" y="10" font-size="30" font-weight="900" fill="currentColor">A</text>';
+ }
+ return '<g class="'+cls+'" data-id="'+p.id+'" transform="translate('+x+' '+y+')">'+symbol+
+   '<text class="schem-label" x="0" y="52">'+p.name+'</text>'+
+   '<text class="schem-value" x="0" y="70">'+displayValue(p,s)+'</text>'+
+   '<text class="schem-drop" x="0" y="88">'+fmt(partDrop(p,s),2)+' V drop</text></g>';
 }
 
+function render(){
+ const s=solveSeries();
+ const count=parts.length;
+ const W=Math.max(820,300+count*145);
+ const H=340,leftX=95,rightX=W-95,topY=86,bottomY=252;
+ const topStart=175,topEnd=rightX-70;
+ let positions=[];
+ if(count===1)positions=[(topStart+topEnd)/2];
+ else if(count>1){
+   const step=(topEnd-topStart)/(count-1);
+   positions=parts.map((_,i)=>topStart+i*step);
+ }
+ let topWire='';
+ if(!count){
+   topWire='<path class="schem-wire '+(s.I>0?'live':'')+'" d="M'+leftX+' '+topY+'H'+rightX+'"/>';
+ }else{
+   let x0=leftX;
+   positions.forEach((x,i)=>{
+     topWire+='<path class="schem-wire '+(s.I>0?'live':'')+'" d="M'+x0+' '+topY+'H'+(x-54)+'"/>';
+     x0=x+54;
+   });
+   topWire+='<path class="schem-wire '+(s.I>0?'live':'')+'" d="M'+x0+' '+topY+'H'+rightX+'"/>';
+ }
+ const live=s.I>0?' live':'';
+ const loop='<path class="schem-wire'+live+'" d="M'+rightX+' '+topY+'V'+bottomY+'H'+leftX+'V202"/>'+
+            '<path class="schem-wire'+live+'" d="M'+leftX+' 136V'+topY+'"/>';
+ const battery='<g transform="translate('+leftX+' 169)">'+
+   '<path class="schem-wire'+live+'" d="M0 -33V-16M0 16V33"/>'+
+   '<path class="schem-wire" d="M-22 -10H22M-14 10H14"/>'+
+   '<text class="source-label" x="-55" y="-5">+</text><text class="source-label" x="-55" y="19">−</text>'+
+   '<text class="source-label" x="-76" y="-40">Source</text><text class="source-value" x="-76" y="-22">'+fmt(s.V,1)+' V DC</text></g>';
+ const partsSvg=parts.map((p,i)=>svgPart(p,positions[i],topY,s)).join("");
+ circuitEl.innerHTML='<svg class="schematic-canvas" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Interactive series circuit schematic">'+
+   topWire+loop+battery+partsSvg+
+   '<text class="source-value" x="'+((leftX+rightX)/2)+'" y="'+(bottomY+28)+'" text-anchor="middle">Return conductor to source</text>'+
+   '</svg>';
+ circuitEl.querySelectorAll(".schem-part").forEach(g=>g.addEventListener("click",()=>{selectedId=+g.dataset.id;render();openEditor()}));
+ updateSeriesOutputs(s);renderNodes(s);renderParallel();
+}
 function updateSeriesOutputs(s){
  outV.textContent=fmt(s.V,2)+" V";outI.textContent=fmt(s.I,3)+" A";outR.textContent=Number.isFinite(s.R)?fmt(s.R,2)+" Ω":"Open";outP.textContent=fmt(s.P,2)+" W";
  status.className="status";
@@ -344,6 +395,13 @@ function openEditor(){
  hook("editR",e=>{p.resistance=Math.max(.001,+e.target.value||.001);render()});hook("editRated",e=>{p.ratedVoltage=Math.min(24,Math.max(1,+e.target.value||1));render()});hook("editFV",e=>{p.forwardV=Math.min(5,Math.max(1,+e.target.value||1));render()});hook("editRating",e=>{p.rating=Math.max(.05,+e.target.value||.05);render()});
  const t=document.getElementById("toggleSwitch");if(t)t.onclick=()=>{p.closed=!p.closed;render();openEditor()};
  const f=document.getElementById("resetFuse");if(f)f.onclick=()=>{p.blown=false;render();openEditor()};
+ editorFields.insertAdjacentHTML("beforeend",'<div class="edit-actions"><button class="btn" id="moveLeft">← Move Left</button><button class="btn" id="moveRight">Move Right →</button><button class="btn danger" id="removePart">Remove Component</button></div>');
+ const idx=parts.findIndex(x=>x.id===p.id);
+ const ml=document.getElementById("moveLeft"),mr=document.getElementById("moveRight"),rm=document.getElementById("removePart");
+ ml.disabled=idx<=0;mr.disabled=idx<0||idx>=parts.length-1;
+ ml.onclick=()=>{if(idx>0){[parts[idx-1],parts[idx]]=[parts[idx],parts[idx-1]];render();openEditor()}};
+ mr.onclick=()=>{if(idx>=0&&idx<parts.length-1){[parts[idx],parts[idx+1]]=[parts[idx+1],parts[idx]];render();openEditor()}};
+ rm.onclick=()=>{parts=parts.filter(x=>x.id!==p.id);selectedId=null;editor.classList.remove("show");render()};
 }
 
 /* Parallel lab */
