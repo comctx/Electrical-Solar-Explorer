@@ -650,6 +650,167 @@
 
       <div class="warning">When current through an inductor is interrupted, the collapsing magnetic field can create a high-voltage back-EMF spike. Real relay, solenoid, and motor circuits often require appropriate suppression components.</div>
     </section>
+
+    <section class="panel">
+      <h2>Air-Core Coil Estimator</h2>
+      <p class="lead">Estimate the inductance of a single-layer air-core coil from its turns, diameter, and winding length.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label for="coilTurns">Number of turns</label>
+          <input id="coilTurns" type="number" min="1" step="1" value="20" />
+        </div>
+
+        <div class="field">
+          <label for="coilDiameter">Coil diameter</label>
+          <div class="unit-row">
+            <input id="coilDiameter" type="number" min="0.0001" step="any" value="1" />
+            <select id="coilDiameterU">
+              <option value="1" selected>in</option>
+              <option value="0.0393701">mm</option>
+              <option value="0.393701">cm</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="coilLength">Winding length</label>
+          <div class="unit-row">
+            <input id="coilLength" type="number" min="0.0001" step="any" value="1" />
+            <select id="coilLengthU">
+              <option value="1" selected>in</option>
+              <option value="0.0393701">mm</option>
+              <option value="0.393701">cm</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="coilWireExtra">Lead allowance (%)</label>
+          <input id="coilWireExtra" type="number" min="0" max="100" step="1" value="10" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Estimated inductance</small>
+          <strong id="coilInductance">—</strong>
+        </div>
+        <div class="result">
+          <small>Approx. wire length</small>
+          <strong id="coilWireLength">—</strong>
+        </div>
+        <div class="result">
+          <small>Turns per inch</small>
+          <strong id="coilTurnsPerInch">—</strong>
+        </div>
+      </div>
+
+      <div id="coilFormula" class="formula">Wheeler approximation: L(µH) = r²N² ÷ (9r + 10ℓ), with r and ℓ in inches.</div>
+      <p class="note">This is an approximate single-layer air-core formula. Actual inductance changes with wire diameter, spacing, nearby metal, coil shape, and measurement frequency.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Back-EMF / Flyback Calculator</h2>
+      <p class="lead">Estimate the voltage an inductor can generate when its current changes rapidly.</p>
+
+      <div class="grid three">
+        <div class="field">
+          <label>Inductance</label>
+          <div class="unit-row">
+            <input id="flyL" type="number" min="0.000001" step="any" value="100" />
+            <select id="flyLU">
+              <option value="1e-6">µH</option>
+              <option value="1e-3" selected>mH</option>
+              <option value="1">H</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="flyCurrent">Current change ΔI (A)</label>
+          <input id="flyCurrent" type="number" min="0" step="any" value="1" />
+        </div>
+
+        <div class="field">
+          <label>Current-change time Δt</label>
+          <div class="unit-row">
+            <input id="flyTime" type="number" min="0.000001" step="any" value="1" />
+            <select id="flyTimeU">
+              <option value="1">s</option>
+              <option value="0.001" selected>ms</option>
+              <option value="0.000001">µs</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Ideal induced voltage magnitude</small>
+          <strong id="flyVoltage">—</strong>
+        </div>
+        <div class="result">
+          <small>Stored energy before interruption</small>
+          <strong id="flyEnergy">—</strong>
+        </div>
+        <div class="result">
+          <small>Rate of current change</small>
+          <strong id="flyDidt">—</strong>
+        </div>
+      </div>
+
+      <div id="flyFormula" class="formula">|V| = L × |ΔI ÷ Δt|</div>
+      <div class="warning">This is an ideal estimate. Real flyback voltage is limited by winding resistance, parasitic capacitance, arcing, semiconductor breakdown, snubbers, flyback diodes, TVS devices, and other circuit paths.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Inductor Q Factor & Bandwidth</h2>
+      <p class="lead">Estimate inductor quality factor from inductive reactance and series resistance.</p>
+
+      <div class="grid three">
+        <div class="field">
+          <label>Inductance</label>
+          <div class="unit-row">
+            <input id="qL" type="number" min="0.000001" step="any" value="100" />
+            <select id="qLU">
+              <option value="1e-6">µH</option>
+              <option value="1e-3" selected>mH</option>
+              <option value="1">H</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="qFrequency">Frequency (Hz)</label>
+          <input id="qFrequency" type="number" min="0.000001" step="any" value="1000" />
+        </div>
+
+        <div class="field">
+          <label for="qResistance">Series resistance / DCR (Ω)</label>
+          <input id="qResistance" type="number" min="0.000001" step="any" value="10" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Inductive reactance XL</small>
+          <strong id="qReactance">—</strong>
+        </div>
+        <div class="result">
+          <small>Approx. Q factor</small>
+          <strong id="qFactor">—</strong>
+        </div>
+        <div class="result">
+          <small>Approx. bandwidth f ÷ Q</small>
+          <strong id="qBandwidth">—</strong>
+        </div>
+      </div>
+
+      <div id="qFormula" class="formula">Q ≈ XL ÷ Rseries, where XL = 2πfL.</div>
+      <p class="note">This simplified Q calculation treats the entered resistance as the effective series loss. Real Q also changes with core loss, skin effect, proximity effect, parasitic capacitance, and frequency.</p>
+    </section>
+
   </main>
 
   <footer>A DONCO-BAYCITY™ App</footer>
@@ -855,10 +1016,126 @@
       el.addEventListener("change",updateEnergy);
     });
 
+    function formatVoltage(v){
+      const a = Math.abs(v);
+      if (a >= 1000) return fmt(v / 1000,3) + " kV";
+      if (a >= 1) return fmt(v,3) + " V";
+      if (a >= 0.001) return fmt(v * 1000,3) + " mV";
+      return fmt(v * 1000000,3) + " µV";
+    }
+
+    function formatFrequency(hz){
+      const a = Math.abs(hz);
+      if (a >= 1e9) return fmt(hz / 1e9,4) + " GHz";
+      if (a >= 1e6) return fmt(hz / 1e6,4) + " MHz";
+      if (a >= 1e3) return fmt(hz / 1e3,4) + " kHz";
+      return fmt(hz,4) + " Hz";
+    }
+
+    function updateCoilEstimator(){
+      const turns = Math.max(1,Number(document.getElementById("coilTurns").value) || 1);
+      const diameterIn =
+        Math.max(0.000001,Number(document.getElementById("coilDiameter").value) || 0.000001) *
+        Number(document.getElementById("coilDiameterU").value);
+      const lengthIn =
+        Math.max(0.000001,Number(document.getElementById("coilLength").value) || 0.000001) *
+        Number(document.getElementById("coilLengthU").value);
+      const extraPct =
+        Math.min(100,Math.max(0,Number(document.getElementById("coilWireExtra").value) || 0));
+
+      const radiusIn = diameterIn / 2;
+      const inductanceUh =
+        (radiusIn * radiusIn * turns * turns) /
+        (9 * radiusIn + 10 * lengthIn);
+
+      const circumferenceIn = Math.PI * diameterIn;
+      const wireIn = circumferenceIn * turns * (1 + extraPct / 100);
+      const wireFt = wireIn / 12;
+      const tpi = turns / lengthIn;
+
+      document.getElementById("coilInductance").textContent =
+        formatInductance(inductanceUh * 1e-6);
+      document.getElementById("coilWireLength").textContent =
+        wireFt >= 1 ? fmt(wireFt,3) + " ft" : fmt(wireIn,3) + " in";
+      document.getElementById("coilTurnsPerInch").textContent =
+        fmt(tpi,2) + " turns/in";
+
+      document.getElementById("coilFormula").textContent =
+        "Wheeler approximation: L ≈ " + fmt(inductanceUh,4) +
+        " µH for " + fmt(turns,0) + " turns.";
+    }
+
+    ["coilTurns","coilDiameter","coilDiameterU","coilLength","coilLengthU","coilWireExtra"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateCoilEstimator);
+      el.addEventListener("change",updateCoilEstimator);
+    });
+
+    function updateFlyback(){
+      const l =
+        Math.max(1e-15,Number(document.getElementById("flyL").value) || 1e-15) *
+        Number(document.getElementById("flyLU").value);
+      const deltaI =
+        Math.max(0,Number(document.getElementById("flyCurrent").value) || 0);
+      const deltaT =
+        Math.max(1e-12,Number(document.getElementById("flyTime").value) || 1e-12) *
+        Number(document.getElementById("flyTimeU").value);
+
+      const didt = deltaI / deltaT;
+      const voltage = l * didt;
+      const energy = 0.5 * l * deltaI * deltaI;
+
+      document.getElementById("flyVoltage").textContent = formatVoltage(voltage);
+      document.getElementById("flyEnergy").textContent = formatEnergy(energy);
+      document.getElementById("flyDidt").textContent =
+        didt >= 1e6 ? fmt(didt / 1e6,3) + " MA/s" :
+        didt >= 1e3 ? fmt(didt / 1e3,3) + " kA/s" :
+        fmt(didt,3) + " A/s";
+
+      document.getElementById("flyFormula").textContent =
+        "|V| = L × |ΔI ÷ Δt| = " + formatVoltage(voltage);
+    }
+
+    ["flyL","flyLU","flyCurrent","flyTime","flyTimeU"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateFlyback);
+      el.addEventListener("change",updateFlyback);
+    });
+
+    function updateQ(){
+      const l =
+        Math.max(1e-15,Number(document.getElementById("qL").value) || 1e-15) *
+        Number(document.getElementById("qLU").value);
+      const f =
+        Math.max(1e-12,Number(document.getElementById("qFrequency").value) || 1e-12);
+      const r =
+        Math.max(1e-12,Number(document.getElementById("qResistance").value) || 1e-12);
+
+      const xl = 2 * Math.PI * f * l;
+      const q = xl / r;
+      const bandwidth = q > 0 ? f / q : 0;
+
+      document.getElementById("qReactance").textContent = formatOhms(xl);
+      document.getElementById("qFactor").textContent = fmt(q,3);
+      document.getElementById("qBandwidth").textContent = formatFrequency(bandwidth);
+      document.getElementById("qFormula").textContent =
+        "Q ≈ XL ÷ R = " + fmt(q,3) +
+        ", with XL = " + formatOhms(xl) + ".";
+    }
+
+    ["qL","qLU","qFrequency","qResistance"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateQ);
+      el.addEventListener("change",updateQ);
+    });
+
     updateEquivalent();
     updateReactance();
     updateRL();
     updateEnergy();
+    updateCoilEstimator();
+    updateFlyback();
+    updateQ();
     updateRlVisual();
   </script>
 </body>
