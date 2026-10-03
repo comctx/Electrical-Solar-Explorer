@@ -1,0 +1,2393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Solar Calculator</title>
+  <style>
+    :root{
+      --navy:#071a2e;
+      --electric:#0b63ce;
+      --electric2:#1594ff;
+      --yellow:#ffd43b;
+      --bg:#eef3f7;
+      --card:#ffffff;
+      --text:#14202b;
+      --muted:#62707d;
+      --border:#cfd9e3;
+      --good:#1f7a4d;
+      --danger:#b42318;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%, rgba(21,148,255,.16), transparent 32%),
+        radial-gradient(circle at 90% 10%, rgba(255,212,59,.18), transparent 28%),
+        linear-gradient(180deg, #dfeaf4 0%, #edf4f9 42%, #f7fafc 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;
+      padding:26px 18px 22px;
+      text-align:center;
+    }
+
+    header h1{
+      margin:0 0 6px;
+      font-size:clamp(26px,6vw,42px);
+    }
+
+    header p{
+      margin:0;
+      opacity:.92;
+      font-size:15px;
+    }
+
+    header::after{
+      content:"";
+      display:block;
+      width:88px;
+      height:5px;
+      margin:16px auto 0;
+      border-radius:999px;
+      background:var(--yellow);
+    }
+
+    main{
+      max-width:980px;
+      margin:0 auto;
+      padding:18px;
+    }
+
+    .home-search,
+    .learning-path{
+      background:rgba(255,255,255,.78);
+      border:1px solid rgba(207,217,227,.95);
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:16px;
+      box-shadow:0 8px 22px rgba(7,26,46,.06);
+    }
+
+    .home-search h2,
+    .learning-path h2{
+      margin:0 0 8px;
+      border-left:5px solid var(--yellow);
+      padding-left:10px;
+      color:var(--navy);
+      font-size:20px;
+    }
+
+    .home-search p,
+    .learning-path p{
+      margin:0 0 12px;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .search-row{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:9px;
+      align-items:center;
+    }
+
+    .search-row input{
+      min-width:0;
+    }
+
+    .search-clear{
+      min-height:48px;
+      border:1px solid #9fc8ef;
+      border-radius:10px;
+      background:#eef7ff;
+      color:var(--navy);
+      font-weight:800;
+      cursor:pointer;
+      padding:9px 14px;
+    }
+
+    .search-status{
+      margin-top:9px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      min-height:18px;
+    }
+
+    .path-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .path-step{
+      display:block;
+      text-decoration:none;
+      color:var(--text);
+      background:#f8fbff;
+      border:1px solid #b9d7f5;
+      border-radius:14px;
+      padding:13px;
+      min-height:112px;
+    }
+
+    .path-step:hover{
+      background:#eef7ff;
+      border-color:#7eb7ea;
+    }
+
+    .path-number{
+      display:inline-grid;
+      place-items:center;
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      background:var(--yellow);
+      color:var(--navy);
+      font-weight:900;
+      margin-bottom:8px;
+    }
+
+    .path-step strong{
+      display:block;
+      color:var(--navy);
+      margin-bottom:5px;
+      font-size:16px;
+    }
+
+    .path-step span{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .nav-category.search-hidden,
+    .tab.search-hidden{
+      display:none !important;
+    }
+
+    .tabs{
+      display:block;
+      margin-bottom:18px;
+    }
+
+    .nav-category{
+      background:rgba(255,255,255,.62);
+      border:1px solid rgba(207,217,227,.9);
+      border-radius:18px;
+      padding:14px;
+      margin-bottom:14px;
+      box-shadow:0 8px 22px rgba(7,26,46,.05);
+    }
+
+    .nav-category h2{
+      margin:0 0 11px;
+      border-left:5px solid var(--yellow);
+      padding-left:10px;
+      font-size:18px;
+      color:var(--navy);
+    }
+
+    .category-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .tab{
+      width:100%;
+      min-height:64px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:white;
+      color:var(--text);
+      font-weight:700;
+      font-size:15px;
+      cursor:pointer;
+      padding:11px 14px;
+      text-align:center;
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      line-height:1.25;
+      box-shadow:0 2px 8px rgba(7,26,46,.035);
+    }
+
+    .tab:hover{
+      border-color:#9fc8ef;
+      background:#f8fbff;
+    }
+
+    .tab.active{
+      background:var(--yellow);
+      border-color:#e4ba16;
+      color:var(--navy);
+    }
+
+    .panel{
+      display:none;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);
+    }
+
+    .panel.active{display:block}
+
+    h2{
+      margin:0 0 6px;
+      color:var(--navy);
+      border-left:5px solid var(--yellow);
+      padding-left:10px;
+    }
+
+    .lead{
+      margin:0 0 18px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .grid{
+      display:grid;
+      gap:14px;
+    }
+
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+
+    .field label{
+      display:block;
+      font-weight:700;
+      font-size:14px;
+      margin-bottom:6px;
+    }
+
+    input,select{
+      width:100%;
+      min-height:48px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:10px 12px;
+      font-size:16px;
+      background:white;
+      color:var(--text);
+    }
+
+    input:focus,select:focus,button:focus{
+      outline:3px solid rgba(11,99,206,.22);
+      outline-offset:2px;
+    }
+
+    .results{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      margin-top:18px;
+    }
+
+    .result{
+      background:#e9f3ff;
+      border:1px solid #b9d7f5;
+      border-radius:14px;
+      padding:14px;
+      min-width:0;
+    }
+
+    .result small{
+      display:block;
+      color:var(--muted);
+      font-weight:700;
+      margin-bottom:5px;
+    }
+
+    .result strong{
+      font-size:clamp(22px,5vw,32px);
+      color:var(--navy);
+      word-break:break-word;
+    }
+
+    .explain{
+      margin-top:14px;
+      background:#fff7cc;
+      border:1px solid #e5c94a;
+      border-radius:12px;
+      padding:13px;
+      line-height:1.5;
+    }
+
+    .error{
+      min-height:22px;
+      margin-top:10px;
+      color:var(--danger);
+      font-weight:700;
+    }
+
+    .formula-box{
+      margin-top:14px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:13px;
+      background:#fafbfc;
+    }
+
+    .formula-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:7px 14px;
+      margin-top:8px;
+    }
+
+    .formula-used{
+      margin-top:14px;
+      border:1px solid #9fc8ef;
+      border-radius:14px;
+      padding:14px;
+      background:#eef7ff;
+    }
+
+    .formula-used strong{
+      color:var(--navy);
+    }
+
+    .formula-used .steps{
+      margin-top:8px;
+      line-height:1.6;
+      color:#25394b;
+    }
+
+    .wheel-wrap{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:minmax(220px,320px) minmax(0,1fr);
+      gap:18px;
+      align-items:center;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:16px;
+      background:#fbfdff;
+    }
+
+    .ohm-wheel{
+      width:min(100%,300px);
+      aspect-ratio:1;
+      margin:auto;
+      border-radius:50%;
+      border:7px solid var(--navy);
+      background:
+        linear-gradient(90deg, transparent 49%, var(--navy) 49%, var(--navy) 51%, transparent 51%),
+        linear-gradient(0deg, transparent 49%, var(--navy) 49%, var(--navy) 51%, transparent 51%),
+        #e9f3ff;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      grid-template-rows:1fr 1fr;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .wheel-btn{
+      border:0;
+      background:transparent;
+      color:var(--navy);
+      font-weight:900;
+      font-size:clamp(28px,6vw,44px);
+      cursor:pointer;
+    }
+
+    .wheel-btn:hover,
+    .wheel-btn.active{
+      background:rgba(255,212,59,.72);
+    }
+
+    .wheel-label{
+      display:block;
+      font-size:12px;
+      font-weight:700;
+      color:#486071;
+      margin-top:2px;
+    }
+
+    .wheel-info{
+      min-width:0;
+    }
+
+    .wheel-info h3{
+      margin:0 0 8px;
+      color:var(--navy);
+    }
+
+    .wheel-formulas{
+      display:grid;
+      gap:8px;
+      font-size:17px;
+    }
+
+    .wheel-formulas div{
+      background:#fff7cc;
+      border:1px solid #e5c94a;
+      border-radius:10px;
+      padding:10px 12px;
+      font-weight:700;
+    }
+
+    .metric-note{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .calc-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .action-btn,
+    .preset-btn{
+      min-height:44px;
+      border:1px solid #9fc8ef;
+      border-radius:10px;
+      background:#eef7ff;
+      color:var(--navy);
+      font-weight:800;
+      cursor:pointer;
+      padding:9px 13px;
+    }
+
+    .action-btn:hover,
+    .preset-btn:hover{
+      background:#dceeff;
+    }
+
+    .reset-btn{
+      background:#fff7cc;
+      border-color:#e5c94a;
+    }
+
+    .preset-box,
+    .cost-box{
+      margin-top:16px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px;
+      background:#fbfdff;
+    }
+
+    .preset-box strong,
+    .cost-box strong{
+      color:var(--navy);
+    }
+
+    .preset-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .cost-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .cost-results{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .cost-result{
+      border:1px solid #b9d7f5;
+      background:#e9f3ff;
+      border-radius:12px;
+      padding:12px;
+    }
+
+    .cost-result small{
+      display:block;
+      color:var(--muted);
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .cost-result strong{
+      font-size:20px;
+      color:var(--navy);
+    }
+
+    .sanity-warning{
+      display:none;
+      margin-top:12px;
+      border:1px solid #e5a84a;
+      background:#fff3d6;
+      color:#6a4300;
+      border-radius:12px;
+      padding:12px 14px;
+      font-weight:700;
+      line-height:1.45;
+    }
+
+    .sanity-warning.show{
+      display:block;
+    }
+
+    .learn-box,
+    .network-box{
+      margin-top:16px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px;
+      background:#fbfdff;
+    }
+
+    .learn-box strong,
+    .network-box strong{
+      color:var(--navy);
+    }
+
+    .learn-toggle{
+      min-height:44px;
+      margin-top:10px;
+      border:1px solid #9fc8ef;
+      border-radius:10px;
+      background:#eef7ff;
+      color:var(--navy);
+      font-weight:800;
+      cursor:pointer;
+      padding:9px 13px;
+    }
+
+    .learn-content{
+      margin-top:12px;
+      display:none;
+      border-top:1px solid var(--border);
+      padding-top:12px;
+      line-height:1.55;
+    }
+
+    .learn-content.show{
+      display:block;
+    }
+
+    .learn-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .learn-item{
+      background:#e9f3ff;
+      border:1px solid #b9d7f5;
+      border-radius:10px;
+      padding:10px;
+    }
+
+    .network-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .network-result{
+      margin-top:12px;
+      border:1px solid #b9d7f5;
+      background:#e9f3ff;
+      border-radius:12px;
+      padding:12px;
+    }
+
+    .network-result small{
+      display:block;
+      color:var(--muted);
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .network-result strong{
+      display:block;
+      font-size:24px;
+      color:var(--navy);
+      margin-bottom:4px;
+    }
+
+    .value-unit-row{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 110px;
+      gap:8px;
+      align-items:stretch;
+    }
+
+    .value-unit-row select{
+      font-weight:800;
+      color:var(--navy);
+      background:#eef7ff;
+    }
+
+    .history-box{
+      margin-top:16px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px;
+      background:#fbfdff;
+    }
+
+    .history-box strong{
+      color:var(--navy);
+    }
+
+    .history-list{
+      display:grid;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .history-item{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      border:1px solid #b9d7f5;
+      background:#e9f3ff;
+      border-radius:10px;
+      padding:10px;
+    }
+
+    .history-text{
+      min-width:0;
+      font-size:14px;
+      line-height:1.4;
+    }
+
+    .history-use{
+      flex:0 0 auto;
+      min-height:38px;
+      border:1px solid #9fc8ef;
+      border-radius:9px;
+      background:white;
+      color:var(--navy);
+      font-weight:800;
+      cursor:pointer;
+      padding:7px 10px;
+    }
+
+    .copy-status{
+      min-height:20px;
+      margin-top:8px;
+      color:var(--good);
+      font-weight:700;
+      font-size:13px;
+    }
+
+    .advanced-tools{
+      margin-top:18px;
+    }
+
+    .advanced-tools > h3{
+      margin:0 0 10px;
+      color:var(--navy);
+      font-size:20px;
+    }
+
+    .advanced-tool{
+      margin-top:10px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#fbfdff;
+      overflow:hidden;
+    }
+
+    .advanced-tool summary{
+      cursor:pointer;
+      padding:14px 16px;
+      font-weight:900;
+      color:var(--navy);
+      background:#eef7ff;
+      user-select:none;
+    }
+
+    .advanced-tool[open] summary{
+      border-bottom:1px solid var(--border);
+    }
+
+    .advanced-tool-body{
+      padding:14px;
+    }
+
+    .tool-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .tool-grid.four{
+      grid-template-columns:repeat(4,minmax(0,1fr));
+    }
+
+    .tool-results{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .tool-result{
+      border:1px solid #b9d7f5;
+      background:#e9f3ff;
+      border-radius:12px;
+      padding:12px;
+      min-width:0;
+    }
+
+    .tool-result small{
+      display:block;
+      color:var(--muted);
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .tool-result strong{
+      display:block;
+      color:var(--navy);
+      font-size:22px;
+      word-break:break-word;
+    }
+
+    .tool-status{
+      margin-top:12px;
+      border-radius:10px;
+      padding:10px 12px;
+      font-weight:800;
+      background:#eef7ff;
+      border:1px solid #b9d7f5;
+      color:var(--navy);
+    }
+
+    .tool-status.good{
+      background:#eaf7ef;
+      border-color:#9ed0b3;
+      color:#185c3b;
+    }
+
+    .tool-status.warn{
+      background:#fff3d6;
+      border-color:#e5a84a;
+      color:#6a4300;
+    }
+
+    .tool-status.high{
+      background:#fdecea;
+      border-color:#e4aaa5;
+      color:#8a1c13;
+    }
+
+    .resistor-preview{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+      margin:24px 0;
+      overflow-x:auto;
+      padding:10px 0;
+    }
+
+    .wire{
+      width:54px;
+      height:5px;
+      background:#8a8f95;
+      flex:0 0 auto;
+    }
+
+    .res-body{
+      width:58px;
+      height:48px;
+      background:#e6d4a5;
+      border:1px solid #9e8957;
+      flex:0 0 auto;
+    }
+
+    .res-body.left{border-radius:24px 0 0 24px}
+    .res-body.right{border-radius:0 24px 24px 0}
+
+    .band{
+      width:22px;
+      height:82px;
+      border-radius:4px;
+      border:1px solid rgba(0,0,0,.25);
+      flex:0 0 auto;
+    }
+
+    .gap{width:10px;flex:0 0 auto}
+
+    .note{
+      margin-top:14px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    footer{
+      text-align:center;
+      color:#dbe8f5;
+      background:var(--navy);
+      font-size:13px;
+      font-weight:700;
+      padding:24px 16px;
+      margin-top:20px;
+    }
+
+    @media (max-width:700px){
+      main{padding:12px}
+      .grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .results{grid-template-columns:1fr 1fr}
+      .formula-grid{grid-template-columns:1fr}
+      .wheel-wrap{grid-template-columns:1fr}
+      .cost-grid{grid-template-columns:1fr}
+      .cost-results{grid-template-columns:1fr}
+      .learn-grid{grid-template-columns:1fr}
+      .network-grid{grid-template-columns:1fr 1fr}
+      .tool-grid,.tool-grid.four{grid-template-columns:1fr 1fr}
+      .tool-results{grid-template-columns:1fr}
+      .category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .path-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+
+    @media (max-width:420px){
+      .results{grid-template-columns:1fr}
+      .network-grid{grid-template-columns:1fr}
+      .value-unit-row{grid-template-columns:minmax(0,1fr) 96px}
+      .history-item{align-items:flex-start}
+      .tool-grid,.tool-grid.four{grid-template-columns:1fr}
+      .category-grid{grid-template-columns:1fr}
+      .path-grid{grid-template-columns:1fr}
+      .search-row{grid-template-columns:1fr}
+      .search-clear{width:100%}
+      .tab{min-height:56px}
+      header{padding-top:22px}
+    }
+  
+    .tool-page .home-search,
+    .tool-page .learning-path,
+    .tool-page .tabs{display:none !important}
+    .tool-page-nav{
+      max-width:980px;
+      margin:14px auto 0;
+      padding:0 18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .tool-page-nav a{
+      text-decoration:none;
+      color:var(--navy);
+      background:#eef7ff;
+      border:1px solid #9fc8ef;
+      border-radius:10px;
+      padding:9px 12px;
+      font-weight:800;
+    }
+    .tool-page-nav a.active{
+      background:var(--yellow);
+      border-color:#e4ba16;
+    }
+    @media(max-width:420px){
+      .tool-page-nav{padding:0 12px}
+      .tool-page-nav a{flex:1 1 100%;text-align:center}
+    }
+  </style>
+</head>
+
+<body class="tool-page">
+  <header>
+    <h1>Solar Calculator</h1>
+    <p>Panel wattage and daily solar-energy estimator.</p>
+  </header>
+  <nav class="tool-page-nav">
+    <a href="index.html">← All Things Electrical</a>
+    <a href="electrical-calculator.html">Electrical Calculator</a>
+    <a href="resistor-bands.html">Resistor Bands</a>
+    <a href="solar-calculator.html" class="active">Solar Calculator</a>
+  </nav>
+
+  <main>
+    <section class="home-search">
+      <h2>Find a Topic</h2>
+      <p>Search the entire learning menu by subject, component, device, or tool.</p>
+      <div class="search-row">
+        <input id="topicSearch" type="search" placeholder="Try: TRIAC, VFD, CT, PLC, oscilloscope, MPPT..." autocomplete="off" aria-label="Search electrical topics">
+        <button id="clearTopicSearch" class="search-clear" type="button">Clear</button>
+      </div>
+      <div id="searchStatus" class="search-status">Showing all topics.</div>
+    </section>
+
+    <section class="learning-path">
+      <h2>Start Learning</h2>
+      <p>New to electrical work? Follow this path from fundamentals to testing and troubleshooting.</p>
+      <div class="path-grid">
+        <a class="path-step" href="electrical-basics.html"><span class="path-number">1</span><strong>Electrical Basics</strong><span>Voltage, current, resistance, power, AC/DC, and Ohm's Law.</span></a>
+        <a class="path-step" href="wiring-installation.html"><span class="path-number">2</span><strong>Wiring & Installation</strong><span>Conductors, insulation, wire sizes, ampacity, connections, and safety concepts.</span></a>
+        <a class="path-step" href="integrated-circuits.html"><span class="path-number">3</span><strong>Electronics & Components</strong><span>Learn the parts that make electronic circuits work.</span></a>
+        <a class="path-step" href="motors-controls.html"><span class="path-number">4</span><strong>Motors & Controls</strong><span>Motors, contactors, overloads, starters, drives, and controls.</span></a>
+        <a class="path-step" href="test-equipment.html"><span class="path-number">5</span><strong>Test Equipment</strong><span>Use multimeters, clamp meters, oscilloscopes, and other instruments.</span></a>
+        <a class="path-step" href="troubleshooting.html"><span class="path-number">6</span><strong>Troubleshooting</strong><span>Use measurements and logic to locate real electrical faults.</span></a>
+      </div>
+    </section>
+
+    <div class="tabs">
+      <section class="nav-category">
+        <h2>Quick Tools</h2>
+        <div class="category-grid">
+          <button class="tab active" data-panel="electricalPanel">Electrical Calculator</button>
+          <button class="tab" data-panel="resistorPanel">Resistor Bands</button>
+          <button class="tab" data-panel="solarPanel">Solar Calculator</button>
+        </div>
+      </section>
+
+      <section class="nav-category">
+        <h2>Electrical Basics & Wiring</h2>
+        <div class="category-grid">
+          <a class="tab" href="electrical-basics.html">Electrical Basics</a>
+          <a class="tab" href="wiring-installation.html">Wiring & Installation</a>
+          <a class="tab" href="protection-devices.html">Protection Devices</a>
+          <a class="tab" href="grounding-bonding-shielding.html">Grounding, Bonding & Shielding</a>
+          <a class="tab" href="lighting-lamps.html">Lighting & Lamps</a>
+        </div>
+      </section>
+
+      <section class="nav-category">
+        <h2>Power & Energy</h2>
+        <div class="category-grid">
+          <a class="tab" href="batteries.html">Batteries</a>
+          <a class="tab" href="power-supplies.html">Power Supplies & Rectifiers</a>
+          <a class="tab" href="transformers.html">Transformers</a>
+          <a class="tab" href="advanced-transformers-distribution.html">Advanced Transformers & Distribution</a>
+          <a class="tab" href="generators-alternators.html">Generators & Alternators</a>
+          <a class="tab" href="solar-power-electronics.html">Solar Power Electronics</a>
+          <a class="tab" href="power-electronics-modules.html">Power Electronics & Modules</a>
+        </div>
+      </section>
+
+      <section class="nav-category">
+        <h2>Electronics & Components</h2>
+        <div class="category-grid">
+          <a class="tab" href="capacitor.html">Capacitors</a>
+          <a class="tab" href="inductors.html">Inductors & Coils</a>
+          <a class="tab" href="diodes.html">Diodes</a>
+          <a class="tab" href="led-lcd.html">LEDs & LCDs</a>
+          <a class="tab" href="transistors.html">Transistors</a>
+          <a class="tab" href="vacuum-tubes.html">Vacuum Tubes</a>
+          <a class="tab" href="integrated-circuits.html">Integrated Circuits</a>
+          <a class="tab" href="op-amps-analog.html">Op-Amps & Analog</a>
+          <a class="tab" href="crystals-oscillators.html">Crystals & Oscillators</a>
+          <a class="tab" href="solid-state-switching.html">Solid-State Switching</a>
+        </div>
+      </section>
+
+      <section class="nav-category">
+        <h2>Motors & Industrial Automation</h2>
+        <div class="category-grid">
+          <a class="tab" href="motors-controls.html">Motors & Controls</a>
+          <a class="tab" href="relays.html">Relays & Contactors</a>
+          <a class="tab" href="sensors-switches.html">Sensors & Switches</a>
+          <a class="tab" href="plc-automation.html">PLCs & Automation</a>
+        </div>
+      </section>
+
+      <section class="nav-category">
+        <h2>Digital & Communications</h2>
+        <div class="category-grid">
+          <a class="tab" href="processors.html">Processors</a>
+          <a class="tab" href="digital-logic.html">Digital Logic</a>
+          <a class="tab" href="fiber-optics.html">Fiber Optics</a>
+          <a class="tab" href="radio-rf.html">Radio & RF</a>
+        </div>
+      </section>
+
+      <section class="nav-category">
+        <h2>Test & Troubleshooting</h2>
+        <div class="category-grid">
+          <a class="tab" href="test-equipment.html">Test Equipment</a>
+          <a class="tab" href="troubleshooting.html">Troubleshooting</a>
+        </div>
+      </section>
+    </div>
+
+    <section id="electricalPanel" class="panel">
+      <h2>Volts • Amps • Ohms • Watts</h2>
+      <p class="lead">Choose any two values you know. The app calculates the other two automatically and displays convenient metric units.</p>
+
+      <div class="grid two">
+        <div>
+          <div class="field">
+            <label for="known1">Known value 1</label>
+            <select id="known1">
+              <option value="V" selected>EMF / Voltage (V)</option>
+              <option value="I">Current (A)</option>
+              <option value="R">Resistance (Ω)</option>
+              <option value="P">Power (W)</option>
+            </select>
+          </div>
+
+          <div class="field" style="margin-top:10px">
+            <label for="value1">Value</label>
+            <div class="value-unit-row">
+              <input id="value1" type="number" min="0" step="any" value="12" />
+              <select id="unit1" aria-label="Unit for known value 1"></select>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="field">
+            <label for="known2">Known value 2</label>
+            <select id="known2">
+              <option value="V">EMF / Voltage (V)</option>
+              <option value="I">Current (A)</option>
+              <option value="R" selected>Resistance (Ω)</option>
+              <option value="P">Power (W)</option>
+            </select>
+          </div>
+
+          <div class="field" style="margin-top:10px">
+            <label for="value2">Value</label>
+            <div class="value-unit-row">
+              <input id="value2" type="number" min="0" step="any" value="6" />
+              <select id="unit2" aria-label="Unit for known value 2"></select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-actions">
+        <button type="button" id="swapKnown" class="action-btn">↔ Swap Known Values</button>
+        <button type="button" id="saveCalculation" class="action-btn">Save Result</button>
+        <button type="button" id="copyCalculation" class="action-btn">Copy Summary</button>
+        <button type="button" id="resetElectrical" class="action-btn reset-btn">Reset Calculator</button>
+      </div>
+      <div id="copyStatus" class="copy-status" aria-live="polite"></div>
+
+      <div class="preset-box">
+        <strong>Common Voltage Presets</strong>
+        <div class="preset-row">
+          <button type="button" class="preset-btn" data-voltage="5">5 V Electronics</button>
+          <button type="button" class="preset-btn" data-voltage="12">12 V Auto / Solar</button>
+          <button type="button" class="preset-btn" data-voltage="24">24 V Controls</button>
+          <button type="button" class="preset-btn" data-voltage="48">48 V Systems</button>
+          <button type="button" class="preset-btn" data-voltage="120">120 V Household</button>
+          <button type="button" class="preset-btn" data-voltage="240">240 V Household</button>
+        </div>
+        <p class="note">A preset fills in the voltage while keeping your other known value whenever possible.</p>
+      </div>
+
+      <div id="electricalError" class="error" aria-live="polite"></div>
+
+      <div class="results">
+        <div class="result">
+          <small>EMF / Voltage</small>
+          <strong id="outV">12 V</strong>
+        </div>
+
+        <div class="result">
+          <small>Current</small>
+          <strong id="outI">2 A</strong>
+        </div>
+
+        <div class="result">
+          <small>Resistance</small>
+          <strong id="outR">6 Ω</strong>
+        </div>
+
+        <div class="result">
+          <small>Power</small>
+          <strong id="outP">24 W</strong>
+        </div>
+      </div>
+
+      <div id="sanityWarning" class="sanity-warning" aria-live="polite"></div>
+
+      <div class="metric-note">Small and large values automatically display as mV, mA, kΩ, MΩ, mW, kW, and similar convenient units.</div>
+
+      <div id="electricalExplain" class="explain" aria-live="polite">
+        Calculated result: 12 V, 2 A, 6 Ω, and 24 W.
+      </div>
+
+      <div class="formula-used">
+        <strong>Formula used</strong>
+        <div id="formulaSteps" class="steps">I = V ÷ R = 12 ÷ 6 = 2 A<br>P = V × I = 12 × 2 = 24 W</div>
+      </div>
+
+      <div class="cost-box">
+        <strong>Power Usage & Cost Estimate</strong>
+        <p class="note">Uses the calculated wattage above. Enter how many hours per day the load runs and your electricity rate.</p>
+
+        <div class="cost-grid">
+          <div class="field">
+            <label for="hoursPerDay">Hours used per day</label>
+            <input id="hoursPerDay" type="number" min="0" max="24" step="0.1" value="8" />
+          </div>
+
+          <div class="field">
+            <label for="electricRate">Electricity rate ($ per kWh)</label>
+            <input id="electricRate" type="number" min="0" step="0.001" value="0.15" />
+          </div>
+        </div>
+
+        <div class="cost-results">
+          <div class="cost-result">
+            <small>Energy / day</small>
+            <strong id="costKwhDay">0.192 kWh</strong>
+          </div>
+          <div class="cost-result">
+            <small>Cost / day</small>
+            <strong id="costDay">$0.03</strong>
+          </div>
+          <div class="cost-result">
+            <small>Approx. 30-day cost</small>
+            <strong id="costMonth">$0.86</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="history-box">
+        <strong>Saved Calculations</strong>
+        <p class="note">Save up to five useful calculations on this device and bring one back with a tap.</p>
+        <div id="historyList" class="history-list">
+          <div class="note">No saved calculations yet.</div>
+        </div>
+      </div>
+
+      <div class="learn-box">
+        <strong>Beginner Explanation</strong>
+        <p class="note">Open this when you want the calculator to explain what each electrical value means in plain language.</p>
+        <button type="button" id="learnToggle" class="learn-toggle" aria-expanded="false">Show Beginner Explanation</button>
+
+        <div id="learnContent" class="learn-content">
+          <div class="learn-grid">
+            <div class="learn-item"><strong>Voltage (V)</strong><br>Electrical pressure that pushes charge through a circuit.</div>
+            <div class="learn-item"><strong>Current (A)</strong><br>The amount of electrical charge flowing through the circuit.</div>
+            <div class="learn-item"><strong>Resistance (Ω)</strong><br>How much the circuit opposes current flow.</div>
+            <div class="learn-item"><strong>Power (W)</strong><br>How quickly electrical energy is being used or delivered.</div>
+          </div>
+          <div id="beginnerSummary" class="explain">With 12 V across 6 Ω, the circuit draws 2 A and uses 24 W.</div>
+        </div>
+      </div>
+
+      <div class="network-box">
+        <strong>Series / Parallel Resistance</strong>
+        <p class="note">Enter two or three resistor values in ohms. Leave R3 blank if you only have two resistors.</p>
+
+        <div class="network-grid">
+          <div class="field">
+            <label for="networkMode">Connection</label>
+            <select id="networkMode">
+              <option value="series">Series</option>
+              <option value="parallel">Parallel</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="networkR1">R1 (Ω)</label>
+            <input id="networkR1" type="number" min="0.000001" step="any" value="100" />
+          </div>
+
+          <div class="field">
+            <label for="networkR2">R2 (Ω)</label>
+            <input id="networkR2" type="number" min="0.000001" step="any" value="220" />
+          </div>
+
+          <div class="field">
+            <label for="networkR3">R3 (Ω, optional)</label>
+            <input id="networkR3" type="number" min="0.000001" step="any" placeholder="Optional" />
+          </div>
+        </div>
+
+        <div class="network-result">
+          <small>Equivalent resistance</small>
+          <strong id="networkResult">320 Ω</strong>
+          <div id="networkFormula">Series: 100 Ω + 220 Ω = 320 Ω</div>
+        </div>
+      </div>
+
+      <div class="advanced-tools">
+        <h3>Advanced Electrical Tools</h3>
+
+        <details class="advanced-tool" open>
+          <summary>Voltage Drop Calculator</summary>
+          <div class="advanced-tool-body">
+            <p class="note">Educational estimate for a two-wire DC or single-phase circuit. Length is one-way; the calculator includes the return path.</p>
+
+            <div class="tool-grid four">
+              <div class="field">
+                <label for="vdVoltage">Supply voltage (V)</label>
+                <input id="vdVoltage" type="number" min="0.001" step="any" value="120" />
+              </div>
+
+              <div class="field">
+                <label for="vdCurrent">Current (A)</label>
+                <input id="vdCurrent" type="number" min="0" step="any" value="15" />
+              </div>
+
+              <div class="field">
+                <label for="vdLength">One-way length (ft)</label>
+                <input id="vdLength" type="number" min="0" step="any" value="50" />
+              </div>
+
+              <div class="field">
+                <label for="vdMaterial">Conductor</label>
+                <select id="vdMaterial">
+                  <option value="copper">Copper</option>
+                  <option value="aluminum">Aluminum</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="vdGauge">Wire size (AWG)</label>
+                <select id="vdGauge">
+                  <option value="18">18 AWG</option>
+                  <option value="16">16 AWG</option>
+                  <option value="14">14 AWG</option>
+                  <option value="12" selected>12 AWG</option>
+                  <option value="10">10 AWG</option>
+                  <option value="8">8 AWG</option>
+                  <option value="6">6 AWG</option>
+                  <option value="4">4 AWG</option>
+                  <option value="3">3 AWG</option>
+                  <option value="2">2 AWG</option>
+                  <option value="1">1 AWG</option>
+                  <option value="1/0">1/0 AWG</option>
+                  <option value="2/0">2/0 AWG</option>
+                  <option value="3/0">3/0 AWG</option>
+                  <option value="4/0">4/0 AWG</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="tool-results">
+              <div class="tool-result">
+                <small>Voltage drop</small>
+                <strong id="vdDrop">2.38 V</strong>
+              </div>
+              <div class="tool-result">
+                <small>Percent drop</small>
+                <strong id="vdPercent">1.99%</strong>
+              </div>
+              <div class="tool-result">
+                <small>Voltage at load</small>
+                <strong id="vdLoadVoltage">117.62 V</strong>
+              </div>
+            </div>
+
+            <div id="vdStatus" class="tool-status good">Under 3% — within a common design target.</div>
+            <p class="note">Wire resistance values are approximate. Installation conditions, temperature, conductor type, terminals, local code, and equipment instructions can change real-world results.</p>
+          </div>
+        </details>
+
+        <details class="advanced-tool">
+          <summary>AC Power Calculator</summary>
+          <div class="advanced-tool-body">
+            <p class="note">For single-phase AC loads. Power factor describes how effectively apparent power is converted into real power.</p>
+
+            <div class="tool-grid">
+              <div class="field">
+                <label for="acVoltage">Voltage (V)</label>
+                <input id="acVoltage" type="number" min="0" step="any" value="120" />
+              </div>
+
+              <div class="field">
+                <label for="acCurrent">Current (A)</label>
+                <input id="acCurrent" type="number" min="0" step="any" value="10" />
+              </div>
+
+              <div class="field">
+                <label for="acPf">Power factor (0–1)</label>
+                <input id="acPf" type="number" min="0" max="1" step="0.01" value="0.90" />
+              </div>
+            </div>
+
+            <div class="tool-results">
+              <div class="tool-result">
+                <small>Real power</small>
+                <strong id="acWatts">1.08 kW</strong>
+              </div>
+              <div class="tool-result">
+                <small>Apparent power</small>
+                <strong id="acVA">1.2 kVA</strong>
+              </div>
+              <div class="tool-result">
+                <small>Reactive power</small>
+                <strong id="acVAR">523 VAR</strong>
+              </div>
+            </div>
+
+            <div id="acFormula" class="explain">P = V × I × PF = 120 × 10 × 0.90 = 1,080 W</div>
+          </div>
+        </details>
+
+        <details class="advanced-tool">
+          <summary>Single-Phase / Three-Phase Calculator</summary>
+          <div class="advanced-tool-body">
+            <p class="note">For balanced systems. In three-phase mode, voltage is line-to-line and the calculator uses √3 × V × I × power factor.</p>
+
+            <div class="tool-grid four">
+              <div class="field">
+                <label for="phaseMode">System</label>
+                <select id="phaseMode">
+                  <option value="single">Single-phase</option>
+                  <option value="three">Three-phase</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="phaseVoltage">Voltage (V)</label>
+                <input id="phaseVoltage" type="number" min="0.001" step="any" value="240" />
+              </div>
+
+              <div class="field">
+                <label for="phaseCurrent">Current (A)</label>
+                <input id="phaseCurrent" type="number" min="0" step="any" value="20" />
+              </div>
+
+              <div class="field">
+                <label for="phasePf">Power factor (0–1)</label>
+                <input id="phasePf" type="number" min="0.01" max="1" step="0.01" value="0.90" />
+              </div>
+
+              <div class="field">
+                <label for="phaseTargetKw">Target real power (kW)</label>
+                <input id="phaseTargetKw" type="number" min="0" step="any" value="5" />
+              </div>
+            </div>
+
+            <div class="tool-results">
+              <div class="tool-result">
+                <small>Real power at entered current</small>
+                <strong id="phaseKw">4.32 kW</strong>
+              </div>
+              <div class="tool-result">
+                <small>Apparent power</small>
+                <strong id="phaseKva">4.8 kVA</strong>
+              </div>
+              <div class="tool-result">
+                <small>Current for target kW</small>
+                <strong id="phaseTargetAmps">23.15 A</strong>
+              </div>
+            </div>
+
+            <div id="phaseFormula" class="explain">Single-phase: P = V × I × PF</div>
+          </div>
+        </details>
+      </div>
+
+      <div class="wheel-wrap">
+        <div class="ohm-wheel" aria-label="Interactive Ohm's Law and power wheel">
+          <button type="button" class="wheel-btn active" data-wheel="V">V<span class="wheel-label">Voltage</span></button>
+          <button type="button" class="wheel-btn" data-wheel="P">P<span class="wheel-label">Power</span></button>
+          <button type="button" class="wheel-btn" data-wheel="I">I<span class="wheel-label">Current</span></button>
+          <button type="button" class="wheel-btn" data-wheel="R">R<span class="wheel-label">Resistance</span></button>
+        </div>
+
+        <div class="wheel-info">
+          <h3 id="wheelTitle">Find Voltage (V)</h3>
+          <div id="wheelFormulas" class="wheel-formulas">
+            <div>V = I × R</div>
+            <div>V = P ÷ I</div>
+            <div>V = √(P × R)</div>
+          </div>
+          <p class="note">Tap V, P, I, or R on the wheel to see the formulas for that value.</p>
+        </div>
+      </div>
+
+      <div class="formula-box">
+        <strong>Common formulas</strong>
+
+        <div class="formula-grid">
+          <div>V = I × R</div>
+          <div>I = V ÷ R</div>
+          <div>R = V ÷ I</div>
+          <div>P = V × I</div>
+          <div>P = I² × R</div>
+          <div>P = V² ÷ R</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="resistorPanel" class="panel">
+      <h2>Interactive Resistor Color Code</h2>
+      <p class="lead">Pick the band colors and the resistance value changes instantly.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label for="band1">Band 1</label>
+          <select id="band1"></select>
+        </div>
+
+        <div class="field">
+          <label for="band2">Band 2</label>
+          <select id="band2"></select>
+        </div>
+
+        <div class="field">
+          <label for="multiplier">Multiplier</label>
+          <select id="multiplier"></select>
+        </div>
+
+        <div class="field">
+          <label for="tolerance">Tolerance</label>
+          <select id="tolerance"></select>
+        </div>
+      </div>
+
+      <div class="resistor-preview" aria-label="Resistor preview">
+        <div class="wire"></div>
+        <div class="res-body left"></div>
+
+        <div id="previewBand1" class="band"></div>
+        <div id="previewBand2" class="band"></div>
+        <div id="previewMultiplier" class="band"></div>
+
+        <div class="gap"></div>
+
+        <div id="previewTolerance" class="band"></div>
+
+        <div class="res-body right"></div>
+        <div class="wire"></div>
+      </div>
+
+      <div class="result" style="text-align:center">
+        <small>Resistance</small>
+        <strong id="resistorValue">1 kΩ ±5%</strong>
+      </div>
+    </section>
+
+    <section id="solarPanel" class="panel active">
+      <h2>Basic Solar Array Calculator</h2>
+      <p class="lead">Enter the panel count, panel wattage, and peak sun hours.</p>
+
+      <div class="grid three">
+        <div class="field">
+          <label for="panelCount">Number of panels</label>
+          <input id="panelCount" type="number" min="1" max="1000" step="1" value="4" />
+        </div>
+
+        <div class="field">
+          <label for="panelWatts">Watts per panel</label>
+          <input id="panelWatts" type="number" min="1" max="5000" step="1" value="200" />
+        </div>
+
+        <div class="field">
+          <label for="sunHours">Peak sun hours</label>
+          <input id="sunHours" type="number" min="0" max="24" step="0.1" value="5" />
+        </div>
+      </div>
+
+      <div class="results">
+        <div class="result">
+          <small>Total array size</small>
+          <strong id="arraySize">800 W</strong>
+        </div>
+
+        <div class="result">
+          <small>Ideal daily energy</small>
+          <strong id="dailyEnergy">4 kWh</strong>
+        </div>
+      </div>
+
+      <div id="solarExplain" class="explain">
+        4 panels × 200 W = 800 W. At 5 peak sun hours, ideal production is about 4 kWh per day.
+      </div>
+
+      <p class="note">
+        Educational estimate only. Actual solar production depends on weather, orientation, shading,
+        temperature, wiring losses, inverter losses, battery losses, and other system conditions.
+      </p>
+    </section>
+  </main>
+
+  <footer>A DONCO-BAYCITY™ App</footer>
+
+  <script>
+    const topicKeywords = {
+      "electrical-basics.html":"ohm law voltage volts current amps resistance watts power ac dc frequency rms series parallel circuit short open",
+      "wiring-installation.html":"wire wiring conductor insulation awg gauge ampacity cable ground fault earth leakage receptacle switch line load neutral hot",
+      "protection-devices.html":"fuse breaker gfci rcd afci surge mov tvs overload protection overcurrent",
+      "grounding-bonding-shielding.html":"ground grounding bonding earth neutral shield shielding emi rfi ground loop",
+      "lighting-lamps.html":"light lighting lamp led fluorescent ballast driver hid incandescent halogen lumens lux cri dimming",
+      "batteries.html":"battery batteries lead acid agm lithium lifepo4 amp hour ah watt hour charging runtime",
+      "power-supplies.html":"power supply rectifier bridge diode regulator dc supply ac dc converter",
+      "transformers.html":"transformer turns ratio primary secondary step up step down isolation",
+      "advanced-transformers-distribution.html":"three phase delta wye ct current transformer pt vt potential transformer autotransformer kva distribution substation",
+      "generators-alternators.html":"generator alternator induction stator rotor excitation avr governor slip rings commutator",
+      "solar-power-electronics.html":"solar pv photovoltaic inverter mppt pwm charge controller combiner string rapid shutdown busbar shunt",
+      "power-electronics-modules.html":"power module igbt mosfet inverter drive half bridge full bridge six pack gate driver dc link sic gan",
+      "capacitor.html":"capacitor capacitance farad dielectric electrolytic ceramic charge discharge",
+      "inductors.html":"inductor coil choke inductance henry magnetic field",
+      "diodes.html":"diode rectifier zener schottky junction",
+      "led-lcd.html":"led lcd display seven segment pwm brightness backlight",
+      "transistors.html":"transistor bjt mosfet fet switching amplifier",
+      "vacuum-tubes.html":"vacuum tube valve triode tetrode pentode cathode plate grid",
+      "integrated-circuits.html":"integrated circuit ic chip analog digital package",
+      "op-amps-analog.html":"op amp operational amplifier comparator filter 555 timer instrumentation amplifier analog",
+      "crystals-oscillators.html":"crystal quartz oscillator frequency ppm tcxo ocxo pierce resonator clock",
+      "solid-state-switching.html":"solid state relay ssr scr thyristor triac diac optocoupler zero cross phase control",
+      "motors-controls.html":"motor motors ac dc three phase single phase starter contactor overload vfd soft starter servo stepper encoder",
+      "relays.html":"relay relays contactor coil no nc normally open normally closed",
+      "sensors-switches.html":"sensor sensors switch switches limit proximity inductive capacitive photoelectric reed pressure float flow temperature spst spdt dpdt pnp npn",
+      "plc-automation.html":"plc ladder logic hmi automation 4-20 ma 0-10 v ethernet ip profinet modbus industrial",
+      "processors.html":"processor cpu microprocessor microcontroller alu register memory gpio uart i2c spi pwm",
+      "digital-logic.html":"digital logic gate and or not nand nor xor xnor binary hex flip flop counter adc dac",
+      "fiber-optics.html":"fiber fibre optic optics single mode multimode sfp connector splice attenuation wavelength link budget",
+      "radio-rf.html":"radio rf antenna coax swr modulation am fm frequency wavelength mixer lna transmitter receiver",
+      "test-equipment.html":"test equipment multimeter meter clamp meter oscilloscope scope megohmmeter insulation tester logic probe continuity diode test",
+      "troubleshooting.html":"troubleshooting diagnose fault faults open short intermittent voltage drop testing repair",
+      "electricalPanel":"calculator ohm law volts amps resistance watts electrical calculator",
+      "resistorPanel":"resistor color colour bands resistance tolerance",
+      "solarPanel":"solar calculator panels watts sun hours energy"
+    };
+
+    const topicSearch = document.getElementById("topicSearch");
+    const clearTopicSearch = document.getElementById("clearTopicSearch");
+    const searchStatus = document.getElementById("searchStatus");
+    const searchableTabs = [...document.querySelectorAll(".nav-category .tab")];
+
+    function filterTopics(){
+      const q = topicSearch.value.trim().toLowerCase();
+      let shown = 0;
+
+      searchableTabs.forEach(item => {
+        const key = item.getAttribute("href") || item.dataset.panel || "";
+        const haystack = (item.textContent + " " + key + " " + (topicKeywords[key] || "")).toLowerCase();
+        const match = !q || haystack.includes(q);
+        item.classList.toggle("search-hidden", !match);
+        if(match) shown++;
+      });
+
+      document.querySelectorAll(".nav-category").forEach(category => {
+        const visible = [...category.querySelectorAll(".tab")].some(item => !item.classList.contains("search-hidden"));
+        category.classList.toggle("search-hidden", !visible);
+      });
+
+      searchStatus.textContent = q
+        ? (shown ? shown + " matching topic" + (shown === 1 ? "" : "s") + "." : "No matching topic. Try a broader word.")
+        : "Showing all topics.";
+    }
+
+    topicSearch.addEventListener("input", filterTopics);
+    clearTopicSearch.addEventListener("click", () => {
+      topicSearch.value = "";
+      filterTopics();
+      topicSearch.focus();
+    });
+
+    const toolTabs = document.querySelectorAll(".tab[data-panel]");
+    const panels = document.querySelectorAll(".panel");
+
+    toolTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        toolTabs.forEach(t => t.classList.remove("active"));
+        panels.forEach(p => p.classList.remove("active"));
+
+        tab.classList.add("active");
+        const panel = document.getElementById(tab.dataset.panel);
+        if (panel) panel.classList.add("active");
+      });
+    });
+
+    function formatNumber(n, maxDigits = 3) {
+      if (!Number.isFinite(n)) return "—";
+
+      return n.toLocaleString(undefined, {
+        maximumFractionDigits: maxDigits
+      });
+    }
+
+    const known1 = document.getElementById("known1");
+    const known2 = document.getElementById("known2");
+    const value1 = document.getElementById("value1");
+    const value2 = document.getElementById("value2");
+    const unit1 = document.getElementById("unit1");
+    const unit2 = document.getElementById("unit2");
+    const electricalError = document.getElementById("electricalError");
+    const electricalExplain = document.getElementById("electricalExplain");
+    const hoursPerDay = document.getElementById("hoursPerDay");
+    const electricRate = document.getElementById("electricRate");
+    let latestPowerWatts = 0;
+    let latestElectricalValues = { V:12, I:2, R:6, P:24 };
+    let latestSummary = "12 V, 2 A, 6 Ω, 24 W";
+
+    const unitMap = {
+      V:[
+        {label:"µV", factor:0.000001},
+        {label:"mV", factor:0.001},
+        {label:"V", factor:1},
+        {label:"kV", factor:1000}
+      ],
+      I:[
+        {label:"µA", factor:0.000001},
+        {label:"mA", factor:0.001},
+        {label:"A", factor:1},
+        {label:"kA", factor:1000}
+      ],
+      R:[
+        {label:"mΩ", factor:0.001},
+        {label:"Ω", factor:1},
+        {label:"kΩ", factor:1000},
+        {label:"MΩ", factor:1000000}
+      ],
+      P:[
+        {label:"µW", factor:0.000001},
+        {label:"mW", factor:0.001},
+        {label:"W", factor:1},
+        {label:"kW", factor:1000},
+        {label:"MW", factor:1000000}
+      ]
+    };
+
+    function populateUnitSelect(select, type, preferredFactor = 1) {
+      select.innerHTML = "";
+      unitMap[type].forEach(unit => {
+        const option = new Option(unit.label, String(unit.factor));
+        select.add(option);
+      });
+
+      const wanted = String(preferredFactor);
+      const exists = [...select.options].some(option => option.value === wanted);
+      select.value = exists ? wanted : "1";
+    }
+
+    populateUnitSelect(unit1, known1.value, 1);
+    populateUnitSelect(unit2, known2.value, 1);
+
+    function updatePowerCost() {
+      const hours = Math.min(24, Math.max(0, Number(hoursPerDay.value) || 0));
+      const rate = Math.max(0, Number(electricRate.value) || 0);
+      const kwhDay = (latestPowerWatts / 1000) * hours;
+      const dayCost = kwhDay * rate;
+      const monthCost = dayCost * 30;
+
+      document.getElementById("costKwhDay").textContent =
+        formatNumber(kwhDay, 3) + " kWh";
+
+      document.getElementById("costDay").textContent =
+        "$" + dayCost.toFixed(2);
+
+      document.getElementById("costMonth").textContent =
+        "$" + monthCost.toFixed(2);
+    }
+
+    function formatMetric(value, type) {
+      if (!Number.isFinite(value)) return "—";
+      const abs = Math.abs(value);
+
+      if (type === "V") {
+        if (abs >= 1000) return formatNumber(value / 1000) + " kV";
+        if (abs > 0 && abs < 0.001) return formatNumber(value * 1000000) + " µV";
+        if (abs > 0 && abs < 1) return formatNumber(value * 1000) + " mV";
+        return formatNumber(value) + " V";
+      }
+
+      if (type === "I") {
+        if (abs >= 1000) return formatNumber(value / 1000) + " kA";
+        if (abs > 0 && abs < 0.001) return formatNumber(value * 1000000) + " µA";
+        if (abs > 0 && abs < 1) return formatNumber(value * 1000) + " mA";
+        return formatNumber(value) + " A";
+      }
+
+      if (type === "R") {
+        if (abs >= 1000000) return formatNumber(value / 1000000) + " MΩ";
+        if (abs >= 1000) return formatNumber(value / 1000) + " kΩ";
+        if (abs > 0 && abs < 1) return formatNumber(value * 1000) + " mΩ";
+        return formatNumber(value) + " Ω";
+      }
+
+      if (type === "P") {
+        if (abs >= 1000000) return formatNumber(value / 1000000) + " MW";
+        if (abs >= 1000) return formatNumber(value / 1000) + " kW";
+        if (abs > 0 && abs < 0.001) return formatNumber(value * 1000000) + " µW";
+        if (abs > 0 && abs < 1) return formatNumber(value * 1000) + " mW";
+        return formatNumber(value) + " W";
+      }
+
+      return formatNumber(value);
+    }
+
+    function calculateElectrical() {
+      const typeA = known1.value;
+      const typeB = known2.value;
+
+      const a = Number(value1.value) * Number(unit1.value);
+      const b = Number(value2.value) * Number(unit2.value);
+
+      electricalError.textContent = "";
+
+      if (typeA === typeB) {
+        electricalError.textContent = "Choose two different electrical values.";
+        return;
+      }
+
+      if (!Number.isFinite(a) || !Number.isFinite(b) || a < 0 || b < 0) {
+        electricalError.textContent = "Enter two valid non-negative numbers.";
+        return;
+      }
+
+      const q = { V:null, I:null, R:null, P:null };
+      q[typeA] = a;
+      q[typeB] = b;
+
+      let steps = "";
+
+      if (q.V !== null && q.I !== null) {
+        q.P = q.V * q.I;
+        q.R = q.I === 0 ? 0 : q.V / q.I;
+        steps =
+          "P = V × I = " + formatNumber(q.V) + " × " + formatNumber(q.I) + " = " + formatMetric(q.P, "P") +
+          "<br>R = V ÷ I = " + formatNumber(q.V) + " ÷ " + formatNumber(q.I) + " = " + formatMetric(q.R, "R");
+      }
+
+      else if (q.V !== null && q.R !== null) {
+        if (q.R <= 0) {
+          electricalError.textContent = "Resistance must be above zero.";
+          return;
+        }
+
+        q.I = q.V / q.R;
+        q.P = q.V * q.I;
+        steps =
+          "I = V ÷ R = " + formatNumber(q.V) + " ÷ " + formatNumber(q.R) + " = " + formatMetric(q.I, "I") +
+          "<br>P = V × I = " + formatNumber(q.V) + " × " + formatNumber(q.I) + " = " + formatMetric(q.P, "P");
+      }
+
+      else if (q.V !== null && q.P !== null) {
+        if (q.V <= 0) {
+          electricalError.textContent = "Voltage must be above zero when power is known.";
+          return;
+        }
+
+        q.I = q.P / q.V;
+        q.R = q.I === 0 ? 0 : q.V / q.I;
+        steps =
+          "I = P ÷ V = " + formatNumber(q.P) + " ÷ " + formatNumber(q.V) + " = " + formatMetric(q.I, "I") +
+          "<br>R = V ÷ I = " + formatNumber(q.V) + " ÷ " + formatNumber(q.I) + " = " + formatMetric(q.R, "R");
+      }
+
+      else if (q.I !== null && q.R !== null) {
+        q.V = q.I * q.R;
+        q.P = q.V * q.I;
+        steps =
+          "V = I × R = " + formatNumber(q.I) + " × " + formatNumber(q.R) + " = " + formatMetric(q.V, "V") +
+          "<br>P = V × I = " + formatNumber(q.V) + " × " + formatNumber(q.I) + " = " + formatMetric(q.P, "P");
+      }
+
+      else if (q.I !== null && q.P !== null) {
+        if (q.I <= 0) {
+          electricalError.textContent = "Current must be above zero when power is known.";
+          return;
+        }
+
+        q.V = q.P / q.I;
+        q.R = q.V / q.I;
+        steps =
+          "V = P ÷ I = " + formatNumber(q.P) + " ÷ " + formatNumber(q.I) + " = " + formatMetric(q.V, "V") +
+          "<br>R = V ÷ I = " + formatNumber(q.V) + " ÷ " + formatNumber(q.I) + " = " + formatMetric(q.R, "R");
+      }
+
+      else if (q.R !== null && q.P !== null) {
+        if (q.R <= 0) {
+          electricalError.textContent = "Resistance must be above zero.";
+          return;
+        }
+
+        q.I = Math.sqrt(q.P / q.R);
+        q.V = q.I * q.R;
+        steps =
+          "I = √(P ÷ R) = √(" + formatNumber(q.P) + " ÷ " + formatNumber(q.R) + ") = " + formatMetric(q.I, "I") +
+          "<br>V = I × R = " + formatNumber(q.I) + " × " + formatNumber(q.R) + " = " + formatMetric(q.V, "V");
+      }
+
+      document.getElementById("outV").textContent = formatMetric(q.V, "V");
+      document.getElementById("outI").textContent = formatMetric(q.I, "I");
+      document.getElementById("outR").textContent = formatMetric(q.R, "R");
+      document.getElementById("outP").textContent = formatMetric(q.P, "P");
+
+      electricalExplain.textContent =
+        "Calculated result: " +
+        formatMetric(q.V, "V") + ", " +
+        formatMetric(q.I, "I") + ", " +
+        formatMetric(q.R, "R") + ", and " +
+        formatMetric(q.P, "P") + ".";
+
+      document.getElementById("formulaSteps").innerHTML = steps;
+
+      latestElectricalValues = { V:q.V, I:q.I, R:q.R, P:q.P };
+      latestSummary =
+        formatMetric(q.V, "V") + ", " +
+        formatMetric(q.I, "I") + ", " +
+        formatMetric(q.R, "R") + ", " +
+        formatMetric(q.P, "P");
+
+      latestPowerWatts = Number.isFinite(q.P) ? q.P : 0;
+      updatePowerCost();
+
+      const warning = document.getElementById("sanityWarning");
+      const warningParts = [];
+
+      if (q.V > 1000) warningParts.push("voltage is above 1 kV");
+      if (q.I > 500) warningParts.push("current is above 500 A");
+      if (q.P > 100000) warningParts.push("power is above 100 kW");
+      if (q.R > 0 && q.R < 0.001) warningParts.push("resistance is below 1 mΩ");
+
+      if (warningParts.length) {
+        warning.textContent =
+          "Check your entries and units: " +
+          warningParts.join(", ") +
+          ". These values may be intentional, but they are unusually large or small for many common examples.";
+        warning.classList.add("show");
+      } else {
+        warning.textContent = "";
+        warning.classList.remove("show");
+      }
+
+      document.getElementById("beginnerSummary").textContent =
+        "With " + formatMetric(q.V, "V") +
+        " across " + formatMetric(q.R, "R") +
+        ", the circuit draws " + formatMetric(q.I, "I") +
+        " and uses " + formatMetric(q.P, "P") + ".";
+    }
+
+    known1.addEventListener("change", () => {
+      populateUnitSelect(unit1, known1.value, 1);
+      calculateElectrical();
+    });
+
+    known2.addEventListener("change", () => {
+      populateUnitSelect(unit2, known2.value, 1);
+      calculateElectrical();
+    });
+
+    [value1, value2, unit1, unit2].forEach(el => {
+      el.addEventListener("input", calculateElectrical);
+      el.addEventListener("change", calculateElectrical);
+    });
+
+    [hoursPerDay, electricRate].forEach(el => {
+      el.addEventListener("input", updatePowerCost);
+    });
+
+    document.getElementById("swapKnown").addEventListener("click", () => {
+      const oldType = known1.value;
+      const oldValue = value1.value;
+      const oldUnit = unit1.value;
+
+      const newType1 = known2.value;
+      const newValue1 = value2.value;
+      const newUnit1 = unit2.value;
+
+      known1.value = newType1;
+      value1.value = newValue1;
+      populateUnitSelect(unit1, newType1, Number(newUnit1));
+
+      known2.value = oldType;
+      value2.value = oldValue;
+      populateUnitSelect(unit2, oldType, Number(oldUnit));
+
+      calculateElectrical();
+    });
+
+    document.getElementById("resetElectrical").addEventListener("click", () => {
+      known1.value = "V";
+      value1.value = "12";
+      populateUnitSelect(unit1, "V", 1);
+      known2.value = "R";
+      value2.value = "6";
+      populateUnitSelect(unit2, "R", 1);
+      hoursPerDay.value = "8";
+      electricRate.value = "0.15";
+      calculateElectrical();
+    });
+
+    document.querySelectorAll(".preset-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        const volts = button.dataset.voltage;
+
+        if (known1.value === "V") {
+          value1.value = volts;
+          populateUnitSelect(unit1, "V", 1);
+        } else if (known2.value === "V") {
+          value2.value = volts;
+          populateUnitSelect(unit2, "V", 1);
+        } else {
+          known1.value = "V";
+          value1.value = volts;
+          populateUnitSelect(unit1, "V", 1);
+
+          if (known2.value === "V") {
+            known2.value = "R";
+            populateUnitSelect(unit2, "R", 1);
+          }
+        }
+
+        calculateElectrical();
+      });
+    });
+
+    function getSavedHistory() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("electricalCalcHistory") || "[]");
+        return Array.isArray(saved) ? saved.slice(0,5) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveHistory(history) {
+      localStorage.setItem("electricalCalcHistory", JSON.stringify(history.slice(0,5)));
+    }
+
+    function renderHistory() {
+      const history = getSavedHistory();
+      const list = document.getElementById("historyList");
+
+      if (!history.length) {
+        list.innerHTML = '<div class="note">No saved calculations yet.</div>';
+        return;
+      }
+
+      list.innerHTML = history.map((item, index) => {
+        return '<div class="history-item">' +
+          '<div class="history-text">' + item.summary + '</div>' +
+          '<button type="button" class="history-use" data-history-index="' + index + '">Use</button>' +
+          '</div>';
+      }).join("");
+
+      document.querySelectorAll(".history-use").forEach(button => {
+        button.addEventListener("click", () => {
+          const item = getSavedHistory()[Number(button.dataset.historyIndex)];
+          if (!item) return;
+
+          known1.value = "V";
+          value1.value = String(item.V);
+          populateUnitSelect(unit1, "V", 1);
+
+          known2.value = "R";
+          value2.value = String(item.R);
+          populateUnitSelect(unit2, "R", 1);
+
+          calculateElectrical();
+          document.getElementById("copyStatus").textContent = "Saved calculation loaded.";
+        });
+      });
+    }
+
+    document.getElementById("saveCalculation").addEventListener("click", () => {
+      const history = getSavedHistory();
+      history.unshift({
+        V:latestElectricalValues.V,
+        I:latestElectricalValues.I,
+        R:latestElectricalValues.R,
+        P:latestElectricalValues.P,
+        summary:latestSummary
+      });
+
+      saveHistory(history);
+      renderHistory();
+      document.getElementById("copyStatus").textContent = "Calculation saved.";
+    });
+
+    document.getElementById("copyCalculation").addEventListener("click", async () => {
+      const text =
+        "Electrical calculation: " + latestSummary +
+        ". Formula: " +
+        document.getElementById("formulaSteps").innerText.replace(/\n/g, "; ");
+
+      try {
+        await navigator.clipboard.writeText(text);
+        document.getElementById("copyStatus").textContent = "Summary copied.";
+      } catch {
+        const temp = document.createElement("textarea");
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        temp.remove();
+        document.getElementById("copyStatus").textContent = "Summary copied.";
+      }
+    });
+
+    renderHistory();
+
+    const learnToggle = document.getElementById("learnToggle");
+    const learnContent = document.getElementById("learnContent");
+
+    learnToggle.addEventListener("click", () => {
+      const open = learnContent.classList.toggle("show");
+      learnToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      learnToggle.textContent = open ? "Hide Beginner Explanation" : "Show Beginner Explanation";
+    });
+
+    const networkMode = document.getElementById("networkMode");
+    const networkR1 = document.getElementById("networkR1");
+    const networkR2 = document.getElementById("networkR2");
+    const networkR3 = document.getElementById("networkR3");
+
+    function updateNetworkResistance() {
+      const raw = [networkR1.value, networkR2.value, networkR3.value];
+      const values = raw
+        .filter(value => value !== "")
+        .map(Number)
+        .filter(value => Number.isFinite(value) && value > 0);
+
+      const resultEl = document.getElementById("networkResult");
+      const formulaEl = document.getElementById("networkFormula");
+
+      if (values.length < 2) {
+        resultEl.textContent = "Enter at least 2 resistors";
+        formulaEl.textContent = "";
+        return;
+      }
+
+      if (networkMode.value === "series") {
+        const total = values.reduce((sum, value) => sum + value, 0);
+        resultEl.textContent = formatMetric(total, "R");
+        formulaEl.textContent =
+          "Series: " +
+          values.map(value => formatMetric(value, "R")).join(" + ") +
+          " = " + formatMetric(total, "R");
+      } else {
+        const reciprocalSum = values.reduce((sum, value) => sum + (1 / value), 0);
+        const total = 1 / reciprocalSum;
+        resultEl.textContent = formatMetric(total, "R");
+        formulaEl.textContent =
+          "Parallel: 1 ÷ (" +
+          values.map(value => "1/" + formatNumber(value)).join(" + ") +
+          ") = " + formatMetric(total, "R");
+      }
+    }
+
+    [networkMode, networkR1, networkR2, networkR3].forEach(el => {
+      el.addEventListener("input", updateNetworkResistance);
+      el.addEventListener("change", updateNetworkResistance);
+    });
+
+    updateNetworkResistance();
+
+    const wireOhmsPer1000FtCopper = {
+      "18":6.385,
+      "16":4.016,
+      "14":2.525,
+      "12":1.588,
+      "10":0.9989,
+      "8":0.6282,
+      "6":0.3951,
+      "4":0.2485,
+      "3":0.1970,
+      "2":0.1563,
+      "1":0.1239,
+      "1/0":0.0983,
+      "2/0":0.0779,
+      "3/0":0.0618,
+      "4/0":0.0490
+    };
+
+    function updateVoltageDrop() {
+      const voltage = Math.max(0.001, Number(document.getElementById("vdVoltage").value) || 0.001);
+      const current = Math.max(0, Number(document.getElementById("vdCurrent").value) || 0);
+      const length = Math.max(0, Number(document.getElementById("vdLength").value) || 0);
+      const material = document.getElementById("vdMaterial").value;
+      const gauge = document.getElementById("vdGauge").value;
+
+      let ohmsPer1000Ft = wireOhmsPer1000FtCopper[gauge] || 0;
+      if (material === "aluminum") ohmsPer1000Ft *= 1.64;
+
+      const circuitResistance = (ohmsPer1000Ft / 1000) * length * 2;
+      const drop = current * circuitResistance;
+      const percent = (drop / voltage) * 100;
+      const loadVoltage = Math.max(0, voltage - drop);
+
+      document.getElementById("vdDrop").textContent = formatNumber(drop, 2) + " V";
+      document.getElementById("vdPercent").textContent = formatNumber(percent, 2) + "%";
+      document.getElementById("vdLoadVoltage").textContent = formatNumber(loadVoltage, 2) + " V";
+
+      const status = document.getElementById("vdStatus");
+      status.className = "tool-status";
+
+      if (percent < 3) {
+        status.classList.add("good");
+        status.textContent = "Under 3% — within a common design target.";
+      } else if (percent <= 5) {
+        status.classList.add("warn");
+        status.textContent = "About 3–5% drop — worth reviewing for the application.";
+      } else {
+        status.classList.add("high");
+        status.textContent = "Over 5% drop — consider a larger conductor, shorter run, or other design change.";
+      }
+    }
+
+    ["vdVoltage","vdCurrent","vdLength","vdMaterial","vdGauge"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input", updateVoltageDrop);
+      el.addEventListener("change", updateVoltageDrop);
+    });
+
+    function updateAcPower() {
+      const voltage = Math.max(0, Number(document.getElementById("acVoltage").value) || 0);
+      const current = Math.max(0, Number(document.getElementById("acCurrent").value) || 0);
+      const pf = Math.min(1, Math.max(0, Number(document.getElementById("acPf").value) || 0));
+
+      const va = voltage * current;
+      const watts = va * pf;
+      const reactive = Math.sqrt(Math.max(0, (va * va) - (watts * watts)));
+
+      document.getElementById("acWatts").textContent = formatMetric(watts, "P");
+      document.getElementById("acVA").textContent =
+        va >= 1000 ? formatNumber(va / 1000, 3) + " kVA" : formatNumber(va, 2) + " VA";
+      document.getElementById("acVAR").textContent =
+        reactive >= 1000 ? formatNumber(reactive / 1000, 3) + " kVAR" : formatNumber(reactive, 1) + " VAR";
+
+      document.getElementById("acFormula").textContent =
+        "P = V × I × PF = " +
+        formatNumber(voltage) + " × " +
+        formatNumber(current) + " × " +
+        formatNumber(pf, 2) + " = " +
+        formatMetric(watts, "P");
+    }
+
+    ["acVoltage","acCurrent","acPf"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input", updateAcPower);
+      el.addEventListener("change", updateAcPower);
+    });
+
+    function updatePhaseCalculator() {
+      const mode = document.getElementById("phaseMode").value;
+      const voltage = Math.max(0.001, Number(document.getElementById("phaseVoltage").value) || 0.001);
+      const current = Math.max(0, Number(document.getElementById("phaseCurrent").value) || 0);
+      const pf = Math.min(1, Math.max(0.01, Number(document.getElementById("phasePf").value) || 0.01));
+      const targetKw = Math.max(0, Number(document.getElementById("phaseTargetKw").value) || 0);
+
+      const factor = mode === "three" ? Math.sqrt(3) : 1;
+      const apparentVa = factor * voltage * current;
+      const realWatts = apparentVa * pf;
+      const targetAmps = targetKw > 0 ? (targetKw * 1000) / (factor * voltage * pf) : 0;
+
+      document.getElementById("phaseKw").textContent =
+        formatNumber(realWatts / 1000, 3) + " kW";
+      document.getElementById("phaseKva").textContent =
+        formatNumber(apparentVa / 1000, 3) + " kVA";
+      document.getElementById("phaseTargetAmps").textContent =
+        formatNumber(targetAmps, 2) + " A";
+
+      document.getElementById("phaseFormula").textContent =
+        mode === "three"
+          ? "Three-phase: P = √3 × V × I × PF"
+          : "Single-phase: P = V × I × PF";
+    }
+
+    ["phaseMode","phaseVoltage","phaseCurrent","phasePf","phaseTargetKw"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input", updatePhaseCalculator);
+      el.addEventListener("change", updatePhaseCalculator);
+    });
+
+    updateVoltageDrop();
+    updateAcPower();
+    updatePhaseCalculator();
+
+    const wheelData = {
+      V: {
+        title:"Find Voltage (V)",
+        formulas:["V = I × R","V = P ÷ I","V = √(P × R)"]
+      },
+      P: {
+        title:"Find Power (P)",
+        formulas:["P = V × I","P = I² × R","P = V² ÷ R"]
+      },
+      I: {
+        title:"Find Current (I)",
+        formulas:["I = V ÷ R","I = P ÷ V","I = √(P ÷ R)"]
+      },
+      R: {
+        title:"Find Resistance (R)",
+        formulas:["R = V ÷ I","R = V² ÷ P","R = P ÷ I²"]
+      }
+    };
+
+    document.querySelectorAll(".wheel-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".wheel-btn").forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        const data = wheelData[button.dataset.wheel];
+        document.getElementById("wheelTitle").textContent = data.title;
+        document.getElementById("wheelFormulas").innerHTML =
+          data.formulas.map(formula => "<div>" + formula + "</div>").join("");
+      });
+    });
+
+    const digitColors = [
+      { name:"Black", value:0, color:"#111111" },
+      { name:"Brown", value:1, color:"#7b3f00" },
+      { name:"Red", value:2, color:"#c62828" },
+      { name:"Orange", value:3, color:"#ef6c00" },
+      { name:"Yellow", value:4, color:"#f9a825" },
+      { name:"Green", value:5, color:"#2e7d32" },
+      { name:"Blue", value:6, color:"#1565c0" },
+      { name:"Violet", value:7, color:"#6a1b9a" },
+      { name:"Gray", value:8, color:"#777777" },
+      { name:"White", value:9, color:"#f5f5f5" }
+    ];
+
+    const toleranceColors = [
+      { name:"Brown", value:1, color:"#7b3f00" },
+      { name:"Red", value:2, color:"#c62828" },
+      { name:"Gold", value:5, color:"#c7a008" },
+      { name:"Silver", value:10, color:"#a9a9a9" }
+    ];
+
+    const band1 = document.getElementById("band1");
+    const band2 = document.getElementById("band2");
+    const multiplier = document.getElementById("multiplier");
+    const tolerance = document.getElementById("tolerance");
+
+    digitColors.forEach(item => {
+      band1.add(new Option(item.name, item.value));
+      band2.add(new Option(item.name, item.value));
+      multiplier.add(new Option(item.name, item.value));
+    });
+
+    toleranceColors.forEach(item => {
+      tolerance.add(new Option(item.name, item.value));
+    });
+
+    band1.value = "1";
+    band2.value = "0";
+    multiplier.value = "2";
+    tolerance.value = "5";
+
+    function digitColor(value) {
+      const found = digitColors.find(
+        item => item.value === Number(value)
+      );
+
+      return found ? found.color : "#111111";
+    }
+
+    function toleranceColor(value) {
+      const found = toleranceColors.find(
+        item => item.value === Number(value)
+      );
+
+      return found ? found.color : "#c7a008";
+    }
+
+    function formatResistance(value) {
+      if (value >= 1000000) {
+        return formatNumber(value / 1000000) + " MΩ";
+      }
+
+      if (value >= 1000) {
+        return formatNumber(value / 1000) + " kΩ";
+      }
+
+      return formatNumber(value) + " Ω";
+    }
+
+    function updateResistor() {
+      const first = Number(band1.value);
+      const second = Number(band2.value);
+      const exponent = Number(multiplier.value);
+      const tol = Number(tolerance.value);
+
+      const resistance =
+        (first * 10 + second) * Math.pow(10, exponent);
+
+      document.getElementById("previewBand1").style.background =
+        digitColor(first);
+
+      document.getElementById("previewBand2").style.background =
+        digitColor(second);
+
+      document.getElementById("previewMultiplier").style.background =
+        digitColor(exponent);
+
+      document.getElementById("previewTolerance").style.background =
+        toleranceColor(tol);
+
+      document.getElementById("resistorValue").textContent =
+        formatResistance(resistance) +
+        " ±" +
+        tol +
+        "%";
+    }
+
+    [band1, band2, multiplier, tolerance].forEach(el => {
+      el.addEventListener("change", updateResistor);
+    });
+
+    const panelCount = document.getElementById("panelCount");
+    const panelWatts = document.getElementById("panelWatts");
+    const sunHours = document.getElementById("sunHours");
+
+    function updateSolar() {
+      const count =
+        Math.max(1, Number(panelCount.value) || 1);
+
+      const watts =
+        Math.max(1, Number(panelWatts.value) || 1);
+
+      const hours =
+        Math.max(0, Number(sunHours.value) || 0);
+
+      const totalWatts =
+        count * watts;
+
+      const dailyKwh =
+        totalWatts * hours / 1000;
+
+      document.getElementById("arraySize").textContent =
+        formatNumber(totalWatts, 0) +
+        " W";
+
+      document.getElementById("dailyEnergy").textContent =
+        formatNumber(dailyKwh, 2) +
+        " kWh";
+
+      document.getElementById("solarExplain").textContent =
+        formatNumber(count, 0) +
+        " panels × " +
+        formatNumber(watts, 0) +
+        " W = " +
+        formatNumber(totalWatts, 0) +
+        " W. At " +
+        formatNumber(hours, 1) +
+        " peak sun hours, ideal production is about " +
+        formatNumber(dailyKwh, 2) +
+        " kWh per day.";
+    }
+
+    [panelCount, panelWatts, sunHours].forEach(el => {
+      el.addEventListener("input", updateSolar);
+    });
+
+    calculateElectrical();
+    updateResistor();
+    updateSolar();
+  </script>
+</body>
+</html>
