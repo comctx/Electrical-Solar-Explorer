@@ -56,6 +56,62 @@ function applyTheme(theme){
 function toggleTheme(){
   applyTheme(document.documentElement.dataset.ateTheme==="dark"?"light":"dark");
 }
+
+function searchableSections(){
+  const root=document.querySelector("main")||document.body;
+  const seen=new Set(),items=[];
+  root.querySelectorAll("section,.panel,article").forEach((el,idx)=>{
+    if(seen.has(el))return;
+    const text=(el.innerText||"").replace(/\s+/g," ").trim();
+    if(text.length<30)return;
+    const h=el.querySelector("h2,h3");
+    const title=(h?.textContent||"Section "+(idx+1)).trim();
+    seen.add(el);items.push({el,title,text});
+  });
+  if(!items.length){
+    root.querySelectorAll("h2,h3").forEach((h,idx)=>{
+      const el=h.parentElement;if(!el)return;
+      const text=(el.innerText||"").replace(/\s+/g," ").trim();
+      items.push({el,title:(h.textContent||"Section "+(idx+1)).trim(),text});
+    });
+  }
+  return items;
+}
+function closePageFinder(){
+  document.getElementById("atePageFinder")?.remove();
+}
+function openPageFinder(){
+  closePageFinder();
+  const wrap=document.createElement("div");wrap.id="atePageFinder";wrap.className="ate-page-finder";
+  wrap.innerHTML='<div class="ate-finder-card"><div class="ate-finder-head"><strong>Find on This Page</strong><button type="button" id="ateFinderClose" aria-label="Close search">×</button></div><input id="ateFinderInput" type="search" placeholder="Try: cathode, voltage drop, A1/A2..." autocomplete="off"><div id="ateFinderMeta" class="ate-finder-meta">Type a word or phrase from this lesson.</div><div id="ateFinderResults" class="ate-finder-results"></div></div>';
+  document.body.appendChild(wrap);
+  const input=document.getElementById("ateFinderInput"),results=document.getElementById("ateFinderResults"),meta=document.getElementById("ateFinderMeta");
+  document.getElementById("ateFinderClose").onclick=closePageFinder;
+  wrap.addEventListener("click",e=>{if(e.target===wrap)closePageFinder()});
+  const items=searchableSections();
+  input.addEventListener("input",()=>{
+    const q=input.value.trim().toLowerCase();
+    results.replaceChildren();
+    if(!q){meta.textContent="Type a word or phrase from this lesson.";return}
+    const hits=items.filter(x=>x.text.toLowerCase().includes(q)).slice(0,12);
+    meta.textContent=hits.length?hits.length+" matching section"+(hits.length===1?"":"s"):"No matching section found.";
+    hits.forEach(hit=>{
+      const low=hit.text.toLowerCase(),pos=low.indexOf(q),start=Math.max(0,pos-65),end=Math.min(hit.text.length,pos+q.length+95);
+      const b=document.createElement("button");b.type="button";b.className="ate-finder-result";
+      b.innerHTML='<strong></strong><span></span>';
+      b.querySelector("strong").textContent=hit.title;
+      b.querySelector("span").textContent=(start?"…":"")+hit.text.slice(start,end)+(end<hit.text.length?"…":"");
+      b.onclick=()=>{
+        closePageFinder();
+        hit.el.scrollIntoView({behavior:"smooth",block:"start"});
+        hit.el.classList.add("ate-find-highlight");
+        setTimeout(()=>hit.el.classList.remove("ate-find-highlight"),1800);
+      };
+      results.appendChild(b);
+    });
+  });
+  setTimeout(()=>input.focus(),0);
+}
 function makeToolbar(){
   const bar=document.createElement("div");
   bar.className="ate-toolbar";
@@ -68,6 +124,10 @@ function makeToolbar(){
     home.setAttribute("aria-label","Return to All Things Electrical home");
     home.addEventListener("click",()=>{window.location.assign("index.html")});
     bar.appendChild(home);
+
+    const find=document.createElement("button");
+    find.type="button";find.id="ateFindBtn";find.textContent="⌕ Find on Page";find.addEventListener("click",openPageFinder);
+    bar.appendChild(find);
 
     const fav=document.createElement("button");
     fav.type="button";fav.id="ateFavBtn";fav.addEventListener("click",toggleFavorite);
