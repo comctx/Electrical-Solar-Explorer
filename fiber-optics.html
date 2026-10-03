@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>Fiber Optics Explorer</title>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700}.result strong{font-size:clamp(20px,4vw,28px);color:var(--navy)}.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+.fiber-stage{position:relative;height:230px;border-radius:18px;background:#06182a;overflow:hidden;border:1px solid #17334e}.core{position:absolute;left:30px;right:30px;top:75px;height:80px;background:#0f2f4d;border:12px solid #43698d;border-radius:40px}.ray{position:absolute;left:50px;top:113px;width:calc(100% - 100px);height:4px;background:linear-gradient(90deg,#ffeb3b,#00e5ff);transform-origin:left center;box-shadow:0 0 10px #00e5ff}.bounce1{transform:rotate(-8deg)}.bounce2{top:100px;transform:rotate(8deg)}.ray.single{top:113px;transform:none;height:5px}.label{position:absolute;color:#dbe8f5;font-weight:800;font-size:13px}.l1{left:42px;top:34px}.l2{left:42px;bottom:26px}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){main{padding:12px}.two,.three,.results{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1>Fiber Optics Explorer</h1><p>Light transmission, core and cladding, single-mode vs. multimode, connectors, splices, wavelengths, transceivers, attenuation, and link budgets.</p></header>
+<main>
+<nav class="nav">
+<a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="vacuum-tubes.html">Vacuum Tubes</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a href="motors-controls.html">Motors & Controls</a><a href="generators-alternators.html">Generators & Alternators</a><a href="solar-power-electronics.html">Solar Power Electronics</a><a href="sensors-switches.html">Sensors & Switches</a><a class="active" href="fiber-optics.html">Fiber Optics</a><a href="processors.html">Processors</a>
+</nav>
+
+<section class="panel">
+<h2>Beginner Start Here</h2>
+<div class="grid three">
+<div class="card"><strong>Core</strong><p>The central glass or plastic region that carries the light signal.</p><span class="badge">Carries light</span></div>
+<div class="card"><strong>Cladding</strong><p>Material surrounding the core with a slightly lower refractive index, helping confine light to the core.</p><span class="badge">Keeps light guided</span></div>
+<div class="card"><strong>Total Internal Reflection</strong><p>At suitable angles, light reflects back into the core instead of escaping through the boundary.</p><span class="badge">Guiding principle</span></div>
+<div class="card"><strong>Transmitter</strong><p>Uses an LED or laser source to turn electrical data into modulated light.</p><span class="badge">Electrical → optical</span></div>
+<div class="card"><strong>Receiver</strong><p>A photodiode and electronics convert arriving light back into an electrical signal.</p><span class="badge">Optical → electrical</span></div>
+<div class="card"><strong>Transceiver / SFP</strong><p>A module that contains both transmitter and receiver functions and provides a network equipment interface.</p><span class="badge">Pluggable optics</span></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>How Light Travels in Fiber</h2>
+<p class="lead">The illustration is simplified, but it shows the idea of light being guided along the core.</p>
+<div class="fiber-stage" id="fiberStage">
+<div class="label l1">Cladding surrounds the core</div>
+<div class="core"></div>
+<div id="ray1" class="ray bounce1"></div>
+<div id="ray2" class="ray bounce2"></div>
+<div class="label l2">Light energy stays largely confined to the core</div>
+</div>
+<div class="field" style="margin-top:14px"><label>Fiber mode</label><select id="modeSel"><option value="multi">Multimode visualization</option><option value="single">Single-mode visualization</option></select></div>
+<div class="formula">Single-mode fiber supports essentially one propagation mode at the operating wavelength; multimode fiber supports many modes and is more susceptible to modal dispersion.</div>
+</section>
+
+<section class="panel">
+<h2>Single-Mode vs. Multimode</h2>
+<table><thead><tr><th>Feature</th><th>Single-mode</th><th>Multimode</th></tr></thead><tbody>
+<tr><td>Typical core size</td><td>About 9 µm</td><td>Typically 50 or 62.5 µm</td></tr>
+<tr><td>Typical source</td><td>Laser</td><td>LED or VCSEL</td></tr>
+<tr><td>Common wavelengths</td><td>1310 nm, 1550 nm</td><td>850 nm, sometimes 1300 nm</td></tr>
+<tr><td>Typical strength</td><td>Long distance and high bandwidth</td><td>Shorter building/data-center links and easier light coupling</td></tr>
+<tr><td>Main dispersion concern</td><td>Chromatic/polarization effects</td><td>Modal dispersion plus chromatic effects</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>Common Connectors & Hardware</h2>
+<div class="grid three">
+<div class="card"><strong>LC</strong><p>Small-form-factor connector widely used on modern network transceivers and patch panels.</p></div>
+<div class="card"><strong>SC</strong><p>Push-pull square-bodied connector common in telecom and premises cabling.</p></div>
+<div class="card"><strong>ST</strong><p>Bayonet-style connector found in many older or industrial installations.</p></div>
+<div class="card"><strong>MPO/MTP</strong><p>Multi-fiber connector used for high-density parallel optical links.</p></div>
+<div class="card"><strong>Fusion splice</strong><p>Fiber ends are precisely aligned and fused together, usually producing very low loss.</p></div>
+<div class="card"><strong>Mechanical splice</strong><p>Aligns fiber ends mechanically without permanently fusing the glass.</p></div>
+<div class="card"><strong>Patch panel / enclosure</strong><p>Protects terminations and organizes adapters, pigtails, and splices.</p></div>
+<div class="card"><strong>SFP / SFP+ / QSFP</strong><p>Families of pluggable transceiver modules used for different speeds, wavelengths, and link types.</p></div>
+<div class="card"><strong>Media converter</strong><p>Converts an electrical network interface to an optical interface and back.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Wavelengths</h2>
+<table><thead><tr><th>Wavelength</th><th>Typical context</th></tr></thead><tbody>
+<tr><td>850 nm</td><td>Common for multimode LAN/data-center optics.</td></tr>
+<tr><td>1310 nm</td><td>Common single-mode wavelength with relatively low dispersion over many links.</td></tr>
+<tr><td>1490 nm</td><td>Used in some passive optical network downstream systems.</td></tr>
+<tr><td>1550 nm</td><td>Low-loss transmission window commonly used for long-haul and wavelength-division systems.</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>Fiber Link Budget Calculator</h2>
+<p class="lead">Estimate received optical power after fiber, connector, and splice losses.</p>
+<div class="grid three">
+<div class="field"><label>Transmitter power (dBm)</label><input id="txPower" type="number" value="-3" step="any"></div>
+<div class="field"><label>Fiber length (km)</label><input id="fiberKm" type="number" value="5" min="0" step="any"></div>
+<div class="field"><label>Fiber attenuation (dB/km)</label><input id="atten" type="number" value="0.35" min="0" step="any"></div>
+<div class="field"><label>Connector pairs</label><input id="connCount" type="number" value="2" min="0" step="1"></div>
+<div class="field"><label>Loss per connector pair (dB)</label><input id="connLoss" type="number" value="0.5" min="0" step="any"></div>
+<div class="field"><label>Splices</label><input id="spliceCount" type="number" value="4" min="0" step="1"></div>
+<div class="field"><label>Loss per splice (dB)</label><input id="spliceLoss" type="number" value="0.1" min="0" step="any"></div>
+<div class="field"><label>Receiver sensitivity (dBm)</label><input id="rxSens" type="number" value="-18" step="any"></div>
+</div>
+<div class="results">
+<div class="result"><small>Total estimated loss</small><strong id="lossOut">—</strong></div>
+<div class="result"><small>Estimated receive power</small><strong id="rxOut">—</strong></div>
+<div class="result"><small>Estimated margin</small><strong id="marginOut">—</strong></div>
+</div>
+<div class="formula">Receive power ≈ transmitter power − fiber loss − connector loss − splice loss</div>
+<p class="note">Real design should also include engineering margin, aging, temperature, splitter losses, bends, actual transceiver specifications, and measured test results.</p>
+</section>
+
+<section class="panel">
+<h2>Attenuation & Distance Calculator</h2>
+<div class="grid three">
+<div class="field"><label>Available optical budget (dB)</label><input id="budget" type="number" value="10" min="0" step="any"></div>
+<div class="field"><label>Fixed losses (dB)</label><input id="fixedLoss" type="number" value="2" min="0" step="any"></div>
+<div class="field"><label>Fiber attenuation (dB/km)</label><input id="rate" type="number" value="0.35" min="0.001" step="any"></div>
+</div>
+<div class="results"><div class="result"><small>Approx. remaining fiber budget</small><strong id="fiberBudgetOut">—</strong></div><div class="result"><small>Theoretical distance</small><strong id="distanceOut">—</strong></div><div class="result"><small>Practical note</small><strong id="distanceNote">—</strong></div></div>
+</section>
+
+<section class="panel">
+<h2>Why Fiber Is Different From Copper</h2>
+<div class="grid two">
+<div class="card"><strong>No electrical current in the glass</strong><p>The information is carried by light, so the fiber itself does not provide an electrical conductive path between endpoints.</p></div>
+<div class="card"><strong>Immune to electromagnetic interference</strong><p>Optical signals are not directly disturbed by nearby magnetic fields the way copper signaling can be.</p></div>
+<div class="card"><strong>Long distance / high bandwidth</strong><p>Low attenuation and optical carrier frequencies support very high data rates over long distances.</p></div>
+<div class="card"><strong>More sensitive to handling</strong><p>Dirty connector end faces, tight bends, damaged fiber, poor splices, and incorrect optics can cause large losses or link failure.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Fiber Safety & Handling</h2>
+<div class="warning">Never look into the end of a fiber or optical transceiver. Infrared light may be invisible but can still be hazardous to eyes. Keep fiber scraps controlled because tiny glass shards can penetrate skin, and clean connector end faces with proper fiber-cleaning methods before mating connectors.</div>
+</section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+<script>
+function modeDraw(){const single=modeSel.value==="single";ray1.className="ray"+(single?" single":" bounce1");ray2.style.display=single?"none":"block"}modeSel.onchange=modeDraw;modeDraw();
+function linkCalc(){const tx=+txPower.value,km=+fiberKm.value,a=+atten.value,cc=+connCount.value,cl=+connLoss.value,sc=+spliceCount.value,sl=+spliceLoss.value,sens=+rxSens.value;const loss=km*a+cc*cl+sc*sl,rx=tx-loss,margin=rx-sens;lossOut.textContent=loss.toFixed(2)+" dB";rxOut.textContent=rx.toFixed(2)+" dBm";marginOut.textContent=margin.toFixed(2)+" dB"}[txPower,fiberKm,atten,connCount,connLoss,spliceCount,spliceLoss,rxSens].forEach(x=>x.addEventListener("input",linkCalc));linkCalc();
+function distCalc(){const b=+budget.value,f=+fixedLoss.value,r=+rate.value,fb=Math.max(0,b-f),d=fb/r;fiberBudgetOut.textContent=fb.toFixed(2)+" dB";distanceOut.textContent=d.toFixed(1)+" km";distanceNote.textContent=d>0?"Before engineering margin":"No remaining budget"}[budget,fixedLoss,rate].forEach(x=>x.addEventListener("input",distCalc));distCalc();
+</script>
+</body>
+</html>
