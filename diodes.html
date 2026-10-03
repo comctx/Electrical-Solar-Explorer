@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Diodes Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+      --good:#1f7a4d;--danger:#b42318;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;padding:24px 18px 20px;text-align:center;
+    }
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1000px;margin:0 auto;padding:18px}
+    .page-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .page-nav a{
+      text-decoration:none;min-height:46px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:11px;padding:10px 14px;font-weight:800;border:1px solid #9fc8ef;
+      background:#eef7ff;color:var(--navy);
+    }
+    .page-nav a.active{background:var(--yellow);border-color:#e4ba16}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px;
+    }
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    h3{margin:0 0 8px;color:var(--navy)}
+    .lead,.note{color:var(--muted);line-height:1.5}
+    .lead{margin:0 0 16px}.note{font-size:13px;margin:10px 0 0}
+    .grid{display:grid;gap:12px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input,select,button{font:inherit}
+    input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white;color:var(--text)}
+    input:focus,select:focus,button:focus{outline:3px solid rgba(11,99,206,.22);outline-offset:2px}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px;min-width:0}
+    .result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .result strong{color:var(--navy);font-size:clamp(20px,4vw,28px);word-break:break-word}
+    .formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+    .warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:10px;padding:10px 12px;color:#6a4300;font-weight:700;line-height:1.45}
+    .status{margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy);line-height:1.45}
+    .status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+    .status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
+    .status.high{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+    .beginner-panel{background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:2px solid #b9d7f5}
+    .beginner-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .beginner-card{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:13px;padding:13px}
+    .beginner-card strong{display:block;color:var(--navy);margin-bottom:5px;font-size:16px}
+    .beginner-card p{margin:0;color:#33495b;line-height:1.5;font-size:14px}
+    .other-words{margin-top:14px;background:#fff7cc;border:1px solid #e5c94a;border-radius:13px;padding:14px}
+    .other-words strong{display:block;color:var(--navy);font-size:17px;margin-bottom:8px}
+    .other-words-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .other-words-item{background:white;border:1px solid #eadb82;border-radius:10px;padding:10px;font-weight:800;color:#263b4c;line-height:1.4}
+    .beginner-tip{margin-top:12px;border-left:5px solid var(--electric);background:#eef7ff;border-radius:10px;padding:11px 13px;line-height:1.5;color:#25394b;font-weight:700}
+    .type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .type-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:13px}
+    .type-card strong{display:block;color:var(--navy);margin-bottom:5px}
+    .type-card small{display:block;color:var(--muted);line-height:1.45}
+    .badge{display:inline-block;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#e9f3ff;color:var(--navy);border:1px solid #b9d7f5}
+    .diode-stage{
+      margin-top:14px;border:1px solid var(--border);background:#fbfdff;border-radius:16px;padding:18px;
+      display:grid;grid-template-columns:minmax(240px,.9fr) minmax(0,1.1fr);gap:18px;align-items:center;
+    }
+    .symbol-wrap{display:flex;align-items:center;justify-content:center;min-height:170px;position:relative}
+    .wire{width:70px;height:8px;background:#607080}
+    .triangle{width:0;height:0;border-top:42px solid transparent;border-bottom:42px solid transparent;border-left:70px solid var(--electric);transition:filter .15s}
+    .bar{width:10px;height:100px;background:var(--navy);margin-left:6px}
+    .flow-dot{position:absolute;width:15px;height:15px;border-radius:50%;background:var(--yellow);left:10%;top:50%;transform:translateY(-50%);opacity:0}
+    .flowing .flow-dot{opacity:1;animation:flow 1.25s linear infinite}
+    @keyframes flow{from{left:10%}to{left:82%}}
+    .button-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .action{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}
+    .action.primary{background:var(--yellow);border-color:#e4ba16}
+    .polarity-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .polarity-card{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px;text-align:center}
+    .polarity-card strong{display:block;color:var(--navy);font-size:18px}
+    .wavebox{margin-top:14px;border:1px solid var(--border);border-radius:14px;background:#fbfdff;padding:12px}
+    .wavebox svg{width:100%;height:auto;display:block;background:white;border:1px solid #d7e1ea;border-radius:10px}
+    @media(max-width:760px){
+      main{padding:12px}.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .result-grid,.beginner-grid,.other-words-grid{grid-template-columns:1fr}
+      .type-grid{grid-template-columns:1fr 1fr}
+      .diode-stage{grid-template-columns:1fr}
+    }
+    @media(max-width:420px){.type-grid,.polarity-row{grid-template-columns:1fr}}
+    footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Diodes Explorer</h1>
+    <p>Polarity, forward voltage, LEDs, rectifiers, Zeners, Schottky diodes, and waveform control.</p>
+  </header>
+
+  <main>
+    <nav class="page-nav" aria-label="App pages">
+      <a href="index.html">Electrical & Solar</a>
+      <a href="capacitor.html">Capacitors</a>
+      <a href="inductors.html">Inductors & Coils</a>
+      <a href="transformers.html">Transformers</a>
+      <a href="diodes.html" class="active">Diodes</a>
+    </nav>
+
+    <section class="panel beginner-panel">
+      <h2>Beginner Start Here</h2>
+      <p class="lead">A diode is one of the simplest semiconductor components. These six ideas explain the page before you start using the calculators.</p>
+      <div class="beginner-grid">
+        <div class="beginner-card"><strong>What is a diode?</strong><p>A diode is a semiconductor device designed to conduct much more easily in one direction than the other.</p></div>
+        <div class="beginner-card"><strong>Anode and cathode</strong><p>The two terminals are the anode and cathode. On many physical diodes, a stripe marks the cathode end.</p></div>
+        <div class="beginner-card"><strong>Forward voltage</strong><p>A real diode normally needs some forward voltage before substantial current flows. Silicon diodes are often around 0.6–0.8 V, but the actual value depends on current and temperature.</p></div>
+        <div class="beginner-card"><strong>Reverse voltage</strong><p>When reverse-biased, a normal diode blocks current until its reverse-voltage limit is exceeded. Zener diodes are intentionally designed to operate in a controlled reverse-breakdown region.</p></div>
+        <div class="beginner-card"><strong>Why use a diode?</strong><p>Diodes are used for rectification, reverse-polarity protection, voltage reference, signal steering, clipping, flyback protection, and light emission.</p></div>
+        <div class="beginner-card"><strong>LEDs are diodes too</strong><p>A light-emitting diode produces light when forward current flows. It normally needs current limiting, such as a resistor or regulated driver.</p></div>
+      </div>
+      <div class="other-words">
+        <strong>In Other Words</strong>
+        <div class="other-words-grid">
+          <div class="other-words-item">Forward-biased: the diode can conduct.</div>
+          <div class="other-words-item">Reverse-biased: a normal diode blocks current.</div>
+          <div class="other-words-item">The cathode is commonly marked with a stripe on axial diodes.</div>
+        </div>
+      </div>
+      <div class="beginner-tip">Start with the <strong>Diode Direction Simulator</strong>, then try the LED resistor calculator. Those two tools make diode polarity and current limiting much easier to visualize.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Diode Direction Simulator</h2>
+      <p class="lead">Switch between forward and reverse bias to see the basic one-way behavior.</p>
+      <div class="diode-stage">
+        <div>
+          <div id="symbolWrap" class="symbol-wrap">
+            <div class="flow-dot"></div>
+            <div class="wire"></div><div class="triangle"></div><div class="bar"></div><div class="wire"></div>
+          </div>
+          <div class="polarity-row">
+            <div class="polarity-card"><small>Anode</small><strong id="anodePolarity">+</strong></div>
+            <div class="polarity-card"><small>Cathode</small><strong id="cathodePolarity">−</strong></div>
+          </div>
+        </div>
+        <div>
+          <h3 id="biasTitle">Forward biased</h3>
+          <p id="biasExplain" class="lead">The anode is more positive than the cathode, so a normal diode can conduct once its forward voltage is reached.</p>
+          <div class="button-row">
+            <button id="forwardBtn" class="action primary" type="button">Forward Bias</button>
+            <button id="reverseBtn" class="action" type="button">Reverse Bias</button>
+          </div>
+          <div id="biasStatus" class="status good">Current can flow in the forward direction when the circuit provides enough voltage.</div>
+        </div>
+      </div>
+      <p class="note">The triangle-like symbol above is a simplified visual direction aid, not a replacement for the standard schematic diode symbol.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Forward Voltage & Current</h2>
+      <p class="lead">Estimate current in a simple source-resistor-diode circuit using a constant forward-voltage model.</p>
+      <div class="grid three">
+        <div class="field"><label for="fvSupply">Supply voltage (V)</label><input id="fvSupply" type="number" min="0" step="any" value="5"></div>
+        <div class="field"><label for="fvDrop">Diode forward voltage Vf (V)</label><input id="fvDrop" type="number" min="0" step="any" value="0.7"></div>
+        <div class="field"><label for="fvR">Series resistance (Ω)</label><input id="fvR" type="number" min="0.000001" step="any" value="1000"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Estimated current</small><strong id="fvCurrent">—</strong></div>
+        <div class="result"><small>Resistor power</small><strong id="fvPower">—</strong></div>
+        <div class="result"><small>Diode power</small><strong id="fvDiodePower">—</strong></div>
+      </div>
+      <div id="fvFormula" class="formula">I ≈ (Vsupply − Vf) ÷ R.</div>
+      <p class="note">Real diode forward voltage is not constant; it varies with current, device type, and temperature.</p>
+    </section>
+
+    <section class="panel">
+      <h2>LED Resistor Calculator</h2>
+      <p class="lead">Choose a supply, LED forward voltage, and target current to estimate a series resistor.</p>
+      <div class="grid four">
+        <div class="field"><label for="ledSupply">Supply voltage (V)</label><input id="ledSupply" type="number" min="0" step="any" value="5"></div>
+        <div class="field"><label for="ledVf">LED forward voltage (V)</label><input id="ledVf" type="number" min="0" step="any" value="2"></div>
+        <div class="field"><label for="ledMa">Target LED current (mA)</label><input id="ledMa" type="number" min="0.001" step="any" value="15"></div>
+        <div class="field"><label for="ledCount">Series LEDs</label><input id="ledCount" type="number" min="1" step="1" value="1"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Calculated resistance</small><strong id="ledR">—</strong></div>
+        <div class="result"><small>Nearby standard value</small><strong id="ledStdR">—</strong></div>
+        <div class="result"><small>Resistor power</small><strong id="ledPower">—</strong></div>
+      </div>
+      <div id="ledFormula" class="formula">R = (Vsupply − total LED Vf) ÷ I.</div>
+      <div id="ledStatus" class="status">Enter LED values.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Rectifier & Smoothing Capacitor</h2>
+      <p class="lead">Estimate rectified peak DC and capacitor ripple for half-wave or bridge rectification.</p>
+      <div class="grid four">
+        <div class="field"><label for="rectMode">Rectifier</label><select id="rectMode"><option value="bridge">Full-wave bridge</option><option value="half">Half-wave</option></select></div>
+        <div class="field"><label for="rectVac">AC input (V RMS)</label><input id="rectVac" type="number" min="0" step="any" value="12"></div>
+        <div class="field"><label for="rectHz">Line frequency (Hz)</label><input id="rectHz" type="number" min="0.001" step="any" value="60"></div>
+        <div class="field"><label for="rectVf">Diode Vf (V)</label><input id="rectVf" type="number" min="0" step="any" value="0.7"></div>
+        <div class="field"><label for="rectLoadMa">Load current (mA)</label><input id="rectLoadMa" type="number" min="0" step="any" value="100"></div>
+        <div class="field"><label for="rectCapUf">Filter capacitor (µF)</label><input id="rectCapUf" type="number" min="0.001" step="any" value="1000"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Approx. rectified peak</small><strong id="rectPeak">—</strong></div>
+        <div class="result"><small>Approx. ripple p-p</small><strong id="rectRipple">—</strong></div>
+        <div class="result"><small>Approx. average DC</small><strong id="rectAvg">—</strong></div>
+        <div class="result"><small>Ripple frequency</small><strong id="rectRippleHz">—</strong></div>
+        <div class="result"><small>Basic PIV estimate per diode</small><strong id="rectPiv">—</strong></div>
+      </div>
+      <div id="rectFormula" class="formula">Vpeak ≈ Vrms × √2 minus diode drops; ripple ≈ I ÷ (fripple × C).</div>
+      <div class="wavebox">
+        <strong>Rectified waveform concept</strong>
+        <svg viewBox="0 0 680 200" aria-label="Rectified waveform">
+          <line x1="35" y1="100" x2="655" y2="100" stroke="#8ca0b3" stroke-width="1.5"/>
+          <path id="wavePath" d="" fill="none" stroke="#0b63ce" stroke-width="4"/>
+        </svg>
+      </div>
+      <p class="note">This is a simplified educational estimate. Transformer regulation, diode current pulses, capacitor ESR, source impedance, load waveform, and safety margins affect real supplies.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Zener Regulator Calculator</h2>
+      <p class="lead">Estimate current and power in a simple resistor-fed Zener shunt regulator.</p>
+      <div class="grid four">
+        <div class="field"><label for="zSupply">Supply voltage (V)</label><input id="zSupply" type="number" min="0" step="any" value="12"></div>
+        <div class="field"><label for="zVoltage">Zener voltage (V)</label><input id="zVoltage" type="number" min="0.001" step="any" value="5.1"></div>
+        <div class="field"><label for="zR">Series resistor (Ω)</label><input id="zR" type="number" min="0.000001" step="any" value="330"></div>
+        <div class="field"><label for="zLoadMa">Load current (mA)</label><input id="zLoadMa" type="number" min="0" step="any" value="10"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Resistor current</small><strong id="zResCurrent">—</strong></div>
+        <div class="result"><small>Zener current</small><strong id="zCurrent">—</strong></div>
+        <div class="result"><small>Zener power</small><strong id="zPower">—</strong></div>
+        <div class="result"><small>Series resistor power</small><strong id="zRPower">—</strong></div>
+      </div>
+      <div id="zStatus" class="status">Enter values to check the operating point.</div>
+      <div id="zFormula" class="formula">Iresistor = (Vsupply − Vzener) ÷ R; Izener = Iresistor − Iload.</div>
+      <p class="note">A real Zener needs adequate current to regulate and must remain within its power rating. Check the device datasheet for test current, dynamic resistance, temperature effects, and maximum dissipation.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Diode Clipper</h2>
+      <p class="lead">Estimate the output peak of a simple diode limiter using a reference voltage plus the diode forward drop.</p>
+      <div class="grid four">
+        <div class="field"><label for="clipInput">Input peak (V)</label><input id="clipInput" type="number" min="0" step="any" value="10"></div>
+        <div class="field"><label for="clipRef">Reference / bias voltage (V)</label><input id="clipRef" type="number" min="0" step="any" value="0"></div>
+        <div class="field"><label for="clipVf">Diode Vf (V)</label><input id="clipVf" type="number" min="0" step="any" value="0.7"></div>
+        <div class="field"><label for="clipMode">Limit</label><select id="clipMode"><option value="positive">Positive peaks</option><option value="negative">Negative peaks</option></select></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Clip threshold</small><strong id="clipThreshold">—</strong></div>
+        <div class="result"><small>Estimated limited peak</small><strong id="clipOutput">—</strong></div>
+      </div>
+      <div id="clipFormula" class="formula">Threshold ≈ Vreference + Vf.</div>
+      <p class="note">Real clipping depends on the circuit orientation, source resistance, load, diode I-V curve, and any bias network.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Diode Types & Uses</h2>
+      <p class="lead">Common diode families and where they show up.</p>
+      <div class="type-grid">
+        <div class="type-card"><strong>Silicon Rectifier</strong><small>General-purpose power rectification and reverse-polarity protection.</small><span class="badge">Power / rectification</span></div>
+        <div class="type-card"><strong>Schottky Diode</strong><small>Lower forward drop and fast switching, useful in low-voltage supplies and digital protection.</small><span class="badge">Low Vf / fast</span></div>
+        <div class="type-card"><strong>Zener Diode</strong><small>Designed for controlled reverse breakdown, commonly used for references, clamps, and shunt regulation.</small><span class="badge">Voltage control</span></div>
+        <div class="type-card"><strong>LED</strong><small>Produces light when forward biased. Color and construction affect forward voltage.</small><span class="badge">Light</span></div>
+        <div class="type-card"><strong>Photodiode</strong><small>Produces current in response to light and is used in optical sensing and communication.</small><span class="badge">Light sensing</span></div>
+        <div class="type-card"><strong>TVS Diode</strong><small>Designed to clamp short transient overvoltage events and protect sensitive electronics.</small><span class="badge">Surge protection</span></div>
+        <div class="type-card"><strong>Fast / Ultrafast Diode</strong><small>Reduced reverse-recovery time for switching converters and higher-frequency rectification.</small><span class="badge">Switching</span></div>
+        <div class="type-card"><strong>Signal Diode</strong><small>Small, fast diodes used for switching, detection, logic steering, and waveform shaping.</small><span class="badge">Signals</span></div>
+        <div class="type-card"><strong>Varactor / Varicap</strong><small>Uses junction capacitance under reverse bias as a voltage-controlled capacitor in RF circuits.</small><span class="badge">RF tuning</span></div>
+      </div>
+      <div class="warning">Diode voltage, current, surge, temperature, and reverse-voltage limits vary widely. For real circuits, use the exact part datasheet and include appropriate safety margin.</div>
+    </section>
+  </main>
+
+  <footer>A DONCO-BAYCITY™ App</footer>
+
+  <script>
+    function fmt(n,d=3){
+      if(!Number.isFinite(n))return "—";
+      return n.toLocaleString(undefined,{maximumFractionDigits:d});
+    }
+    function formatA(a){
+      const x=Math.abs(a);
+      if(x>=1)return fmt(a,3)+" A";
+      if(x>=.001)return fmt(a*1000,3)+" mA";
+      if(x>=.000001)return fmt(a*1e6,3)+" µA";
+      return fmt(a*1e9,3)+" nA";
+    }
+    function formatV(v){
+      const x=Math.abs(v);
+      if(x>=1000)return fmt(v/1000,3)+" kV";
+      if(x>=1)return fmt(v,3)+" V";
+      if(x>=.001)return fmt(v*1000,3)+" mV";
+      return fmt(v*1e6,3)+" µV";
+    }
+    function formatOhms(r){
+      const x=Math.abs(r);
+      if(x>=1e6)return fmt(r/1e6,3)+" MΩ";
+      if(x>=1e3)return fmt(r/1e3,3)+" kΩ";
+      if(x<1&&x>0)return fmt(r*1000,3)+" mΩ";
+      return fmt(r,3)+" Ω";
+    }
+    function formatPower(w){
+      const x=Math.abs(w);
+      if(x>=1)return fmt(w,3)+" W";
+      if(x>=.001)return fmt(w*1000,3)+" mW";
+      return fmt(w*1e6,3)+" µW";
+    }
+
+    function setBias(forward){
+      const wrap=document.getElementById("symbolWrap");
+      const title=document.getElementById("biasTitle");
+      const explain=document.getElementById("biasExplain");
+      const status=document.getElementById("biasStatus");
+      document.getElementById("anodePolarity").textContent=forward?"+":"−";
+      document.getElementById("cathodePolarity").textContent=forward?"−":"+";
+      wrap.classList.toggle("flowing",forward);
+      title.textContent=forward?"Forward biased":"Reverse biased";
+      explain.textContent=forward
+        ?"The anode is more positive than the cathode, so a normal diode can conduct once its forward voltage is reached."
+        :"The cathode is more positive than the anode, so a normal diode blocks most current until reverse breakdown.";
+      status.className="status "+(forward?"good":"warn");
+      status.textContent=forward
+        ?"Current can flow in the forward direction when the circuit provides enough voltage."
+        :"A normal diode blocks reverse current except for tiny leakage, until its reverse-voltage limit is exceeded.";
+    }
+    document.getElementById("forwardBtn").addEventListener("click",()=>setBias(true));
+    document.getElementById("reverseBtn").addEventListener("click",()=>setBias(false));
+
+    function updateForward(){
+      const vs=Math.max(0,Number(document.getElementById("fvSupply").value)||0);
+      const vf=Math.max(0,Number(document.getElementById("fvDrop").value)||0);
+      const r=Math.max(1e-12,Number(document.getElementById("fvR").value)||1e-12);
+      const vr=Math.max(0,vs-vf);
+      const i=vr/r;
+      document.getElementById("fvCurrent").textContent=formatA(i);
+      document.getElementById("fvPower").textContent=formatPower(i*i*r);
+      document.getElementById("fvDiodePower").textContent=formatPower(i*vf);
+      document.getElementById("fvFormula").textContent=
+        vs<=vf?"Supply voltage is not above the entered forward drop, so this simple model predicts essentially no forward current."
+        :"I ≈ ("+formatV(vs)+" − "+formatV(vf)+") ÷ "+formatOhms(r)+" = "+formatA(i)+".";
+    }
+    ["fvSupply","fvDrop","fvR"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateForward);el.addEventListener("change",updateForward);
+    });
+
+    const e12=[10,12,15,18,22,27,33,39,47,56,68,82];
+    function nearestE12(r){
+      if(!(r>0))return 0;
+      const exp=Math.floor(Math.log10(r));
+      let best=Infinity,bestVal=0;
+      for(let e=exp-1;e<=exp+1;e++){
+        for(const b of e12){
+          const v=b*Math.pow(10,e-1);
+          const diff=Math.abs(v-r);
+          if(diff<best){best=diff;bestVal=v;}
+        }
+      }
+      return bestVal;
+    }
+    function updateLed(){
+      const vs=Math.max(0,Number(document.getElementById("ledSupply").value)||0);
+      const vf=Math.max(0,Number(document.getElementById("ledVf").value)||0);
+      const ma=Math.max(.001,Number(document.getElementById("ledMa").value)||.001);
+      const count=Math.max(1,Math.floor(Number(document.getElementById("ledCount").value)||1));
+      const i=ma/1000;
+      const totalVf=vf*count;
+      const status=document.getElementById("ledStatus");
+      status.className="status";
+      if(vs<=totalVf){
+        document.getElementById("ledR").textContent="No headroom";
+        document.getElementById("ledStdR").textContent="—";
+        document.getElementById("ledPower").textContent="—";
+        document.getElementById("ledFormula").textContent="Supply voltage must be greater than the total LED forward voltage for this simple resistor method.";
+        status.classList.add("high");status.textContent="The entered LED forward-voltage total is at or above the supply voltage.";
+        return;
+      }
+      const r=(vs-totalVf)/i;
+      const std=nearestE12(r);
+      const p=i*i*r;
+      document.getElementById("ledR").textContent=formatOhms(r);
+      document.getElementById("ledStdR").textContent=formatOhms(std);
+      document.getElementById("ledPower").textContent=formatPower(p);
+      document.getElementById("ledFormula").textContent="R = ("+formatV(vs)+" − "+formatV(totalVf)+") ÷ "+formatA(i)+" = "+formatOhms(r)+".";
+      status.classList.add("good");status.textContent="Calculated from the constant-forward-voltage model. Choose a resistor with adequate power margin.";
+    }
+    ["ledSupply","ledVf","ledMa","ledCount"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateLed);el.addEventListener("change",updateLed);
+    });
+
+    function drawWave(mode){
+      const pts=[];
+      for(let i=0;i<=220;i++){
+        const x=35+(620*i/220);
+        const theta=i/220*Math.PI*4;
+        let yv=Math.sin(theta);
+        if(mode==="bridge")yv=Math.abs(yv);
+        else yv=Math.max(0,yv);
+        const y=100-yv*72;
+        pts.push((i===0?"M":"L")+x.toFixed(1)+","+y.toFixed(1));
+      }
+      document.getElementById("wavePath").setAttribute("d",pts.join(" "));
+    }
+    function updateRect(){
+      const mode=document.getElementById("rectMode").value;
+      const vac=Math.max(0,Number(document.getElementById("rectVac").value)||0);
+      const hz=Math.max(.001,Number(document.getElementById("rectHz").value)||.001);
+      const vf=Math.max(0,Number(document.getElementById("rectVf").value)||0);
+      const loadA=Math.max(0,Number(document.getElementById("rectLoadMa").value)||0)/1000;
+      const c=Math.max(1e-12,Number(document.getElementById("rectCapUf").value)||1e-12)*1e-6;
+      const drops=mode==="bridge"?2:1;
+      const rippleHz=mode==="bridge"?2*hz:hz;
+      const peak=Math.max(0,vac*Math.SQRT2-drops*vf);
+      const ripple=loadA/(rippleHz*c);
+      const avg=Math.max(0,peak-ripple/2);
+      const piv=mode==="bridge"?vac*Math.SQRT2:2*vac*Math.SQRT2;
+      document.getElementById("rectPeak").textContent=formatV(peak);
+      document.getElementById("rectRipple").textContent=formatV(ripple);
+      document.getElementById("rectAvg").textContent=formatV(avg);
+      document.getElementById("rectRippleHz").textContent=fmt(rippleHz,2)+" Hz";
+      document.getElementById("rectPiv").textContent=formatV(piv);
+      document.getElementById("rectFormula").textContent=
+        "Peak ≈ "+formatV(vac)+" × √2 − "+drops+" diode drop"+(drops===1?"":"s")+
+        " = "+formatV(peak)+". Ripple ≈ I ÷ (f × C) = "+formatV(ripple)+".";
+      drawWave(mode);
+    }
+    ["rectMode","rectVac","rectHz","rectVf","rectLoadMa","rectCapUf"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateRect);el.addEventListener("change",updateRect);
+    });
+
+    function updateZener(){
+      const vs=Math.max(0,Number(document.getElementById("zSupply").value)||0);
+      const vz=Math.max(.001,Number(document.getElementById("zVoltage").value)||.001);
+      const r=Math.max(1e-12,Number(document.getElementById("zR").value)||1e-12);
+      const load=Math.max(0,Number(document.getElementById("zLoadMa").value)||0)/1000;
+      const status=document.getElementById("zStatus");
+      status.className="status";
+      const ir=vs>vz?(vs-vz)/r:0;
+      const iz=ir-load;
+      const zp=Math.max(0,iz)*vz;
+      const rp=ir*ir*r;
+      document.getElementById("zResCurrent").textContent=formatA(ir);
+      document.getElementById("zCurrent").textContent=iz>=0?formatA(iz):"Insufficient";
+      document.getElementById("zPower").textContent=formatPower(zp);
+      document.getElementById("zRPower").textContent=formatPower(rp);
+      document.getElementById("zFormula").textContent="Iresistor = ("+formatV(vs)+" − "+formatV(vz)+") ÷ "+formatOhms(r)+" = "+formatA(ir)+".";
+      if(vs<=vz){
+        status.classList.add("high");status.textContent="Supply voltage is not above the entered Zener voltage.";
+      }else if(iz<0){
+        status.classList.add("high");status.textContent="The load is asking for more current than the series resistor supplies, so the Zener cannot regulate in this simple model.";
+      }else if(iz<.001){
+        status.classList.add("warn");status.textContent="Zener current is very low. Many devices need more current than this to regulate near their specified voltage.";
+      }else{
+        status.classList.add("good");status.textContent="The simple model leaves positive current through the Zener. Check the actual datasheet current and power requirements.";
+      }
+    }
+    ["zSupply","zVoltage","zR","zLoadMa"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateZener);el.addEventListener("change",updateZener);
+    });
+
+    function updateClip(){
+      const input=Math.max(0,Number(document.getElementById("clipInput").value)||0);
+      const ref=Math.max(0,Number(document.getElementById("clipRef").value)||0);
+      const vf=Math.max(0,Number(document.getElementById("clipVf").value)||0);
+      const mode=document.getElementById("clipMode").value;
+      const threshold=ref+vf;
+      const out=Math.min(input,threshold);
+      document.getElementById("clipThreshold").textContent=(mode==="positive"?"+" : "−")+formatV(threshold);
+      document.getElementById("clipOutput").textContent=(mode==="positive"?"+" : "−")+formatV(out);
+      document.getElementById("clipFormula").textContent=
+        (mode==="positive"?"Positive":"Negative")+" clip threshold ≈ Vreference + Vf = "+formatV(threshold)+".";
+    }
+    ["clipInput","clipRef","clipVf","clipMode"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateClip);el.addEventListener("change",updateClip);
+    });
+
+    setBias(true);
+    updateForward();
+    updateLed();
+    updateRect();
+    updateZener();
+    updateClip();
+  </script>
+</body>
+</html>
