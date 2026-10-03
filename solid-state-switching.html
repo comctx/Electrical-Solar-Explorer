@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>Solid-State Switching Explorer</title>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700}.result strong{font-size:clamp(20px,4vw,28px);color:var(--navy)}.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+.ssr-demo{display:grid;grid-template-columns:repeat(5,minmax(90px,1fr));gap:8px;align-items:center}.block{padding:14px;border:2px solid #9fc8ef;background:#f8fbff;border-radius:12px;text-align:center;font-weight:800;color:var(--navy)}.block.on{background:#eaf7ef;border-color:#8fc9a7}.arrow{text-align:center;font-size:24px;color:var(--blue);font-weight:900}.btn{min-height:42px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){main{padding:12px}.two,.three,.results,.ssr-demo{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<header><h1>Solid-State Switching Explorer</h1><p>Solid-state relays, SCRs, TRIACs, DIACs, optocouplers, zero-cross switching, leakage current, and thermal behavior.</p></header>
+<main>
+<nav class="nav">
+<a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="vacuum-tubes.html">Vacuum Tubes</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a href="motors-controls.html">Motors & Controls</a><a href="generators-alternators.html">Generators & Alternators</a><a href="solar-power-electronics.html">Solar Power Electronics</a><a href="sensors-switches.html">Sensors & Switches</a><a href="fiber-optics.html">Fiber Optics</a><a href="power-electronics-modules.html">Power Electronics & Modules</a><a class="active" href="solid-state-switching.html">Solid-State Switching</a><a href="processors.html">Processors</a>
+</nav>
+
+<section class="panel">
+<h2>Beginner Start Here</h2>
+<div class="grid three">
+<div class="card"><strong>Solid-State Relay (SSR)</strong><p>An electronically controlled switch with no moving power contacts. It often uses an optocoupler plus a TRIAC, SCR pair, MOSFETs, or other semiconductor output stage.</p><span class="badge">No moving contacts</span></div>
+<div class="card"><strong>SCR / Thyristor</strong><p>A latching semiconductor switch. Once triggered and carrying enough current, it remains on until current falls below its holding level.</p><span class="badge">High-power switch</span></div>
+<div class="card"><strong>TRIAC</strong><p>A bidirectional AC switching device often used for mains control, heaters, lamps, and some motor loads.</p><span class="badge">AC control</span></div>
+<div class="card"><strong>DIAC</strong><p>A two-terminal trigger device often used to fire TRIACs in phase-control circuits.</p><span class="badge">Trigger device</span></div>
+<div class="card"><strong>Optocoupler</strong><p>Transfers a control signal using light, providing electrical isolation between input and output circuits when properly designed.</p><span class="badge">Isolation</span></div>
+<div class="card"><strong>Zero-Cross Switching</strong><p>Turns an AC solid-state switch on near the AC voltage zero crossing to reduce certain switching transients and EMI.</p><span class="badge">AC timing</span></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Mechanical Relay vs. Solid-State Relay</h2>
+<table><thead><tr><th>Feature</th><th>Mechanical relay</th><th>Solid-state relay</th></tr></thead><tbody>
+<tr><td>Moving contacts</td><td>Yes</td><td>No</td></tr>
+<tr><td>Contact wear</td><td>Yes</td><td>No mechanical contact wear</td></tr>
+<tr><td>Off-state leakage</td><td>Usually extremely low</td><td>Often measurable leakage current</td></tr>
+<tr><td>On-state voltage drop</td><td>Very low across clean contacts</td><td>Semiconductor drop creates heat</td></tr>
+<tr><td>Switching speed</td><td>Slower</td><td>Usually faster</td></tr>
+<tr><td>Audible click</td><td>Often yes</td><td>No</td></tr>
+<tr><td>Isolation</td><td>Coil/contact isolation</td><td>Often optical isolation, depending on design</td></tr>
+<tr><td>Failure mode</td><td>Contacts may stick, burn, or fail open</td><td>Semiconductors can fail shorted or open</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>AC SSR vs. DC SSR</h2>
+<div class="grid two">
+<div class="card"><strong>AC-output SSR</strong><p>Commonly uses TRIACs or back-to-back SCRs. Many are designed to turn off naturally as AC current passes through zero.</p></div>
+<div class="card"><strong>DC-output SSR</strong><p>Commonly uses MOSFETs or transistor stages. DC does not naturally cross zero every half-cycle, so the output device must actively interrupt current.</p></div>
+</div>
+<div class="formula">AC and DC SSRs are not interchangeable just because their current ratings look similar. Output topology, voltage ratings, load type, and turn-off behavior are different.</div>
+</section>
+
+<section class="panel">
+<h2>SSR Concept Simulator</h2>
+<div class="ssr-demo">
+<div id="controlBlock" class="block">Control input</div><div class="arrow">→</div><div id="isoBlock" class="block">Optical isolation</div><div class="arrow">→</div><div id="loadBlock" class="block">Load output</div>
+</div>
+<div class="row"><button id="ssrOn" class="btn primary">Control ON</button><button id="ssrOff" class="btn">Control OFF</button></div>
+<div id="ssrStatus" class="formula">SSR output off. A real SSR may still have a small off-state leakage current.</div>
+</section>
+
+<section class="panel">
+<h2>SSR Heat Estimate</h2>
+<p class="lead">Estimate heat produced by an SSR from load current and on-state voltage drop.</p>
+<div class="grid two">
+<div class="field"><label>Load current (A)</label><input id="loadI" type="number" value="15" min="0" step="any"></div>
+<div class="field"><label>On-state voltage drop (V)</label><input id="dropV" type="number" value="1.6" min="0" step="any"></div>
+</div>
+<div class="results">
+<div class="result"><small>Estimated heat</small><strong id="heatOut">—</strong></div>
+<div class="result"><small>Load current</small><strong id="currentOut">—</strong></div>
+<div class="result"><small>SSR drop</small><strong id="dropOut">—</strong></div>
+</div>
+<div class="formula">Approximate conduction heat: P = I × Vdrop</div>
+<p class="note">Real SSR thermal design requires the actual datasheet curves, duty cycle, ambient temperature, mounting method, thermal resistance, and heatsink information.</p>
+</section>
+
+<section class="panel">
+<h2>SCR & TRIAC Concepts</h2>
+<div class="grid two">
+<div class="card"><strong>SCR latching</strong><p>A gate pulse starts conduction, but the gate does not normally turn an SCR off. Current must fall below the holding current or be commutated off.</p></div>
+<div class="card"><strong>TRIAC bidirectional conduction</strong><p>A TRIAC can conduct in both directions, making it convenient for many AC control applications.</p></div>
+<div class="card"><strong>Phase-angle control</strong><p>Delaying turn-on within each AC half-cycle changes the average power delivered to a compatible load.</p></div>
+<div class="card"><strong>Zero-cross control</strong><p>Switching whole AC cycles near zero crossing is common for heater control and other loads where fast phase control is unnecessary.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Important Solid-State Switching Details</h2>
+<table><thead><tr><th>Term</th><th>Why it matters</th></tr></thead><tbody>
+<tr><td>Leakage current</td><td>An SSR can pass a small current even when “off,” which can make high-impedance loads behave unexpectedly.</td></tr>
+<tr><td>Minimum load current</td><td>Some AC SSRs need a certain current to operate or turn off as intended.</td></tr>
+<tr><td>Holding current</td><td>Current an SCR or TRIAC needs to remain latched on.</td></tr>
+<tr><td>Surge current</td><td>Short-duration current capability matters for motors, lamps, transformers, and capacitive loads.</td></tr>
+<tr><td>dv/dt</td><td>Rapid voltage change can falsely trigger or stress some thyristor devices.</td></tr>
+<tr><td>di/dt</td><td>Rapid current rise can create localized stress before current spreads through the semiconductor structure.</td></tr>
+<tr><td>Snubber</td><td>An RC or other network used to reduce voltage spikes or excessive dv/dt in suitable circuits.</td></tr>
+<tr><td>Heatsink</td><td>Often essential because semiconductor voltage drop creates continuous conduction heat.</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>Where Solid-State Switching Is Used</h2>
+<div class="grid three">
+<div class="card"><strong>Industrial heaters</strong><p>SSRs and SCR controllers provide fast, silent cycling without mechanical contact wear.</p></div>
+<div class="card"><strong>Motor controls</strong><p>Soft starters commonly use SCR pairs to ramp motor voltage during starting.</p></div>
+<div class="card"><strong>Lighting control</strong><p>TRIAC phase control is common with compatible AC lighting loads.</p></div>
+<div class="card"><strong>Power supplies</strong><p>MOSFETs and other switches operate at high frequency in switching converters.</p></div>
+<div class="card"><strong>Automation outputs</strong><p>PLC output modules may use transistor, TRIAC, or relay outputs depending on the application.</p></div>
+<div class="card"><strong>Inverters and drives</strong><p>High-power solid-state switches synthesize controlled AC from a DC bus.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Solid-State Safety</h2>
+<div class="warning">“Off” does not always mean electrically isolated. SSRs can leak current, semiconductor devices can fail shorted, and many power circuits remain hazardous even after a control signal is removed. Use proper disconnecting means, verify de-energization, discharge stored energy, and follow the equipment manufacturer’s service procedures.</div>
+</section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+<script>
+let ssr=false;
+function drawSSR(){
+ controlBlock.classList.toggle("on",ssr);isoBlock.classList.toggle("on",ssr);loadBlock.classList.toggle("on",ssr);
+ ssrStatus.textContent=ssr?"Control is on: the solid-state output is conducting in this simplified model.":"SSR output off. A real SSR may still have a small off-state leakage current.";
+}
+ssrOn.onclick=()=>{ssr=true;drawSSR()};ssrOff.onclick=()=>{ssr=false;drawSSR()};drawSSR();
+
+function heatCalc(){const i=+loadI.value,v=+dropV.value;heatOut.textContent=(i*v).toFixed(1)+" W";currentOut.textContent=i.toFixed(1)+" A";dropOut.textContent=v.toFixed(2)+" V"}[loadI,dropV].forEach(x=>x.addEventListener("input",heatCalc));heatCalc();
+</script>
+</body>
+</html>
