@@ -18,14 +18,14 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <script>
 function obj(k){try{return JSON.parse(localStorage.getItem(k)||"{}")}catch{return{}}}
 const cp=obj("ateCourseProgress"),qp=obj("ateQuizProgress"),wins=obj("ateTroubleshootWins"),best=+localStorage.getItem("ateSymbolBest")||0;
-const courseDefs=[["Electricity 101",10,0],["Electronics 101",9,1],["Schematics & Troubleshooting",6,2],["Motors & Industrial Controls",11,3],["Power & Energy",11,4]];
+const courseDefs=[["Electricity 101",11,0],["Electronics 101",9,1],["Schematics & Troubleshooting",6,2],["Motors & Industrial Controls",11,3],["Power & Energy",11,4]];
 function courseDone(ci,total){for(let si=0;si<total;si++)if(!cp[ci+"-"+si])return false;return true}
 const quizVals=Object.values(qp).map(Number),anyPerfect=quizVals.some(x=>x>=5),sixStrong=["Electrical Basics","Components","Motors & Controls","PLCs & Automation","Test Equipment","Troubleshooting"].every(n=>(+qp[n]||0)>=4);
 const allCourses=courseDefs.every(([,total,ci])=>courseDone(ci,total));
 const anyProgress=Object.keys(cp).some(k=>cp[k])||quizVals.length||best>0;
 const data=[
 ["🌱","First Steps","Begin learning anywhere in the app.",anyProgress,"Open a course, quiz, or flashcard practice."],
-["⚡","Electricity 101","Complete the Electricity 101 guided course.",courseDone(0,10),"Finish all 10 Electricity 101 steps."],
+["⚡","Electricity 101","Complete the Electricity 101 guided course.",courseDone(0,11),"Finish all 11 Electricity 101 steps."],
 ["🔧","Electronics Builder","Complete the Electronics 101 guided course.",courseDone(1,9),"Finish all 9 Electronics 101 steps."],
 ["📐","Schematic Reader","Complete Schematics & Troubleshooting.",courseDone(2,6),"Finish all 6 schematic/troubleshooting course steps."],
 ["⚙️","Industrial Controls","Complete Motors & Industrial Controls.",courseDone(3,11),"Finish all 11 industrial-controls steps."],
