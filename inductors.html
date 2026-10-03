@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Inductors & Coils Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;
+      --electric:#0b63ce;
+      --electric2:#1594ff;
+      --yellow:#ffd43b;
+      --card:#ffffff;
+      --text:#14202b;
+      --muted:#62707d;
+      --border:#cfd9e3;
+      --good:#1f7a4d;
+      --danger:#b42318;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%, rgba(21,148,255,.16), transparent 32%),
+        radial-gradient(circle at 90% 10%, rgba(255,212,59,.18), transparent 28%),
+        linear-gradient(180deg, #dfeaf4 0%, #edf4f9 42%, #f7fafc 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;
+      padding:24px 18px 20px;
+      text-align:center;
+    }
+
+    header h1{
+      margin:0 0 6px;
+      font-size:clamp(28px,6vw,42px);
+    }
+
+    header p{
+      margin:0;
+      opacity:.92;
+    }
+
+    header::after{
+      content:"";
+      display:block;
+      width:92px;
+      height:5px;
+      margin:15px auto 0;
+      border-radius:999px;
+      background:var(--yellow);
+    }
+
+    main{
+      max-width:1000px;
+      margin:0 auto;
+      padding:18px;
+    }
+
+    .page-nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .page-nav a{
+      text-decoration:none;
+      min-height:46px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:11px;
+      padding:10px 14px;
+      font-weight:800;
+      border:1px solid #9fc8ef;
+      background:#eef7ff;
+      color:var(--navy);
+    }
+
+    .page-nav a.active{
+      background:var(--yellow);
+      border-color:#e4ba16;
+    }
+
+    .panel{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);
+      margin-bottom:16px;
+    }
+
+    h2{
+      margin:0 0 6px;
+      color:var(--navy);
+      border-left:5px solid var(--yellow);
+      padding-left:10px;
+    }
+
+    h3{
+      color:var(--navy);
+      margin:0 0 8px;
+    }
+
+    .lead,.note{
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .lead{margin:0 0 16px}
+    .note{font-size:13px;margin:10px 0 0}
+
+    .grid{
+      display:grid;
+      gap:12px;
+    }
+
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+
+    .field label{
+      display:block;
+      font-weight:800;
+      font-size:14px;
+      margin-bottom:6px;
+    }
+
+    input,select,button{font:inherit}
+
+    input,select{
+      width:100%;
+      min-height:46px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:9px 11px;
+      background:white;
+      color:var(--text);
+    }
+
+    input:focus,select:focus,button:focus{
+      outline:3px solid rgba(11,99,206,.22);
+      outline-offset:2px;
+    }
+
+    .unit-row{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 100px;
+      gap:8px;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .result{
+      border:1px solid #b9d7f5;
+      background:#e9f3ff;
+      border-radius:12px;
+      padding:12px;
+      min-width:0;
+    }
+
+    .result small{
+      display:block;
+      color:var(--muted);
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .result strong{
+      color:var(--navy);
+      font-size:clamp(20px,4vw,28px);
+      word-break:break-word;
+    }
+
+    .formula{
+      margin-top:12px;
+      background:#fff7cc;
+      border:1px solid #e5c94a;
+      border-radius:11px;
+      padding:11px 12px;
+      line-height:1.5;
+      font-weight:700;
+    }
+
+    .warning{
+      margin-top:12px;
+      background:#fff3d6;
+      border:1px solid #e5a84a;
+      border-radius:10px;
+      padding:10px 12px;
+      color:#6a4300;
+      font-weight:700;
+      line-height:1.45;
+    }
+
+    .type-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .type-card{
+      border:1px solid #b9d7f5;
+      background:#f8fbff;
+      border-radius:13px;
+      padding:13px;
+    }
+
+    .type-card strong{
+      color:var(--navy);
+      display:block;
+      margin-bottom:5px;
+    }
+
+    .type-card small{
+      display:block;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .badge{
+      display:inline-block;
+      margin-top:8px;
+      border-radius:999px;
+      padding:4px 8px;
+      font-size:12px;
+      font-weight:800;
+      background:#e9f3ff;
+      color:var(--navy);
+      border:1px solid #b9d7f5;
+    }
+
+    .sim-wrap{
+      display:grid;
+      grid-template-columns:260px minmax(0,1fr);
+      gap:18px;
+      align-items:center;
+      margin-top:14px;
+    }
+
+    .coil-stage{
+      border:1px solid var(--border);
+      background:#fbfdff;
+      border-radius:16px;
+      min-height:250px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .coil{
+      width:180px;
+      height:110px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:2px;
+      position:relative;
+    }
+
+    .turn{
+      width:30px;
+      height:78px;
+      border:6px solid var(--electric);
+      border-left-color:transparent;
+      border-right-color:transparent;
+      border-radius:50%;
+      margin-left:-12px;
+      transition:filter .1s linear, transform .1s linear;
+    }
+
+    .turn:first-child{margin-left:0}
+
+    .field-glow{
+      position:absolute;
+      width:210px;
+      height:150px;
+      border-radius:50%;
+      border:4px solid rgba(21,148,255,.18);
+      box-shadow:
+        0 0 0 12px rgba(21,148,255,.08),
+        0 0 0 24px rgba(21,148,255,.04);
+      transform:scale(.4);
+      opacity:.2;
+      transition:transform .08s linear,opacity .08s linear;
+    }
+
+    .sim-controls{
+      display:grid;
+      gap:10px;
+    }
+
+    .button-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .action{
+      min-height:43px;
+      border:1px solid #9fc8ef;
+      border-radius:10px;
+      background:#eef7ff;
+      color:var(--navy);
+      font-weight:800;
+      padding:8px 12px;
+      cursor:pointer;
+    }
+
+    .action.primary{
+      background:var(--yellow);
+      border-color:#e4ba16;
+    }
+
+    .progress{
+      height:16px;
+      border-radius:999px;
+      overflow:hidden;
+      background:#e6edf3;
+      border:1px solid var(--border);
+    }
+
+    .progress > div{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--electric),var(--electric2));
+      transition:width .08s linear;
+    }
+
+    @media (max-width:760px){
+      main{padding:12px}
+      .grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .result-grid{grid-template-columns:1fr}
+      .sim-wrap{grid-template-columns:1fr}
+      .type-grid{grid-template-columns:1fr 1fr}
+    }
+
+    @media (max-width:420px){
+      .unit-row{grid-template-columns:minmax(0,1fr) 88px}
+      .type-grid{grid-template-columns:1fr}
+    }
+
+    footer{
+      text-align:center;
+      color:#dbe8f5;
+      background:var(--navy);
+      font-size:13px;
+      font-weight:700;
+      padding:24px 16px;
+      margin-top:20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Inductors & Coils Explorer</h1>
+    <p>Inductance, coils, RL timing, reactance, magnetic energy, and core types.</p>
+  </header>
+
+  <main>
+    <nav class="page-nav" aria-label="App pages">
+      <a href="index.html">Electrical & Solar</a>
+      <a href="capacitor.html">Capacitors</a>
+      <a href="inductors.html" class="active">Inductors & Coils</a>
+    </nav>
+
+    <section class="panel">
+      <h2>Series & Parallel Inductance</h2>
+      <p class="lead">Enter two to four inductors and choose how they are connected. This assumes the inductors are not magnetically coupled.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label for="indMode">Connection</label>
+          <select id="indMode">
+            <option value="series">Series</option>
+            <option value="parallel">Parallel</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>L1</label>
+          <div class="unit-row">
+            <input id="l1" type="number" min="0" step="any" value="10" />
+            <select id="l1u">
+              <option value="1e-6">µH</option>
+              <option value="1e-3" selected>mH</option>
+              <option value="1">H</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>L2</label>
+          <div class="unit-row">
+            <input id="l2" type="number" min="0" step="any" value="22" />
+            <select id="l2u">
+              <option value="1e-6">µH</option>
+              <option value="1e-3" selected>mH</option>
+              <option value="1">H</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>L3 (optional)</label>
+          <div class="unit-row">
+            <input id="l3" type="number" min="0" step="any" placeholder="Optional" />
+            <select id="l3u">
+              <option value="1e-6">µH</option>
+              <option value="1e-3" selected>mH</option>
+              <option value="1">H</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>L4 (optional)</label>
+          <div class="unit-row">
+            <input id="l4" type="number" min="0" step="any" placeholder="Optional" />
+            <select id="l4u">
+              <option value="1e-6">µH</option>
+              <option value="1e-3" selected>mH</option>
+              <option value="1">H</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Equivalent inductance</small>
+          <strong id="indEquivalent">32 mH</strong>
+        </div>
+      </div>
+
+      <div id="indFormula" class="formula">Series: 10 mH + 22 mH = 32 mH</div>
+    </section>
+
+    <section class="panel">
+      <h2>Inductive Reactance</h2>
+      <p class="lead">See how an inductor's opposition to AC increases as frequency or inductance increases.</p>
+
+      <div class="grid three">
+        <div class="field">
+          <label>Inductance</label>
+          <div class="unit-row">
+            <input id="xlL" type="number" min="0.000001" step="any" value="100" />
+            <select id="xlLU">
+              <option value="1e-6">µH</option>
+              <option value="1e-3" selected>mH</option>
+              <option value="1">H</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="xlF">Frequency (Hz)</label>
+          <input id="xlF" type="number" min="0.000001" step="any" value="60" />
+        </div>
+
+        <div class="field">
+          <label for="xlV">AC voltage (V, optional)</label>
+          <input id="xlV" type="number" min="0" step="any" value="120" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Inductive reactance XL</small>
+          <strong id="xlResult">37.699 Ω</strong>
+        </div>
+        <div class="result">
+          <small>Ideal RMS current</small>
+          <strong id="xlCurrent">3.183 A</strong>
+        </div>
+      </div>
+
+      <div id="xlFormula" class="formula">XL = 2πfL</div>
+      <p class="note">Ideal inductor calculation only. Real coils also have winding resistance, parasitic capacitance, core losses, saturation, and temperature effects.</p>
+    </section>
+
+    <section class="panel">
+      <h2>RL Time Constant & Current Simulation</h2>
+      <p class="lead">Watch current build up through an inductor, then decay after the source is removed.</p>
+
+      <div class="grid three">
+        <div class="field">
+          <label>Resistance</label>
+          <div class="unit-row">
+            <input id="rlR" type="number" min="0.000001" step="any" value="10" />
+            <select id="rlRU">
+              <option value="1" selected>Ω</option>
+              <option value="1000">kΩ</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Inductance</label>
+          <div class="unit-row">
+            <input id="rlL" type="number" min="0.000001" step="any" value="100" />
+            <select id="rlLU">
+              <option value="1e-6">µH</option>
+              <option value="1e-3" selected>mH</option>
+              <option value="1">H</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="rlV">Supply voltage (V)</label>
+          <input id="rlV" type="number" min="0" step="any" value="12" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Time constant τ = L ÷ R</small>
+          <strong id="rlTau">10 ms</strong>
+        </div>
+        <div class="result">
+          <small>Final DC current</small>
+          <strong id="rlFinalI">1.2 A</strong>
+        </div>
+        <div class="result">
+          <small>About 99.3% current</small>
+          <strong id="rlFiveTau">50 ms</strong>
+        </div>
+      </div>
+
+      <div class="sim-wrap">
+        <div class="coil-stage">
+          <div id="fieldGlow" class="field-glow"></div>
+          <div class="coil" aria-hidden="true">
+            <div class="turn"></div>
+            <div class="turn"></div>
+            <div class="turn"></div>
+            <div class="turn"></div>
+            <div class="turn"></div>
+          </div>
+        </div>
+
+        <div class="sim-controls">
+          <h3>Animated Current & Magnetic Field</h3>
+          <div id="rlSimCurrent">Current: 0 A</div>
+          <div class="progress"><div id="rlProgress"></div></div>
+          <div class="button-row">
+            <button id="energizeBtn" class="action primary" type="button">Energize Coil</button>
+            <button id="decayBtn" class="action" type="button">Remove Power</button>
+            <button id="resetRlBtn" class="action" type="button">Reset</button>
+          </div>
+          <p class="note">The animation compresses the real timing so very fast RL circuits are still visible. The current follows the ideal exponential RL curve.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Magnetic Energy Stored</h2>
+      <p class="lead">Calculate the energy stored in an inductor's magnetic field.</p>
+
+      <div class="grid two">
+        <div class="field">
+          <label>Inductance</label>
+          <div class="unit-row">
+            <input id="energyL" type="number" min="0" step="any" value="100" />
+            <select id="energyLU">
+              <option value="1e-6">µH</option>
+              <option value="1e-3" selected>mH</option>
+              <option value="1">H</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="energyI">Current (A)</label>
+          <input id="energyI" type="number" min="0" step="any" value="2" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Stored magnetic energy</small>
+          <strong id="indEnergy">200 mJ</strong>
+        </div>
+      </div>
+
+      <div id="energyFormula" class="formula">E = ½LI²</div>
+    </section>
+
+    <section class="panel">
+      <h2>Coil & Core Types</h2>
+      <p class="lead">A quick guide to common inductor and coil constructions.</p>
+
+      <div class="type-grid">
+        <div class="type-card">
+          <strong>Air-Core Coil</strong>
+          <small>No magnetic core. Useful at high frequencies and where low core loss matters.</small>
+          <span class="badge">RF / tuning</span>
+        </div>
+
+        <div class="type-card">
+          <strong>Ferrite-Core Inductor</strong>
+          <small>Ferrite increases inductance and is common in switching supplies, RF chokes, and EMI filtering.</small>
+          <span class="badge">High frequency</span>
+        </div>
+
+        <div class="type-card">
+          <strong>Iron / Powdered-Iron Core</strong>
+          <small>Useful for energy storage and lower-frequency power applications. Core saturation must be considered.</small>
+          <span class="badge">Power inductors</span>
+        </div>
+
+        <div class="type-card">
+          <strong>Toroidal Inductor</strong>
+          <small>Wire is wound around a ring-shaped core. The magnetic field is well contained, reducing stray field.</small>
+          <span class="badge">Compact / low stray field</span>
+        </div>
+
+        <div class="type-card">
+          <strong>Choke</strong>
+          <small>An inductor used to impede unwanted AC or noise while allowing DC or lower-frequency current to pass.</small>
+          <span class="badge">Filtering</span>
+        </div>
+
+        <div class="type-card">
+          <strong>Solenoid / Electromagnet</strong>
+          <small>A coil that creates mechanical magnetic force when energized, used in valves, relays, locks, and actuators.</small>
+          <span class="badge">Motion / force</span>
+        </div>
+      </div>
+
+      <div class="warning">When current through an inductor is interrupted, the collapsing magnetic field can create a high-voltage back-EMF spike. Real relay, solenoid, and motor circuits often require appropriate suppression components.</div>
+    </section>
+  </main>
+
+  <footer>A DONCO-BAYCITY™ App</footer>
+
+  <script>
+    function fmt(n,digits=3){
+      if (!Number.isFinite(n)) return "—";
+      return n.toLocaleString(undefined,{maximumFractionDigits:digits});
+    }
+
+    function formatInductance(h){
+      const a = Math.abs(h);
+      if (a >= 1) return fmt(h,4) + " H";
+      if (a >= 1e-3) return fmt(h * 1e3,4) + " mH";
+      return fmt(h * 1e6,4) + " µH";
+    }
+
+    function formatOhms(r){
+      const a = Math.abs(r);
+      if (a >= 1e6) return fmt(r / 1e6,3) + " MΩ";
+      if (a >= 1e3) return fmt(r / 1e3,3) + " kΩ";
+      if (a < 1 && a > 0) return fmt(r * 1000,3) + " mΩ";
+      return fmt(r,3) + " Ω";
+    }
+
+    function formatCurrent(a){
+      const x = Math.abs(a);
+      if (x >= 1) return fmt(a,3) + " A";
+      if (x >= 0.001) return fmt(a * 1000,3) + " mA";
+      if (x >= 0.000001) return fmt(a * 1000000,3) + " µA";
+      return fmt(a * 1e9,3) + " nA";
+    }
+
+    function formatTime(s){
+      if (s >= 60) return fmt(s / 60,3) + " min";
+      if (s >= 1) return fmt(s,3) + " s";
+      if (s >= 0.001) return fmt(s * 1000,3) + " ms";
+      return fmt(s * 1000000,3) + " µs";
+    }
+
+    function formatEnergy(j){
+      const a = Math.abs(j);
+      if (a >= 1) return fmt(j,4) + " J";
+      if (a >= 0.001) return fmt(j * 1000,4) + " mJ";
+      return fmt(j * 1000000,4) + " µJ";
+    }
+
+    const indIds = ["l1","l2","l3","l4"];
+
+    function updateEquivalent(){
+      const values = indIds.map(id => {
+        const raw = document.getElementById(id).value;
+        if (raw === "") return null;
+        const n = Number(raw);
+        const unit = Number(document.getElementById(id + "u").value);
+        return Number.isFinite(n) && n > 0 ? n * unit : null;
+      }).filter(v => v !== null);
+
+      if (values.length < 2){
+        document.getElementById("indEquivalent").textContent = "Enter at least 2 inductors";
+        document.getElementById("indFormula").textContent = "";
+        return;
+      }
+
+      const mode = document.getElementById("indMode").value;
+      let total;
+
+      if (mode === "series"){
+        total = values.reduce((sum,v) => sum + v,0);
+        document.getElementById("indFormula").textContent =
+          "Series: " + values.map(formatInductance).join(" + ") + " = " + formatInductance(total);
+      } else {
+        total = 1 / values.reduce((sum,v) => sum + 1 / v,0);
+        document.getElementById("indFormula").textContent =
+          "Parallel: 1 ÷ (" + values.map(v => "1/" + formatInductance(v)).join(" + ") + ") = " + formatInductance(total);
+      }
+
+      document.getElementById("indEquivalent").textContent = formatInductance(total);
+    }
+
+    ["indMode","l1","l1u","l2","l2u","l3","l3u","l4","l4u"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateEquivalent);
+      el.addEventListener("change",updateEquivalent);
+    });
+
+    function updateReactance(){
+      const l = Math.max(1e-15,Number(document.getElementById("xlL").value) || 1e-15) *
+        Number(document.getElementById("xlLU").value);
+      const f = Math.max(1e-12,Number(document.getElementById("xlF").value) || 1e-12);
+      const v = Math.max(0,Number(document.getElementById("xlV").value) || 0);
+
+      const xl = 2 * Math.PI * f * l;
+      const current = xl > 0 ? v / xl : 0;
+
+      document.getElementById("xlResult").textContent = formatOhms(xl);
+      document.getElementById("xlCurrent").textContent = formatCurrent(current);
+      document.getElementById("xlFormula").textContent =
+        "XL = 2πfL = 2π × " + fmt(f) + " × " + formatInductance(l) + " = " + formatOhms(xl);
+    }
+
+    ["xlL","xlLU","xlF","xlV"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateReactance);
+      el.addEventListener("change",updateReactance);
+    });
+
+    let rlTau = 0.01;
+    let rlFinalCurrent = 1.2;
+    let rlFraction = 0;
+    let rlTimer = null;
+
+    function updateRL(){
+      const r = Math.max(1e-12,Number(document.getElementById("rlR").value) || 1e-12) *
+        Number(document.getElementById("rlRU").value);
+      const l = Math.max(1e-15,Number(document.getElementById("rlL").value) || 1e-15) *
+        Number(document.getElementById("rlLU").value);
+      const v = Math.max(0,Number(document.getElementById("rlV").value) || 0);
+
+      rlTau = l / r;
+      rlFinalCurrent = v / r;
+
+      document.getElementById("rlTau").textContent = formatTime(rlTau);
+      document.getElementById("rlFinalI").textContent = formatCurrent(rlFinalCurrent);
+      document.getElementById("rlFiveTau").textContent = formatTime(rlTau * 5);
+      updateRlVisual();
+    }
+
+    function updateRlVisual(){
+      const pct = Math.max(0,Math.min(100,rlFraction * 100));
+      const current = rlFinalCurrent * rlFraction;
+      document.getElementById("rlProgress").style.width = pct + "%";
+      document.getElementById("rlSimCurrent").textContent = "Current: " + formatCurrent(current);
+
+      const glow = document.getElementById("fieldGlow");
+      glow.style.transform = "scale(" + (0.4 + 0.65 * rlFraction) + ")";
+      glow.style.opacity = String(0.2 + 0.75 * rlFraction);
+
+      document.querySelectorAll(".turn").forEach(turn => {
+        turn.style.filter = "brightness(" + (1 + 0.7 * rlFraction) + ")";
+        turn.style.transform = "scale(" + (1 + 0.03 * rlFraction) + ")";
+      });
+    }
+
+    function runRlSimulation(energizing){
+      if (rlTimer) clearInterval(rlTimer);
+
+      const startFraction = rlFraction;
+      const start = performance.now();
+      const duration = Math.min(7000,Math.max(1800,2400 + Math.log10(Math.max(rlTau,0.000001) + 1) * 900));
+
+      rlTimer = setInterval(() => {
+        const elapsed = performance.now() - start;
+        const scaledT = (elapsed / duration) * 5 * rlTau;
+
+        if (energizing){
+          const curve = 1 - Math.exp(-scaledT / rlTau);
+          rlFraction = startFraction + (1 - startFraction) * curve;
+        } else {
+          rlFraction = startFraction * Math.exp(-scaledT / rlTau);
+        }
+
+        updateRlVisual();
+
+        if (elapsed >= duration){
+          rlFraction = energizing ? 0.993 : 0.007;
+          updateRlVisual();
+          clearInterval(rlTimer);
+          rlTimer = null;
+        }
+      },60);
+    }
+
+    ["rlR","rlRU","rlL","rlLU","rlV"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateRL);
+      el.addEventListener("change",updateRL);
+    });
+
+    document.getElementById("energizeBtn").addEventListener("click",() => runRlSimulation(true));
+    document.getElementById("decayBtn").addEventListener("click",() => runRlSimulation(false));
+    document.getElementById("resetRlBtn").addEventListener("click",() => {
+      if (rlTimer) clearInterval(rlTimer);
+      rlTimer = null;
+      rlFraction = 0;
+      updateRlVisual();
+    });
+
+    function updateEnergy(){
+      const l = Math.max(0,Number(document.getElementById("energyL").value) || 0) *
+        Number(document.getElementById("energyLU").value);
+      const i = Math.max(0,Number(document.getElementById("energyI").value) || 0);
+      const e = 0.5 * l * i * i;
+
+      document.getElementById("indEnergy").textContent = formatEnergy(e);
+      document.getElementById("energyFormula").textContent =
+        "E = ½LI² = 0.5 × " + formatInductance(l) + " × (" + fmt(i) + " A)²";
+    }
+
+    ["energyL","energyLU","energyI"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateEnergy);
+      el.addEventListener("change",updateEnergy);
+    });
+
+    updateEquivalent();
+    updateReactance();
+    updateRL();
+    updateEnergy();
+    updateRlVisual();
+  </script>
+</body>
+</html>
