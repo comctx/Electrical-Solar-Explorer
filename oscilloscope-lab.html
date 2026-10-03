@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oscilloscope Lab</title>
+<link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.94}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1100px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.start{background:#fffbed;border:1px solid #e5c94a;border-radius:16px;padding:16px;margin-bottom:16px}.start h2{margin-bottom:10px}.start ol{margin:0;padding-left:22px;line-height:1.6}.start li{margin-bottom:5px}
+.scope-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);gap:16px}.screen{background:#071a2e;border:10px solid #26384c;border-radius:16px;overflow:hidden;box-shadow:inset 0 0 30px rgba(0,0,0,.45)}#scope{display:block;width:100%;height:auto;min-height:360px}.gridline{stroke:#24425d;stroke-width:1}.major{stroke:#3b607e;stroke-width:1.4}.axis{stroke:#6f94b4;stroke-width:1.6}.wave{stroke:#ffd43b;stroke-width:3;fill:none;filter:drop-shadow(0 0 4px rgba(255,212,59,.65))}
+.controls{display:grid;gap:10px}.field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px}select,input{width:100%;min-height:44px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}
+.readouts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.readout{background:#eef7ff;border:1px solid #b9d7f5;border-radius:12px;padding:11px}.readout small{display:block;color:var(--muted);font-weight:700}.readout strong{display:block;color:var(--navy);font-size:20px;margin-top:3px}
+.exercise{display:grid;gap:9px}.btn{min-height:44px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.result{margin-top:12px;background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.result.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}.result.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:820px){.scope-grid{grid-template-columns:1fr}.readouts{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:480px){main{padding:12px}.readouts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1>Oscilloscope Lab</h1><p>See how voltage changes over time and learn what the scope controls really do.</p></header>
+<main>
+<nav class="nav"><a href="index.html">← Home</a><a href="test-equipment.html">Test Equipment</a><a href="circuit-lab.html">Circuit Lab</a><a href="quizzes.html">Quizzes</a></nav>
+
+<section class="start"><h2>Beginner Start Here</h2><ol>
+<li><strong>Vertical = voltage.</strong> Volts/div controls how much voltage each vertical square represents.</li>
+<li><strong>Horizontal = time.</strong> Time/div controls how much time each horizontal square represents.</li>
+<li><strong>Amplitude</strong> tells how tall the waveform is.</li>
+<li><strong>Frequency</strong> tells how many cycles happen each second.</li>
+<li>Adjust the controls and watch how the same signal looks different on the screen.</li>
+</ol></section>
+
+<section class="panel">
+<h2>Virtual Oscilloscope</h2>
+<p class="lead">This is a visual learning simulator for low-voltage waveforms. It is not a substitute for the safety ratings, probing practices, or isolation requirements of a real oscilloscope.</p>
+<div class="scope-grid">
+<div class="screen"><svg id="scope" viewBox="0 0 800 420" aria-label="Virtual oscilloscope waveform display"></svg></div>
+<div class="controls">
+<div class="field"><label for="waveType">Waveform</label><select id="waveType"><option value="sine">Sine Wave</option><option value="square">Square Wave</option><option value="triangle">Triangle Wave</option><option value="dc">DC Level</option></select></div>
+<div class="field"><label for="amplitude">Peak Amplitude (V)</label><input id="amplitude" type="number" min="0.1" max="20" step="0.1" value="2"></div>
+<div class="field"><label for="frequency">Frequency (Hz)</label><input id="frequency" type="number" min="0.1" max="10000" step="0.1" value="100"></div>
+<div class="field"><label for="vdiv">Volts / Division</label><select id="vdiv"><option>.2</option><option>.5</option><option selected>1</option><option>2</option><option>5</option></select></div>
+<div class="field"><label for="tdiv">Time / Division</label><select id="tdiv"><option value=".0001">0.1 ms</option><option value=".0002">0.2 ms</option><option value=".0005">0.5 ms</option><option value=".001" selected>1 ms</option><option value=".002">2 ms</option><option value=".005">5 ms</option><option value=".01">10 ms</option></select></div>
+<div class="field"><label for="offset">DC Offset (V)</label><input id="offset" type="number" min="-10" max="10" step="0.1" value="0"></div>
+<button id="autoBtn" class="btn primary">Auto Set Display</button>
+</div>
+</div>
+<div class="readouts">
+<div class="readout"><small>Frequency</small><strong id="outFreq">100 Hz</strong></div>
+<div class="readout"><small>Period</small><strong id="outPeriod">10 ms</strong></div>
+<div class="readout"><small>Peak-to-Peak</small><strong id="outPp">4 Vpp</strong></div>
+<div class="readout"><small>Approx. cycles on screen</small><strong id="outCycles">1</strong></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Try These</h2>
+<div class="exercise">
+<button class="btn" data-preset="slow">Show a slow sine wave</button>
+<button class="btn" data-preset="square">Compare a square wave</button>
+<button class="btn" data-preset="zoom">Zoom in with a faster time base</button>
+<button class="btn" data-preset="dc">Show a DC level</button>
+</div>
+<div id="lesson" class="result">Change one control at a time and watch what moves.</div>
+</section>
+
+<section class="panel">
+<h2>Quick Check</h2>
+<p class="lead">If one complete cycle takes 5 milliseconds, what is the frequency?</p>
+<div class="exercise"><button class="btn quiz" data-answer="100">100 Hz</button><button class="btn quiz" data-answer="200">200 Hz</button><button class="btn quiz" data-answer="500">500 Hz</button></div>
+<div id="quizResult" class="result">Choose an answer. Hint: frequency = 1 ÷ period in seconds.</div>
+</section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+
+<script>
+const svg=document.getElementById("scope");
+function n(v,d=2){return Number(v.toFixed(d)).toString()}
+function grid(){
+ let s="";
+ for(let i=0;i<=10;i++){const x=i*80;s+='<path class="'+(i===5?'axis':i%5===0?'major':'gridline')+'" d="M'+x+' 0V420"/>'}
+ for(let i=0;i<=8;i++){const y=i*52.5;s+='<path class="'+(i===4?'axis':i%4===0?'major':'gridline')+'" d="M0 '+y+'H800"/>'}
+ return s;
+}
+function valueAt(t,type,a,f,off){
+ if(type==="dc")return off+a;
+ const phase=2*Math.PI*f*t;
+ if(type==="sine")return off+a*Math.sin(phase);
+ if(type==="square")return off+(Math.sin(phase)>=0?a:-a);
+ const p=((t*f)%1+1)%1;return off+a*(p<.25?4*p:p<.75?2-4*p:-4+4*p);
+}
+function draw(){
+ const type=waveType.value,a=Math.max(.1,+amplitude.value||.1),f=Math.max(.1,+frequency.value||.1),vd=+vdiv.value,td=+tdiv.value,off=+offset.value||0,totalT=td*10;
+ let d="";
+ for(let x=0;x<=800;x+=2){
+   const t=x/800*totalT,v=valueAt(t,type,a,f,off),y=210-v/vd*52.5;
+   d+=(x===0?"M":"L")+x+" "+Math.max(-50,Math.min(470,y))+" ";
+ }
+ svg.innerHTML=grid()+'<path class="wave" d="'+d+'"/>';
+ const period=1/f;
+ outFreq.textContent=f>=1000?n(f/1000,2)+" kHz":n(f,2)+" Hz";
+ outPeriod.textContent=period<.001?n(period*1e6,2)+" µs":n(period*1000,2)+" ms";
+ outPp.textContent=type==="dc"?"0 Vpp":n(a*2,2)+" Vpp";
+ outCycles.textContent=type==="dc"?"—":n(totalT*f,2);
+}
+function autoSet(){
+ const f=Math.max(.1,+frequency.value||.1),a=Math.max(.1,+amplitude.value||.1);
+ const desired=1/f/2;
+ const times=[.0001,.0002,.0005,.001,.002,.005,.01];
+ tdiv.value=times.reduce((best,x)=>Math.abs(x-desired)<Math.abs(best-desired)?x:best,times[0]).toString();
+ const volts=[.2,.5,1,2,5];
+ vdiv.value=volts.reduce((best,x)=>Math.abs(x-a/2)<Math.abs(best-a/2)?x:best,volts[0]).toString();
+ draw();lesson.textContent="Auto Set chose a time base and vertical scale that make the waveform easier to see.";
+}
+[waveType,amplitude,frequency,vdiv,tdiv,offset].forEach(el=>el.addEventListener("input",draw));
+autoBtn.onclick=autoSet;
+document.querySelectorAll("[data-preset]").forEach(b=>b.onclick=()=>{
+ const p=b.dataset.preset;
+ if(p==="slow"){waveType.value="sine";frequency.value=50;amplitude.value=2;tdiv.value=".002";vdiv.value="1";offset.value=0;lesson.textContent="A slower signal needs more time per division to show a useful number of cycles."}
+ if(p==="square"){waveType.value="square";frequency.value=100;amplitude.value=2;tdiv.value=".001";vdiv.value="1";offset.value=0;lesson.textContent="A square wave jumps between two voltage levels instead of changing smoothly."}
+ if(p==="zoom"){waveType.value="sine";frequency.value=1000;amplitude.value=1;tdiv.value=".0002";vdiv.value=".5";offset.value=0;lesson.textContent="A faster time base zooms in horizontally so a high-frequency waveform is easier to inspect."}
+ if(p==="dc"){waveType.value="dc";amplitude.value=0;offset.value=5;tdiv.value=".001";vdiv.value="1";lesson.textContent="A steady DC voltage appears as a horizontal line above or below the zero reference."}
+ draw();
+});
+document.querySelectorAll(".quiz").forEach(b=>b.onclick=()=>{const ok=b.dataset.answer==="200";quizResult.className="result "+(ok?"good":"bad");quizResult.textContent=ok?"Correct. 5 ms = 0.005 s, and 1 ÷ 0.005 = 200 Hz.":"Not quite. Convert 5 ms to 0.005 s, then calculate 1 ÷ 0.005 = 200 Hz."});
+draw();
+</script>
+</body>
+</html>
