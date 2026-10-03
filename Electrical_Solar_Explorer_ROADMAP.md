@@ -591,3 +591,11 @@ A DONCO-BAYCITY™ App
 - Search and category filtering
 - Initial set includes resistors, capacitors, inductors, diodes, LEDs, transistors, ICs, relays, transformers, fuses, switches, circuit breakers, contactors, terminal blocks, motors, batteries, proximity sensors, and solenoids
 - Direct links with Circuit Lab and How to Read Schematics
+
+
+## Interactive Training Upgrades
+- Interactive Troubleshooting Trainer with hidden faults and virtual voltage measurements
+- Relay / Contactor Simulator with Start, Stop, seal-in auxiliary contact, overload trip/reset, main contact, and motor state
+- Schematic Practice Exercises with six beginner questions, hints, explanations, and score
+- All three use the shared Beginner Start Here style
+- Linked from Home search and their related learning pages
