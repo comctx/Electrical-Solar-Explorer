@@ -21,7 +21,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </style>
 </head>
 <body>
-<header><h1>Sensors & Switches Explorer</h1><p>Limit switches, proximity sensors, photoelectric sensors, contact logic, industrial outputs, and detection concepts.</p></header>
+<header><h1>Sensors & Switches Explorer</h1><p>Pushbuttons, selector switches, limit switches, process switches, proximity sensors, photoelectric sensors, contact arrangements, industrial outputs, and detection concepts.</p></header>
 <main>
 <nav class="nav">
 <a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="vacuum-tubes.html">Vacuum Tubes</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a href="motors-controls.html">Motors & Controls</a><a href="generators-alternators.html">Generators & Alternators</a><a href="solar-power-electronics.html">Solar Power Electronics</a><a class="active" href="sensors-switches.html">Sensors & Switches</a><a href="processors.html">Processors</a>
@@ -37,6 +37,64 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <div class="card"><strong>Normally Open</strong><p>Open in the normal state; changes to closed/on when actuated.</p><span class="badge">NO</span></div>
 <div class="card"><strong>Normally Closed</strong><p>Closed in the normal state; changes to open/off when actuated.</p><span class="badge">NC</span></div>
 </div>
+</section>
+
+<section class="panel">
+<h2>Common Switch Families</h2>
+<div class="grid three">
+<div class="card"><strong>Pushbutton</strong><p>Momentary or maintained operator control. START buttons often use normally-open contacts, while STOP controls commonly use normally-closed contacts in control systems.</p><span class="badge">Operator control</span></div>
+<div class="card"><strong>Toggle Switch</strong><p>Lever-operated switch available in SPST, SPDT, DPDT, center-off, momentary, and maintained versions.</p><span class="badge">Manual control</span></div>
+<div class="card"><strong>Rocker Switch</strong><p>Rocks between positions and is common on appliances, equipment panels, and power controls.</p><span class="badge">Panel switch</span></div>
+<div class="card"><strong>Slide Switch</strong><p>A sliding actuator selects between positions. Common in low-voltage electronics and compact devices.</p><span class="badge">Compact</span></div>
+<div class="card"><strong>Rotary / Selector Switch</strong><p>Turns to select one of several positions or circuits. Industrial selector switches may be two-position, three-position, spring-return, or maintained.</p><span class="badge">Multi-position</span></div>
+<div class="card"><strong>Key Switch</strong><p>A selector or maintained switch that requires a key and can restrict who may operate or change a machine mode.</p><span class="badge">Restricted control</span></div>
+<div class="card"><strong>Emergency Stop</strong><p>A purpose-designed emergency control, often a red mushroom operator with positive-opening contacts and manual reset. It belongs in a properly engineered safety circuit, not as an ordinary on/off switch.</p><span class="badge">Safety control</span></div>
+<div class="card"><strong>DIP Switch</strong><p>A bank of miniature switches used to set addresses, modes, options, or configuration in electronic equipment.</p><span class="badge">Configuration</span></div>
+<div class="card"><strong>Reed Switch</strong><p>Magnetically operated contacts sealed inside a glass capsule. Common in doors, level sensing, and position detection.</p><span class="badge">Magnetic</span></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Pole & Throw: SPST, SPDT, DPST, DPDT</h2>
+<p class="lead">“Pole” tells how many separate circuits are switched. “Throw” tells how many output positions each pole can connect to.</p>
+<div class="grid two">
+<div class="card"><strong>SPST</strong><p>Single Pole, Single Throw. One circuit, simple on/off action.</p></div>
+<div class="card"><strong>SPDT</strong><p>Single Pole, Double Throw. One common terminal selects between two outputs.</p></div>
+<div class="card"><strong>DPST</strong><p>Double Pole, Single Throw. Two separate circuits turn on or off together.</p></div>
+<div class="card"><strong>DPDT</strong><p>Double Pole, Double Throw. Two circuits each switch between two paths. It can be used for many routing functions, including polarity reversal in suitable low-voltage circuits.</p></div>
+</div>
+<div class="field" style="margin-top:14px"><label>Choose a contact arrangement</label>
+<select id="contactType"><option>SPST</option><option>SPDT</option><option>DPST</option><option>DPDT</option></select></div>
+<div id="contactExplain" class="result"></div>
+</section>
+
+<section class="panel">
+<h2>Process & Condition Switches</h2>
+<div class="grid three">
+<div class="card"><strong>Pressure Switch</strong><p>Changes contact state when pressure reaches an adjustable or fixed threshold. Used on compressors, pumps, hydraulics, and HVAC systems.</p></div>
+<div class="card"><strong>Float / Level Switch</strong><p>Detects liquid level using a float, reed device, tilt mechanism, or other sensing method.</p></div>
+<div class="card"><strong>Flow Switch</strong><p>Detects whether liquid or air flow is present or has reached a specified condition.</p></div>
+<div class="card"><strong>Temperature Switch / Thermostat</strong><p>Changes state when temperature crosses a setpoint. Bimetal and electronic versions are common.</p></div>
+<div class="card"><strong>Vacuum Switch</strong><p>Operates from negative pressure and is used in vacuum handling, pumps, and process equipment.</p></div>
+<div class="card"><strong>Tilt / Mercury-Free Tilt Switch</strong><p>Changes state with orientation or motion. Modern designs often use a rolling ball or electronic sensor rather than mercury.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Switch Action & Ratings</h2>
+<table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>Momentary</td><td>Returns to its normal state when the operator releases it.</td></tr>
+<tr><td>Maintained</td><td>Stays in the selected state until moved again.</td></tr>
+<tr><td>Snap action</td><td>Internal spring mechanism changes the contacts quickly once the actuator reaches its operating point.</td></tr>
+<tr><td>Make-before-break</td><td>New contact path closes before the old path opens.</td></tr>
+<tr><td>Break-before-make</td><td>Old path opens before the new path closes.</td></tr>
+<tr><td>Contact bounce</td><td>Mechanical contacts may rapidly open and close for a short time during switching. Digital circuits often need debounce filtering.</td></tr>
+<tr><td>Voltage rating</td><td>Maximum circuit voltage the switch is designed to handle under stated conditions.</td></tr>
+<tr><td>Current rating</td><td>Maximum current for the specified load type and voltage. AC, DC, resistive, lamp, and motor ratings may differ substantially.</td></tr>
+<tr><td>Mechanical life</td><td>Expected number of physical operating cycles without necessarily carrying rated electrical load.</td></tr>
+<tr><td>Electrical life</td><td>Expected switching life while making and breaking the specified electrical load.</td></tr>
+</tbody></table>
+<div class="formula">A switch that is safe for one load is not automatically safe for another. Motor, lamp, capacitive, inductive, AC, and DC loads can stress contacts differently, so use the manufacturer’s actual switching ratings.</div>
 </section>
 
 <section class="panel">
@@ -138,6 +196,17 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </main>
 <footer>A DONCO-BAYCITY™ App</footer>
 <script>
+function contactInfo(){
+ const info={
+  SPST:"One pole, one throw: one circuit is simply opened or closed.",
+  SPDT:"One pole, two throws: one common terminal selects one of two paths.",
+  DPST:"Two poles, one throw: two independent circuits switch on or off together.",
+  DPDT:"Two poles, two throws: two independent circuits each select between two paths."
+ };
+ contactExplain.textContent=info[contactType.value];
+}
+contactType.onchange=contactInfo;contactInfo();
+
 function place(el,val,maxLeft=205){el.style.left=(15+(+val/100)*maxLeft)+"px"}
 function limitSim(){place(limitTarget,limitPos.value);const hit=+limitPos.value>78;lever.classList.toggle("hit",hit);limitLamp.classList.toggle("on",hit);limitResult.className="result"+(hit?" good":"");limitResult.lastChild.textContent=hit?" Switch actuated":" Switch not actuated"}limitPos.oninput=limitSim;limitSim();
 
