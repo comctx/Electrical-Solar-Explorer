@@ -27,6 +27,17 @@ function recordRecent(){
   const next=[item,...getRecent().filter(x=>x.href!==item.href)];
   saveRecent(next);
 }
+
+function normalizeHomeLinks(){
+  if(isHome()) return;
+  document.querySelectorAll('a[href="index.html"], a[href="./index.html"]').forEach(a=>{
+    const text=(a.textContent||"").trim();
+    if(/^All Things Electrical$/i.test(text)||/^Home$/i.test(text)){
+      a.textContent="← Home";
+      a.setAttribute("aria-label","Return to All Things Electrical home");
+    }
+  });
+}
 function isFavorite(){const f=pageFile();return getFavs().some(x=>x.href===f)}
 function toggleFavorite(){
   const f=pageFile(),title=pageTitle();
@@ -134,6 +145,7 @@ else if(window.matchMedia?.("(prefers-color-scheme: dark)").matches) document.do
 else document.documentElement.dataset.ateTheme="light";
 
 document.addEventListener("DOMContentLoaded",()=>{
+  normalizeHomeLinks();
   recordRecent();
   makeToolbar();
   renderHomeTools();
