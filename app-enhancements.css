@@ -225,3 +225,13 @@ summary:focus-visible{
     scroll-behavior:auto !important;
   }
 }
+
+/* Find on This Page */
+.ate-page-finder{position:fixed;inset:0;z-index:10050;background:rgba(7,26,46,.5);display:flex;align-items:flex-start;justify-content:center;padding:9vh 14px 14px}
+.ate-finder-card{width:min(680px,100%);max-height:78vh;overflow:auto;background:#fff;border:1px solid #cfd9e3;border-radius:18px;padding:15px;box-shadow:0 22px 65px rgba(7,26,46,.32)}
+.ate-finder-head{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#071a2e;font-size:20px;margin-bottom:10px}.ate-finder-head button{width:38px;height:38px;border:0;border-radius:50%;background:#eef3f7;color:#071a2e;font-size:25px;cursor:pointer}
+.ate-finder-card input{width:100%;min-height:48px;border:2px solid #9fc8ef;border-radius:11px;padding:10px 12px;font:inherit;background:#fff;color:#14202b}
+.ate-finder-meta{font-size:13px;color:#62707d;margin:9px 2px}.ate-finder-results{display:grid;gap:8px}
+.ate-finder-result{width:100%;text-align:left;border:1px solid #cfd9e3;border-radius:11px;background:#f8fbff;padding:11px;cursor:pointer;color:#14202b}.ate-finder-result:hover{background:#eef7ff;border-color:#9fc8ef}.ate-finder-result strong{display:block;color:#071a2e;margin-bottom:4px}.ate-finder-result span{display:block;color:#526779;font-size:13px;line-height:1.4}
+.ate-find-highlight{outline:4px solid #ffd43b!important;outline-offset:4px!important;transition:outline .25s ease}
+html[data-ate-theme="dark"] .ate-finder-card{background:#122235;border-color:#31475b}html[data-ate-theme="dark"] .ate-finder-head{color:#fff}html[data-ate-theme="dark"] .ate-finder-head button,html[data-ate-theme="dark"] .ate-finder-card input,html[data-ate-theme="dark"] .ate-finder-result{background:#172b40;color:#edf4fb;border-color:#3a5871}html[data-ate-theme="dark"] .ate-finder-result strong{color:#fff}html[data-ate-theme="dark"] .ate-finder-result span,html[data-ate-theme="dark"] .ate-finder-meta{color:#a9bbca}
