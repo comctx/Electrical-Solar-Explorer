@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Vacuum Tubes Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;padding:24px 18px 20px;text-align:center;
+    }
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1000px;margin:0 auto;padding:18px}
+    .page-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .page-nav a{
+      text-decoration:none;min-height:46px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:11px;padding:10px 14px;font-weight:800;border:1px solid #9fc8ef;
+      background:#eef7ff;color:var(--navy);
+    }
+    .page-nav a.active{background:var(--yellow);border-color:#e4ba16}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px;
+    }
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    h3{margin:0 0 8px;color:var(--navy)}
+    .lead,.note{color:var(--muted);line-height:1.5}
+    .lead{margin:0 0 16px}.note{font-size:13px;margin:10px 0 0}
+    .grid{display:grid;gap:12px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input,select,button{font:inherit}
+    input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white;color:var(--text)}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px}
+    .result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .result strong{color:var(--navy);font-size:clamp(20px,4vw,28px)}
+    .formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+    .warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:10px;padding:10px 12px;color:#6a4300;font-weight:700;line-height:1.45}
+    .status{margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy);line-height:1.45}
+    .status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+    .status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
+
+    .beginner-panel{background:linear-gradient(180deg,#fff 0%,#f8fbff 100%);border:2px solid #b9d7f5}
+    .concept-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .concept-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .concept-card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}
+    .concept-card p{margin:0;color:#33495b;line-height:1.5}
+    .badge{display:inline-block;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#e9f3ff;color:var(--navy);border:1px solid #b9d7f5}
+
+    .tube-stage{display:grid;grid-template-columns:minmax(300px,1fr) minmax(0,1fr);gap:16px;align-items:center;margin-top:14px}
+    .tube-visual{position:relative;min-height:320px;border:1px solid var(--border);border-radius:16px;background:#fbfdff;overflow:hidden}
+    .glass{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:180px;height:245px;border:6px solid #9bb4c9;border-radius:80px 80px 28px 28px;background:rgba(233,243,255,.45)}
+    .plate{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:100px;height:150px;border:8px solid #4e5b66;border-radius:12px}
+    .grid-wire{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:70px;height:120px;border:3px dashed var(--electric);border-radius:10px}
+    .cathode{position:absolute;left:50%;bottom:68px;transform:translateX(-50%);width:48px;height:16px;background:#d18a00;border-radius:999px}
+    .heater{position:absolute;left:50%;bottom:46px;transform:translateX(-50%);width:62px;height:10px;background:var(--yellow);border-radius:999px;box-shadow:0 0 18px rgba(255,212,59,.7)}
+    .electron{position:absolute;width:12px;height:12px;border-radius:50%;background:#1594ff;left:50%;bottom:84px;transform:translateX(-50%);opacity:0}
+    .tube-visual.running .electron{opacity:1;animation:electronFlow 1.6s linear infinite}
+    @keyframes electronFlow{0%{bottom:84px;opacity:0}15%{opacity:1}85%{opacity:1}100%{bottom:250px;opacity:0}}
+    .label{position:absolute;font-size:12px;font-weight:900;color:var(--navy)}
+    .label-plate{right:12%;top:22%}.label-grid{right:14%;top:48%}.label-cathode{right:12%;bottom:67px}.label-heater{left:8%;bottom:44px}
+    .button-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .action{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}
+    .action.primary{background:var(--yellow);border-color:#e4ba16}
+
+    .type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .type-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:13px}
+    .type-card strong{display:block;color:var(--navy);margin-bottom:5px}
+    .type-card small{display:block;color:var(--muted);line-height:1.45}
+    .comparison-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .comparison-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .comparison-card ul{margin:8px 0 0 20px;padding:0;color:#33495b;line-height:1.5}
+
+    @media(max-width:760px){
+      main{padding:12px}.grid.two,.grid.three,.grid.four,.result-grid,.concept-grid,.type-grid,.comparison-grid,.tube-stage{grid-template-columns:1fr}
+    }
+    footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Vacuum Tubes Explorer</h1>
+  <p>Diodes, triodes, grids, heaters, amplification, rectification, tube types, and the history of electronic amplification.</p>
+</header>
+
+<main>
+<nav class="page-nav" aria-label="App pages">
+  <a href="index.html">All Things Electrical</a>
+  <a href="electrical-basics.html">Electrical Basics</a>
+  <a href="wiring-installation.html">Wiring & Installation</a>
+  <a href="batteries.html">Batteries</a>
+  <a href="power-supplies.html">Power Supplies & Rectifiers</a>
+  <a href="capacitor.html">Capacitors</a>
+  <a href="inductors.html">Inductors & Coils</a>
+  <a href="transformers.html">Transformers</a>
+  <a href="diodes.html">Diodes</a>
+  <a href="transistors.html">Transistors</a>
+  <a href="vacuum-tubes.html" class="active">Vacuum Tubes</a>
+  <a href="relays.html">Relays & Contactors</a>
+  <a href="integrated-circuits.html">Integrated Circuits</a>
+  <a href="processors.html">Processors</a>
+</nav>
+
+<section class="panel beginner-panel">
+  <h2>Beginner Start Here</h2>
+  <p class="lead">Before transistors, vacuum tubes were the main active devices used for rectification, amplification, switching, radio, and early computers.</p>
+  <div class="concept-grid">
+    <div class="concept-card"><strong>Heater / Filament</strong><p>Heats the cathode so electrons can be emitted inside the evacuated tube.</p><span class="badge">Creates electron emission</span></div>
+    <div class="concept-card"><strong>Cathode</strong><p>The electrode that emits electrons when heated.</p><span class="badge">Electron source</span></div>
+    <div class="concept-card"><strong>Plate / Anode</strong><p>The positively biased electrode that attracts electrons from the cathode.</p><span class="badge">Collects electrons</span></div>
+    <div class="concept-card"><strong>Control Grid</strong><p>A wire structure placed between cathode and plate. A small grid-voltage change can control a much larger plate current.</p><span class="badge">Controls current</span></div>
+    <div class="concept-card"><strong>Vacuum</strong><p>The air is removed so electrons can travel between electrodes without colliding with gas molecules as they would at normal pressure.</p><span class="badge">Electron path</span></div>
+    <div class="concept-card"><strong>Why Tubes Still Matter</strong><p>They remain important in guitar amplifiers, some hi-fi equipment, radio-frequency transmitters, specialized high-voltage equipment, and electronics history.</p><span class="badge">Historic + specialized</span></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Animated Electron Flow</h2>
+  <p class="lead">Watch a simplified triode: the heater warms the cathode, electrons move toward the plate, and the control grid influences how much current gets through.</p>
+  <div class="tube-stage">
+    <div id="tubeVisual" class="tube-visual">
+      <div class="glass"></div>
+      <div class="plate"></div>
+      <div class="grid-wire"></div>
+      <div class="cathode"></div>
+      <div class="heater"></div>
+      <div class="electron"></div>
+      <div class="label label-plate">Plate / Anode</div>
+      <div class="label label-grid">Control Grid</div>
+      <div class="label label-cathode">Cathode</div>
+      <div class="label label-heater">Heater</div>
+    </div>
+    <div>
+      <h3 id="tubeTitle">Tube Idle</h3>
+      <p id="tubeExplain" class="lead">Press Run Tube to show the simplified electron path from heated cathode toward the plate.</p>
+      <div class="button-row">
+        <button id="tubeRun" class="action primary" type="button">Run Tube</button>
+        <button id="tubeStop" class="action" type="button">Stop</button>
+      </div>
+      <div id="tubeStatus" class="status">Electron flow is stopped in this visual model.</div>
+      <p class="note">Conventional current direction is opposite electron flow. This animation shows electrons traveling from cathode toward plate.</p>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Triode Bias & Gain Teaching Tool</h2>
+  <p class="lead">Explore a simplified small-signal triode model using transconductance and plate-load resistance.</p>
+  <div class="grid four">
+    <div class="field"><label for="triGm">Transconductance gm (mA/V)</label><input id="triGm" type="number" min="0" step="any" value="2.2"></div>
+    <div class="field"><label for="triRp">Plate resistance rp (kΩ)</label><input id="triRp" type="number" min="0.001" step="any" value="62"></div>
+    <div class="field"><label for="triLoad">Plate load RL (kΩ)</label><input id="triLoad" type="number" min="0.001" step="any" value="100"></div>
+    <div class="field"><label for="triVin">Small input change (V)</label><input id="triVin" type="number" step="any" value="0.1"></div>
+  </div>
+  <div class="result-grid">
+    <div class="result"><small>Approx. amplification factor μ</small><strong id="triMu">—</strong></div>
+    <div class="result"><small>Approx. voltage gain</small><strong id="triGain">—</strong></div>
+    <div class="result"><small>Approx. output change</small><strong id="triVout">—</strong></div>
+  </div>
+  <div id="triFormula" class="formula">μ ≈ gm × rp; gain ≈ μ × RL ÷ (rp + RL).</div>
+  <p class="note">This is a simplified teaching model, not a tube-selection or amplifier-design tool. Real gain depends on bias point, tube curves, bypassing, supply voltage, load, frequency, transformer coupling, and circuit topology.</p>
+</section>
+
+<section class="panel">
+  <h2>Heater / Filament Power Calculator</h2>
+  <p class="lead">Calculate heater power and resistance from heater voltage and current.</p>
+  <div class="grid two">
+    <div class="field"><label for="heaterV">Heater voltage (V)</label><input id="heaterV" type="number" min="0.001" step="any" value="6.3"></div>
+    <div class="field"><label for="heaterI">Heater current (A)</label><input id="heaterI" type="number" min="0.001" step="any" value="0.3"></div>
+  </div>
+  <div class="result-grid">
+    <div class="result"><small>Heater power</small><strong id="heaterP">—</strong></div>
+    <div class="result"><small>Hot resistance estimate</small><strong id="heaterR">—</strong></div>
+  </div>
+  <div id="heaterFormula" class="formula">P = V × I; R ≈ V ÷ I at the operating point.</div>
+  <p class="note">Cold filament resistance can be much lower than hot operating resistance, so turn-on inrush current can be higher than the steady-state value.</p>
+</section>
+
+<section class="panel">
+  <h2>Vacuum-Tube Rectifier Basics</h2>
+  <p class="lead">Estimate peak DC after a rectifier-tube forward drop from a transformer secondary RMS voltage.</p>
+  <div class="grid three">
+    <div class="field"><label for="rectVac">AC secondary (V RMS)</label><input id="rectVac" type="number" min="0" step="any" value="250"></div>
+    <div class="field"><label for="rectDrop">Tube drop per conducting path (V)</label><input id="rectDrop" type="number" min="0" step="any" value="20"></div>
+    <div class="field"><label for="rectType">Rectifier arrangement</label><select id="rectType"><option value="full">Full-wave / center-tapped concept</option><option value="half">Half-wave concept</option></select></div>
+  </div>
+  <div class="result-grid">
+    <div class="result"><small>AC peak</small><strong id="rectPeak">—</strong></div>
+    <div class="result"><small>Approx. peak after tube drop</small><strong id="rectDc">—</strong></div>
+  </div>
+  <div id="rectFormula" class="formula">Vpeak ≈ Vrms × √2 minus the entered rectifier drop.</div>
+  <div class="warning">Tube rectifier circuits often involve hazardous high voltage. This calculator is only a waveform concept demonstration and does not size transformers, capacitors, rectifier tubes, surge resistors, or safe insulation clearances.</div>
+</section>
+
+<section class="panel">
+  <h2>Vacuum Tube Types</h2>
+  <div class="type-grid">
+    <div class="type-card"><strong>Diode</strong><small>Two main electrodes: cathode and plate. Used for rectification and detection.</small><span class="badge">Rectifier</span></div>
+    <div class="type-card"><strong>Triode</strong><small>Adds a control grid, allowing a small signal to control plate current for amplification.</small><span class="badge">Amplifier</span></div>
+    <div class="type-card"><strong>Tetrode</strong><small>Adds a screen grid to improve performance beyond a basic triode in many applications.</small><span class="badge">Four electrodes</span></div>
+    <div class="type-card"><strong>Pentode</strong><small>Adds another grid to reduce certain secondary-emission effects and provide high gain.</small><span class="badge">High gain</span></div>
+    <div class="type-card"><strong>Beam Power Tube</strong><small>Uses beam-forming structures for efficient power amplification, especially in audio and RF service.</small><span class="badge">Power output</span></div>
+    <div class="type-card"><strong>Dual Triode</strong><small>Contains two triode sections in one envelope, common in audio preamps and oscillators.</small><span class="badge">Two sections</span></div>
+    <div class="type-card"><strong>Magic-Eye Tube</strong><small>Visual indicator tube historically used for tuning and signal-level display.</small><span class="badge">Indicator</span></div>
+    <div class="type-card"><strong>Thyratron</strong><small>Gas-filled switching tube used historically for controlled high-current switching.</small><span class="badge">Switching</span></div>
+    <div class="type-card"><strong>CRT</strong><small>Cathode-ray tube steers an electron beam to create an image or trace on a phosphor screen.</small><span class="badge">Display</span></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Vacuum Tube vs. Transistor</h2>
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Vacuum Tube</h3>
+      <ul>
+        <li>Uses electron flow through a vacuum.</li>
+        <li>Usually needs heater power.</li>
+        <li>Often operates at comparatively high voltages.</li>
+        <li>Larger, hotter, and more fragile than semiconductor devices.</li>
+        <li>Still valued in some audio, RF, and specialized high-power applications.</li>
+      </ul>
+    </div>
+    <div class="comparison-card">
+      <h3>Transistor</h3>
+      <ul>
+        <li>Uses semiconductor junctions or field-effect structures.</li>
+        <li>Does not need a heated cathode.</li>
+        <li>Can operate at much lower voltages and power levels.</li>
+        <li>Small enough to integrate by millions or billions on a chip.</li>
+        <li>Dominates modern electronics, computing, control, and power conversion.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Tube Equipment Safety</h2>
+  <div class="concept-grid">
+    <div class="concept-card"><strong>High Voltage</strong><p>Plate supplies commonly use voltages high enough to cause serious injury or death.</p></div>
+    <div class="concept-card"><strong>Stored Charge</strong><p>Filter capacitors can remain charged after power is removed.</p></div>
+    <div class="concept-card"><strong>Heat</strong><p>Tubes, resistors, transformers, and surrounding parts can become hot enough to burn skin.</p></div>
+    <div class="concept-card"><strong>Glass Envelope</strong><p>Tubes are fragile glass devices and can crack or break if mishandled or thermally stressed.</p></div>
+  </div>
+  <div class="warning">Do not probe or service energized tube equipment unless you are properly trained and equipped for high-voltage work. Unplugging equipment does not guarantee that internal capacitors are discharged.</div>
+</section>
+</main>
+
+<footer>A DONCO-BAYCITY™ App</footer>
+
+<script>
+function fmt(n,d=3){if(!Number.isFinite(n))return "—";return n.toLocaleString(undefined,{maximumFractionDigits:d});}
+function setTube(run){
+  document.getElementById("tubeVisual").classList.toggle("running",run);
+  document.getElementById("tubeTitle").textContent=run?"Electron Flow":"Tube Idle";
+  document.getElementById("tubeExplain").textContent=run
+    ?"The heated cathode emits electrons. The positive plate attracts them, while the control grid changes how easily they pass."
+    :"Press Run Tube to show the simplified electron path from heated cathode toward the plate.";
+  const s=document.getElementById("tubeStatus");s.className="status "+(run?"good":"");
+  s.textContent=run?"Simplified electron flow is active.":"Electron flow is stopped in this visual model.";
+}
+document.getElementById("tubeRun").onclick=()=>setTube(true);
+document.getElementById("tubeStop").onclick=()=>setTube(false);
+
+function updateTriode(){
+  const gm=Math.max(0,Number(document.getElementById("triGm").value)||0)/1000;
+  const rp=Math.max(.001,Number(document.getElementById("triRp").value)||.001)*1000;
+  const rl=Math.max(.001,Number(document.getElementById("triLoad").value)||.001)*1000;
+  const vin=Number(document.getElementById("triVin").value)||0;
+  const mu=gm*rp;
+  const gain=mu*rl/(rp+rl);
+  const vout=-gain*vin;
+  document.getElementById("triMu").textContent=fmt(mu,2);
+  document.getElementById("triGain").textContent="−"+fmt(gain,2);
+  document.getElementById("triVout").textContent=fmt(vout,3)+" V";
+  document.getElementById("triFormula").textContent="μ ≈ gm × rp = "+fmt(mu,2)+". Approx. gain magnitude ≈ μ × RL ÷ (rp + RL) = "+fmt(gain,2)+".";
+}
+["triGm","triRp","triLoad","triVin"].forEach(id=>{const e=document.getElementById(id);e.oninput=updateTriode;e.onchange=updateTriode;});
+
+function updateHeater(){
+  const v=Math.max(.001,Number(document.getElementById("heaterV").value)||.001);
+  const i=Math.max(.001,Number(document.getElementById("heaterI").value)||.001);
+  document.getElementById("heaterP").textContent=fmt(v*i,3)+" W";
+  document.getElementById("heaterR").textContent=fmt(v/i,3)+" Ω";
+  document.getElementById("heaterFormula").textContent="P = "+fmt(v,3)+" V × "+fmt(i,3)+" A = "+fmt(v*i,3)+" W. Operating resistance ≈ "+fmt(v/i,3)+" Ω.";
+}
+["heaterV","heaterI"].forEach(id=>{const e=document.getElementById(id);e.oninput=updateHeater;e.onchange=updateHeater;});
+
+function updateRect(){
+  const vac=Math.max(0,Number(document.getElementById("rectVac").value)||0);
+  const drop=Math.max(0,Number(document.getElementById("rectDrop").value)||0);
+  const peak=vac*Math.SQRT2;
+  const dc=Math.max(0,peak-drop);
+  document.getElementById("rectPeak").textContent=fmt(peak,2)+" V";
+  document.getElementById("rectDc").textContent=fmt(dc,2)+" V";
+  document.getElementById("rectFormula").textContent="Vpeak ≈ "+fmt(vac,2)+" × √2 = "+fmt(peak,2)+" V; minus "+fmt(drop,2)+" V entered drop ≈ "+fmt(dc,2)+" V.";
+}
+["rectVac","rectDrop","rectType"].forEach(id=>{const e=document.getElementById(id);e.oninput=updateRect;e.onchange=updateRect;});
+
+setTube(false);updateTriode();updateHeater();updateRect();
+</script>
+</body>
+</html>
