@@ -108,9 +108,11 @@ function autoSet(){
  const f=Math.max(.1,+frequency.value||.1),a=Math.max(.1,+amplitude.value||.1);
  const desired=1/f/2;
  const times=[.0001,.0002,.0005,.001,.002,.005,.01];
- tdiv.value=times.reduce((best,x)=>Math.abs(x-desired)<Math.abs(best-desired)?x:best,times[0]).toString();
+ const bestT=times.reduce((best,x)=>Math.abs(x-desired)<Math.abs(best-desired)?x:best,times[0]);
  const volts=[.2,.5,1,2,5];
- vdiv.value=volts.reduce((best,x)=>Math.abs(x-a/2)<Math.abs(best-a/2)?x:best,volts[0]).toString();
+ const bestV=volts.reduce((best,x)=>Math.abs(x-a/2)<Math.abs(best-a/2)?x:best,volts[0]);
+ [...tdiv.options].forEach(o=>{if(+o.value===bestT)o.selected=true});
+ [...vdiv.options].forEach(o=>{if(+o.value===bestV)o.selected=true});
  draw();lesson.textContent="Auto Set chose a time base and vertical scale that make the waveform easier to see.";
 }
 [waveType,amplitude,frequency,vdiv,tdiv,offset].forEach(el=>el.addEventListener("input",draw));
@@ -120,7 +122,7 @@ document.querySelectorAll("[data-preset]").forEach(b=>b.onclick=()=>{
  if(p==="slow"){waveType.value="sine";frequency.value=50;amplitude.value=2;tdiv.value=".002";vdiv.value="1";offset.value=0;lesson.textContent="A slower signal needs more time per division to show a useful number of cycles."}
  if(p==="square"){waveType.value="square";frequency.value=100;amplitude.value=2;tdiv.value=".001";vdiv.value="1";offset.value=0;lesson.textContent="A square wave jumps between two voltage levels instead of changing smoothly."}
  if(p==="zoom"){waveType.value="sine";frequency.value=1000;amplitude.value=1;tdiv.value=".0002";vdiv.value=".5";offset.value=0;lesson.textContent="A faster time base zooms in horizontally so a high-frequency waveform is easier to inspect."}
- if(p==="dc"){waveType.value="dc";amplitude.value=0;offset.value=5;tdiv.value=".001";vdiv.value="1";lesson.textContent="A steady DC voltage appears as a horizontal line above or below the zero reference."}
+ if(p==="dc"){waveType.value="dc";amplitude.value=5;offset.value=0;tdiv.value=".001";vdiv.value="1";lesson.textContent="A steady DC voltage appears as a horizontal line above or below the zero reference."}
  draw();
 });
 document.querySelectorAll(".quiz").forEach(b=>b.onclick=()=>{const ok=b.dataset.answer==="200";quizResult.className="result "+(ok?"good":"bad");quizResult.textContent=ok?"Correct. 5 ms = 0.005 s, and 1 ÷ 0.005 = 200 Hz.":"Not quite. Convert 5 ms to 0.005 s, then calculate 1 ÷ 0.005 = 200 Hz."});
