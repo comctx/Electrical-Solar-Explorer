@@ -205,3 +205,23 @@ html[data-ate-theme="dark"] .ate-toolbar button.ate-fav-on{
   .ate-toolbar{left:9px;right:9px}
   .ate-toolbar button{flex:1 1 auto}
 }
+
+/* Accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+summary:focus-visible{
+  outline:3px solid #ffd43b !important;
+  outline-offset:3px !important;
+}
+@media (prefers-reduced-motion: reduce){
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+}
