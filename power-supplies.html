@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Power Supplies & Rectifiers Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{background:linear-gradient(135deg,var(--navy),var(--electric) 68%,var(--electric2));color:white;padding:24px 18px 20px;text-align:center}
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1000px;margin:0 auto;padding:18px}
+    .page-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .page-nav a{text-decoration:none;min-height:46px;display:inline-flex;align-items:center;justify-content:center;border-radius:11px;padding:10px 14px;font-weight:800;border:1px solid #9fc8ef;background:#eef7ff;color:var(--navy)}
+    .page-nav a.active{background:var(--yellow);border-color:#e4ba16}
+    .panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px}
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    h3{margin:0 0 8px;color:var(--navy)}
+    .lead,.note{color:var(--muted);line-height:1.5}.lead{margin:0 0 16px}.note{font-size:13px;margin:10px 0 0}
+    .grid{display:grid;gap:12px}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input,select,button{font:inherit}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white;color:var(--text)}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}.result strong{color:var(--navy);font-size:clamp(20px,4vw,28px)}
+    .formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+    .warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:10px;padding:10px 12px;color:#6a4300;font-weight:700;line-height:1.45}
+    .status{margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy);line-height:1.45}.status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}.status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}.status.high{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+    .beginner-panel{background:linear-gradient(180deg,#fff,#f8fbff);border:2px solid #b9d7f5}
+    .concept-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.concept-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.concept-card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.concept-card p{margin:0;color:#33495b;line-height:1.5}
+    .badge{display:inline-block;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#e9f3ff;color:var(--navy);border:1px solid #b9d7f5}
+    .flow-stage{display:grid;grid-template-columns:minmax(320px,1.15fr) minmax(0,.85fr);gap:16px;align-items:center;margin-top:14px}
+    .flow-diagram{border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:16px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:center}
+    .flow-box{border:2px solid #b9d7f5;border-radius:12px;background:white;padding:14px 8px;text-align:center;font-weight:900;color:var(--navy);min-height:92px;display:flex;align-items:center;justify-content:center;transition:.2s}
+    .flow-box.active{background:#fff7cc;border-color:#e5c94a;box-shadow:0 0 0 4px rgba(255,212,59,.15)}
+    .flow-arrow{text-align:center;font-weight:900;color:var(--electric);font-size:22px}
+    .button-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.action{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}.action.primary{background:var(--yellow);border-color:#e4ba16}
+    .wave-wrap{margin-top:14px;border:1px solid var(--border);border-radius:14px;background:#fbfdff;padding:12px}.wave-wrap svg{width:100%;height:auto;display:block;background:white;border:1px solid #d7e1ea;border-radius:10px}
+    .type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}.type-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:13px}.type-card strong{display:block;color:var(--navy);margin-bottom:5px}.type-card small{display:block;color:var(--muted);line-height:1.45}
+    @media(max-width:760px){main{padding:12px}.grid.two,.grid.three,.grid.four,.result-grid,.concept-grid,.type-grid,.flow-stage{grid-template-columns:1fr}.flow-diagram{grid-template-columns:1fr}.flow-arrow{transform:rotate(90deg)}}
+    footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Power Supplies & Rectifiers Explorer</h1>
+  <p>AC-to-DC conversion, bridge rectifiers, filter capacitors, regulators, ripple, efficiency, and protection.</p>
+</header>
+
+<main>
+<nav class="page-nav" aria-label="App pages">
+  <a href="index.html">All Things Electrical</a>
+  <a href="electrical-basics.html">Electrical Basics</a>
+  <a href="wiring-installation.html">Wiring & Installation</a>
+  <a href="batteries.html">Batteries</a>
+  <a href="power-supplies.html" class="active">Power Supplies & Rectifiers</a>
+  <a href="capacitor.html">Capacitors</a>
+  <a href="inductors.html">Inductors & Coils</a>
+  <a href="transformers.html">Transformers</a>
+  <a href="diodes.html">Diodes</a>
+  <a href="transistors.html">Transistors</a>
+  <a href="relays.html">Relays & Contactors</a>
+  <a href="integrated-circuits.html">Integrated Circuits</a>
+  <a href="processors.html">Processors</a>
+</nav>
+
+<section class="panel beginner-panel">
+  <h2>Beginner Start Here</h2>
+  <p class="lead">A power supply converts electrical energy into the voltage and current a circuit needs. A rectifier is the part that turns AC into one-direction current.</p>
+  <div class="concept-grid">
+    <div class="concept-card"><strong>Rectifier</strong><p>Uses diodes to allow current in selected directions so AC can be converted into pulsating DC.</p><span class="badge">AC → DC</span></div>
+    <div class="concept-card"><strong>Filter Capacitor</strong><p>Stores energy between rectified peaks and reduces ripple in the DC output.</p><span class="badge">Smoothing</span></div>
+    <div class="concept-card"><strong>Regulator</strong><p>Helps hold the output near a desired voltage as input and load change.</p><span class="badge">Stable output</span></div>
+    <div class="concept-card"><strong>Linear Supply</strong><p>Often uses transformer, rectifier, capacitor, and linear regulator. Simple and low-noise, but can waste power as heat.</p><span class="badge">Simple / quiet</span></div>
+    <div class="concept-card"><strong>Switching Supply</strong><p>Uses high-frequency switching and energy-storage components to convert power efficiently.</p><span class="badge">Efficient</span></div>
+    <div class="concept-card"><strong>Ripple</strong><p>The remaining AC variation riding on a DC output after rectification and filtering.</p><span class="badge">Residual variation</span></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>AC → DC Power Supply Flow</h2>
+  <p class="lead">Step through a typical isolated linear power-supply chain.</p>
+  <div class="flow-stage">
+    <div class="flow-diagram">
+      <div id="f0" class="flow-box">AC Input</div><div class="flow-arrow">→</div>
+      <div id="f1" class="flow-box">Transformer</div><div class="flow-arrow">→</div>
+      <div id="f2" class="flow-box">Rectifier</div>
+      <div id="f3" class="flow-box">Filter Capacitor</div><div class="flow-arrow">→</div>
+      <div id="f4" class="flow-box">Regulator</div><div class="flow-arrow">→</div>
+      <div id="f5" class="flow-box">DC Load</div>
+    </div>
+    <div>
+      <h3 id="flowTitle">Ready</h3>
+      <p id="flowExplain" class="lead">Press Next Stage to follow the energy through the power supply.</p>
+      <div class="button-row">
+        <button id="flowNext" class="action primary" type="button">Next Stage</button>
+        <button id="flowAuto" class="action" type="button">Auto Run</button>
+        <button id="flowStop" class="action" type="button">Stop</button>
+        <button id="flowReset" class="action" type="button">Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Rectifier Calculator</h2>
+  <p class="lead">Estimate DC peak voltage and ripple frequency for half-wave, full-wave center-tapped, or bridge rectifiers.</p>
+  <div class="grid four">
+    <div class="field"><label for="rectType">Rectifier type</label><select id="rectType"><option value="bridge">Full-wave bridge</option><option value="center">Full-wave center-tapped</option><option value="half">Half-wave</option></select></div>
+    <div class="field"><label for="rectVac">Transformer secondary (V RMS)</label><input id="rectVac" type="number" min="0" step="any" value="12"></div>
+    <div class="field"><label for="rectVf">Diode forward drop (V)</label><input id="rectVf" type="number" min="0" step="any" value="0.7"></div>
+    <div class="field"><label for="rectHz">Line frequency (Hz)</label><input id="rectHz" type="number" min="0.001" step="any" value="60"></div>
+  </div>
+  <div class="result-grid">
+    <div class="result"><small>AC peak</small><strong id="rectPeakAc">—</strong></div>
+    <div class="result"><small>Approx. DC peak after diodes</small><strong id="rectPeakDc">—</strong></div>
+    <div class="result"><small>Ripple frequency</small><strong id="rectRippleHz">—</strong></div>
+  </div>
+  <div id="rectFormula" class="formula">Vpeak ≈ Vrms × √2 minus conducting diode drops.</div>
+  <div class="wave-wrap">
+    <svg viewBox="0 0 700 220"><line x1="35" y1="110" x2="665" y2="110" stroke="#9aa8b5"/><path id="rectWave" fill="none" stroke="#0b63ce" stroke-width="4"/></svg>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Filter Capacitor & Ripple Calculator</h2>
+  <div class="grid four">
+    <div class="field"><label for="rippleLoad">Load current (mA)</label><input id="rippleLoad" type="number" min="0" step="any" value="500"></div>
+    <div class="field"><label for="rippleFreq">Ripple frequency (Hz)</label><input id="rippleFreq" type="number" min="0.001" step="any" value="120"></div>
+    <div class="field"><label for="rippleCap">Capacitance (µF)</label><input id="rippleCap" type="number" min="0.001" step="any" value="2200"></div>
+    <div class="field"><label for="rippleTarget">Target ripple (V p-p)</label><input id="rippleTarget" type="number" min="0.001" step="any" value="1"></div>
+  </div>
+  <div class="result-grid">
+    <div class="result"><small>Estimated ripple</small><strong id="rippleOut">—</strong></div>
+    <div class="result"><small>Capacitance for target ripple</small><strong id="rippleNeeded">—</strong></div>
+  </div>
+  <div id="rippleFormula" class="formula">ΔV ≈ I ÷ (f × C).</div>
+  <p class="note">This is a first-order estimate. Source impedance, diode conduction angle, capacitor ESR, transformer regulation, and load waveform affect real ripple.</p>
+</section>
+
+<section class="panel">
+  <h2>Linear Regulator Power & Heat</h2>
+  <div class="grid four">
+    <div class="field"><label for="linVin">Input voltage (V)</label><input id="linVin" type="number" min="0" step="any" value="12"></div>
+    <div class="field"><label for="linVout">Output voltage (V)</label><input id="linVout" type="number" min="0" step="any" value="5"></div>
+    <div class="field"><label for="linCurrent">Load current (A)</label><input id="linCurrent" type="number" min="0" step="any" value="0.5"></div>
+    <div class="field"><label for="linTheta">Thermal resistance θJA (°C/W)</label><input id="linTheta" type="number" min="0" step="any" value="50"></div>
+    <div class="field"><label for="linAmbient">Ambient temperature (°C)</label><input id="linAmbient" type="number" step="any" value="25"></div>
+  </div>
+  <div class="result-grid">
+    <div class="result"><small>Regulator heat</small><strong id="linLoss">—</strong></div>
+    <div class="result"><small>Approx. efficiency</small><strong id="linEff">—</strong></div>
+    <div class="result"><small>Estimated junction temperature</small><strong id="linTj">—</strong></div>
+  </div>
+  <div id="linStatus" class="status">Enter values.</div>
+  <div id="linFormula" class="formula">Preg ≈ (Vin − Vout) × I.</div>
+</section>
+
+<section class="panel">
+  <h2>Switching Supply Efficiency</h2>
+  <p class="lead">Estimate input power and heat loss from output power and efficiency.</p>
+  <div class="grid three">
+    <div class="field"><label for="swVout">Output voltage (V)</label><input id="swVout" type="number" min="0" step="any" value="12"></div>
+    <div class="field"><label for="swIout">Output current (A)</label><input id="swIout" type="number" min="0" step="any" value="5"></div>
+    <div class="field"><label for="swEff">Efficiency (%)</label><input id="swEff" type="number" min="1" max="100" step="0.1" value="90"></div>
+  </div>
+  <div class="result-grid">
+    <div class="result"><small>Output power</small><strong id="swPout">—</strong></div>
+    <div class="result"><small>Estimated input power</small><strong id="swPin">—</strong></div>
+    <div class="result"><small>Estimated heat loss</small><strong id="swLoss">—</strong></div>
+  </div>
+  <div id="swFormula" class="formula">Pin ≈ Pout ÷ efficiency.</div>
+</section>
+
+<section class="panel">
+  <h2>Transformer / Rectifier Load Estimate</h2>
+  <p class="lead">Estimate load watts and compare with an entered transformer VA rating.</p>
+  <div class="grid four">
+    <div class="field"><label for="trDcV">DC output voltage (V)</label><input id="trDcV" type="number" min="0" step="any" value="12"></div>
+    <div class="field"><label for="trDcI">DC load current (A)</label><input id="trDcI" type="number" min="0" step="any" value="2"></div>
+    <div class="field"><label for="trVA">Transformer VA rating</label><input id="trVA" type="number" min="0.001" step="any" value="40"></div>
+    <div class="field"><label for="trFactor">Rectifier/filter VA factor</label><input id="trFactor" type="number" min="1" step="0.01" value="1.8"></div>
+  </div>
+  <div class="result-grid">
+    <div class="result"><small>DC load power</small><strong id="trLoadW">—</strong></div>
+    <div class="result"><small>Estimated transformer VA demand</small><strong id="trNeedVA">—</strong></div>
+    <div class="result"><small>Rating usage</small><strong id="trUsePct">—</strong></div>
+  </div>
+  <div id="trStatus" class="status">Enter values.</div>
+  <p class="note">Capacitor-input rectifiers draw pulsed secondary current, so transformer RMS current can exceed DC load current. The entered factor is only an approximation; use transformer and rectifier design guidance for real equipment.</p>
+</section>
+
+<section class="panel">
+  <h2>Power Supply Types</h2>
+  <div class="type-grid">
+    <div class="type-card"><strong>Unregulated Linear</strong><small>Transformer, rectifier, and filter capacitor with output that varies with load and line voltage.</small><span class="badge">Simple</span></div>
+    <div class="type-card"><strong>Regulated Linear</strong><small>Adds a regulator for steadier output, usually with higher heat loss than a switcher.</small><span class="badge">Low noise</span></div>
+    <div class="type-card"><strong>Buck Converter</strong><small>Switching converter that steps DC voltage down.</small><span class="badge">DC-DC</span></div>
+    <div class="type-card"><strong>Boost Converter</strong><small>Switching converter that steps DC voltage up.</small><span class="badge">DC-DC</span></div>
+    <div class="type-card"><strong>Buck-Boost</strong><small>Can produce an output above or below the input depending on topology.</small><span class="badge">DC-DC</span></div>
+    <div class="type-card"><strong>Flyback Supply</strong><small>Common isolated switching topology using a transformer-like coupled inductor.</small><span class="badge">Isolated SMPS</span></div>
+    <div class="type-card"><strong>Bench Supply</strong><small>Adjustable regulated supply, often with current limiting for testing and development.</small><span class="badge">Lab use</span></div>
+    <div class="type-card"><strong>Battery Charger</strong><small>Power supply with charging behavior matched to battery chemistry and protection needs.</small><span class="badge">Energy storage</span></div>
+    <div class="type-card"><strong>Constant-Current Supply</strong><small>Regulates current rather than voltage, useful for LEDs and other current-driven loads.</small><span class="badge">Current control</span></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Protection & Safety Basics</h2>
+  <div class="concept-grid">
+    <div class="concept-card"><strong>Fuse / Breaker</strong><p>Protects wiring and equipment against excessive current when correctly selected and installed.</p></div>
+    <div class="concept-card"><strong>Isolation</strong><p>Mains-powered supplies may require galvanic isolation. Never assume low voltage is isolated without verifying the design and documentation.</p></div>
+    <div class="concept-card"><strong>Capacitor Discharge</strong><p>Large capacitors can retain hazardous charge after power is removed. Bleeder resistors and safe discharge procedures may be required.</p></div>
+    <div class="concept-card"><strong>Polarity</strong><p>DC output polarity matters. Reversed polarity can damage loads and create high current.</p></div>
+    <div class="concept-card"><strong>Current Limit</strong><p>Many regulated supplies include current limiting, but its behavior and trip point depend on the design.</p></div>
+    <div class="concept-card"><strong>Grounding</strong><p>Protective earth, chassis, signal ground, and DC common can serve different roles and must not be assumed interchangeable.</p></div>
+  </div>
+  <div class="warning">Mains-powered power supplies can contain lethal voltages and stored energy even after unplugging. This page is for learning and calculation, not a step-by-step construction or repair guide for energized mains equipment.</div>
+</section>
+</main>
+
+<footer>A DONCO-BAYCITY™ App</footer>
+
+<script>
+function fmt(n,d=3){if(!Number.isFinite(n))return "—";return n.toLocaleString(undefined,{maximumFractionDigits:d});}
+function formatPower(w){if(w>=1000)return fmt(w/1000,3)+" kW";if(w>=1)return fmt(w,3)+" W";return fmt(w*1000,3)+" mW";}
+
+const stages=[
+  ["AC Input","Alternating voltage from the source enters the supply."],
+  ["Transformer","In an isolated linear supply, the transformer changes voltage and provides galvanic isolation."],
+  ["Rectifier","Diodes steer both half-cycles into one output polarity, producing pulsating DC."],
+  ["Filter Capacitor","The capacitor charges near waveform peaks and supplies current between peaks, reducing ripple."],
+  ["Regulator","The regulator holds the output closer to the desired DC voltage as conditions change."],
+  ["DC Load","The load receives the converted DC power."]
+];
+let fi=-1,flowTimer=null;
+function renderFlow(){
+  document.querySelectorAll(".flow-box").forEach(x=>x.classList.remove("active"));
+  if(fi<0){document.getElementById("flowTitle").textContent="Ready";document.getElementById("flowExplain").textContent="Press Next Stage to follow the energy through the power supply.";return;}
+  if(fi===0)document.getElementById("f0").classList.add("active");
+  if(fi===1)document.getElementById("f1").classList.add("active");
+  if(fi===2)document.getElementById("f2").classList.add("active");
+  if(fi===3)document.getElementById("f3").classList.add("active");
+  if(fi===4)document.getElementById("f4").classList.add("active");
+  if(fi===5)document.getElementById("f5").classList.add("active");
+  document.getElementById("flowTitle").textContent=stages[fi][0];
+  document.getElementById("flowExplain").textContent=stages[fi][1];
+}
+function nextFlow(){fi=(fi+1)%stages.length;renderFlow();}
+document.getElementById("flowNext").onclick=nextFlow;
+document.getElementById("flowAuto").onclick=()=>{if(flowTimer)clearInterval(flowTimer);if(fi<0)nextFlow();flowTimer=setInterval(nextFlow,1200);};
+document.getElementById("flowStop").onclick=()=>{if(flowTimer)clearInterval(flowTimer);flowTimer=null;};
+document.getElementById("flowReset").onclick=()=>{if(flowTimer)clearInterval(flowTimer);flowTimer=null;fi=-1;renderFlow();};
+
+function drawRect(type){
+  const pts=[];
+  for(let i=0;i<=240;i++){
+    const x=35+630*i/240,theta=i/240*Math.PI*4;
+    let y=Math.sin(theta);
+    if(type==="bridge"||type==="center")y=Math.abs(y);else y=Math.max(0,y);
+    pts.push((i?"L":"M")+x.toFixed(1)+","+(110-y*72).toFixed(1));
+  }
+  document.getElementById("rectWave").setAttribute("d",pts.join(" "));
+}
+function updateRect(){
+  const type=document.getElementById("rectType").value;
+  const vac=Math.max(0,Number(document.getElementById("rectVac").value)||0);
+  const vf=Math.max(0,Number(document.getElementById("rectVf").value)||0);
+  const hz=Math.max(.001,Number(document.getElementById("rectHz").value)||.001);
+  const peak=vac*Math.SQRT2;
+  const drops=type==="bridge"?2:1;
+  const dc=Math.max(0,peak-drops*vf);
+  const ripple=type==="half"?hz:2*hz;
+  document.getElementById("rectPeakAc").textContent=fmt(peak,3)+" V";
+  document.getElementById("rectPeakDc").textContent=fmt(dc,3)+" V";
+  document.getElementById("rectRippleHz").textContent=fmt(ripple,2)+" Hz";
+  document.getElementById("rectFormula").textContent="Vpeak ≈ "+fmt(vac,3)+" × √2 = "+fmt(peak,3)+" V; subtract "+drops+" diode drop"+(drops===1?"":"s")+" → about "+fmt(dc,3)+" V.";
+  drawRect(type);
+}
+["rectType","rectVac","rectVf","rectHz"].forEach(id=>{const e=document.getElementById(id);e.oninput=updateRect;e.onchange=updateRect;});
+
+function updateRipple(){
+  const i=Math.max(0,Number(document.getElementById("rippleLoad").value)||0)/1000;
+  const f=Math.max(.001,Number(document.getElementById("rippleFreq").value)||.001);
+  const c=Math.max(.001,Number(document.getElementById("rippleCap").value)||.001)*1e-6;
+  const target=Math.max(.001,Number(document.getElementById("rippleTarget").value)||.001);
+  const dv=i/(f*c),needed=i/(f*target);
+  document.getElementById("rippleOut").textContent=fmt(dv,3)+" V p-p";
+  document.getElementById("rippleNeeded").textContent=fmt(needed*1e6,0)+" µF";
+  document.getElementById("rippleFormula").textContent="Ripple ≈ I ÷ (fC) = "+fmt(dv,3)+" V p-p. For "+fmt(target,3)+" V target, C ≈ "+fmt(needed*1e6,0)+" µF.";
+}
+["rippleLoad","rippleFreq","rippleCap","rippleTarget"].forEach(id=>{const e=document.getElementById(id);e.oninput=updateRipple;e.onchange=updateRipple;});
+
+function updateLinear(){
+  const vin=Math.max(0,Number(document.getElementById("linVin").value)||0),vout=Math.max(0,Number(document.getElementById("linVout").value)||0),i=Math.max(0,Number(document.getElementById("linCurrent").value)||0),theta=Math.max(0,Number(document.getElementById("linTheta").value)||0),ta=Number(document.getElementById("linAmbient").value)||0;
+  const loss=Math.max(0,vin-vout)*i,eff=vin>0?vout/vin*100:0,tj=ta+loss*theta;
+  document.getElementById("linLoss").textContent=formatPower(loss);
+  document.getElementById("linEff").textContent=fmt(eff,1)+"%";
+  document.getElementById("linTj").textContent=fmt(tj,1)+" °C";
+  document.getElementById("linFormula").textContent="Heat ≈ ("+fmt(vin,2)+" − "+fmt(vout,2)+") × "+fmt(i,3)+" = "+formatPower(loss)+".";
+  const s=document.getElementById("linStatus");s.className="status";
+  if(vout>vin){s.classList.add("high");s.textContent="A basic linear regulator cannot regulate to an output above its input.";}
+  else if(tj>=125){s.classList.add("high");s.textContent="This simple thermal estimate is very hot. Check the exact regulator, package, heatsinking, dropout, and thermal limits.";}
+  else if(tj>=90){s.classList.add("warn");s.textContent="The simple junction-temperature estimate is elevated. Thermal design deserves review.";}
+  else{s.classList.add("good");s.textContent="The simplified thermal estimate is below 90 °C. Verify real datasheet and board conditions.";}
+}
+["linVin","linVout","linCurrent","linTheta","linAmbient"].forEach(id=>{const e=document.getElementById(id);e.oninput=updateLinear;e.onchange=updateLinear;});
+
+function updateSwitching(){
+  const v=Math.max(0,Number(document.getElementById("swVout").value)||0),i=Math.max(0,Number(document.getElementById("swIout").value)||0),eff=Math.min(100,Math.max(1,Number(document.getElementById("swEff").value)||1))/100;
+  const pout=v*i,pin=pout/eff,loss=pin-pout;
+  document.getElementById("swPout").textContent=formatPower(pout);
+  document.getElementById("swPin").textContent=formatPower(pin);
+  document.getElementById("swLoss").textContent=formatPower(loss);
+  document.getElementById("swFormula").textContent="Input power ≈ "+formatPower(pout)+" ÷ "+fmt(eff*100,1)+"% = "+formatPower(pin)+".";
+}
+["swVout","swIout","swEff"].forEach(id=>{const e=document.getElementById(id);e.oninput=updateSwitching;e.onchange=updateSwitching;});
+
+function updateTransformerLoad(){
+  const v=Math.max(0,Number(document.getElementById("trDcV").value)||0),i=Math.max(0,Number(document.getElementById("trDcI").value)||0),rated=Math.max(.001,Number(document.getElementById("trVA").value)||.001),factor=Math.max(1,Number(document.getElementById("trFactor").value)||1);
+  const w=v*i,need=w*factor,pct=need/rated*100;
+  document.getElementById("trLoadW").textContent=formatPower(w);
+  document.getElementById("trNeedVA").textContent=fmt(need,2)+" VA";
+  document.getElementById("trUsePct").textContent=fmt(pct,1)+"%";
+  const s=document.getElementById("trStatus");s.className="status";
+  if(pct>100){s.classList.add("high");s.textContent="The estimated VA demand exceeds the entered transformer rating.";}
+  else if(pct>80){s.classList.add("warn");s.textContent="The estimated VA demand is close to the entered transformer rating.";}
+  else{s.classList.add("good");s.textContent="The estimate is below the entered transformer VA rating. Confirm the actual rectifier/filter design requirements.";}
+}
+["trDcV","trDcI","trVA","trFactor"].forEach(id=>{const e=document.getElementById(id);e.oninput=updateTransformerLoad;e.onchange=updateTransformerLoad;});
+
+renderFlow();updateRect();updateRipple();updateLinear();updateSwitching();updateTransformerLoad();
+</script>
+</body>
+</html>
