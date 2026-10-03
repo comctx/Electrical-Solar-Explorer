@@ -554,6 +554,109 @@
       font-size:13px;
     }
 
+    .advanced-tools{
+      margin-top:18px;
+    }
+
+    .advanced-tools > h3{
+      margin:0 0 10px;
+      color:var(--navy);
+      font-size:20px;
+    }
+
+    .advanced-tool{
+      margin-top:10px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#fbfdff;
+      overflow:hidden;
+    }
+
+    .advanced-tool summary{
+      cursor:pointer;
+      padding:14px 16px;
+      font-weight:900;
+      color:var(--navy);
+      background:#eef7ff;
+      user-select:none;
+    }
+
+    .advanced-tool[open] summary{
+      border-bottom:1px solid var(--border);
+    }
+
+    .advanced-tool-body{
+      padding:14px;
+    }
+
+    .tool-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .tool-grid.four{
+      grid-template-columns:repeat(4,minmax(0,1fr));
+    }
+
+    .tool-results{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .tool-result{
+      border:1px solid #b9d7f5;
+      background:#e9f3ff;
+      border-radius:12px;
+      padding:12px;
+      min-width:0;
+    }
+
+    .tool-result small{
+      display:block;
+      color:var(--muted);
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .tool-result strong{
+      display:block;
+      color:var(--navy);
+      font-size:22px;
+      word-break:break-word;
+    }
+
+    .tool-status{
+      margin-top:12px;
+      border-radius:10px;
+      padding:10px 12px;
+      font-weight:800;
+      background:#eef7ff;
+      border:1px solid #b9d7f5;
+      color:var(--navy);
+    }
+
+    .tool-status.good{
+      background:#eaf7ef;
+      border-color:#9ed0b3;
+      color:#185c3b;
+    }
+
+    .tool-status.warn{
+      background:#fff3d6;
+      border-color:#e5a84a;
+      color:#6a4300;
+    }
+
+    .tool-status.high{
+      background:#fdecea;
+      border-color:#e4aaa5;
+      color:#8a1c13;
+    }
+
     .resistor-preview{
       display:flex;
       align-items:center;
@@ -619,6 +722,8 @@
       .cost-results{grid-template-columns:1fr}
       .learn-grid{grid-template-columns:1fr}
       .network-grid{grid-template-columns:1fr 1fr}
+      .tool-grid,.tool-grid.four{grid-template-columns:1fr 1fr}
+      .tool-results{grid-template-columns:1fr}
     }
 
     @media (max-width:420px){
@@ -626,6 +731,7 @@
       .network-grid{grid-template-columns:1fr}
       .value-unit-row{grid-template-columns:minmax(0,1fr) 96px}
       .history-item{align-items:flex-start}
+      .tool-grid,.tool-grid.four{grid-template-columns:1fr}
       header{padding-top:22px}
     }
   </style>
@@ -838,6 +944,176 @@
           <strong id="networkResult">320 Ω</strong>
           <div id="networkFormula">Series: 100 Ω + 220 Ω = 320 Ω</div>
         </div>
+      </div>
+
+      <div class="advanced-tools">
+        <h3>Advanced Electrical Tools</h3>
+
+        <details class="advanced-tool" open>
+          <summary>Voltage Drop Calculator</summary>
+          <div class="advanced-tool-body">
+            <p class="note">Educational estimate for a two-wire DC or single-phase circuit. Length is one-way; the calculator includes the return path.</p>
+
+            <div class="tool-grid four">
+              <div class="field">
+                <label for="vdVoltage">Supply voltage (V)</label>
+                <input id="vdVoltage" type="number" min="0.001" step="any" value="120" />
+              </div>
+
+              <div class="field">
+                <label for="vdCurrent">Current (A)</label>
+                <input id="vdCurrent" type="number" min="0" step="any" value="15" />
+              </div>
+
+              <div class="field">
+                <label for="vdLength">One-way length (ft)</label>
+                <input id="vdLength" type="number" min="0" step="any" value="50" />
+              </div>
+
+              <div class="field">
+                <label for="vdMaterial">Conductor</label>
+                <select id="vdMaterial">
+                  <option value="copper">Copper</option>
+                  <option value="aluminum">Aluminum</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="vdGauge">Wire size (AWG)</label>
+                <select id="vdGauge">
+                  <option value="18">18 AWG</option>
+                  <option value="16">16 AWG</option>
+                  <option value="14">14 AWG</option>
+                  <option value="12" selected>12 AWG</option>
+                  <option value="10">10 AWG</option>
+                  <option value="8">8 AWG</option>
+                  <option value="6">6 AWG</option>
+                  <option value="4">4 AWG</option>
+                  <option value="3">3 AWG</option>
+                  <option value="2">2 AWG</option>
+                  <option value="1">1 AWG</option>
+                  <option value="1/0">1/0 AWG</option>
+                  <option value="2/0">2/0 AWG</option>
+                  <option value="3/0">3/0 AWG</option>
+                  <option value="4/0">4/0 AWG</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="tool-results">
+              <div class="tool-result">
+                <small>Voltage drop</small>
+                <strong id="vdDrop">2.38 V</strong>
+              </div>
+              <div class="tool-result">
+                <small>Percent drop</small>
+                <strong id="vdPercent">1.99%</strong>
+              </div>
+              <div class="tool-result">
+                <small>Voltage at load</small>
+                <strong id="vdLoadVoltage">117.62 V</strong>
+              </div>
+            </div>
+
+            <div id="vdStatus" class="tool-status good">Under 3% — within a common design target.</div>
+            <p class="note">Wire resistance values are approximate. Installation conditions, temperature, conductor type, terminals, local code, and equipment instructions can change real-world results.</p>
+          </div>
+        </details>
+
+        <details class="advanced-tool">
+          <summary>AC Power Calculator</summary>
+          <div class="advanced-tool-body">
+            <p class="note">For single-phase AC loads. Power factor describes how effectively apparent power is converted into real power.</p>
+
+            <div class="tool-grid">
+              <div class="field">
+                <label for="acVoltage">Voltage (V)</label>
+                <input id="acVoltage" type="number" min="0" step="any" value="120" />
+              </div>
+
+              <div class="field">
+                <label for="acCurrent">Current (A)</label>
+                <input id="acCurrent" type="number" min="0" step="any" value="10" />
+              </div>
+
+              <div class="field">
+                <label for="acPf">Power factor (0–1)</label>
+                <input id="acPf" type="number" min="0" max="1" step="0.01" value="0.90" />
+              </div>
+            </div>
+
+            <div class="tool-results">
+              <div class="tool-result">
+                <small>Real power</small>
+                <strong id="acWatts">1.08 kW</strong>
+              </div>
+              <div class="tool-result">
+                <small>Apparent power</small>
+                <strong id="acVA">1.2 kVA</strong>
+              </div>
+              <div class="tool-result">
+                <small>Reactive power</small>
+                <strong id="acVAR">523 VAR</strong>
+              </div>
+            </div>
+
+            <div id="acFormula" class="explain">P = V × I × PF = 120 × 10 × 0.90 = 1,080 W</div>
+          </div>
+        </details>
+
+        <details class="advanced-tool">
+          <summary>Single-Phase / Three-Phase Calculator</summary>
+          <div class="advanced-tool-body">
+            <p class="note">For balanced systems. In three-phase mode, voltage is line-to-line and the calculator uses √3 × V × I × power factor.</p>
+
+            <div class="tool-grid four">
+              <div class="field">
+                <label for="phaseMode">System</label>
+                <select id="phaseMode">
+                  <option value="single">Single-phase</option>
+                  <option value="three">Three-phase</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="phaseVoltage">Voltage (V)</label>
+                <input id="phaseVoltage" type="number" min="0.001" step="any" value="240" />
+              </div>
+
+              <div class="field">
+                <label for="phaseCurrent">Current (A)</label>
+                <input id="phaseCurrent" type="number" min="0" step="any" value="20" />
+              </div>
+
+              <div class="field">
+                <label for="phasePf">Power factor (0–1)</label>
+                <input id="phasePf" type="number" min="0.01" max="1" step="0.01" value="0.90" />
+              </div>
+
+              <div class="field">
+                <label for="phaseTargetKw">Target real power (kW)</label>
+                <input id="phaseTargetKw" type="number" min="0" step="any" value="5" />
+              </div>
+            </div>
+
+            <div class="tool-results">
+              <div class="tool-result">
+                <small>Real power at entered current</small>
+                <strong id="phaseKw">4.32 kW</strong>
+              </div>
+              <div class="tool-result">
+                <small>Apparent power</small>
+                <strong id="phaseKva">4.8 kVA</strong>
+              </div>
+              <div class="tool-result">
+                <small>Current for target kW</small>
+                <strong id="phaseTargetAmps">23.15 A</strong>
+              </div>
+            </div>
+
+            <div id="phaseFormula" class="explain">Single-phase: P = V × I × PF</div>
+          </div>
+        </details>
       </div>
 
       <div class="wheel-wrap">
@@ -1457,6 +1733,128 @@
     });
 
     updateNetworkResistance();
+
+    const wireOhmsPer1000FtCopper = {
+      "18":6.385,
+      "16":4.016,
+      "14":2.525,
+      "12":1.588,
+      "10":0.9989,
+      "8":0.6282,
+      "6":0.3951,
+      "4":0.2485,
+      "3":0.1970,
+      "2":0.1563,
+      "1":0.1239,
+      "1/0":0.0983,
+      "2/0":0.0779,
+      "3/0":0.0618,
+      "4/0":0.0490
+    };
+
+    function updateVoltageDrop() {
+      const voltage = Math.max(0.001, Number(document.getElementById("vdVoltage").value) || 0.001);
+      const current = Math.max(0, Number(document.getElementById("vdCurrent").value) || 0);
+      const length = Math.max(0, Number(document.getElementById("vdLength").value) || 0);
+      const material = document.getElementById("vdMaterial").value;
+      const gauge = document.getElementById("vdGauge").value;
+
+      let ohmsPer1000Ft = wireOhmsPer1000FtCopper[gauge] || 0;
+      if (material === "aluminum") ohmsPer1000Ft *= 1.64;
+
+      const circuitResistance = (ohmsPer1000Ft / 1000) * length * 2;
+      const drop = current * circuitResistance;
+      const percent = (drop / voltage) * 100;
+      const loadVoltage = Math.max(0, voltage - drop);
+
+      document.getElementById("vdDrop").textContent = formatNumber(drop, 2) + " V";
+      document.getElementById("vdPercent").textContent = formatNumber(percent, 2) + "%";
+      document.getElementById("vdLoadVoltage").textContent = formatNumber(loadVoltage, 2) + " V";
+
+      const status = document.getElementById("vdStatus");
+      status.className = "tool-status";
+
+      if (percent < 3) {
+        status.classList.add("good");
+        status.textContent = "Under 3% — within a common design target.";
+      } else if (percent <= 5) {
+        status.classList.add("warn");
+        status.textContent = "About 3–5% drop — worth reviewing for the application.";
+      } else {
+        status.classList.add("high");
+        status.textContent = "Over 5% drop — consider a larger conductor, shorter run, or other design change.";
+      }
+    }
+
+    ["vdVoltage","vdCurrent","vdLength","vdMaterial","vdGauge"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input", updateVoltageDrop);
+      el.addEventListener("change", updateVoltageDrop);
+    });
+
+    function updateAcPower() {
+      const voltage = Math.max(0, Number(document.getElementById("acVoltage").value) || 0);
+      const current = Math.max(0, Number(document.getElementById("acCurrent").value) || 0);
+      const pf = Math.min(1, Math.max(0, Number(document.getElementById("acPf").value) || 0));
+
+      const va = voltage * current;
+      const watts = va * pf;
+      const reactive = Math.sqrt(Math.max(0, (va * va) - (watts * watts)));
+
+      document.getElementById("acWatts").textContent = formatMetric(watts, "P");
+      document.getElementById("acVA").textContent =
+        va >= 1000 ? formatNumber(va / 1000, 3) + " kVA" : formatNumber(va, 2) + " VA";
+      document.getElementById("acVAR").textContent =
+        reactive >= 1000 ? formatNumber(reactive / 1000, 3) + " kVAR" : formatNumber(reactive, 1) + " VAR";
+
+      document.getElementById("acFormula").textContent =
+        "P = V × I × PF = " +
+        formatNumber(voltage) + " × " +
+        formatNumber(current) + " × " +
+        formatNumber(pf, 2) + " = " +
+        formatMetric(watts, "P");
+    }
+
+    ["acVoltage","acCurrent","acPf"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input", updateAcPower);
+      el.addEventListener("change", updateAcPower);
+    });
+
+    function updatePhaseCalculator() {
+      const mode = document.getElementById("phaseMode").value;
+      const voltage = Math.max(0.001, Number(document.getElementById("phaseVoltage").value) || 0.001);
+      const current = Math.max(0, Number(document.getElementById("phaseCurrent").value) || 0);
+      const pf = Math.min(1, Math.max(0.01, Number(document.getElementById("phasePf").value) || 0.01));
+      const targetKw = Math.max(0, Number(document.getElementById("phaseTargetKw").value) || 0);
+
+      const factor = mode === "three" ? Math.sqrt(3) : 1;
+      const apparentVa = factor * voltage * current;
+      const realWatts = apparentVa * pf;
+      const targetAmps = targetKw > 0 ? (targetKw * 1000) / (factor * voltage * pf) : 0;
+
+      document.getElementById("phaseKw").textContent =
+        formatNumber(realWatts / 1000, 3) + " kW";
+      document.getElementById("phaseKva").textContent =
+        formatNumber(apparentVa / 1000, 3) + " kVA";
+      document.getElementById("phaseTargetAmps").textContent =
+        formatNumber(targetAmps, 2) + " A";
+
+      document.getElementById("phaseFormula").textContent =
+        mode === "three"
+          ? "Three-phase: P = √3 × V × I × PF"
+          : "Single-phase: P = V × I × PF";
+    }
+
+    ["phaseMode","phaseVoltage","phaseCurrent","phasePf","phaseTargetKw"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input", updatePhaseCalculator);
+      el.addEventListener("change", updatePhaseCalculator);
+    });
+
+    updateVoltageDrop();
+    updateAcPower();
+    updatePhaseCalculator();
 
     const wheelData = {
       V: {
