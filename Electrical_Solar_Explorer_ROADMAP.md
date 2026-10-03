@@ -137,6 +137,8 @@ Interactive lessons for:
 - Inductors
 - Diodes
 - LEDs
+- LCD displays
+- Seven-segment displays
 - Transistors
 - MOSFETs
 - Potentiometers
@@ -149,6 +151,15 @@ Interactive lessons for:
 - Filters
 - Amplifiers
 - Power supplies
+
+### LEDs & LCDs Explorer
+- LED polarity and forward voltage
+- LED resistor calculator
+- PWM brightness simulation
+- Seven-segment display simulation
+- LCD segments and pixels
+- LCD backlights and contrast
+- LED vs. LCD comparison
 
 ## 9. Motors & Controls
 - AC motors
