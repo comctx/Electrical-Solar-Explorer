@@ -406,6 +406,81 @@
       gap:5px;
     }
 
+    .beginner-panel{
+      background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+      border:2px solid #b9d7f5;
+    }
+
+    .beginner-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .beginner-card{
+      border:1px solid #b9d7f5;
+      background:#e9f3ff;
+      border-radius:13px;
+      padding:13px;
+    }
+
+    .beginner-card strong{
+      display:block;
+      color:var(--navy);
+      margin-bottom:5px;
+      font-size:16px;
+    }
+
+    .beginner-card p{
+      margin:0;
+      color:#33495b;
+      line-height:1.5;
+      font-size:14px;
+    }
+
+    .other-words{
+      margin-top:14px;
+      background:#fff7cc;
+      border:1px solid #e5c94a;
+      border-radius:13px;
+      padding:14px;
+    }
+
+    .other-words strong{
+      color:var(--navy);
+      display:block;
+      margin-bottom:8px;
+      font-size:17px;
+    }
+
+    .other-words-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .other-words-item{
+      background:white;
+      border:1px solid #eadb82;
+      border-radius:10px;
+      padding:10px;
+      font-weight:800;
+      color:#263b4c;
+      line-height:1.4;
+    }
+
+    .beginner-tip{
+      margin-top:12px;
+      border-left:5px solid var(--electric);
+      background:#eef7ff;
+      border-radius:10px;
+      padding:11px 13px;
+      line-height:1.5;
+      color:#25394b;
+      font-weight:700;
+    }
+
     .key-line{
       width:22px;
       height:3px;
@@ -444,6 +519,8 @@
       .result-grid{grid-template-columns:1fr}
       .sim-wrap{grid-template-columns:1fr}
       .type-grid{grid-template-columns:1fr 1fr}
+      .beginner-grid{grid-template-columns:1fr}
+      .other-words-grid{grid-template-columns:1fr}
     }
 
     @media (max-width:420px){
@@ -465,6 +542,56 @@
       <a href="inductors.html">Inductors & Coils</a>
       <a href="transformers.html">Transformers</a>
     </nav>
+
+    <section class="panel beginner-panel">
+      <h2>Beginner Start Here</h2>
+      <p class="lead">New to capacitors? These six ideas explain what they do before you get into timing, reactance, ESR, and filters.</p>
+
+      <div class="beginner-grid">
+        <div class="beginner-card">
+          <strong>What is a capacitor?</strong>
+          <p>A capacitor is a component that stores electrical energy by separating charge between two conductive surfaces. It can charge up, hold energy for a time, and then release it.</p>
+        </div>
+
+        <div class="beginner-card">
+          <strong>What does capacitance mean?</strong>
+          <p>Capacitance tells you how much electric charge a capacitor can store for a given voltage. Its unit is the farad, written F. Common values are µF, nF, and pF.</p>
+        </div>
+
+        <div class="beginner-card">
+          <strong>Why does voltage change gradually?</strong>
+          <p>A capacitor does not change its voltage instantly. As current flows in or out, the voltage rises or falls over time. Resistance and capacitance together determine how fast that happens.</p>
+        </div>
+
+        <div class="beginner-card">
+          <strong>What happens when it is fully charged?</strong>
+          <p>In a simple DC circuit, current falls toward zero as the capacitor approaches the supply voltage. If the circuit changes, the stored charge can flow back out.</p>
+        </div>
+
+        <div class="beginner-card">
+          <strong>Why do polarity and voltage rating matter?</strong>
+          <p>Many electrolytic and tantalum capacitors are polarized and must be connected the correct way. Every capacitor also has a maximum voltage rating that should not be exceeded.</p>
+        </div>
+
+        <div class="beginner-card">
+          <strong>Where are capacitors used?</strong>
+          <p>You find them in power supplies, timing circuits, filters, motor circuits, audio equipment, radios, energy storage, noise suppression, and electronic control circuits.</p>
+        </div>
+      </div>
+
+      <div class="other-words">
+        <strong>In Other Words</strong>
+        <div class="other-words-grid">
+          <div class="other-words-item">A resistor opposes current flow.</div>
+          <div class="other-words-item">A capacitor resists changes in voltage.</div>
+          <div class="other-words-item">An inductor resists changes in current.</div>
+        </div>
+      </div>
+
+      <div class="beginner-tip">
+        A good way to learn this page: start with the <strong>RC Time Constant & Charge Simulation</strong>. Press <strong>Charge</strong>, then <strong>Discharge</strong>, and watch the capacitor voltage rise and fall before moving into reactance, ESR, resonance, and filters.
+      </div>
+    </section>
 
     <section class="panel">
       <h2>Series & Parallel Capacitance</h2>
