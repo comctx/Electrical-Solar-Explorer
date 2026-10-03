@@ -641,3 +641,27 @@ A DONCO-BAYCITY™ App
 - Component Pictures & Identifiers expanded with common package-shape recognition
 - Package examples include axial, radial electrolytic, ceramic disc, TO-92, TO-220, DIP, SMD chip, cube relay, DIN contactor, terminal block, M12-style sensor, and cartridge fuse
 - Added marking guide for part numbers, ratings, terminal labels, polarity marks, reference designators, and package limitations
+
+
+## AC, Transformer & Digital Logic Labs
+- AC Fundamentals Lab
+  - RMS and peak voltage relationship
+  - Frequency and period
+  - Voltage/current phase shift
+  - Power factor
+  - Real, apparent, and reactive power
+  - Live waveform visualization and beginner quick check
+- Transformer Lab
+  - Primary/secondary turns ratio
+  - Step-up, step-down, and 1:1 examples
+  - Ideal secondary voltage and current
+  - Ideal primary current and load power
+  - Presets and safety limitations
+- Digital Logic Lab
+  - AND, OR, NOT, NAND, NOR, XOR, and XNOR
+  - Live A/B inputs and output lamp
+  - Highlighted truth table
+  - Beginner quick check
+- Home categories and search updated for all three labs
+- Related lesson pages cross-linked
+- Electricity 101 extended with AC Fundamentals Lab and Transformer Lab
