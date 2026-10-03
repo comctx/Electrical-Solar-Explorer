@@ -50,6 +50,14 @@ function makeToolbar(){
   bar.className="ate-toolbar";
   bar.id="ateToolbar";
   if(!isHome()){
+    const home=document.createElement("button");
+    home.type="button";
+    home.id="ateHomeBtn";
+    home.textContent="← Home";
+    home.setAttribute("aria-label","Return to All Things Electrical home");
+    home.addEventListener("click",()=>{window.location.assign("index.html")});
+    bar.appendChild(home);
+
     const fav=document.createElement("button");
     fav.type="button";fav.id="ateFavBtn";fav.addEventListener("click",toggleFavorite);
     bar.appendChild(fav);
