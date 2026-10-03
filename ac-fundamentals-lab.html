@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><title>AC Fundamentals Lab</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.94}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1080px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.start{background:#fffbed;border:1px solid #e5c94a;border-radius:16px;padding:16px;margin-bottom:16px}.start h2{margin-bottom:10px}.start ol{margin:0;padding-left:22px;line-height:1.6}.start li{margin-bottom:5px}
+.grid{display:grid;gap:10px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px}input,select{width:100%;min-height:44px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}.btn{min-height:44px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}
+.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}.result strong{display:block;color:var(--navy);font-size:22px}.feedback{margin-top:12px;background:#eef7ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.feedback.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}.feedback.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three,.four{grid-template-columns:1fr}}
+</style>
+<style>.screen{background:#071a2e;border:8px solid #26384c;border-radius:14px;overflow:hidden}.screen svg{display:block;width:100%;height:auto}.g{stroke:#24425d;stroke-width:1}.axis{stroke:#6f94b4;stroke-width:1.5}.vwave{stroke:#ffd43b;stroke-width:3;fill:none}.iwave{stroke:#52c7ff;stroke-width:3;fill:none}.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:13px}.dot{display:inline-block;width:14px;height:4px;margin-right:5px;vertical-align:middle}.yellow{background:#ffd43b}.cyan{background:#52c7ff}</style>
+</head><body><header><h1>AC Fundamentals Lab</h1><p>See RMS, peak voltage, frequency, phase angle, and power factor change together.</p></header><main>
+<nav class="nav"><a href="index.html">← Home</a><a href="electrical-basics.html">Electrical Basics</a><a href="test-equipment.html">Test Equipment</a><a href="oscilloscope-lab.html">Oscilloscope Lab</a></nav>
+<section class="start"><h2>Beginner Start Here</h2><ol><li><strong>AC reverses direction periodically.</strong></li><li><strong>Frequency</strong> tells how many cycles occur each second.</li><li><strong>RMS voltage</strong> is the value normally used for AC ratings.</li><li>For a sine wave, <strong>peak ≈ RMS × 1.414</strong>.</li><li><strong>Power factor</strong> depends on the phase difference between voltage and current.</li></ol></section>
+<section class="panel"><h2>Change the AC Signal</h2><div class="grid four">
+<div class="field"><label for="vrms">Voltage RMS (V)</label><input id="vrms" type="number" min="1" max="240" value="120"></div>
+<div class="field"><label for="amps">Current RMS (A)</label><input id="amps" type="number" min="0.1" max="30" step=".1" value="5"></div>
+<div class="field"><label for="freq">Frequency (Hz)</label><input id="freq" type="number" min="1" max="400" value="60"></div>
+<div class="field"><label for="phase">Current Phase Angle (°)</label><input id="phase" type="number" min="-90" max="90" value="30"></div>
+</div></section>
+<section class="panel"><h2>Voltage and Current</h2><div class="screen"><svg id="plot" viewBox="0 0 800 360"></svg></div><div class="legend"><span><i class="dot yellow"></i>Voltage</span><span><i class="dot cyan"></i>Current</span></div></section>
+<section class="panel"><h2>Live AC Values</h2><div class="grid four">
+<div class="result"><small>Voltage Peak</small><strong id="vpk"></strong></div>
+<div class="result"><small>Period</small><strong id="period"></strong></div>
+<div class="result"><small>Power Factor</small><strong id="pf"></strong></div>
+<div class="result"><small>Real Power</small><strong id="watts"></strong></div>
+</div><div class="grid three" style="margin-top:10px"><div class="result"><small>Apparent Power</small><strong id="va"></strong></div><div class="result"><small>Reactive Power</small><strong id="varOut"></strong></div><div class="result"><small>Lead / Lag</small><strong id="leadlag"></strong></div></div>
+<div id="explain" class="feedback"></div></section>
+<section class="panel"><h2>Quick Check</h2><p class="lead">A 120 V RMS sine wave has a peak voltage closest to:</p><div class="grid three"><button class="btn quiz" data-v="120">120 V</button><button class="btn quiz" data-v="170">170 V</button><button class="btn quiz" data-v="240">240 V</button></div><div id="quizOut" class="feedback">Choose an answer.</div></section>
+<section class="panel"><h2>Safety Note</h2><p class="lead">This page is a mathematical teaching simulator. Real AC systems can involve hazardous voltage, fault energy, and phase relationships. Do not use it as a live-work procedure.</p></section>
+</main><footer>A DONCO-BAYCITY™ App</footer><script>
+function fmt(x,d=2){return Number(x.toFixed(d)).toString()}
+function draw(){
+ const V=Math.max(1,+vrms.value||1),I=Math.max(.1,+amps.value||.1),f=Math.max(1,+freq.value||1),ph=Math.max(-90,Math.min(90,+phase.value||0));
+ const rad=ph*Math.PI/180,pfVal=Math.cos(rad),P=V*I*pfVal,S=V*I,Q=V*I*Math.sin(rad);
+ let grid="";for(let x=0;x<=800;x+=80)grid+='<path class="g" d="M'+x+' 0V360"/>';for(let y=0;y<=360;y+=45)grid+='<path class="g" d="M0 '+y+'H800"/>';grid+='<path class="axis" d="M0 180H800"/>';
+ let dv="",di="";for(let x=0;x<=800;x+=2){const t=x/800*2*Math.PI,v=180-120*Math.sin(t),cur=180-120*Math.sin(t-rad);dv+=(x?"L":"M")+x+" "+v+" ";di+=(x?"L":"M")+x+" "+cur+" "}
+ plot.innerHTML=grid+'<path class="vwave" d="'+dv+'"/><path class="iwave" d="'+di+'"/>';
+ vpk.textContent=fmt(V*Math.SQRT2,1)+" V";period.textContent=fmt(1000/f,2)+" ms";pf.textContent=fmt(Math.abs(pfVal),3);watts.textContent=fmt(P,1)+" W";va.textContent=fmt(S,1)+" VA";varOut.textContent=fmt(Math.abs(Q),1)+" VAR";leadlag.textContent=ph===0?"In phase":ph>0?"Current lags":"Current leads";
+ explain.textContent="At "+Math.abs(ph)+"° phase shift, only part of the apparent power becomes real power. Real power = V × I × power factor.";
+}
+[vrms,amps,freq,phase].forEach(e=>e.addEventListener("input",draw));
+document.querySelectorAll(".quiz").forEach(b=>b.onclick=()=>{const ok=b.dataset.v==="170";quizOut.className="feedback "+(ok?"good":"bad");quizOut.textContent=ok?"Correct. 120 × 1.414 ≈ 170 V peak.":"Not quite. For a sine wave, peak ≈ RMS × 1.414, so 120 V RMS is about 170 V peak."});
+draw();
+</script></body></html>
