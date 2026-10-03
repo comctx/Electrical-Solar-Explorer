@@ -209,6 +209,20 @@ Interactive lessons for:
 - Interactive SSR concept simulator
 - SSR heat-loss calculator
 
+
+### Op-Amps & Analog Circuits Explorer
+- Operational amplifiers and comparators
+- Inverting and non-inverting gain
+- Voltage followers and buffers
+- Summing and differential amplifiers
+- Integrators and differentiators
+- Active filters
+- Instrumentation amplifiers
+- Hysteresis concepts
+- 555 timer circuits
+- Op-amp gain and 555 timer calculators
+- Supply rails, bandwidth, and slew-rate limits
+
 ## 9. Motors & Controls
 - AC motors
 - DC motors
@@ -265,6 +279,16 @@ Interactive lessons for:
 ### Logic Simulator
 Flip inputs between 0 and 1 and watch outputs change instantly.
 
+
+### Digital Logic Explorer
+- Interactive AND, OR, NOT, NAND, NOR, XOR, and XNOR logic
+- Binary, decimal, and hexadecimal conversion
+- Latches and flip-flops
+- Counters and registers
+- Multiplexers and decoders
+- ADC and DAC basics
+- Live Boolean logic simulator
+
 ## 11. Microprocessors & Computer Circuits
 - CPU basics
 - ALU
@@ -302,6 +326,18 @@ Step through a simple instruction one clock cycle at a time and watch data move 
 - PNP/NPN and sourcing/sinking concepts
 - Sensing distance, hysteresis, response time, and output types
 - Interactive switch and sensor simulations
+
+## PLCs & Industrial Automation
+- PLC CPUs, scan cycles, and memory
+- Digital inputs and outputs
+- Analog inputs and outputs
+- Ladder logic
+- Timers and counters
+- 4–20 mA and 0–10 V signals
+- HMI basics
+- EtherNet/IP, PROFINET, and Modbus concepts
+- Interactive START/STOP/fault simulation
+- 4–20 mA scaling calculator
 
 ## 12. Test Equipment Explorer
 ### Virtual Multimeter
@@ -392,6 +428,41 @@ Pause or slow a simulation so the user can see each stage and read explanations.
 - Solar mode
 - Electronics mode
 - Advanced circuit mode
+
+## Protection Devices
+- Fuses and circuit breakers
+- GFCI / RCD
+- AFCI
+- Motor overload protection
+- Surge protective devices
+- MOVs, TVS diodes, and gas-discharge tubes
+- Time-current concepts
+- Layered protection
+- Interactive overcurrent demonstrator
+
+## Grounding, Bonding & Shielding
+- Grounding vs. bonding
+- Equipment grounding conductors
+- Grounding electrodes
+- Neutral / grounded-conductor concepts
+- Bonding jumpers
+- Ground loops
+- Cable shields
+- EMI / RFI coupling
+- Signal ground vs. protective earth
+- Simplified ground-loop calculator
+
+## Lighting & Lamps
+- Incandescent and halogen
+- Fluorescent and ballasts
+- HID lighting
+- LEDs and LED drivers
+- OLED basics
+- Lumens, lux, and efficacy
+- Color temperature and CRI
+- Dimming methods
+- Flicker concepts
+- Interactive lighting calculator
 
 ## 16. Safety & Code
 - Clearly separate electrical theory from code requirements
