@@ -68,23 +68,56 @@
     }
 
     .tabs{
-      display:flex;
-      flex-wrap:wrap;
+      display:block;
+      margin-bottom:18px;
+    }
+
+    .nav-category{
+      background:rgba(255,255,255,.62);
+      border:1px solid rgba(207,217,227,.9);
+      border-radius:18px;
+      padding:14px;
+      margin-bottom:14px;
+      box-shadow:0 8px 22px rgba(7,26,46,.05);
+    }
+
+    .nav-category h2{
+      margin:0 0 11px;
+      border-left:5px solid var(--yellow);
+      padding-left:10px;
+      font-size:18px;
+      color:var(--navy);
+    }
+
+    .category-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
       gap:10px;
-      margin-bottom:16px;
     }
 
     .tab{
-      flex:1 1 180px;
-      min-height:48px;
+      width:100%;
+      min-height:64px;
       border:1px solid var(--border);
-      border-radius:12px;
+      border-radius:14px;
       background:white;
       color:var(--text);
       font-weight:700;
       font-size:15px;
       cursor:pointer;
-      padding:10px 14px;
+      padding:11px 14px;
+      text-align:center;
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      line-height:1.25;
+      box-shadow:0 2px 8px rgba(7,26,46,.035);
+    }
+
+    .tab:hover{
+      border-color:#9fc8ef;
+      background:#f8fbff;
     }
 
     .tab.active{
@@ -724,6 +757,7 @@
       .network-grid{grid-template-columns:1fr 1fr}
       .tool-grid,.tool-grid.four{grid-template-columns:1fr 1fr}
       .tool-results{grid-template-columns:1fr}
+      .category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
     }
 
     @media (max-width:420px){
@@ -732,6 +766,8 @@
       .value-unit-row{grid-template-columns:minmax(0,1fr) 96px}
       .history-item{align-items:flex-start}
       .tool-grid,.tool-grid.four{grid-template-columns:1fr}
+      .category-grid{grid-template-columns:1fr}
+      .tab{min-height:56px}
       header{padding-top:22px}
     }
   </style>
@@ -745,41 +781,82 @@
 
   <main>
     <div class="tabs">
-      <a class="tab" href="electrical-basics.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Electrical Basics</a>
-      <a class="tab" href="wiring-installation.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Wiring & Installation</a>
-      <button class="tab active" data-panel="electricalPanel">Electrical Calculator</button>
-      <button class="tab" data-panel="resistorPanel">Resistor Bands</button>
-      <button class="tab" data-panel="solarPanel">Solar Calculator</button>
-      <a class="tab" href="batteries.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Batteries</a>
-      <a class="tab" href="power-supplies.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Power Supplies & Rectifiers</a>
-      <a class="tab" href="capacitor.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Capacitors</a>
-      <a class="tab" href="inductors.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Inductors & Coils</a>
-      <a class="tab" href="transformers.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Transformers</a>
-      <a class="tab" href="diodes.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Diodes</a>
-      <a class="tab" href="led-lcd.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">LEDs & LCDs</a>
-      <a class="tab" href="transistors.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Transistors</a>
-      <a class="tab" href="vacuum-tubes.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Vacuum Tubes</a>
-      <a class="tab" href="relays.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Relays & Contactors</a>
-      <a class="tab" href="integrated-circuits.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Integrated Circuits</a>
-      <a class="tab" href="crystals-oscillators.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Crystals & Oscillators</a>
-      <a class="tab" href="motors-controls.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Motors & Controls</a>
-      <a class="tab" href="generators-alternators.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Generators & Alternators</a>
-      <a class="tab" href="solar-power-electronics.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Solar Power Electronics</a>
-      <a class="tab" href="sensors-switches.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Sensors & Switches</a>
-      <a class="tab" href="fiber-optics.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Fiber Optics</a>
-      <a class="tab" href="power-electronics-modules.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Power Electronics & Modules</a>
-      <a class="tab" href="solid-state-switching.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Solid-State Switching</a>
-      <a class="tab" href="test-equipment.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Test Equipment</a>
-      <a class="tab" href="op-amps-analog.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Op-Amps & Analog</a>
-      <a class="tab" href="digital-logic.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Digital Logic</a>
-      <a class="tab" href="plc-automation.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">PLCs & Automation</a>
-      <a class="tab" href="protection-devices.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Protection Devices</a>
-      <a class="tab" href="grounding-bonding-shielding.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Grounding & Shielding</a>
-      <a class="tab" href="lighting-lamps.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Lighting & Lamps</a>
-      <a class="tab" href="radio-rf.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Radio & RF</a>
-      <a class="tab" href="advanced-transformers-distribution.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Advanced Transformers & Distribution</a>
-      <a class="tab" href="troubleshooting.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Troubleshooting</a>
-      <a class="tab" href="processors.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Processors</a>
+      <section class="nav-category">
+        <h2>Quick Tools</h2>
+        <div class="category-grid">
+          <button class="tab active" data-panel="electricalPanel">Electrical Calculator</button>
+          <button class="tab" data-panel="resistorPanel">Resistor Bands</button>
+          <button class="tab" data-panel="solarPanel">Solar Calculator</button>
+        </div>
+      </section>
+
+      <section class="nav-category">
+        <h2>Electrical Basics & Wiring</h2>
+        <div class="category-grid">
+          <a class="tab" href="electrical-basics.html">Electrical Basics</a>
+          <a class="tab" href="wiring-installation.html">Wiring & Installation</a>
+          <a class="tab" href="protection-devices.html">Protection Devices</a>
+          <a class="tab" href="grounding-bonding-shielding.html">Grounding, Bonding & Shielding</a>
+          <a class="tab" href="lighting-lamps.html">Lighting & Lamps</a>
+        </div>
+      </section>
+
+      <section class="nav-category">
+        <h2>Power & Energy</h2>
+        <div class="category-grid">
+          <a class="tab" href="batteries.html">Batteries</a>
+          <a class="tab" href="power-supplies.html">Power Supplies & Rectifiers</a>
+          <a class="tab" href="transformers.html">Transformers</a>
+          <a class="tab" href="advanced-transformers-distribution.html">Advanced Transformers & Distribution</a>
+          <a class="tab" href="generators-alternators.html">Generators & Alternators</a>
+          <a class="tab" href="solar-power-electronics.html">Solar Power Electronics</a>
+          <a class="tab" href="power-electronics-modules.html">Power Electronics & Modules</a>
+        </div>
+      </section>
+
+      <section class="nav-category">
+        <h2>Electronics & Components</h2>
+        <div class="category-grid">
+          <a class="tab" href="capacitor.html">Capacitors</a>
+          <a class="tab" href="inductors.html">Inductors & Coils</a>
+          <a class="tab" href="diodes.html">Diodes</a>
+          <a class="tab" href="led-lcd.html">LEDs & LCDs</a>
+          <a class="tab" href="transistors.html">Transistors</a>
+          <a class="tab" href="vacuum-tubes.html">Vacuum Tubes</a>
+          <a class="tab" href="integrated-circuits.html">Integrated Circuits</a>
+          <a class="tab" href="op-amps-analog.html">Op-Amps & Analog</a>
+          <a class="tab" href="crystals-oscillators.html">Crystals & Oscillators</a>
+          <a class="tab" href="solid-state-switching.html">Solid-State Switching</a>
+        </div>
+      </section>
+
+      <section class="nav-category">
+        <h2>Motors & Industrial Automation</h2>
+        <div class="category-grid">
+          <a class="tab" href="motors-controls.html">Motors & Controls</a>
+          <a class="tab" href="relays.html">Relays & Contactors</a>
+          <a class="tab" href="sensors-switches.html">Sensors & Switches</a>
+          <a class="tab" href="plc-automation.html">PLCs & Automation</a>
+        </div>
+      </section>
+
+      <section class="nav-category">
+        <h2>Digital & Communications</h2>
+        <div class="category-grid">
+          <a class="tab" href="processors.html">Processors</a>
+          <a class="tab" href="digital-logic.html">Digital Logic</a>
+          <a class="tab" href="fiber-optics.html">Fiber Optics</a>
+          <a class="tab" href="radio-rf.html">Radio & RF</a>
+        </div>
+      </section>
+
+      <section class="nav-category">
+        <h2>Test & Troubleshooting</h2>
+        <div class="category-grid">
+          <a class="tab" href="test-equipment.html">Test Equipment</a>
+          <a class="tab" href="troubleshooting.html">Troubleshooting</a>
+        </div>
+      </section>
     </div>
 
     <section id="electricalPanel" class="panel active">
@@ -1276,16 +1353,17 @@
   <footer>A DONCO-BAYCITY™ App</footer>
 
   <script>
-    const tabs = document.querySelectorAll(".tab");
+    const toolTabs = document.querySelectorAll(".tab[data-panel]");
     const panels = document.querySelectorAll(".panel");
 
-    tabs.forEach(tab => {
+    toolTabs.forEach(tab => {
       tab.addEventListener("click", () => {
-        tabs.forEach(t => t.classList.remove("active"));
+        toolTabs.forEach(t => t.classList.remove("active"));
         panels.forEach(p => p.classList.remove("active"));
 
         tab.classList.add("active");
-        document.getElementById(tab.dataset.panel).classList.add("active");
+        const panel = document.getElementById(tab.dataset.panel);
+        if (panel) panel.classList.add("active");
       });
     });
 
