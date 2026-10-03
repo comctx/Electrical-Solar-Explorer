@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Basic Home Wiring — Meter to End Device</title>
+<link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.94}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1120px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.start{background:#fffbed;border:1px solid #e5c94a;border-radius:16px;padding:16px;margin-bottom:16px}.start ol{margin:0;padding-left:22px;line-height:1.6}.start li{margin-bottom:5px}
+.grid{display:grid;gap:10px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.btn{min-height:44px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.btn.good{background:#eaf7ef;border-color:#9ed0b3}
+.wrap{overflow-x:auto}.diagram{width:100%;min-width:980px;height:520px;background:#fff;border:1px solid var(--border);border-radius:14px}.wire{stroke:#586f80;stroke-width:5;fill:none;stroke-linecap:round}.hot{stroke:#d64b3c}.neutral{stroke:#5f7180}.ground{stroke:#1f7a4d}.active{stroke:#f3a900!important;filter:drop-shadow(0 0 4px rgba(243,169,0,.55))}.box{fill:#eef7ff;stroke:#071a2e;stroke-width:3}.label{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}.small{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#62707d}
+.stepcards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.stepcard{border:1px solid var(--border);border-radius:14px;padding:13px;background:#f8fbff}.stepcard strong{display:block;color:var(--navy);margin-bottom:5px}.stepcard span{color:#40566a;line-height:1.45;font-size:13px}
+.feedback{margin-top:12px;background:#eef7ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}
+.warn{background:#fff3d6;border:1px solid #e5a84a;color:#6a4300;border-radius:12px;padding:13px;line-height:1.5}
+@media(max-width:800px){.stepcards{grid-template-columns:repeat(2,minmax(0,1fr))}.two,.three{grid-template-columns:1fr}}@media(max-width:520px){main{padding:12px}.stepcards{grid-template-columns:1fr}}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+</style></head><body>
+<header><h1>Basic Home Wiring — Meter to End Device</h1><p>Follow the electrical path from the utility service to a receptacle, light, or 240 V load.</p></header><main>
+<nav class="nav"><a href="index.html">← Home</a><a href="wiring-installation.html">Wiring & Installation</a><a href="grounding-bonding-shielding.html">Grounding & Bonding</a><a href="protection-devices.html">Protection Devices</a></nav>
+
+<section class="start"><h2>Beginner Start Here</h2><ol>
+<li>Start at the utility/service entrance and move one block at a time toward the load.</li>
+<li>The <strong>meter measures energy use</strong>; it is not the branch-circuit protection device.</li>
+<li>The <strong>service disconnect/main</strong> and panel distribute power through breakers to branch circuits.</li>
+<li>Branch circuits carry power to end devices such as receptacles, lights, fixed appliances, and equipment.</li>
+<li>Grounding and bonding provide specific safety functions and are not interchangeable with the neutral conductor.</li>
+</ol></section>
+
+<section class="panel"><h2>Choose an End Device</h2><div class="grid three"><button class="btn load primary" data-load="receptacle">120 V Receptacle</button><button class="btn load" data-load="light">120 V Light & Switch</button><button class="btn load" data-load="240">240 V Appliance Concept</button></div><div id="modeExplain" class="feedback"></div></section>
+
+<section class="panel"><h2>Meter-to-Load Path</h2><div class="wrap"><svg class="diagram" viewBox="0 0 1060 520">
+<rect x="35" y="70" width="145" height="120" rx="14" class="box"/><text class="label" x="68" y="105">Utility</text><text class="small" x="55" y="132">Service drop / lateral</text><text class="small" x="55" y="153">Utility-owned side</text>
+<rect x="225" y="70" width="145" height="120" rx="14" class="box"/><text class="label" x="270" y="105">Meter</text><text class="small" x="247" y="132">Measures energy</text><text class="small" x="247" y="153">Not a DIY work point</text>
+<rect x="415" y="70" width="160" height="120" rx="14" class="box"/><text class="label" x="447" y="105">Main Disconnect</text><text class="small" x="440" y="132">Service disconnect</text><text class="small" x="440" y="153">Overcurrent protection</text>
+<rect x="620" y="70" width="160" height="120" rx="14" class="box"/><text class="label" x="670" y="105">Panel</text><text class="small" x="642" y="132">Bus / breakers</text><text class="small" x="642" y="153">Branch distribution</text>
+<rect x="835" y="70" width="180" height="120" rx="14" class="box"/><text class="label" x="872" y="105">Branch Circuit</text><text class="small" x="862" y="132">Cable / raceway</text><text class="small" x="862" y="153">Breaker-protected path</text>
+<path id="service1" class="wire hot" d="M180 110H225"/><path id="service2" class="wire hot" d="M370 110H415"/><path id="service3" class="wire hot" d="M575 110H620"/><path id="service4" class="wire hot" d="M780 110H835"/>
+<path class="wire neutral" d="M180 150H225M370 150H415M575 150H620M780 150H835"/>
+
+<rect x="835" y="250" width="180" height="150" rx="14" class="box"/><text id="loadTitle" class="label" x="870" y="285">120 V Receptacle</text><text id="loadLine1" class="small" x="858" y="315">Hot + neutral + equipment ground</text><text id="loadLine2" class="small" x="858" y="338">Branch circuit end device</text>
+<path id="branchHot" class="wire hot" d="M925 190V250"/><path id="branchNeutral" class="wire neutral" d="M955 190V250"/><path id="branchGround" class="wire ground" d="M985 190V250"/>
+
+<rect x="415" y="270" width="365" height="135" rx="14" class="box"/><text class="label" x="448" y="302">Grounding & Bonding Concept</text><text class="small" x="448" y="330">Bonding connects metal parts together at permitted locations.</text><text class="small" x="448" y="352">Equipment grounding conductors provide a fault-current path.</text><text class="small" x="448" y="374">Grounding electrodes connect the system to earth for defined functions.</text>
+<path class="wire ground" d="M700 190V270"/><path class="wire ground" d="M620 405V455H540"/><path d="M510 460h60M520 474h40M530 488h20" stroke="#1f7a4d" stroke-width="4"/><text class="small" x="585" y="477">Grounding electrode concept</text>
+
+<text class="small" x="65" y="225">Utility boundary and ownership vary by location.</text>
+</svg></div></section>
+
+<section class="panel"><h2>What Each Stage Does</h2><div class="stepcards">
+<div class="stepcard"><strong>1. Utility Service</strong><span>Brings electrical service to the property through overhead or underground conductors.</span></div>
+<div class="stepcard"><strong>2. Meter</strong><span>Measures energy usage for billing. Meter sockets and service conductors can remain hazardous even when branch breakers are off.</span></div>
+<div class="stepcard"><strong>3. Service Disconnect</strong><span>Provides the service disconnecting means and service overcurrent protection, depending on the installation.</span></div>
+<div class="stepcard"><strong>4. Panel / Load Center</strong><span>Distributes power to branch-circuit breakers. The neutral and equipment-grounding arrangement depends on whether this is service equipment or downstream equipment.</span></div>
+<div class="stepcard"><strong>5. Branch Breaker</strong><span>Protects the branch-circuit conductors from overcurrent. GFCI/AFCI functions may also be required depending on circuit and location.</span></div>
+<div class="stepcard"><strong>6. Branch Wiring</strong><span>Carries power through cable or raceway to the end device. Conductor size, insulation, temperature rating, and installation method matter.</span></div>
+<div class="stepcard"><strong>7. Switches / Controls</strong><span>Control loads such as lighting. The exact conductor arrangement depends on the circuit design; do not rely on color alone.</span></div>
+<div class="stepcard"><strong>8. End Device</strong><span>Receptacle, luminaire, appliance, motor, or other load uses the delivered electrical energy.</span></div>
+</div></section>
+
+<section class="panel"><h2>120 V vs 240 V Concept</h2><div class="grid two"><div class="stepcard"><strong>Typical 120 V branch</strong><span>Uses one ungrounded conductor plus a neutral for the load current, with an equipment-grounding path for fault conditions.</span></div><div class="stepcard"><strong>Typical 240 V branch</strong><span>Uses two ungrounded conductors. Some 240 V loads also require a neutral; others do not. Equipment grounding is still separate from normal load current.</span></div></div></section>
+
+<section class="panel"><h2>Protection You Will See in Homes</h2><div class="grid three"><div class="stepcard"><strong>Breaker / Fuse</strong><span>Protects conductors and equipment from overcurrent.</span></div><div class="stepcard"><strong>GFCI</strong><span>Detects current imbalance that can indicate leakage to ground and trips rapidly for personnel protection.</span></div><div class="stepcard"><strong>AFCI</strong><span>Detects certain arcing signatures associated with damaged or unsafe wiring conditions.</span></div></div></section>
+
+<section class="panel"><h2>Critical Safety Boundary</h2><div class="warn"><strong>Do not treat this page as a wiring procedure.</strong> Meter sockets, service conductors, service disconnects, and panels can contain lethal energy, and some parts may remain energized even when a main breaker is off. Utility rules, permits, inspections, manufacturer instructions, and electrical code requirements apply. Service and panel work should be handled by qualified people authorized for that work.</div><p class="note" style="margin-top:10px">Also: never identify conductors by color alone. Verify the circuit, labeling, documentation, and safe de-energized condition using appropriate procedures and test equipment.</p></section>
+</main><footer>A DONCO-BAYCITY™ App</footer>
+<script>
+let mode="receptacle";
+const data={
+receptacle:{title:"120 V Receptacle",l1:"Hot + neutral + equipment ground",l2:"Typical general branch-circuit end device",msg:"A typical 120 V receptacle branch uses one ungrounded conductor and a neutral for load current, plus an equipment-grounding path for fault conditions."},
+light:{title:"120 V Light & Switch",l1:"Branch power → switch/control → light",l2:"Exact cable arrangement varies",msg:"A lighting branch adds a control device in the current path. Modern wiring methods vary, so this overview shows function rather than a wire-by-wire hookup."},
+"240":{title:"240 V Appliance Concept",l1:"Two ungrounded conductors + equipment ground",l2:"Some loads also require a neutral",msg:"A 240 V load is supplied from both ungrounded legs. Whether a neutral is required depends on the appliance or equipment design."}
+};
+function render(){const d=data[mode];loadTitle.textContent=d.title;loadLine1.textContent=d.l1;loadLine2.textContent=d.l2;modeExplain.textContent=d.msg;document.querySelectorAll(".load").forEach(b=>b.classList.toggle("primary",b.dataset.load===mode));[service1,service2,service3,service4,branchHot].forEach(x=>x.classList.add("active"));branchNeutral.classList.toggle("active",mode!=="240");branchGround.classList.add("active")}
+document.querySelectorAll(".load").forEach(b=>b.onclick=()=>{mode=b.dataset.load;render()});render();
+</script></body></html>
