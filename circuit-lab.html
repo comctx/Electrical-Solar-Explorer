@@ -33,9 +33,15 @@ input,select{width:100%;min-height:44px;border:1px solid var(--border);border-ra
 .circuit-wrap{overflow-x:auto;padding:8px 2px}
 .circuit{display:flex;align-items:center;gap:0;min-width:max-content;padding:20px 8px 42px}
 .wire{width:34px;height:5px;background:#687f91;flex:0 0 34px;position:relative}.wire.live{background:#f3a900;box-shadow:0 0 9px rgba(243,169,0,.55)}
-.component{width:150px;min-height:122px;border:2px solid #9fc8ef;border-radius:15px;background:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:10px;position:relative;cursor:grab;text-align:center}
-.component.dragging{opacity:.5}.component.active{border-color:#e4ba16;background:#fffbed;box-shadow:0 0 16px rgba(255,212,59,.34)}.component.blown{border-color:#e4aaa5;background:#fdecea}
-.component .symbol{font-size:30px;font-weight:900;color:var(--navy);margin-bottom:4px}.component .name{font-weight:900;color:var(--navy)}.component .value{font-size:13px;color:var(--muted);margin-top:4px}.component .drop{font-size:12px;color:var(--blue);font-weight:800;margin-top:5px}
+.component{width:154px;min-height:154px;border:1px solid #b9d7f5;border-radius:14px;background:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:10px;position:relative;cursor:grab;text-align:center}
+.component.dragging{opacity:.5}.component.active{border-color:#e4ba16;background:#fffdf2;box-shadow:0 0 16px rgba(255,212,59,.28)}.component.blown{border-color:#e4aaa5;background:#fdecea}
+.schematic-symbol{width:112px;height:64px;color:var(--navy);margin-bottom:4px}
+.schematic-symbol svg{display:block;width:100%;height:100%;overflow:visible}
+.schematic-symbol .wire-stroke{stroke:currentColor;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.schematic-symbol .thin-stroke{stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.schematic-symbol .symbol-fill{fill:currentColor}
+.component.blown .schematic-symbol{color:#b42318}
+.component .name{font-weight:900;color:var(--navy)}.component .value{font-size:13px;color:var(--muted);margin-top:4px}.component .drop{font-size:12px;color:var(--blue);font-weight:800;margin-top:5px}
 .remove{position:absolute;top:5px;right:6px;border:0;background:transparent;color:#8a1c13;font-size:18px;cursor:pointer}
 .results{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:13px;padding:13px}.result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}.result strong{font-size:22px;color:var(--navy);word-break:break-word}
 .status{margin-top:12px;border-radius:12px;padding:12px;font-weight:800;background:#eef7ff;border:1px solid #b9d7f5;color:var(--navy)}.status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}.status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}.status.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
@@ -109,7 +115,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 
 <section class="panel">
 <h2>Series Circuit</h2>
-<p class="lead">The wire glows when current can flow. Tap a component to edit it.</p>
+<p class="lead">The circuit uses standard-style electrical schematic symbols. The wire glows when current flows; tap any symbol to edit that component.</p>
 <div class="circuit-wrap"><div id="circuit" class="circuit"></div></div>
 <div id="editor" class="editor">
 <h3 id="editorTitle">Edit Component</h3>
@@ -248,13 +254,44 @@ function displayValue(p,s){
  if(p.type==="meter")return "Series current meter";return "";
 }
 
+function schematicSymbol(type,p={}){
+ const wrap=body=>'<div class="schematic-symbol" aria-hidden="true"><svg viewBox="0 0 120 64" role="img">'+body+'</svg></div>';
+ if(type==="source")return wrap(
+  '<path class="wire-stroke" d="M4 32h34M82 32h34"/>'+
+  '<path class="wire-stroke" d="M46 14v36M58 22v20M70 14v36"/>'+
+  '<text x="43" y="10" font-size="13" font-weight="900" fill="currentColor">+</text>'+
+  '<text x="69" y="61" font-size="16" font-weight="900" fill="currentColor">−</text>'
+ );
+ if(type==="switch"){
+  const arm=p.closed?'<path class="wire-stroke" d="M42 32L78 32"/>':'<path class="wire-stroke" d="M42 32L76 15"/>';
+  return wrap('<path class="wire-stroke" d="M4 32h34M82 32h34"/><circle cx="40" cy="32" r="4" class="symbol-fill"/><circle cx="80" cy="32" r="4" class="symbol-fill"/>'+arm);
+ }
+ if(type==="fuse"){
+  const body=p.blown
+   ? '<rect x="40" y="22" width="40" height="20" rx="3" class="thin-stroke"/><path class="wire-stroke" d="M47 32h9M64 32h9"/>'
+   : '<rect x="40" y="22" width="40" height="20" rx="3" class="thin-stroke"/><path class="wire-stroke" d="M46 32h28"/>';
+  return wrap('<path class="wire-stroke" d="M4 32h36M80 32h36"/>'+body);
+ }
+ if(type==="lamp")return wrap('<path class="wire-stroke" d="M4 32h30M86 32h30"/><circle cx="60" cy="32" r="26" class="thin-stroke"/><path class="thin-stroke" d="M43 15l34 34M77 15L43 49"/>');
+ if(type==="resistor")return wrap('<path class="wire-stroke" d="M4 32h24l7-10 10 20 10-20 10 20 10-20 10 10h31"/>');
+ if(type==="led")return wrap(
+  '<path class="wire-stroke" d="M4 32h32M84 32h32"/>'+
+  '<path class="thin-stroke" d="M38 16l36 16-36 16z"/><path class="wire-stroke" d="M78 14v36"/>'+
+  '<path class="thin-stroke" d="M72 12l15-9M82 20l15-9"/><path class="thin-stroke" d="M83 3h4v4M93 11h4v4"/>'
+ );
+ if(type==="motor")return wrap('<path class="wire-stroke" d="M4 32h28M88 32h28"/><circle cx="60" cy="32" r="28" class="thin-stroke"/><text x="48" y="43" font-size="34" font-weight="900" fill="currentColor">M</text>');
+ if(type==="meter")return wrap('<path class="wire-stroke" d="M4 32h28M88 32h28"/><circle cx="60" cy="32" r="28" class="thin-stroke"/><text x="49" y="43" font-size="34" font-weight="900" fill="currentColor">A</text>');
+ if(type==="return")return wrap('<path class="wire-stroke" d="M4 32h45"/><circle cx="55" cy="32" r="6" class="thin-stroke"/><path class="thin-stroke" d="M66 24h34M72 32h22M79 40h8"/><text x="91" y="18" font-size="14" font-weight="900" fill="currentColor">0V</text>');
+ return wrap('<path class="wire-stroke" d="M4 32h112"/>');
+}
+
 function render(){
  const s=solveSeries();circuitEl.innerHTML="";
- const start=document.createElement("div");start.className="component active";start.innerHTML='<div class="symbol">🔋</div><div class="name">Source</div><div class="value">'+fmt(s.V,1)+' V DC</div>';circuitEl.appendChild(start);
+ const start=document.createElement("div");start.className="component active";start.innerHTML=schematicSymbol("source")+'<div class="name">Source</div><div class="value">'+fmt(s.V,1)+' V DC</div>';circuitEl.appendChild(start);
  parts.forEach(p=>{
   const wire=document.createElement("div");wire.className="wire"+(s.I>0?" live":"");circuitEl.appendChild(wire);
   const el=document.createElement("div");el.className="component"+(s.I>0?" active":"")+(p.blown?" blown":"");el.draggable=true;el.dataset.id=p.id;
-  el.innerHTML='<button class="remove" title="Remove">×</button><div class="symbol">'+p.symbol+'</div><div class="name">'+p.name+'</div><div class="value">'+displayValue(p,s)+'</div><div class="drop">'+fmt(partDrop(p,s),2)+' V drop</div>';
+  el.innerHTML='<button class="remove" title="Remove">×</button>'+schematicSymbol(p.type,p)+'<div class="name">'+p.name+'</div><div class="value">'+displayValue(p,s)+'</div><div class="drop">'+fmt(partDrop(p,s),2)+' V drop</div>';
   el.querySelector(".remove").onclick=e=>{e.stopPropagation();parts=parts.filter(x=>x.id!==p.id);selectedId=null;editor.classList.remove("show");render()};
   el.onclick=()=>{selectedId=p.id;openEditor()};
   el.addEventListener("dragstart",()=>el.classList.add("dragging"));el.addEventListener("dragend",()=>el.classList.remove("dragging"));el.addEventListener("dragover",e=>e.preventDefault());
@@ -262,7 +299,7 @@ function render(){
   circuitEl.appendChild(el);
  });
  const ew=document.createElement("div");ew.className="wire"+(s.I>0?" live":"");circuitEl.appendChild(ew);
- const ret=document.createElement("div");ret.className="component";ret.innerHTML='<div class="symbol">↩</div><div class="name">Return</div><div class="value">Source − / 0 V</div>';circuitEl.appendChild(ret);
+ const ret=document.createElement("div");ret.className="component";ret.innerHTML=schematicSymbol("return")+'<div class="name">Return</div><div class="value">Source − / 0 V</div>';circuitEl.appendChild(ret);
  updateSeriesOutputs(s);renderNodes(s);renderParallel();
 }
 
