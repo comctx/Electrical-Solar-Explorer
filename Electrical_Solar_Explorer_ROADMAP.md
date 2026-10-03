@@ -526,3 +526,16 @@ Pause or slow a simulation so the user can see each stage and read explanations.
 **Read it → See it → Simulate it → Change it → Test what you learned**
 
 A DONCO-BAYCITY™ App
+
+
+## Learning Tools & Progress
+- A–Z Electrical Glossary with instant search
+- Alphabet filtering
+- Direct links from glossary terms to related Explorer pages
+- Section quizzes for Electrical Basics, Components, Motors & Controls, PLCs & Automation, Test Equipment, and Troubleshooting
+- Best quiz scores saved locally on the device
+- My Progress page
+- User-marked completed learning sections
+- Overall completion percentage
+- Quiz score summary
+- Local progress storage with no account required
