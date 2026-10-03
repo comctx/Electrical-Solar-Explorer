@@ -67,11 +67,54 @@
     .visual-label{text-align:center;font-size:13px;font-weight:800;color:var(--navy);margin-top:6px}
     .status{margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy)}
     .status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
+    .status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+    .beginner-panel{background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:2px solid #b9d7f5}
+    .beginner-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .beginner-card{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:13px;padding:13px}
+    .beginner-card strong{display:block;color:var(--navy);margin-bottom:5px;font-size:16px}
+    .beginner-card p{margin:0;color:#33495b;line-height:1.5;font-size:14px}
+    .other-words{margin-top:14px;background:#fff7cc;border:1px solid #e5c94a;border-radius:13px;padding:14px}
+    .other-words strong{display:block;color:var(--navy);font-size:17px;margin-bottom:8px}
+    .other-words-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .other-words-item{background:white;border:1px solid #eadb82;border-radius:10px;padding:10px;font-weight:800;color:#263b4c;line-height:1.4}
+    .beginner-tip{margin-top:12px;border-left:5px solid var(--electric);background:#eef7ff;border-radius:10px;padding:11px 13px;line-height:1.5;color:#25394b;font-weight:700}
+    .sim-panel{display:grid;grid-template-columns:minmax(300px,1.15fr) minmax(240px,.85fr);gap:16px;align-items:center}
+    .sim-stage{position:relative;min-height:300px;border:1px solid var(--border);border-radius:16px;background:#fbfdff;overflow:hidden;padding:20px}
+    .sim-core{position:absolute;left:50%;top:50%;width:150px;height:190px;transform:translate(-50%,-50%);border:22px solid #4e5b66;border-radius:24px;background:transparent}
+    .sim-winding{position:absolute;top:50%;transform:translateY(-50%);display:flex;gap:2px;z-index:3}
+    .sim-winding.primary{left:12%}
+    .sim-winding.secondary{right:12%}
+    .sim-turn{width:28px;height:90px;border:6px solid var(--electric);border-left-color:transparent;border-right-color:transparent;border-radius:50%;transition:filter .15s,transform .15s,border-color .15s}
+    .sim-field{position:absolute;left:50%;top:50%;width:235px;height:245px;transform:translate(-50%,-50%) scale(.72);border-radius:50%;border:5px solid rgba(21,148,255,.18);box-shadow:0 0 0 14px rgba(21,148,255,.10),0 0 0 28px rgba(21,148,255,.05);opacity:.25;transition:transform .1s,opacity .1s,border-color .1s}
+    .sim-arrow{position:absolute;top:50%;z-index:4;font-size:30px;font-weight:900;color:var(--electric);transform:translateY(-50%);transition:transform .12s,color .12s}
+    .sim-arrow.left{left:3%}.sim-arrow.right{right:3%}
+    .sim-label{position:absolute;bottom:12px;font-size:12px;font-weight:900;color:var(--navy)}
+    .sim-label.left{left:12%}.sim-label.right{right:12%}
+    .sim-readout{display:grid;gap:10px}
+    .sim-step{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px;line-height:1.45}
+    .sim-step strong{color:var(--navy)}
+    .button-row{display:flex;flex-wrap:wrap;gap:8px}
+    .action{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer;font:inherit}
+    .action.primary{background:var(--yellow);border-color:#e4ba16}
+    .comparison-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .comparison-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .comparison-card h3{margin:0 0 8px;color:var(--navy)}
+    .comparison-card ul{margin:8px 0 0 20px;padding:0;color:#33495b;line-height:1.5}
+    .nameplate{margin-top:14px;border:2px solid #4e5b66;border-radius:12px;background:#f4f7f9;padding:14px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .nameplate-title{text-align:center;font-weight:900;font-size:18px;margin-bottom:8px;color:var(--navy)}
+    .nameplate-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px;font-size:13px}
+    .guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .guide-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:13px}
+    .guide-card strong{display:block;color:var(--navy);margin-bottom:5px}
+    .guide-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
     @media(max-width:760px){
       main{padding:12px}.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
       .result-grid{grid-template-columns:1fr}.type-grid{grid-template-columns:1fr 1fr}
       .transformer-visual{grid-template-columns:1fr}
       .core{width:130px;margin:auto}
+      .beginner-grid,.other-words-grid,.comparison-grid,.guide-grid,.nameplate-grid{grid-template-columns:1fr}
+      .sim-panel{grid-template-columns:1fr}
+      .sim-stage{min-height:280px}
     }
     @media(max-width:420px){.type-grid{grid-template-columns:1fr}}
     footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
@@ -90,6 +133,68 @@
       <a href="inductors.html">Inductors & Coils</a>
       <a href="transformers.html" class="active">Transformers</a>
     </nav>
+
+    <section class="panel beginner-panel">
+      <h2>Beginner Start Here</h2>
+      <p class="lead">New to transformers? These six ideas explain what is happening before you get into ratios, VA, impedance, and magnetic flux.</p>
+
+      <div class="beginner-grid">
+        <div class="beginner-card"><strong>What is a transformer?</strong><p>A transformer transfers AC electrical energy from one winding to another through a changing magnetic field. The two windings are usually called the primary and the secondary.</p></div>
+        <div class="beginner-card"><strong>Primary vs. secondary</strong><p>The primary is connected to the source. The secondary supplies the load. The number of turns on each winding determines the ideal voltage ratio.</p></div>
+        <div class="beginner-card"><strong>What is magnetic coupling?</strong><p>AC in the primary creates a changing magnetic field in the core. That changing field passes through the secondary winding and induces a voltage there.</p></div>
+        <div class="beginner-card"><strong>Step-up vs. step-down</strong><p>More secondary turns than primary turns raises voltage. Fewer secondary turns lowers voltage. For roughly the same VA, lower voltage allows proportionally higher current.</p></div>
+        <div class="beginner-card"><strong>Why is AC important?</strong><p>A transformer needs changing magnetic flux. Normal steady DC does not provide continuous transformer action and can overheat a winding if applied to a transformer not designed for it.</p></div>
+        <div class="beginner-card"><strong>What does isolation mean?</strong><p>With separate primary and secondary windings, energy crosses magnetically without a direct conductive connection between the two circuits. An autotransformer is different because it shares a winding.</p></div>
+      </div>
+
+      <div class="other-words">
+        <strong>In Other Words</strong>
+        <div class="other-words-grid">
+          <div class="other-words-item">Primary AC creates a changing magnetic field.</div>
+          <div class="other-words-item">The changing field induces voltage in the secondary.</div>
+          <div class="other-words-item">The turns ratio sets the ideal voltage and current relationship.</div>
+        </div>
+      </div>
+
+      <div class="beginner-tip">Start with the <strong>Animated Transformer</strong> below. Watch one AC cycle, then try the turns-ratio calculator with 120 V in and 12 V out.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Animated Transformer</h2>
+      <p class="lead">Watch the primary current alternate, the magnetic field reverse direction, and the secondary voltage follow the changing flux.</p>
+
+      <div class="sim-panel">
+        <div class="sim-stage">
+          <div id="simField" class="sim-field"></div>
+          <div class="sim-core"></div>
+          <div id="simPrimary" class="sim-winding primary">
+            <div class="sim-turn"></div><div class="sim-turn"></div><div class="sim-turn"></div><div class="sim-turn"></div>
+          </div>
+          <div id="simSecondary" class="sim-winding secondary">
+            <div class="sim-turn"></div><div class="sim-turn"></div><div class="sim-turn"></div>
+          </div>
+          <div id="simArrowL" class="sim-arrow left">→</div>
+          <div id="simArrowR" class="sim-arrow right">→</div>
+          <div class="sim-label left">Primary</div>
+          <div class="sim-label right">Secondary</div>
+        </div>
+
+        <div class="sim-readout">
+          <div class="sim-step"><strong id="simPhaseLabel">Cycle stopped</strong><div id="simExplain">Press Start to animate AC current, magnetic flux, and induced secondary voltage.</div></div>
+          <div class="result-grid" style="grid-template-columns:1fr 1fr;margin-top:0">
+            <div class="result"><small>Primary AC</small><strong id="simPrimaryValue">0%</strong></div>
+            <div class="result"><small>Secondary induced voltage</small><strong id="simSecondaryValue">0%</strong></div>
+          </div>
+          <div class="button-row">
+            <button id="simStart" class="action primary" type="button">Start</button>
+            <button id="simStop" class="action" type="button">Stop</button>
+            <button id="simSlow" class="action" type="button">Slow Motion</button>
+            <button id="simReset" class="action" type="button">Reset</button>
+          </div>
+          <p class="note">This is a simplified visual model. Real transformer waveforms depend on magnetizing current, load, core material, leakage inductance, resistance, and waveform shape.</p>
+        </div>
+      </div>
+    </section>
 
     <section class="panel">
       <h2>Turns Ratio • Voltage • Current</h2>
@@ -227,6 +332,119 @@
     </section>
 
     <section class="panel">
+      <h2>Center-Tapped Secondary Calculator</h2>
+      <p class="lead">Calculate the full secondary voltage and the voltage from either end to the center tap.</p>
+      <div class="grid four">
+        <div class="field"><label for="ctPrimaryV">Primary voltage (V RMS)</label><input id="ctPrimaryV" type="number" min="0.001" step="any" value="120"></div>
+        <div class="field"><label for="ctPrimaryTurns">Primary turns</label><input id="ctPrimaryTurns" type="number" min="1" step="1" value="1000"></div>
+        <div class="field"><label for="ctSecondaryTurns">Total secondary turns</label><input id="ctSecondaryTurns" type="number" min="2" step="2" value="200"></div>
+        <div class="field"><label for="ctVA">Transformer rating (VA)</label><input id="ctVA" type="number" min="0" step="any" value="60"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>End-to-end secondary</small><strong id="ctFullV">24 V</strong></div>
+        <div class="result"><small>Each half to center tap</small><strong id="ctHalfV">12 V</strong></div>
+        <div class="result"><small>Full-winding current at entered VA</small><strong id="ctCurrent">2.5 A</strong></div>
+      </div>
+      <div id="ctFormula" class="formula">Each half of a symmetrical center-tapped secondary has half the end-to-end voltage.</div>
+      <p class="note">Current ratings for center-tapped windings depend on how the transformer is wound and how the rectifier/load uses the winding. Use the actual nameplate or manufacturer data for real equipment.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Voltage Regulation & Load Drop</h2>
+      <p class="lead">Estimate how secondary voltage changes between no load and rated load.</p>
+      <div class="grid three">
+        <div class="field"><label for="regNoLoad">No-load secondary voltage (V)</label><input id="regNoLoad" type="number" min="0.001" step="any" value="13"></div>
+        <div class="field"><label for="regFullLoad">Full-load secondary voltage (V)</label><input id="regFullLoad" type="number" min="0.001" step="any" value="12"></div>
+        <div class="field"><label for="regLoadPct">Present load (%)</label><input id="regLoadPct" type="number" min="0" max="100" step="1" value="50"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Voltage regulation</small><strong id="regPct">8.33%</strong></div>
+        <div class="result"><small>Estimated voltage at present load</small><strong id="regEstimated">12.5 V</strong></div>
+        <div class="result"><small>Total no-load to full-load drop</small><strong id="regDrop">1 V</strong></div>
+      </div>
+      <div id="regFormula" class="formula">Regulation ≈ (Vno-load − Vfull-load) ÷ Vfull-load × 100%.</div>
+      <p class="note">The load interpolation is a teaching estimate. Actual voltage drop is not perfectly linear and depends on winding resistance, leakage reactance, power factor, temperature, and transformer design.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Simple Power & Current Example</h2>
+      <p class="lead">See why a step-down transformer can provide more current at the lower voltage while transferring roughly the same apparent power.</p>
+      <div class="grid four">
+        <div class="field"><label for="exPrimaryV">Primary voltage (V)</label><input id="exPrimaryV" type="number" min="0.001" step="any" value="120"></div>
+        <div class="field"><label for="exSecondaryV">Secondary voltage (V)</label><input id="exSecondaryV" type="number" min="0.001" step="any" value="12"></div>
+        <div class="field"><label for="exVA">Apparent power (VA)</label><input id="exVA" type="number" min="0" step="any" value="60"></div>
+        <div class="field"><label for="exEfficiency">Efficiency (%)</label><input id="exEfficiency" type="number" min="0.1" max="100" step="0.1" value="90"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Ideal primary current</small><strong id="exPrimaryI">0.5 A</strong></div>
+        <div class="result"><small>Ideal secondary current</small><strong id="exSecondaryI">5 A</strong></div>
+        <div class="result"><small>Estimated real input watts at efficiency</small><strong id="exInputW">66.67 W</strong></div>
+      </div>
+      <div id="exExplain" class="formula">120 V × 0.5 A ≈ 60 VA and 12 V × 5 A ≈ 60 VA. Lower voltage means proportionally higher current for the same VA.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Transformer Nameplate Guide</h2>
+      <p class="lead">Enter common nameplate values and see what they mean.</p>
+      <div class="grid four">
+        <div class="field"><label for="npPrimary">Primary voltage (V)</label><input id="npPrimary" type="number" min="0.001" step="any" value="120"></div>
+        <div class="field"><label for="npSecondary">Secondary voltage (V)</label><input id="npSecondary" type="number" min="0.001" step="any" value="24"></div>
+        <div class="field"><label for="npVA">VA rating</label><input id="npVA" type="number" min="0" step="any" value="100"></div>
+        <div class="field"><label for="npHz">Frequency (Hz)</label><input id="npHz" type="number" min="0.001" step="any" value="60"></div>
+      </div>
+      <div class="nameplate">
+        <div class="nameplate-title">EXAMPLE TRANSFORMER NAMEPLATE</div>
+        <div class="nameplate-grid">
+          <div>PRIMARY: <strong id="npPrimaryText">120 V</strong></div>
+          <div>SECONDARY: <strong id="npSecondaryText">24 V</strong></div>
+          <div>RATING: <strong id="npVAText">100 VA</strong></div>
+          <div>FREQUENCY: <strong id="npHzText">60 Hz</strong></div>
+          <div>PRIMARY CURRENT: <strong id="npPrimaryI">0.833 A</strong></div>
+          <div>SECONDARY CURRENT: <strong id="npSecondaryI">4.167 A</strong></div>
+        </div>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-card"><strong>Primary voltage</strong><p>The supply voltage the primary winding is designed to receive. Some units have multiple taps.</p></div>
+        <div class="guide-card"><strong>Secondary voltage</strong><p>The rated output voltage, usually specified at a particular load and frequency.</p></div>
+        <div class="guide-card"><strong>VA rating</strong><p>Volt-amperes describe the transformer's apparent-power capability. Do not treat VA as identical to watts for every AC load.</p></div>
+        <div class="guide-card"><strong>Frequency</strong><p>Use at the frequency the transformer is designed for. A 60 Hz transformer should not automatically be assumed suitable at 50 Hz.</p></div>
+        <div class="guide-card"><strong>Current ratings</strong><p>Rated current follows approximately from VA ÷ voltage, but the actual nameplate and winding configuration control.</p></div>
+        <div class="guide-card"><strong>Taps / wiring diagram</strong><p>Multiple leads may represent taps, dual primaries, dual secondaries, series/parallel connections, or a center tap.</p></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Core & Frequency Guide</h2>
+      <p class="lead">Transformer core material and operating frequency are closely related.</p>
+      <div class="comparison-grid">
+        <div class="comparison-card"><h3>50/60 Hz Power Transformers</h3><ul><li>Often use laminated electrical-steel cores.</li><li>Need many turns and a relatively large core.</li><li>Designed around mains-frequency magnetic flux.</li><li>Common in linear power supplies and utility-frequency equipment.</li></ul></div>
+        <div class="comparison-card"><h3>High-Frequency Transformers</h3><ul><li>Often use ferrite cores.</li><li>Can be much smaller for the same power level.</li><li>Used in switching power supplies, converters, and chargers.</li><li>Design must account for switching waveform, core loss, skin effect, and insulation.</li></ul></div>
+      </div>
+      <div class="grid four" style="margin-top:14px">
+        <div class="field"><label for="freqCompareV">Winding voltage (V RMS)</label><input id="freqCompareV" type="number" min="0.001" step="any" value="12"></div>
+        <div class="field"><label for="freqCompareN">Turns</label><input id="freqCompareN" type="number" min="1" step="1" value="100"></div>
+        <div class="field"><label for="freqCompareArea">Core area (cm²)</label><input id="freqCompareArea" type="number" min="0.0001" step="any" value="1"></div>
+        <div class="field"><label for="freqCompareHigh">Higher frequency (Hz)</label><input id="freqCompareHigh" type="number" min="0.001" step="any" value="20000"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Flux density at 60 Hz</small><strong id="freqB60">—</strong></div>
+        <div class="result"><small>Flux density at higher frequency</small><strong id="freqBHigh">—</strong></div>
+        <div class="result"><small>Frequency ratio</small><strong id="freqRatio">—</strong></div>
+      </div>
+      <div class="warning">This comparison uses the sinusoidal transformer equation only. Switching transformers may use square or other waveforms, so their actual design equations and flux limits can differ.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Isolation Transformer vs. Autotransformer</h2>
+      <p class="lead">They can both change voltage, but electrically they are very different.</p>
+      <div class="comparison-grid">
+        <div class="comparison-card"><h3>Isolation Transformer</h3><ul><li>Separate primary and secondary windings.</li><li>Provides galvanic isolation between circuits when designed and used for that purpose.</li><li>Can be 1:1, step-up, or step-down.</li><li>Often used where separation between source and load is important.</li></ul></div>
+        <div class="comparison-card"><h3>Autotransformer</h3><ul><li>Primary and secondary share part of one winding.</li><li>Normally does <strong>not</strong> provide galvanic isolation.</li><li>Can be smaller and use less copper for some voltage-conversion ratios.</li><li>Common in voltage adjustment, buck/boost, and other specialized applications.</li></ul></div>
+      </div>
+      <div class="warning">Never assume a transformer provides isolation just because it changes voltage. Check the actual winding arrangement, wiring diagram, and manufacturer documentation.</div>
+    </section>
+
+    <section class="panel">
       <h2>Transformer Types & Uses</h2>
       <p class="lead">Common transformer arrangements and what they are used for.</p>
 
@@ -348,10 +566,171 @@
       const el=document.getElementById(id);el.addEventListener("input",updateFlux);el.addEventListener("change",updateFlux);
     });
 
+    let simTimer=null;
+    let simPhase=0;
+    let simSpeed=1;
+
+    function updateTransformerSim(){
+      const sine=Math.sin(simPhase);
+      const magnitude=Math.abs(sine);
+      const direction=sine>=0?1:-1;
+      const pct=Math.round(sine*100);
+      const induced=Math.round(Math.cos(simPhase)*100);
+
+      const field=document.getElementById("simField");
+      field.style.opacity=String(0.2+0.75*magnitude);
+      field.style.transform="translate(-50%,-50%) scale("+(0.72+0.25*magnitude)+")";
+      field.style.borderColor=direction>0?"rgba(21,148,255,.65)":"rgba(255,180,0,.65)";
+
+      document.querySelectorAll("#simPrimary .sim-turn").forEach(el=>{
+        el.style.filter="brightness("+(1+0.8*magnitude)+")";
+      });
+      document.querySelectorAll("#simSecondary .sim-turn").forEach(el=>{
+        el.style.filter="brightness("+(1+0.65*Math.abs(Math.cos(simPhase)))+")";
+      });
+
+      const arrow=direction>0?"→":"←";
+      document.getElementById("simArrowL").textContent=arrow;
+      document.getElementById("simArrowR").textContent=arrow;
+      document.getElementById("simArrowL").style.color=direction>0?"#0b63ce":"#b56d00";
+      document.getElementById("simArrowR").style.color=direction>0?"#0b63ce":"#b56d00";
+
+      document.getElementById("simPrimaryValue").textContent=pct+"%";
+      document.getElementById("simSecondaryValue").textContent=induced+"%";
+
+      let label,explain;
+      const deg=((simPhase*180/Math.PI)%360+360)%360;
+      if(deg<45||deg>=315){
+        label="Primary current crossing zero";
+        explain="Current is changing fastest here, so the magnetic flux is changing rapidly and the induced secondary voltage is near a peak.";
+      }else if(deg<135){
+        label="Positive half-cycle";
+        explain="Primary current and magnetic field are building in one direction. The changing flux induces voltage in the secondary.";
+      }else if(deg<225){
+        label="Current reversing";
+        explain="The AC source reverses direction. The magnetic field collapses and then begins building the opposite way.";
+      }else{
+        label="Negative half-cycle";
+        explain="Primary current flows in the opposite direction, so the magnetic field reverses and the secondary induced voltage changes polarity.";
+      }
+      document.getElementById("simPhaseLabel").textContent=label;
+      document.getElementById("simExplain").textContent=explain;
+    }
+
+    function startTransformerSim(){
+      if(simTimer)clearInterval(simTimer);
+      simTimer=setInterval(()=>{
+        simPhase+=0.12*simSpeed;
+        updateTransformerSim();
+      },60);
+    }
+
+    document.getElementById("simStart").addEventListener("click",()=>{simSpeed=1;startTransformerSim();});
+    document.getElementById("simSlow").addEventListener("click",()=>{simSpeed=0.35;startTransformerSim();});
+    document.getElementById("simStop").addEventListener("click",()=>{if(simTimer)clearInterval(simTimer);simTimer=null;});
+    document.getElementById("simReset").addEventListener("click",()=>{
+      if(simTimer)clearInterval(simTimer);
+      simTimer=null;simPhase=0;simSpeed=1;updateTransformerSim();
+      document.getElementById("simPhaseLabel").textContent="Cycle reset";
+      document.getElementById("simExplain").textContent="Press Start to animate AC current, magnetic flux, and induced secondary voltage.";
+    });
+
+    function updateCenterTap(){
+      const vp=Math.max(.001,Number(document.getElementById("ctPrimaryV").value)||.001);
+      const np=Math.max(1,Number(document.getElementById("ctPrimaryTurns").value)||1);
+      const ns=Math.max(2,Number(document.getElementById("ctSecondaryTurns").value)||2);
+      const va=Math.max(0,Number(document.getElementById("ctVA").value)||0);
+      const full=vp*(ns/np);
+      const half=full/2;
+      const current=full>0?va/full:0;
+      document.getElementById("ctFullV").textContent=formatV(full);
+      document.getElementById("ctHalfV").textContent=formatV(half);
+      document.getElementById("ctCurrent").textContent=formatA(current);
+      document.getElementById("ctFormula").textContent=
+        "End-to-end secondary = "+formatV(full)+". A symmetrical center tap gives "+formatV(half)+" from either end to the center tap.";
+    }
+    ["ctPrimaryV","ctPrimaryTurns","ctSecondaryTurns","ctVA"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateCenterTap);el.addEventListener("change",updateCenterTap);
+    });
+
+    function updateRegulation(){
+      const noLoad=Math.max(.001,Number(document.getElementById("regNoLoad").value)||.001);
+      const full=Math.max(.001,Number(document.getElementById("regFullLoad").value)||.001);
+      const loadPct=Math.min(100,Math.max(0,Number(document.getElementById("regLoadPct").value)||0));
+      const drop=noLoad-full;
+      const regulation=drop/full*100;
+      const estimated=noLoad-drop*(loadPct/100);
+      document.getElementById("regPct").textContent=fmt(regulation,2)+"%";
+      document.getElementById("regEstimated").textContent=formatV(estimated);
+      document.getElementById("regDrop").textContent=formatV(drop);
+      document.getElementById("regFormula").textContent=
+        "Regulation ≈ ("+formatV(noLoad)+" − "+formatV(full)+") ÷ "+formatV(full)+" × 100% = "+fmt(regulation,2)+"%.";
+    }
+    ["regNoLoad","regFullLoad","regLoadPct"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateRegulation);el.addEventListener("change",updateRegulation);
+    });
+
+    function updateExample(){
+      const vp=Math.max(.001,Number(document.getElementById("exPrimaryV").value)||.001);
+      const vs=Math.max(.001,Number(document.getElementById("exSecondaryV").value)||.001);
+      const va=Math.max(0,Number(document.getElementById("exVA").value)||0);
+      const eff=Math.min(100,Math.max(.1,Number(document.getElementById("exEfficiency").value)||.1));
+      const ip=va/vp;
+      const isec=va/vs;
+      const inputW=va/(eff/100);
+      document.getElementById("exPrimaryI").textContent=formatA(ip);
+      document.getElementById("exSecondaryI").textContent=formatA(isec);
+      document.getElementById("exInputW").textContent=fmt(inputW,3)+" W";
+      document.getElementById("exExplain").textContent=
+        formatV(vp)+" × "+formatA(ip)+" ≈ "+fmt(va,3)+" VA and "+
+        formatV(vs)+" × "+formatA(isec)+" ≈ "+fmt(va,3)+
+        " VA. Lower voltage means proportionally higher current for the same VA.";
+    }
+    ["exPrimaryV","exSecondaryV","exVA","exEfficiency"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateExample);el.addEventListener("change",updateExample);
+    });
+
+    function updateNameplate(){
+      const vp=Math.max(.001,Number(document.getElementById("npPrimary").value)||.001);
+      const vs=Math.max(.001,Number(document.getElementById("npSecondary").value)||.001);
+      const va=Math.max(0,Number(document.getElementById("npVA").value)||0);
+      const hz=Math.max(.001,Number(document.getElementById("npHz").value)||.001);
+      document.getElementById("npPrimaryText").textContent=formatV(vp);
+      document.getElementById("npSecondaryText").textContent=formatV(vs);
+      document.getElementById("npVAText").textContent=fmt(va,3)+" VA";
+      document.getElementById("npHzText").textContent=fmt(hz,2)+" Hz";
+      document.getElementById("npPrimaryI").textContent=formatA(va/vp);
+      document.getElementById("npSecondaryI").textContent=formatA(va/vs);
+    }
+    ["npPrimary","npSecondary","npVA","npHz"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateNameplate);el.addEventListener("change",updateNameplate);
+    });
+
+    function updateFrequencyGuide(){
+      const v=Math.max(.001,Number(document.getElementById("freqCompareV").value)||.001);
+      const n=Math.max(1,Number(document.getElementById("freqCompareN").value)||1);
+      const area=Math.max(.0001,Number(document.getElementById("freqCompareArea").value)||.0001)*1e-4;
+      const high=Math.max(.001,Number(document.getElementById("freqCompareHigh").value)||.001);
+      const b60=v/(4.44*60*n*area);
+      const bHigh=v/(4.44*high*n*area);
+      document.getElementById("freqB60").textContent=fmt(b60,4)+" T";
+      document.getElementById("freqBHigh").textContent=fmt(bHigh,4)+" T";
+      document.getElementById("freqRatio").textContent=fmt(high/60,2)+"×";
+    }
+    ["freqCompareV","freqCompareN","freqCompareArea","freqCompareHigh"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateFrequencyGuide);el.addEventListener("change",updateFrequencyGuide);
+    });
+
     updateRatio();
     updateImpedance();
     updateEfficiency();
     updateFlux();
+    updateTransformerSim();
+    updateCenterTap();
+    updateRegulation();
+    updateExample();
+    updateNameplate();
+    updateFrequencyGuide();
   </script>
 </body>
 </html>
