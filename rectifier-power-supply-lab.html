@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="en"><head><title>Rectifier & Power Supply Lab</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.94}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1100px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.start{background:#fffbed;border:1px solid #e5c94a;border-radius:16px;padding:16px;margin-bottom:16px}.start h2{margin-bottom:10px}.start ol{margin:0;padding-left:22px;line-height:1.6}.start li{margin-bottom:5px}
+.grid{display:grid;gap:10px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px}input,select{width:100%;min-height:44px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}.btn{min-height:44px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.btn.good{background:#eaf7ef;border-color:#9ed0b3}.btn.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}.result strong{display:block;color:var(--navy);font-size:22px}.feedback{margin-top:12px;background:#eef7ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.feedback.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}.feedback.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three,.four{grid-template-columns:1fr}}
+</style>
+<style>.scope{background:#071a2e;border:8px solid #26384c;border-radius:14px;overflow:hidden}.scope svg{display:block;width:100%;height:auto}.g{stroke:#24425d;stroke-width:1}.axis{stroke:#6f94b4;stroke-width:1.5}.acw{stroke:#52c7ff;stroke-width:2.5;fill:none}.dcw{stroke:#ffd43b;stroke-width:3;fill:none}.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:13px}.dot{display:inline-block;width:14px;height:4px;margin-right:5px;vertical-align:middle}.cyan{background:#52c7ff}.yellow{background:#ffd43b}</style>
+</head><body><header><h1>Rectifier & Power Supply Lab</h1><p>Turn AC into DC and see what the filter capacitor and load do to ripple.</p></header><main>
+<nav class="nav"><a href="index.html">← Home</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="diodes.html">Diodes</a><a href="oscilloscope-lab.html">Oscilloscope Lab</a></nav>
+<section class="start"><h2>Beginner Start Here</h2><ol><li>A rectifier lets current flow so the output has one polarity.</li><li><strong>Half-wave</strong> uses one half of the AC cycle.</li><li><strong>Full-wave bridge</strong> uses both halves, so ripple happens twice per AC cycle.</li><li>A filter capacitor charges near the waveform peak and supplies the load between peaks.</li><li>More capacitance or less load current generally means less ripple.</li></ol></section>
+<section class="panel"><h2>Build the Simple Supply</h2><div class="grid four">
+<div class="field"><label for="acRms">AC Input (V RMS)</label><input id="acRms" type="number" min="1" max="48" step=".1" value="12"></div>
+<div class="field"><label for="freq">Line Frequency (Hz)</label><input id="freq" type="number" min="40" max="400" value="60"></div>
+<div class="field"><label for="rectType">Rectifier</label><select id="rectType"><option value="bridge">Full-Wave Bridge</option><option value="half">Half-Wave</option></select></div>
+<div class="field"><label for="cap">Filter Capacitor (µF)</label><input id="cap" type="number" min="0" max="50000" value="1000"></div>
+<div class="field"><label for="load">Load Resistance (Ω)</label><input id="load" type="number" min="1" max="10000" value="100"></div>
+<div class="field"><label for="diodeDrop">Diode Drop Each (V)</label><input id="diodeDrop" type="number" min="0" max="2" step=".05" value=".7"></div>
+</div></section>
+<section class="panel"><h2>Waveforms</h2><div class="scope"><svg id="plot" viewBox="0 0 800 360"></svg></div><div class="legend"><span><i class="dot cyan"></i>AC input</span><span><i class="dot yellow"></i>Rectified / filtered output</span></div></section>
+<section class="panel"><h2>Estimated Output</h2><div class="grid four">
+<div class="result"><small>AC Peak</small><strong id="peak"></strong></div><div class="result"><small>Average DC</small><strong id="dc"></strong></div><div class="result"><small>Load Current</small><strong id="current"></strong></div><div class="result"><small>Ripple p-p</small><strong id="ripple"></strong></div>
+</div><div class="grid three" style="margin-top:10px"><div class="result"><small>Ripple Frequency</small><strong id="rippleFreq"></strong></div><div class="result"><small>Load Power</small><strong id="power"></strong></div><div class="result"><small>Diodes conducting per path</small><strong id="diodes"></strong></div></div><div id="explain" class="feedback"></div></section>
+<section class="panel"><h2>Try It</h2><div class="grid three"><button class="btn preset" data-p="nocap">Remove the capacitor</button><button class="btn preset" data-p="bigcap">Use a larger capacitor</button><button class="btn preset" data-p="heavy">Increase the load</button></div></section>
+<section class="panel"><h2>Safety & Model Limits</h2><p class="lead">This is a low-voltage educational approximation. It does not size diodes, transformers, capacitors, fuses, thermal limits, surge current, isolation, or mains safety. Real power supplies require component ratings and manufacturer/code requirements.</p></section>
+</main><footer>A DONCO-BAYCITY™ App</footer><script>
+function f(x,d=2){return Number(x.toFixed(d)).toString()}
+function solve(){
+ const vr=Math.max(.1,+acRms.value||.1),hz=Math.max(1,+freq.value||1),R=Math.max(1,+load.value||1),C=Math.max(0,+cap.value||0)*1e-6,drop=Math.max(0,+diodeDrop.value||0);
+ const bridge=rectType.value==="bridge",nD=bridge?2:1,fr=bridge?hz*2:hz,vp=Math.max(0,vr*Math.SQRT2-nD*drop);
+ let vdc=C>0?vp:(bridge?vp*2/Math.PI:vp/Math.PI),I=vdc/R,rip=0;
+ if(C>0){for(let k=0;k<8;k++){I=vdc/R;rip=I/(fr*C);vdc=Math.max(0,vp-rip/2)}I=vdc/R}
+ peak.textContent=f(vr*Math.SQRT2,2)+" V";dc.textContent=f(vdc,2)+" V";current.textContent=f(I*1000,1)+" mA";ripple.textContent=C>0?f(rip,2)+" V":"Unfiltered";rippleFreq.textContent=f(fr,0)+" Hz";power.textContent=f(vdc*I,2)+" W";diodes.textContent=nD;
+ explain.textContent=C===0?"With no filter capacitor, the output follows the rectified pulses instead of holding near the peak.":"Approximation: ripple ≈ load current ÷ (ripple frequency × capacitance). Increasing capacitance lowers ripple; heavier load current raises it.";
+ draw(vr,hz,bridge,C,vp,vdc,rip,drop);
+}
+function draw(vr,hz,bridge,C,vp,vdc,rip,drop){
+ let g="";for(let x=0;x<=800;x+=80)g+='<path class="g" d="M'+x+' 0V360"/>';for(let y=0;y<=360;y+=45)g+='<path class="g" d="M0 '+y+'H800"/>';g+='<path class="axis" d="M0 180H800"/>';
+ let a="",d="";const scale=130/(vr*Math.SQRT2||1),cycles=3;
+ for(let x=0;x<=800;x+=2){const th=x/800*cycles*2*Math.PI,ac=vr*Math.SQRT2*Math.sin(th),raw=bridge?Math.abs(ac)-2*drop:Math.max(0,ac-drop);let out=Math.max(0,raw);
+  if(C>0){const ph=((x/800*cycles*(bridge?2:1))%1);out=Math.max(0,vdc+rip/2-rip*ph)}
+  const ya=180-ac*scale,yd=300-out*scale;a+=(x?"L":"M")+x+" "+ya+" ";d+=(x?"L":"M")+x+" "+yd+" ";
+ }
+ plot.innerHTML=g+'<path class="acw" d="'+a+'"/><path class="dcw" d="'+d+'"/>';
+}
+[acRms,freq,rectType,cap,load,diodeDrop].forEach(e=>e.addEventListener("input",solve));
+document.querySelectorAll(".preset").forEach(b=>b.onclick=()=>{if(b.dataset.p==="nocap")cap.value=0;if(b.dataset.p==="bigcap")cap.value=4700;if(b.dataset.p==="heavy")load.value=25;solve()});solve();
+</script></body></html>
