@@ -718,3 +718,31 @@ A DONCO-BAYCITY™ App
 - Related lesson pages cross-linked
 - Electricity 101 extended to 9 steps
 - Motors & Industrial Controls extended to 10 steps
+
+
+## Battery, Solar PV, Wire Drop & Generator Labs
+- Battery & Charging Lab
+  - Series voltage and parallel Ah capacity
+  - Watt-hours and estimated runtime
+  - Simplified internal resistance and loaded-voltage sag
+  - State-of-charge and chemistry-specific charging-stage concepts
+  - Explicit manufacturer/BMS/charging safety limitations
+- Solar PV Lab
+  - Series/parallel PV array construction
+  - Vmp, Imp, irradiance, simplified shading, peak-sun hours
+  - MPPT/PWM teaching comparison
+  - Available PV power, controller output, estimated battery current and daily energy
+  - Explicit string/protection/cold-Voc/model limitations
+- Wire & Voltage-Drop Lab
+  - Approximate AWG resistance for copper and aluminum
+  - One-way length, current, voltage drop, percentage drop, load voltage, and I²R loss
+  - Two-conductor loop and balanced three-phase approximation
+  - Explicitly not a conductor-sizing or code-compliance tool
+- Generator & Alternator Lab
+  - RPM, pole count, frequency, excitation, load and power factor
+  - Simplified no-load/loaded voltage regulation concept
+  - Approximate current and mechanical torque
+  - Explicit governor/AVR/synchronization/protection limitations
+- Added new Power & Energy guided course as course #5 with 11 steps
+- Existing four course indexes preserved
+- Home categories/search and related lessons cross-linked
