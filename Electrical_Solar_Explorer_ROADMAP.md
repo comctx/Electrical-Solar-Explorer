@@ -563,4 +563,6 @@ A DONCO-BAYCITY™ App
 - Fuse trip and reset behavior
 - Drag-to-reorder series components
 - Preset demonstration circuit
-- Future expansion: parallel branches, voltmeter probes, capacitor transients, relay control circuits, and more advanced simulation
+- Parallel branches with independent branch switches and live branch currents
+- Virtual voltmeter with movable red/black probes and node-voltage readings
+- Future expansion: capacitor transients, relay control circuits, and more advanced simulation
