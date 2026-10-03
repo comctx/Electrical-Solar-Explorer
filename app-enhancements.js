@@ -256,8 +256,29 @@ if(savedTheme==="dark"||savedTheme==="light") document.documentElement.dataset.a
 else if(window.matchMedia?.("(prefers-color-scheme: dark)").matches) document.documentElement.dataset.ateTheme="dark";
 else document.documentElement.dataset.ateTheme="light";
 
+function applySharedPolish(){
+  if(isHome()) return;
+  document.body.classList.add("ate-polished-page");
+  document.querySelector("header")?.classList.add("ate-polished-header");
+  const main=document.querySelector("main");
+  if(!main) return;
+  const nav=main.querySelector(":scope > .nav, :scope > nav.nav")||document.querySelector("body > .nav, body > nav.nav");
+  nav?.classList.add("ate-polished-nav");
+  const headings=[...main.querySelectorAll("h2,h3")].map(h=>(h.textContent||"").trim());
+  const hasStart=headings.some(t=>/beginner start here|how to use|start here/i.test(t))||!!main.querySelector(".start,.ate-start-here");
+  const skip=new Set(["progress.html","mastery-achievements.html","quizzes.html","glossary.html","beginner-courses.html","electrical-calculator.html","resistor-bands.html","solar-calculator.html","about-help-safety.html"]);
+  if(!hasStart&&!skip.has(pageFile())&&nav){
+    const sec=document.createElement("section");
+    sec.className="ate-start-here";
+    sec.innerHTML='<h2>Beginner Start Here</h2><ol><li>Read the overview before changing values or controls.</li><li>Use <strong>Find on Page</strong> when you meet an unfamiliar term.</li><li>Work through the examples from top to bottom.</li><li>Open the related simulator or trainer when one is available.</li><li>Return to the lesson after experimenting and compare what changed.</li></ol>';
+    nav.insertAdjacentElement("afterend",sec);
+  }
+  document.querySelectorAll("footer").forEach(f=>f.classList.add("ate-polished-footer"));
+}
+
 document.addEventListener("DOMContentLoaded",()=>{
   normalizeHomeLinks();
+  applySharedPolish();
   recordRecent();
   makeToolbar();
   renderHomeTools();
