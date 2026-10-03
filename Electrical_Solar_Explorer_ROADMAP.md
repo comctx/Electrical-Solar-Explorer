@@ -665,3 +665,29 @@ A DONCO-BAYCITY™ App
 - Home categories and search updated for all three labs
 - Related lesson pages cross-linked
 - Electricity 101 extended with AC Fundamentals Lab and Transformer Lab
+
+
+## Rectifier, Semiconductor Switching & PLC Ladder Labs
+- Rectifier & Power Supply Lab
+  - Half-wave and full-wave bridge rectification
+  - Diode drop
+  - Filter capacitance
+  - Load resistance/current
+  - Estimated DC output and ripple
+  - Ripple frequency and waveform visualization
+- Semiconductor Switching Lab
+  - NPN BJT and N-channel MOSFET low-side switching
+  - Simplified control behavior
+  - Load current, device voltage drop, and device power
+  - Resistive and inductive loads
+  - Flyback-diode teaching example and inductive-load warning
+- PLC Ladder Logic Trainer
+  - Start/Stop seal-in rung
+  - Series AND logic
+  - Parallel OR logic
+  - Simple TON on-delay timer exercise
+  - Manual PLC scan and live output/internal-bit states
+- Home categories and search updated
+- Related lesson pages cross-linked
+- Electronics 101 extended from 7 to 9 steps
+- Motors & Industrial Controls extended from 7 to 8 steps
