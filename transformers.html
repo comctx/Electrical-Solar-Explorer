@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Transformers Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+      --good:#1f7a4d;--danger:#b42318;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;padding:24px 18px 20px;text-align:center;
+    }
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1000px;margin:0 auto;padding:18px}
+    .page-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .page-nav a{
+      text-decoration:none;min-height:46px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:11px;padding:10px 14px;font-weight:800;border:1px solid #9fc8ef;
+      background:#eef7ff;color:var(--navy);
+    }
+    .page-nav a.active{background:var(--yellow);border-color:#e4ba16}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px;
+    }
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    .lead,.note{color:var(--muted);line-height:1.5}
+    .lead{margin:0 0 16px}.note{font-size:13px;margin:10px 0 0}
+    .grid{display:grid;gap:12px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white;color:var(--text);font:inherit}
+    input:focus,select:focus{outline:3px solid rgba(11,99,206,.22);outline-offset:2px}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px;min-width:0}
+    .result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .result strong{color:var(--navy);font-size:clamp(20px,4vw,28px);word-break:break-word}
+    .formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+    .warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:10px;padding:10px 12px;color:#6a4300;font-weight:700;line-height:1.45}
+    .type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .type-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:13px}
+    .type-card strong{color:var(--navy);display:block;margin-bottom:5px}
+    .type-card small{display:block;color:var(--muted);line-height:1.45}
+    .badge{display:inline-block;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#e9f3ff;color:var(--navy);border:1px solid #b9d7f5}
+    .transformer-visual{margin-top:14px;border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:16px;display:grid;grid-template-columns:1fr 90px 1fr;align-items:center;gap:12px}
+    .winding{display:flex;justify-content:center;gap:3px;align-items:center;min-height:120px}
+    .loop{width:24px;height:82px;border:5px solid var(--electric);border-left-color:transparent;border-right-color:transparent;border-radius:50%}
+    .core{height:130px;border:14px solid #4e5b66;border-radius:16px;background:#dce5ec}
+    .visual-label{text-align:center;font-size:13px;font-weight:800;color:var(--navy);margin-top:6px}
+    .status{margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy)}
+    .status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
+    @media(max-width:760px){
+      main{padding:12px}.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .result-grid{grid-template-columns:1fr}.type-grid{grid-template-columns:1fr 1fr}
+      .transformer-visual{grid-template-columns:1fr}
+      .core{width:130px;margin:auto}
+    }
+    @media(max-width:420px){.type-grid{grid-template-columns:1fr}}
+    footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Transformers Explorer</h1>
+    <p>Turns ratios, voltage and current conversion, VA, impedance, efficiency, and magnetic flux.</p>
+  </header>
+
+  <main>
+    <nav class="page-nav" aria-label="App pages">
+      <a href="index.html">Electrical & Solar</a>
+      <a href="capacitor.html">Capacitors</a>
+      <a href="inductors.html">Inductors & Coils</a>
+      <a href="transformers.html" class="active">Transformers</a>
+    </nav>
+
+    <section class="panel">
+      <h2>Turns Ratio • Voltage • Current</h2>
+      <p class="lead">Enter primary and secondary turns, primary voltage, and transformer VA. The ideal relationships update automatically.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label for="turnsP">Primary turns Np</label>
+          <input id="turnsP" type="number" min="1" step="1" value="1000" />
+        </div>
+        <div class="field">
+          <label for="turnsS">Secondary turns Ns</label>
+          <input id="turnsS" type="number" min="1" step="1" value="100" />
+        </div>
+        <div class="field">
+          <label for="primaryV">Primary voltage (V RMS)</label>
+          <input id="primaryV" type="number" min="0.001" step="any" value="120" />
+        </div>
+        <div class="field">
+          <label for="ratedVA">Transformer rating / load (VA)</label>
+          <input id="ratedVA" type="number" min="0" step="any" value="60" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result"><small>Turns ratio Np:Ns</small><strong id="turnsRatio">10:1</strong></div>
+        <div class="result"><small>Ideal secondary voltage</small><strong id="secondaryV">12 V</strong></div>
+        <div class="result"><small>Primary current at entered VA</small><strong id="primaryI">0.5 A</strong></div>
+        <div class="result"><small>Secondary current at entered VA</small><strong id="secondaryI">5 A</strong></div>
+        <div class="result"><small>Voltage action</small><strong id="stepType">Step-down</strong></div>
+        <div class="result"><small>Ideal power transfer</small><strong id="idealPower">60 VA</strong></div>
+      </div>
+
+      <div id="ratioFormula" class="formula">Vp ÷ Vs = Np ÷ Ns and Ip ÷ Is = Ns ÷ Np.</div>
+
+      <div class="transformer-visual" aria-label="Transformer diagram">
+        <div>
+          <div class="winding">
+            <div class="loop"></div><div class="loop"></div><div class="loop"></div><div class="loop"></div><div class="loop"></div>
+          </div>
+          <div class="visual-label">Primary</div>
+        </div>
+        <div class="core"></div>
+        <div>
+          <div class="winding">
+            <div class="loop"></div><div class="loop"></div><div class="loop"></div>
+          </div>
+          <div class="visual-label">Secondary</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Impedance Reflection</h2>
+      <p class="lead">See how a load connected to the secondary appears when viewed from the primary.</p>
+
+      <div class="grid three">
+        <div class="field">
+          <label for="impNp">Primary turns Np</label>
+          <input id="impNp" type="number" min="1" step="1" value="1000" />
+        </div>
+        <div class="field">
+          <label for="impNs">Secondary turns Ns</label>
+          <input id="impNs" type="number" min="1" step="1" value="100" />
+        </div>
+        <div class="field">
+          <label for="loadZ">Secondary load impedance (Ω)</label>
+          <input id="loadZ" type="number" min="0" step="any" value="8" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result"><small>Turns ratio a = Np ÷ Ns</small><strong id="impRatio">10</strong></div>
+        <div class="result"><small>Reflected primary impedance</small><strong id="reflectedZ">800 Ω</strong></div>
+      </div>
+
+      <div id="impFormula" class="formula">Zp = (Np ÷ Ns)² × Zs</div>
+    </section>
+
+    <section class="panel">
+      <h2>Efficiency & Transformer Loss</h2>
+      <p class="lead">Estimate input power and transformer loss from output power and efficiency.</p>
+
+      <div class="grid two">
+        <div class="field">
+          <label for="outputW">Output power (W)</label>
+          <input id="outputW" type="number" min="0" step="any" value="100" />
+        </div>
+        <div class="field">
+          <label for="efficiency">Efficiency (%)</label>
+          <input id="efficiency" type="number" min="0.1" max="100" step="0.1" value="90" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result"><small>Estimated input power</small><strong id="inputW">111.11 W</strong></div>
+        <div class="result"><small>Estimated loss</small><strong id="lossW">11.11 W</strong></div>
+        <div class="result"><small>Efficiency</small><strong id="effResult">90%</strong></div>
+      </div>
+
+      <div id="effFormula" class="formula">Efficiency = Pout ÷ Pin × 100%</div>
+      <p class="note">Actual transformer losses include copper loss, core loss, stray loss, and other effects that vary with load, frequency, temperature, and design.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Core Flux Density Estimator</h2>
+      <p class="lead">Estimate peak magnetic flux density for a sinusoidal transformer using voltage, frequency, turns, and core cross-sectional area.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label for="fluxV">Winding voltage (V RMS)</label>
+          <input id="fluxV" type="number" min="0.001" step="any" value="120" />
+        </div>
+        <div class="field">
+          <label for="fluxF">Frequency (Hz)</label>
+          <input id="fluxF" type="number" min="0.001" step="any" value="60" />
+        </div>
+        <div class="field">
+          <label for="fluxN">Turns</label>
+          <input id="fluxN" type="number" min="1" step="1" value="500" />
+        </div>
+        <div class="field">
+          <label for="coreArea">Core area (cm²)</label>
+          <input id="coreArea" type="number" min="0.0001" step="any" value="4" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result"><small>Estimated peak flux density</small><strong id="fluxB">—</strong></div>
+        <div class="result"><small>Volts per turn</small><strong id="voltsPerTurn">—</strong></div>
+      </div>
+
+      <div id="fluxFormula" class="formula">For a sine wave: V ≈ 4.44 f N A Bmax.</div>
+      <div class="warning">Core saturation limits vary greatly by material, temperature, frequency, waveform, and design. Compare any calculated flux density with the actual core manufacturer's data rather than using a universal limit.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Transformer Types & Uses</h2>
+      <p class="lead">Common transformer arrangements and what they are used for.</p>
+
+      <div class="type-grid">
+        <div class="type-card"><strong>Step-Down</strong><small>Secondary voltage is lower than primary voltage. Common in power supplies and low-voltage equipment.</small><span class="badge">Lower voltage</span></div>
+        <div class="type-card"><strong>Step-Up</strong><small>Secondary voltage is higher than primary voltage. Used where a higher AC voltage is required.</small><span class="badge">Higher voltage</span></div>
+        <div class="type-card"><strong>Isolation Transformer</strong><small>Often near a 1:1 ratio and used for galvanic isolation between circuits.</small><span class="badge">Isolation</span></div>
+        <div class="type-card"><strong>Center-Tapped</strong><small>A secondary winding with a midpoint connection, useful for split supplies and full-wave rectifier circuits.</small><span class="badge">Split output</span></div>
+        <div class="type-card"><strong>Autotransformer</strong><small>Uses a shared winding rather than fully separate primary and secondary windings. It does not provide normal galvanic isolation.</small><span class="badge">Shared winding</span></div>
+        <div class="type-card"><strong>Toroidal</strong><small>Ring-shaped core with compact size, good magnetic containment, and often low stray field.</small><span class="badge">Compact</span></div>
+        <div class="type-card"><strong>Current Transformer (CT)</strong><small>Produces a scaled current for metering and protection systems.</small><span class="badge">Measurement</span></div>
+        <div class="type-card"><strong>Audio / Signal Transformer</strong><small>Used for impedance matching, isolation, and signal coupling in specialized circuits.</small><span class="badge">Signals</span></div>
+        <div class="type-card"><strong>Flyback Transformer</strong><small>Stores and transfers energy in switched-mode circuits rather than behaving like a simple 50/60 Hz transformer.</small><span class="badge">Switching supplies</span></div>
+      </div>
+
+      <div class="warning">Transformer circuits can involve hazardous voltages. A current-transformer secondary should not be left open-circuit while its primary conductor is energized; dangerous secondary voltage can result. Follow equipment and manufacturer instructions.</div>
+    </section>
+  </main>
+
+  <footer>A DONCO-BAYCITY™ App</footer>
+
+  <script>
+    function fmt(n,d=3){
+      if(!Number.isFinite(n))return "—";
+      return n.toLocaleString(undefined,{maximumFractionDigits:d});
+    }
+    function formatV(v){
+      const a=Math.abs(v);
+      if(a>=1000)return fmt(v/1000,3)+" kV";
+      if(a>=1)return fmt(v,3)+" V";
+      if(a>=.001)return fmt(v*1000,3)+" mV";
+      return fmt(v*1e6,3)+" µV";
+    }
+    function formatA(a){
+      const x=Math.abs(a);
+      if(x>=1000)return fmt(a/1000,3)+" kA";
+      if(x>=1)return fmt(a,3)+" A";
+      if(x>=.001)return fmt(a*1000,3)+" mA";
+      return fmt(a*1e6,3)+" µA";
+    }
+    function formatOhms(r){
+      const a=Math.abs(r);
+      if(a>=1e6)return fmt(r/1e6,3)+" MΩ";
+      if(a>=1e3)return fmt(r/1e3,3)+" kΩ";
+      if(a<1&&a>0)return fmt(r*1000,3)+" mΩ";
+      return fmt(r,3)+" Ω";
+    }
+
+    function updateRatio(){
+      const np=Math.max(1,Number(document.getElementById("turnsP").value)||1);
+      const ns=Math.max(1,Number(document.getElementById("turnsS").value)||1);
+      const vp=Math.max(.001,Number(document.getElementById("primaryV").value)||.001);
+      const va=Math.max(0,Number(document.getElementById("ratedVA").value)||0);
+
+      const a=np/ns;
+      const vs=vp*(ns/np);
+      const ip=va/vp;
+      const isec=vs>0?va/vs:0;
+      const step=vs<vp?"Step-down":vs>vp?"Step-up":"1:1 isolation ratio";
+
+      document.getElementById("turnsRatio").textContent=fmt(a,4)+":1";
+      document.getElementById("secondaryV").textContent=formatV(vs);
+      document.getElementById("primaryI").textContent=formatA(ip);
+      document.getElementById("secondaryI").textContent=formatA(isec);
+      document.getElementById("stepType").textContent=step;
+      document.getElementById("idealPower").textContent=fmt(va,3)+" VA";
+      document.getElementById("ratioFormula").textContent=
+        "Vp ÷ Vs = Np ÷ Ns. With "+fmt(np,0)+" primary turns and "+fmt(ns,0)+
+        " secondary turns, "+formatV(vp)+" ideally becomes "+formatV(vs)+".";
+    }
+    ["turnsP","turnsS","primaryV","ratedVA"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateRatio);el.addEventListener("change",updateRatio);
+    });
+
+    function updateImpedance(){
+      const np=Math.max(1,Number(document.getElementById("impNp").value)||1);
+      const ns=Math.max(1,Number(document.getElementById("impNs").value)||1);
+      const zs=Math.max(0,Number(document.getElementById("loadZ").value)||0);
+      const a=np/ns;
+      const zp=a*a*zs;
+      document.getElementById("impRatio").textContent=fmt(a,4);
+      document.getElementById("reflectedZ").textContent=formatOhms(zp);
+      document.getElementById("impFormula").textContent=
+        "Zp = (Np ÷ Ns)² × Zs = ("+fmt(a,4)+")² × "+formatOhms(zs)+" = "+formatOhms(zp);
+    }
+    ["impNp","impNs","loadZ"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateImpedance);el.addEventListener("change",updateImpedance);
+    });
+
+    function updateEfficiency(){
+      const out=Math.max(0,Number(document.getElementById("outputW").value)||0);
+      const eff=Math.min(100,Math.max(.1,Number(document.getElementById("efficiency").value)||.1));
+      const input=out/(eff/100);
+      const loss=input-out;
+      document.getElementById("inputW").textContent=fmt(input,3)+" W";
+      document.getElementById("lossW").textContent=fmt(loss,3)+" W";
+      document.getElementById("effResult").textContent=fmt(eff,2)+"%";
+      document.getElementById("effFormula").textContent=
+        "Efficiency = Pout ÷ Pin × 100%. At "+fmt(eff,2)+"%, "+fmt(out,3)+
+        " W output requires about "+fmt(input,3)+" W input.";
+    }
+    ["outputW","efficiency"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateEfficiency);el.addEventListener("change",updateEfficiency);
+    });
+
+    function updateFlux(){
+      const v=Math.max(.001,Number(document.getElementById("fluxV").value)||.001);
+      const f=Math.max(.001,Number(document.getElementById("fluxF").value)||.001);
+      const n=Math.max(1,Number(document.getElementById("fluxN").value)||1);
+      const areaCm2=Math.max(.0001,Number(document.getElementById("coreArea").value)||.0001);
+      const areaM2=areaCm2*1e-4;
+      const b=v/(4.44*f*n*areaM2);
+      document.getElementById("fluxB").textContent=fmt(b,4)+" T";
+      document.getElementById("voltsPerTurn").textContent=fmt(v/n,5)+" V/turn";
+      document.getElementById("fluxFormula").textContent=
+        "Bmax = V ÷ (4.44 f N A) = "+fmt(b,4)+" T for the entered sine-wave conditions.";
+    }
+    ["fluxV","fluxF","fluxN","coreArea"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateFlux);el.addEventListener("change",updateFlux);
+    });
+
+    updateRatio();
+    updateImpedance();
+    updateEfficiency();
+    updateFlux();
+  </script>
+</body>
+</html>
