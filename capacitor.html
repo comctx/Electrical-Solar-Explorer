@@ -788,6 +788,166 @@
       <p class="note">Ideal LC calculation. Real circuits also include resistance, losses, parasitic capacitance/inductance, and component tolerances.</p>
     </section>
 
+
+    <section class="panel">
+      <h2>Capacitance Tolerance Range</h2>
+      <p class="lead">See the minimum and maximum capacitance allowed by a capacitor's tolerance.</p>
+
+      <div class="grid two">
+        <div class="field">
+          <label>Nominal capacitance</label>
+          <div class="unit-row">
+            <input id="tolCap" type="number" min="0" step="any" value="100" />
+            <select id="tolCapU">
+              <option value="1e-12">pF</option>
+              <option value="1e-9">nF</option>
+              <option value="1e-6" selected>µF</option>
+              <option value="1e-3">mF</option>
+              <option value="1">F</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="tolPercent">Tolerance (±%)</label>
+          <input id="tolPercent" type="number" min="0" max="100" step="0.1" value="10" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Minimum capacitance</small>
+          <strong id="tolMin">90 µF</strong>
+        </div>
+        <div class="result">
+          <small>Nominal capacitance</small>
+          <strong id="tolNominal">100 µF</strong>
+        </div>
+        <div class="result">
+          <small>Maximum capacitance</small>
+          <strong id="tolMax">110 µF</strong>
+        </div>
+      </div>
+
+      <div id="tolFormula" class="formula">100 µF ±10% gives a range of 90 µF to 110 µF.</div>
+    </section>
+
+    <section class="panel">
+      <h2>ESR & Ripple Current</h2>
+      <p class="lead">Estimate ESR heating, ripple voltage across ESR, and how much of a capacitor's ripple-current rating is being used.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label>ESR</label>
+          <div class="unit-row">
+            <input id="esrValue" type="number" min="0" step="any" value="50" />
+            <select id="esrUnit">
+              <option value="0.001" selected>mΩ</option>
+              <option value="1">Ω</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="rippleCurrent">Ripple current RMS (A)</label>
+          <input id="rippleCurrent" type="number" min="0" step="any" value="1" />
+        </div>
+
+        <div class="field">
+          <label for="rippleRating">Capacitor ripple rating (A)</label>
+          <input id="rippleRating" type="number" min="0.001" step="any" value="2" />
+        </div>
+
+        <div class="field">
+          <label for="rippleFreq">Ripple frequency (Hz)</label>
+          <input id="rippleFreq" type="number" min="0" step="any" value="120" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>ESR heating</small>
+          <strong id="esrHeat">50 mW</strong>
+        </div>
+        <div class="result">
+          <small>Ripple voltage from ESR</small>
+          <strong id="esrRippleV">50 mV</strong>
+        </div>
+        <div class="result">
+          <small>Ripple rating used</small>
+          <strong id="rippleUsage">50%</strong>
+        </div>
+      </div>
+
+      <div id="rippleStatus" class="status good">Ripple current is below the entered capacitor rating.</div>
+      <div id="esrFormula" class="formula">Heating = I² × ESR. Ripple voltage from ESR = I × ESR.</div>
+      <p class="note">This is a simplified ESR estimate. Real ESR and ripple-current limits vary with frequency, temperature, capacitor type, case size, and manufacturer specifications.</p>
+    </section>
+
+    <section class="panel">
+      <h2>RC Low-Pass / High-Pass Filter</h2>
+      <p class="lead">Calculate cutoff frequency and see the ideal response of a first-order RC filter at a selected test frequency.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label for="filterMode">Filter type</label>
+          <select id="filterMode">
+            <option value="low">Low-pass</option>
+            <option value="high">High-pass</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Resistance</label>
+          <div class="unit-row">
+            <input id="filterR" type="number" min="0.000001" step="any" value="10" />
+            <select id="filterRU">
+              <option value="1">Ω</option>
+              <option value="1000" selected>kΩ</option>
+              <option value="1000000">MΩ</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Capacitance</label>
+          <div class="unit-row">
+            <input id="filterC" type="number" min="0.000001" step="any" value="0.1" />
+            <select id="filterCU">
+              <option value="1e-12">pF</option>
+              <option value="1e-9">nF</option>
+              <option value="1e-6" selected>µF</option>
+              <option value="1e-3">mF</option>
+              <option value="1">F</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="filterFreq">Test frequency (Hz)</label>
+          <input id="filterFreq" type="number" min="0.000001" step="any" value="1000" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Cutoff frequency</small>
+          <strong id="filterCutoff">159.15 Hz</strong>
+        </div>
+        <div class="result">
+          <small>Output amplitude</small>
+          <strong id="filterGain">15.7%</strong>
+        </div>
+        <div class="result">
+          <small>Gain</small>
+          <strong id="filterDb">−16.1 dB</strong>
+        </div>
+      </div>
+
+      <div id="filterFormula" class="formula">fc = 1 ÷ (2πRC). At the cutoff frequency, an ideal first-order RC filter is about −3.01 dB.</div>
+      <p class="note">Ideal first-order response only. Real source impedance, load impedance, component tolerance, ESR, and parasitics can change the result.</p>
+    </section>
+
   </main>
 
   <footer>A DONCO-BAYCITY™ App</footer>
@@ -1081,6 +1241,120 @@
       el.addEventListener("change",updateLC);
     });
 
+    function updateToleranceRange(){
+      const c = Math.max(0,Number(document.getElementById("tolCap").value) || 0) *
+        Number(document.getElementById("tolCapU").value);
+      const tol = Math.min(100,Math.max(0,Number(document.getElementById("tolPercent").value) || 0));
+
+      const min = c * (1 - tol / 100);
+      const max = c * (1 + tol / 100);
+
+      document.getElementById("tolMin").textContent = formatCap(min);
+      document.getElementById("tolNominal").textContent = formatCap(c);
+      document.getElementById("tolMax").textContent = formatCap(max);
+      document.getElementById("tolFormula").textContent =
+        formatCap(c) + " ±" + fmt(tol,1) + "% gives a range of " +
+        formatCap(min) + " to " + formatCap(max) + ".";
+    }
+
+    ["tolCap","tolCapU","tolPercent"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateToleranceRange);
+      el.addEventListener("change",updateToleranceRange);
+    });
+
+    function formatPower(w){
+      const a = Math.abs(w);
+      if (a >= 1000) return fmt(w / 1000,3) + " kW";
+      if (a >= 1) return fmt(w,3) + " W";
+      if (a >= 0.001) return fmt(w * 1000,3) + " mW";
+      return fmt(w * 1000000,3) + " µW";
+    }
+
+    function formatVoltage(v){
+      const a = Math.abs(v);
+      if (a >= 1) return fmt(v,3) + " V";
+      if (a >= 0.001) return fmt(v * 1000,3) + " mV";
+      return fmt(v * 1000000,3) + " µV";
+    }
+
+    function updateESR(){
+      const esr = Math.max(0,Number(document.getElementById("esrValue").value) || 0) *
+        Number(document.getElementById("esrUnit").value);
+      const ripple = Math.max(0,Number(document.getElementById("rippleCurrent").value) || 0);
+      const rating = Math.max(0.001,Number(document.getElementById("rippleRating").value) || 0.001);
+      const freq = Math.max(0,Number(document.getElementById("rippleFreq").value) || 0);
+
+      const heat = ripple * ripple * esr;
+      const rippleV = ripple * esr;
+      const usage = ripple / rating * 100;
+
+      document.getElementById("esrHeat").textContent = formatPower(heat);
+      document.getElementById("esrRippleV").textContent = formatVoltage(rippleV);
+      document.getElementById("rippleUsage").textContent = fmt(usage,1) + "%";
+
+      const status = document.getElementById("rippleStatus");
+      status.className = "status";
+
+      if (usage > 100){
+        status.classList.add("high");
+        status.textContent = "Entered ripple current is above the entered capacitor ripple-current rating.";
+      } else if (usage >= 80){
+        status.classList.add("warn");
+        status.textContent = "Ripple current is close to the entered rating; review temperature, frequency, and manufacturer limits.";
+      } else {
+        status.classList.add("good");
+        status.textContent = "Ripple current is below the entered capacitor rating.";
+      }
+
+      document.getElementById("esrFormula").textContent =
+        "At " + fmt(freq,1) + " Hz: heating = I² × ESR = " +
+        formatPower(heat) + "; ESR ripple voltage = I × ESR = " +
+        formatVoltage(rippleV) + ".";
+    }
+
+    ["esrValue","esrUnit","rippleCurrent","rippleRating","rippleFreq"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateESR);
+      el.addEventListener("change",updateESR);
+    });
+
+    function updateFilter(){
+      const mode = document.getElementById("filterMode").value;
+      const r = Math.max(1e-12,Number(document.getElementById("filterR").value) || 1e-12) *
+        Number(document.getElementById("filterRU").value);
+      const c = Math.max(1e-15,Number(document.getElementById("filterC").value) || 1e-15) *
+        Number(document.getElementById("filterCU").value);
+      const f = Math.max(1e-12,Number(document.getElementById("filterFreq").value) || 1e-12);
+
+      const fc = 1 / (2 * Math.PI * r * c);
+      const ratio = f / fc;
+      let gain;
+
+      if (mode === "low"){
+        gain = 1 / Math.sqrt(1 + ratio * ratio);
+      } else {
+        gain = ratio / Math.sqrt(1 + ratio * ratio);
+      }
+
+      const db = 20 * Math.log10(Math.max(gain,1e-15));
+
+      document.getElementById("filterCutoff").textContent = formatFrequency(fc);
+      document.getElementById("filterGain").textContent = fmt(gain * 100,2) + "%";
+      document.getElementById("filterDb").textContent = fmt(db,2) + " dB";
+      document.getElementById("filterFormula").textContent =
+        (mode === "low" ? "Low-pass" : "High-pass") +
+        ": fc = 1 ÷ (2πRC) = " + formatFrequency(fc) +
+        ". At " + formatFrequency(f) + ", ideal gain is " +
+        fmt(gain * 100,2) + "% (" + fmt(db,2) + " dB).";
+    }
+
+    ["filterMode","filterR","filterRU","filterC","filterCU","filterFreq"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateFilter);
+      el.addEventListener("change",updateFilter);
+    });
+
     updateEquivalent();
     updateRC();
     updateCode();
@@ -1088,6 +1362,9 @@
     updateReactance();
     updateVoltageGuide();
     updateLC();
+    updateToleranceRange();
+    updateESR();
+    updateFilter();
     updateSimVisual();
   </script>
 </body>
