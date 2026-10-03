@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>Power Electronics & Modules Explorer</title>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700}.result strong{font-size:clamp(20px,4vw,28px);color:var(--navy)}.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.bridge{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:center}.switchbox{padding:16px;border-radius:12px;border:2px solid #9fc8ef;background:#f8fbff;text-align:center;font-weight:800;color:var(--navy)}.switchbox.on{background:#eaf7ef;border-color:#8fc9a7}.dc{grid-column:1}.load{grid-column:3}.arrow{text-align:center;font-size:24px;color:var(--blue);font-weight:900}.btn{min-height:42px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){main{padding:12px}.two,.three,.results,.bridge{grid-template-columns:1fr}.dc,.load{grid-column:auto}}
+</style>
+</head>
+<body>
+<header><h1>Power Electronics & Power Modules Explorer</h1><p>MOSFET and IGBT modules, bridge topologies, gate drivers, DC-link capacitors, freewheel paths, thermal management, and high-power conversion.</p></header>
+<main>
+<nav class="nav">
+<a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="vacuum-tubes.html">Vacuum Tubes</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a href="motors-controls.html">Motors & Controls</a><a href="generators-alternators.html">Generators & Alternators</a><a href="solar-power-electronics.html">Solar Power Electronics</a><a href="sensors-switches.html">Sensors & Switches</a><a href="fiber-optics.html">Fiber Optics</a><a class="active" href="power-electronics-modules.html">Power Electronics & Modules</a><a href="processors.html">Processors</a>
+</nav>
+
+<section class="panel">
+<h2>Beginner Start Here</h2>
+<div class="grid three">
+<div class="card"><strong>Power MOSFET</strong><p>A voltage-controlled semiconductor switch often used at lower to medium voltages and high switching frequencies.</p><span class="badge">Fast switching</span></div>
+<div class="card"><strong>IGBT</strong><p>A power semiconductor that combines MOS-gate control with a bipolar conduction structure. Common in higher-power motor drives and inverters.</p><span class="badge">High power</span></div>
+<div class="card"><strong>Power Module</strong><p>A package containing multiple power switches, diodes, and sometimes sensing or driver functions in one mechanically integrated assembly.</p><span class="badge">Packaged stage</span></div>
+<div class="card"><strong>Gate Driver</strong><p>Provides the voltage/current needed to turn MOSFETs or IGBTs on and off quickly and safely.</p><span class="badge">Controls switching</span></div>
+<div class="card"><strong>DC-Link Capacitor</strong><p>Stores energy and smooths the high-power DC bus between rectification, batteries, and inverter stages.</p><span class="badge">Energy buffer</span></div>
+<div class="card"><strong>Freewheel Diode</strong><p>Provides a current path for inductive loads when a switching device turns off.</p><span class="badge">Inductive current path</span></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Common Module Topologies</h2>
+<div class="grid three">
+<div class="card"><strong>Single Switch</strong><p>One MOSFET or IGBT die or switch position in a module package.</p></div>
+<div class="card"><strong>Half Bridge</strong><p>High-side and low-side switches form one inverter leg.</p></div>
+<div class="card"><strong>Full Bridge / H-Bridge</strong><p>Four switches allow current through a load in either direction.</p></div>
+<div class="card"><strong>Six-Pack</strong><p>Three half bridges—six main switches—form a complete three-phase inverter stage.</p></div>
+<div class="card"><strong>Intelligent Power Module</strong><p>Power switches plus integrated gate drive, protection, or sensing functions.</p></div>
+<div class="card"><strong>Power Stage / Stack</strong><p>Module, busbars, capacitors, cooling, drivers, sensors, and mechanical structure assembled as one high-power subsystem.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Where Power Modules Are Used</h2>
+<table><thead><tr><th>Application</th><th>What the power stage does</th></tr></thead><tbody>
+<tr><td>VFD / motor drive</td><td>Creates variable-frequency, variable-voltage AC for a motor.</td></tr>
+<tr><td>Solar inverter</td><td>Converts PV or battery DC to controlled AC.</td></tr>
+<tr><td>UPS</td><td>Converts stored DC energy into AC during backup operation and may also handle charging/conversion.</td></tr>
+<tr><td>EV traction inverter</td><td>Converts high-voltage battery DC into controlled multi-phase current for the traction motor.</td></tr>
+<tr><td>Welding power source</td><td>Switches high power at high frequency to control output current and voltage.</td></tr>
+<tr><td>Industrial DC converter</td><td>Steps, regulates, or isolates DC power for machinery and energy systems.</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>Half-Bridge Concept Simulator</h2>
+<p class="lead">A half bridge uses a high-side and low-side switch. They must not be on simultaneously, or the DC bus could be shorted through the switching devices.</p>
+<div class="bridge">
+<div class="switchbox dc">DC Bus</div><div class="arrow">→</div><div class="switchbox load">Load / phase node</div>
+<div id="highSide" class="switchbox">High-side switch</div><div class="arrow">↕</div><div id="lowSide" class="switchbox">Low-side switch</div>
+</div>
+<div class="row"><button id="highBtn" class="btn primary">High Side ON</button><button id="lowBtn" class="btn">Low Side ON</button><button id="allOffBtn" class="btn">Both OFF</button></div>
+<div id="bridgeStatus" class="formula">Both switches off.</div>
+</section>
+
+<section class="panel">
+<h2>Switching Loss Estimate</h2>
+<p class="lead">A simplified educational estimate of switching power loss using voltage, current, switching time, and frequency.</p>
+<div class="grid three">
+<div class="field"><label>Bus voltage (V)</label><input id="busV" type="number" value="400" min="0" step="any"></div>
+<div class="field"><label>Switch current (A)</label><input id="switchI" type="number" value="20" min="0" step="any"></div>
+<div class="field"><label>Total transition time per cycle (ns)</label><input id="tSwitch" type="number" value="200" min="0" step="any"></div>
+<div class="field"><label>Switching frequency (kHz)</label><input id="freqK" type="number" value="10" min="0" step="any"></div>
+</div>
+<div class="results">
+<div class="result"><small>Approx. switching loss</small><strong id="swLoss">—</strong></div>
+<div class="result"><small>Energy per cycle</small><strong id="cycleEnergy">—</strong></div>
+<div class="result"><small>Input switching power product</small><strong id="switchProduct">—</strong></div>
+</div>
+<div class="formula">Simplified estimate: P ≈ 0.5 × V × I × transition time × switching frequency</div>
+<p class="note">Real device loss also depends on waveform shape, gate resistance, temperature, reverse recovery, dead time, parasitics, device data, modulation, and conduction loss.</p>
+</section>
+
+<section class="panel">
+<h2>Conduction Loss Estimate</h2>
+<div class="grid two">
+<div class="field"><label>Current (A)</label><input id="condI" type="number" value="20" min="0" step="any"></div>
+<div class="field"><label>Effective on-state resistance (mΩ)</label><input id="rOn" type="number" value="15" min="0" step="any"></div>
+</div>
+<div class="results"><div class="result"><small>Approx. conduction loss</small><strong id="condLoss">—</strong></div><div class="result"><small>Voltage drop</small><strong id="vDrop">—</strong></div><div class="result"><small>Current squared</small><strong id="iSq">—</strong></div></div>
+<div class="formula">MOSFET-style estimate: P ≈ I² × R. IGBT conduction is often better modeled with its on-state voltage characteristic rather than a simple resistance.</div>
+</section>
+
+<section class="panel">
+<h2>Associated Parts in a Power Stack</h2>
+<table><thead><tr><th>Part</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>Gate-driver board</td><td>Controls switch turn-on and turn-off, often with isolation, desaturation/overcurrent protection, and dead-time management.</td></tr>
+<tr><td>DC-link capacitors</td><td>Supply pulsed current locally and stabilize the DC bus.</td></tr>
+<tr><td>Laminated busbar</td><td>Connects high-current DC and phase paths with low inductance.</td></tr>
+<tr><td>Current sensor / shunt</td><td>Measures phase, bus, or load current for control and protection.</td></tr>
+<tr><td>Temperature sensor</td><td>Monitors module or heatsink temperature.</td></tr>
+<tr><td>Heatsink / cold plate</td><td>Moves semiconductor heat into air or liquid cooling.</td></tr>
+<tr><td>Thermal interface material</td><td>Improves heat transfer between module baseplate and cooling surface.</td></tr>
+<tr><td>Snubber</td><td>Reduces switching spikes or ringing caused by circuit inductance and capacitance.</td></tr>
+<tr><td>Precharge circuit</td><td>Limits inrush current while charging large DC-link capacitors.</td></tr>
+<tr><td>Contactor / disconnect</td><td>Connects or isolates the high-power DC source where the system architecture requires it.</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>Silicon, SiC & GaN</h2>
+<div class="grid three">
+<div class="card"><strong>Silicon IGBT / MOSFET</strong><p>Mature, widely used technologies covering a broad range of power applications.</p></div>
+<div class="card"><strong>SiC MOSFET</strong><p>Silicon-carbide devices can switch high voltages efficiently and at higher frequencies than many traditional silicon alternatives.</p></div>
+<div class="card"><strong>GaN</strong><p>Gallium-nitride power devices are especially useful for very fast switching in suitable voltage and power ranges.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Thermal Management</h2>
+<div class="formula">Electrical losses become heat. Junction temperature depends on power loss and the total thermal resistance from semiconductor junction to case, heatsink/cold plate, and ambient/coolant.</div>
+<div class="warning">Power modules can operate at lethal voltages and enormous fault currents. DC-link capacitors may remain charged after input power is removed. High-power inverter and drive hardware should be serviced only with the proper procedures, test equipment, discharge verification, and manufacturer documentation.</div>
+</section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+<script>
+let bridgeState="off";
+function drawBridge(){
+ highSide.classList.toggle("on",bridgeState==="high");
+ lowSide.classList.toggle("on",bridgeState==="low");
+ bridgeStatus.textContent=bridgeState==="high"?"High-side switch on: phase node is being driven toward the positive DC bus.":bridgeState==="low"?"Low-side switch on: phase node is being driven toward the negative/return bus.":"Both switches off. Dead time between switching commands helps prevent shoot-through.";
+}
+highBtn.onclick=()=>{bridgeState="high";drawBridge()};lowBtn.onclick=()=>{bridgeState="low";drawBridge()};allOffBtn.onclick=()=>{bridgeState="off";drawBridge()};drawBridge();
+
+function switchingCalc(){
+ const v=+busV.value,i=+switchI.value,t=+tSwitch.value*1e-9,f=+freqK.value*1000;
+ const e=.5*v*i*t,p=e*f;
+ swLoss.textContent=p.toFixed(2)+" W";
+ cycleEnergy.textContent=(e*1e3).toFixed(3)+" mJ";
+ switchProduct.textContent=(v*i/1000).toFixed(2)+" kW";
+}
+[busV,switchI,tSwitch,freqK].forEach(x=>x.addEventListener("input",switchingCalc));switchingCalc();
+
+function conductionCalc(){
+ const i=+condI.value,r=+rOn.value/1000,p=i*i*r,v=i*r;
+ condLoss.textContent=p.toFixed(2)+" W";
+ vDrop.textContent=v.toFixed(3)+" V";
+ iSq.textContent=(i*i).toFixed(0)+" A²";
+}
+[condI,rOn].forEach(x=>x.addEventListener("input",conductionCalc));conductionCalc();
+</script>
+</body>
+</html>
