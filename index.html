@@ -389,6 +389,103 @@
       color:var(--navy);
     }
 
+    .sanity-warning{
+      display:none;
+      margin-top:12px;
+      border:1px solid #e5a84a;
+      background:#fff3d6;
+      color:#6a4300;
+      border-radius:12px;
+      padding:12px 14px;
+      font-weight:700;
+      line-height:1.45;
+    }
+
+    .sanity-warning.show{
+      display:block;
+    }
+
+    .learn-box,
+    .network-box{
+      margin-top:16px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px;
+      background:#fbfdff;
+    }
+
+    .learn-box strong,
+    .network-box strong{
+      color:var(--navy);
+    }
+
+    .learn-toggle{
+      min-height:44px;
+      margin-top:10px;
+      border:1px solid #9fc8ef;
+      border-radius:10px;
+      background:#eef7ff;
+      color:var(--navy);
+      font-weight:800;
+      cursor:pointer;
+      padding:9px 13px;
+    }
+
+    .learn-content{
+      margin-top:12px;
+      display:none;
+      border-top:1px solid var(--border);
+      padding-top:12px;
+      line-height:1.55;
+    }
+
+    .learn-content.show{
+      display:block;
+    }
+
+    .learn-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .learn-item{
+      background:#e9f3ff;
+      border:1px solid #b9d7f5;
+      border-radius:10px;
+      padding:10px;
+    }
+
+    .network-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .network-result{
+      margin-top:12px;
+      border:1px solid #b9d7f5;
+      background:#e9f3ff;
+      border-radius:12px;
+      padding:12px;
+    }
+
+    .network-result small{
+      display:block;
+      color:var(--muted);
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .network-result strong{
+      display:block;
+      font-size:24px;
+      color:var(--navy);
+      margin-bottom:4px;
+    }
+
     .resistor-preview{
       display:flex;
       align-items:center;
@@ -452,10 +549,13 @@
       .wheel-wrap{grid-template-columns:1fr}
       .cost-grid{grid-template-columns:1fr}
       .cost-results{grid-template-columns:1fr}
+      .learn-grid{grid-template-columns:1fr}
+      .network-grid{grid-template-columns:1fr 1fr}
     }
 
     @media (max-width:420px){
       .results{grid-template-columns:1fr}
+      .network-grid{grid-template-columns:1fr}
       header{padding-top:22px}
     }
   </style>
@@ -556,6 +656,8 @@
         </div>
       </div>
 
+      <div id="sanityWarning" class="sanity-warning" aria-live="polite"></div>
+
       <div class="metric-note">Small and large values automatically display as mV, mA, kΩ, MΩ, mW, kW, and similar convenient units.</div>
 
       <div id="electricalExplain" class="explain" aria-live="polite">
@@ -596,6 +698,58 @@
             <small>Approx. 30-day cost</small>
             <strong id="costMonth">$0.86</strong>
           </div>
+        </div>
+      </div>
+
+      <div class="learn-box">
+        <strong>Beginner Explanation</strong>
+        <p class="note">Open this when you want the calculator to explain what each electrical value means in plain language.</p>
+        <button type="button" id="learnToggle" class="learn-toggle" aria-expanded="false">Show Beginner Explanation</button>
+
+        <div id="learnContent" class="learn-content">
+          <div class="learn-grid">
+            <div class="learn-item"><strong>Voltage (V)</strong><br>Electrical pressure that pushes charge through a circuit.</div>
+            <div class="learn-item"><strong>Current (A)</strong><br>The amount of electrical charge flowing through the circuit.</div>
+            <div class="learn-item"><strong>Resistance (Ω)</strong><br>How much the circuit opposes current flow.</div>
+            <div class="learn-item"><strong>Power (W)</strong><br>How quickly electrical energy is being used or delivered.</div>
+          </div>
+          <div id="beginnerSummary" class="explain">With 12 V across 6 Ω, the circuit draws 2 A and uses 24 W.</div>
+        </div>
+      </div>
+
+      <div class="network-box">
+        <strong>Series / Parallel Resistance</strong>
+        <p class="note">Enter two or three resistor values in ohms. Leave R3 blank if you only have two resistors.</p>
+
+        <div class="network-grid">
+          <div class="field">
+            <label for="networkMode">Connection</label>
+            <select id="networkMode">
+              <option value="series">Series</option>
+              <option value="parallel">Parallel</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="networkR1">R1 (Ω)</label>
+            <input id="networkR1" type="number" min="0.000001" step="any" value="100" />
+          </div>
+
+          <div class="field">
+            <label for="networkR2">R2 (Ω)</label>
+            <input id="networkR2" type="number" min="0.000001" step="any" value="220" />
+          </div>
+
+          <div class="field">
+            <label for="networkR3">R3 (Ω, optional)</label>
+            <input id="networkR3" type="number" min="0.000001" step="any" placeholder="Optional" />
+          </div>
+        </div>
+
+        <div class="network-result">
+          <small>Equivalent resistance</small>
+          <strong id="networkResult">320 Ω</strong>
+          <div id="networkFormula">Series: 100 Ω + 220 Ω = 320 Ω</div>
         </div>
       </div>
 
@@ -920,6 +1074,31 @@
 
       latestPowerWatts = Number.isFinite(q.P) ? q.P : 0;
       updatePowerCost();
+
+      const warning = document.getElementById("sanityWarning");
+      const warningParts = [];
+
+      if (q.V > 1000) warningParts.push("voltage is above 1 kV");
+      if (q.I > 500) warningParts.push("current is above 500 A");
+      if (q.P > 100000) warningParts.push("power is above 100 kW");
+      if (q.R > 0 && q.R < 0.001) warningParts.push("resistance is below 1 mΩ");
+
+      if (warningParts.length) {
+        warning.textContent =
+          "Check your entries and units: " +
+          warningParts.join(", ") +
+          ". These values may be intentional, but they are unusually large or small for many common examples.";
+        warning.classList.add("show");
+      } else {
+        warning.textContent = "";
+        warning.classList.remove("show");
+      }
+
+      document.getElementById("beginnerSummary").textContent =
+        "With " + formatMetric(q.V, "V") +
+        " across " + formatMetric(q.R, "R") +
+        ", the circuit draws " + formatMetric(q.I, "I") +
+        " and uses " + formatMetric(q.P, "P") + ".";
     }
 
     [known1, known2, value1, value2].forEach(el => {
@@ -974,6 +1153,61 @@
         calculateElectrical();
       });
     });
+
+    const learnToggle = document.getElementById("learnToggle");
+    const learnContent = document.getElementById("learnContent");
+
+    learnToggle.addEventListener("click", () => {
+      const open = learnContent.classList.toggle("show");
+      learnToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      learnToggle.textContent = open ? "Hide Beginner Explanation" : "Show Beginner Explanation";
+    });
+
+    const networkMode = document.getElementById("networkMode");
+    const networkR1 = document.getElementById("networkR1");
+    const networkR2 = document.getElementById("networkR2");
+    const networkR3 = document.getElementById("networkR3");
+
+    function updateNetworkResistance() {
+      const raw = [networkR1.value, networkR2.value, networkR3.value];
+      const values = raw
+        .filter(value => value !== "")
+        .map(Number)
+        .filter(value => Number.isFinite(value) && value > 0);
+
+      const resultEl = document.getElementById("networkResult");
+      const formulaEl = document.getElementById("networkFormula");
+
+      if (values.length < 2) {
+        resultEl.textContent = "Enter at least 2 resistors";
+        formulaEl.textContent = "";
+        return;
+      }
+
+      if (networkMode.value === "series") {
+        const total = values.reduce((sum, value) => sum + value, 0);
+        resultEl.textContent = formatMetric(total, "R");
+        formulaEl.textContent =
+          "Series: " +
+          values.map(value => formatMetric(value, "R")).join(" + ") +
+          " = " + formatMetric(total, "R");
+      } else {
+        const reciprocalSum = values.reduce((sum, value) => sum + (1 / value), 0);
+        const total = 1 / reciprocalSum;
+        resultEl.textContent = formatMetric(total, "R");
+        formulaEl.textContent =
+          "Parallel: 1 ÷ (" +
+          values.map(value => "1/" + formatNumber(value)).join(" + ") +
+          ") = " + formatMetric(total, "R");
+      }
+    }
+
+    [networkMode, networkR1, networkR2, networkR3].forEach(el => {
+      el.addEventListener("input", updateNetworkResistance);
+      el.addEventListener("change", updateNetworkResistance);
+    });
+
+    updateNetworkResistance();
 
     const wheelData = {
       V: {
