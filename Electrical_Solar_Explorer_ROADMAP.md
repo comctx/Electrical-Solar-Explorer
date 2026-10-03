@@ -193,6 +193,22 @@ Interactive lessons for:
 - LCD backlights and contrast
 - LED vs. LCD comparison
 
+
+### Solid-State Switching Explorer
+- Solid-state relays (SSRs)
+- AC-output vs. DC-output SSRs
+- SCRs / thyristors
+- TRIACs and DIACs
+- Optocouplers / opto-isolators
+- Zero-cross switching
+- Phase-angle control concepts
+- Leakage current and minimum-load behavior
+- Holding current, surge current, dv/dt, and di/dt
+- Snubbers and thermal management
+- Mechanical relay vs. solid-state relay comparison
+- Interactive SSR concept simulator
+- SSR heat-loss calculator
+
 ## 9. Motors & Controls
 - AC motors
 - DC motors
