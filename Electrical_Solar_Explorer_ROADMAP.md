@@ -169,8 +169,17 @@ Interactive lessons for:
 - Running current
 - Starting current
 - Rotation concepts
-- Capacitors
-- Overload protection
+- Stators, rotors, shafts, bearings, windings, and cooling fans
+- Start and run capacitors
+- Centrifugal switches
+- Brushes and commutators
+- Contactors and motor starters
+- Overload relays and thermal protection
+- VFDs and soft starters
+- Encoders and feedback
+- Couplings and gearboxes
+- Motor nameplates
+- Synchronous-speed and slip calculators
 - Motor control diagrams
 - Relay/contactor simulation
 
