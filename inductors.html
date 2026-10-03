@@ -421,6 +421,51 @@
       font-weight:700;
     }
 
+    .advanced-heading{
+      background:linear-gradient(135deg,#071a2e 0%,#0b63ce 100%);
+      color:white;
+      border:0;
+    }
+
+    .advanced-heading h2{
+      color:white;
+      border-left-color:var(--yellow);
+    }
+
+    .advanced-heading .lead{
+      color:#dbe8f5;
+      margin-bottom:0;
+    }
+
+    .status{
+      margin-top:12px;
+      border-radius:10px;
+      padding:11px 12px;
+      font-weight:800;
+      border:1px solid #b9d7f5;
+      background:#eef7ff;
+      color:var(--navy);
+      line-height:1.45;
+    }
+
+    .status.good{
+      background:#eaf7ef;
+      border-color:#9ed0b3;
+      color:#185c3b;
+    }
+
+    .status.warn{
+      background:#fff3d6;
+      border-color:#e5a84a;
+      color:#6a4300;
+    }
+
+    .status.high{
+      background:#fdecea;
+      border-color:#e4aaa5;
+      color:#8a1c13;
+    }
+
     @media (max-width:760px){
       main{padding:12px}
       .grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
@@ -939,6 +984,155 @@
       <p class="note">This simplified Q calculation treats the entered resistance as the effective series loss. Real Q also changes with core loss, skin effect, proximity effect, parasitic capacitance, and frequency.</p>
     </section>
 
+    <section class="panel advanced-heading">
+      <h2>Advanced Inductors & Coils</h2>
+      <p class="lead">These tools cover electromagnets, RL filtering, and practical current limits. The calculations are educational approximations; real magnetic parts depend heavily on geometry, materials, air gaps, temperature, frequency, and manufacturer specifications.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Solenoid / Electromagnet Estimator</h2>
+      <p class="lead">Estimate magnetic field, ampere-turns, and idealized pull force for a coil or electromagnet.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label for="solTurns">Turns (N)</label>
+          <input id="solTurns" type="number" min="1" step="1" value="500" />
+        </div>
+
+        <div class="field">
+          <label for="solCurrent">Coil current (A)</label>
+          <input id="solCurrent" type="number" min="0" step="any" value="1" />
+        </div>
+
+        <div class="field">
+          <label for="solLength">Magnetic path / coil length (cm)</label>
+          <input id="solLength" type="number" min="0.01" step="any" value="10" />
+        </div>
+
+        <div class="field">
+          <label for="solMuR">Relative permeability μr</label>
+          <input id="solMuR" type="number" min="1" step="any" value="1" />
+        </div>
+
+        <div class="field">
+          <label for="solArea">Pole / core area (cm²)</label>
+          <input id="solArea" type="number" min="0.0001" step="any" value="1" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result"><small>Ampere-turns N × I</small><strong id="solAmpTurns">500 At</strong></div>
+        <div class="result"><small>Estimated magnetic field B</small><strong id="solField">—</strong></div>
+        <div class="result"><small>Idealized magnetic pull</small><strong id="solForce">—</strong></div>
+      </div>
+
+      <div id="solFormula" class="formula">Long-solenoid approximation: B ≈ μ₀ μr N I ÷ ℓ.</div>
+      <div class="warning">The force estimate is intentionally simplified. Real electromagnet force is strongly affected by air gap, core shape, leakage flux, fringing, saturation, armature position, and material. Do not use this as a mechanical or safety design value.</div>
+    </section>
+
+    <section class="panel">
+      <h2>RL Low-Pass / High-Pass Filter</h2>
+      <p class="lead">Explore a simple series R-L circuit. Output across the resistor acts as a low-pass response; output across the inductor acts as a high-pass response.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label for="rlFilterMode">Output taken across</label>
+          <select id="rlFilterMode">
+            <option value="low">Resistor — Low-pass</option>
+            <option value="high">Inductor — High-pass</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Resistance</label>
+          <div class="unit-row">
+            <input id="rlFilterR" type="number" min="0.000001" step="any" value="100" />
+            <select id="rlFilterRU">
+              <option value="1" selected>Ω</option>
+              <option value="1000">kΩ</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Inductance</label>
+          <div class="unit-row">
+            <input id="rlFilterL" type="number" min="0.000001" step="any" value="10" />
+            <select id="rlFilterLU">
+              <option value="1e-6">µH</option>
+              <option value="1e-3" selected>mH</option>
+              <option value="1">H</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="rlFilterF">Test frequency (Hz)</label>
+          <input id="rlFilterF" type="number" min="0.000001" step="any" value="1000" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result"><small>Cutoff frequency</small><strong id="rlFilterFc">—</strong></div>
+        <div class="result"><small>Output amplitude</small><strong id="rlFilterGain">—</strong></div>
+        <div class="result"><small>Gain</small><strong id="rlFilterDb">—</strong></div>
+      </div>
+
+      <div id="rlFilterFormula" class="formula">fc = R ÷ (2πL)</div>
+      <p class="note">This is an ideal first-order R-L model. Real inductors add winding resistance, parasitic capacitance, core loss, self-resonance, and frequency-dependent behavior.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Saturation & Current Ratings</h2>
+      <p class="lead">Compare actual current with a component's rated current and saturation-current specification, while estimating winding loss.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label for="satCurrent">Actual current (A)</label>
+          <input id="satCurrent" type="number" min="0" step="any" value="2" />
+        </div>
+
+        <div class="field">
+          <label for="satRated">Rated / thermal current (A)</label>
+          <input id="satRated" type="number" min="0.000001" step="any" value="3" />
+        </div>
+
+        <div class="field">
+          <label for="satLimit">Saturation current Isat (A)</label>
+          <input id="satLimit" type="number" min="0.000001" step="any" value="4" />
+        </div>
+
+        <div class="field">
+          <label for="satDcr">DCR (Ω)</label>
+          <input id="satDcr" type="number" min="0" step="any" value="0.08" />
+        </div>
+
+        <div class="field">
+          <label>Nominal inductance</label>
+          <div class="unit-row">
+            <input id="satL" type="number" min="0" step="any" value="100" />
+            <select id="satLU">
+              <option value="1e-6">µH</option>
+              <option value="1e-3" selected>mH</option>
+              <option value="1">H</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result"><small>Thermal-current usage</small><strong id="satRatedUse">—</strong></div>
+        <div class="result"><small>Saturation-current usage</small><strong id="satLimitUse">—</strong></div>
+        <div class="result"><small>Copper loss I²R</small><strong id="satCopperLoss">—</strong></div>
+        <div class="result"><small>Winding voltage drop I × DCR</small><strong id="satVoltageDrop">—</strong></div>
+        <div class="result"><small>Nominal stored energy</small><strong id="satEnergy">—</strong></div>
+      </div>
+
+      <div id="satStatus" class="status">Enter the inductor specifications to compare current limits.</div>
+      <div class="formula">Current rating and saturation current are not the same thing: the thermal rating is usually tied to temperature rise, while Isat is commonly tied to a specified reduction in inductance.</div>
+      <p class="note">Manufacturers define these ratings differently. Always check the datasheet conditions, including temperature rise, inductance-drop percentage, frequency, airflow, PCB copper area, and ambient temperature.</p>
+    </section>
+
   </main>
 
   <footer>A DONCO-BAYCITY™ App</footer>
@@ -1257,6 +1451,119 @@
       el.addEventListener("change",updateQ);
     });
 
+    function formatPower(w){
+      const a = Math.abs(w);
+      if (a >= 1000) return fmt(w / 1000,3) + " kW";
+      if (a >= 1) return fmt(w,3) + " W";
+      if (a >= 0.001) return fmt(w * 1000,3) + " mW";
+      return fmt(w * 1000000,3) + " µW";
+    }
+
+    function updateSolenoid(){
+      const mu0 = 4 * Math.PI * 1e-7;
+      const turns = Math.max(1,Number(document.getElementById("solTurns").value) || 1);
+      const current = Math.max(0,Number(document.getElementById("solCurrent").value) || 0);
+      const lengthM = Math.max(1e-6,Number(document.getElementById("solLength").value) || 1e-6) / 100;
+      const muR = Math.max(1,Number(document.getElementById("solMuR").value) || 1);
+      const areaM2 = Math.max(1e-10,Number(document.getElementById("solArea").value) || 1e-10) * 1e-4;
+
+      const ampTurns = turns * current;
+      const b = mu0 * muR * turns * current / lengthM;
+      const force = (b * b * areaM2) / (2 * mu0);
+
+      document.getElementById("solAmpTurns").textContent = fmt(ampTurns,2) + " At";
+      document.getElementById("solField").textContent =
+        Math.abs(b) >= 1 ? fmt(b,4) + " T" : fmt(b * 1000,4) + " mT";
+      document.getElementById("solForce").textContent =
+        force >= 1 ? fmt(force,3) + " N" : fmt(force * 1000,3) + " mN";
+      document.getElementById("solFormula").textContent =
+        "B ≈ μ₀ μr N I ÷ ℓ = " + fmt(b,5) + " T; ideal magnetic-pressure force ≈ B²A ÷ (2μ₀).";
+    }
+
+    ["solTurns","solCurrent","solLength","solMuR","solArea"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateSolenoid);
+      el.addEventListener("change",updateSolenoid);
+    });
+
+    function updateRlFilter(){
+      const mode = document.getElementById("rlFilterMode").value;
+      const r = Math.max(1e-12,Number(document.getElementById("rlFilterR").value) || 1e-12) *
+        Number(document.getElementById("rlFilterRU").value);
+      const l = Math.max(1e-15,Number(document.getElementById("rlFilterL").value) || 1e-15) *
+        Number(document.getElementById("rlFilterLU").value);
+      const f = Math.max(1e-12,Number(document.getElementById("rlFilterF").value) || 1e-12);
+
+      const fc = r / (2 * Math.PI * l);
+      const ratio = f / fc;
+      const gain = mode === "low"
+        ? 1 / Math.sqrt(1 + ratio * ratio)
+        : ratio / Math.sqrt(1 + ratio * ratio);
+      const db = 20 * Math.log10(Math.max(gain,1e-15));
+
+      document.getElementById("rlFilterFc").textContent = formatFrequency(fc);
+      document.getElementById("rlFilterGain").textContent = fmt(gain * 100,2) + "%";
+      document.getElementById("rlFilterDb").textContent = fmt(db,2) + " dB";
+      document.getElementById("rlFilterFormula").textContent =
+        (mode === "low" ? "Low-pass across R" : "High-pass across L") +
+        ": fc = R ÷ (2πL) = " + formatFrequency(fc) +
+        ". At " + formatFrequency(f) + ", ideal gain is " +
+        fmt(gain * 100,2) + "% (" + fmt(db,2) + " dB).";
+    }
+
+    ["rlFilterMode","rlFilterR","rlFilterRU","rlFilterL","rlFilterLU","rlFilterF"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateRlFilter);
+      el.addEventListener("change",updateRlFilter);
+    });
+
+    function updateSaturation(){
+      const actual = Math.max(0,Number(document.getElementById("satCurrent").value) || 0);
+      const rated = Math.max(1e-12,Number(document.getElementById("satRated").value) || 1e-12);
+      const isat = Math.max(1e-12,Number(document.getElementById("satLimit").value) || 1e-12);
+      const dcr = Math.max(0,Number(document.getElementById("satDcr").value) || 0);
+      const l = Math.max(0,Number(document.getElementById("satL").value) || 0) *
+        Number(document.getElementById("satLU").value);
+
+      const ratedUse = actual / rated * 100;
+      const satUse = actual / isat * 100;
+      const copperLoss = actual * actual * dcr;
+      const drop = actual * dcr;
+      const energy = 0.5 * l * actual * actual;
+
+      document.getElementById("satRatedUse").textContent = fmt(ratedUse,1) + "%";
+      document.getElementById("satLimitUse").textContent = fmt(satUse,1) + "%";
+      document.getElementById("satCopperLoss").textContent = formatPower(copperLoss);
+      document.getElementById("satVoltageDrop").textContent = formatVoltage(drop);
+      document.getElementById("satEnergy").textContent = formatEnergy(energy);
+
+      const status = document.getElementById("satStatus");
+      status.className = "status";
+
+      if (ratedUse > 100 || satUse > 100){
+        status.classList.add("high");
+        status.textContent =
+          "The entered current exceeds " +
+          (ratedUse > 100 && satUse > 100 ? "both the thermal-current and saturation-current entries." :
+           ratedUse > 100 ? "the entered thermal-current rating." :
+           "the entered saturation-current rating.");
+      } else if (ratedUse >= 80 || satUse >= 80){
+        status.classList.add("warn");
+        status.textContent =
+          "The entered current is approaching one or more entered current limits. Check the datasheet conditions and temperature rise.";
+      } else {
+        status.classList.add("good");
+        status.textContent =
+          "The entered current is below both entered current limits, based only on the ratings you supplied.";
+      }
+    }
+
+    ["satCurrent","satRated","satLimit","satDcr","satL","satLU"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateSaturation);
+      el.addEventListener("change",updateSaturation);
+    });
+
     updateEquivalent();
     updateReactance();
     updateRL();
@@ -1264,6 +1571,9 @@
     updateCoilEstimator();
     updateFlyback();
     updateQ();
+    updateSolenoid();
+    updateRlFilter();
+    updateSaturation();
     updateRlVisual();
   </script>
 </body>
