@@ -1,0 +1,207 @@
+/* Shared All Things Electrical enhancements */
+.ate-toolbar{
+  position:fixed;
+  right:14px;
+  bottom:14px;
+  z-index:9999;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.ate-toolbar button{
+  min-height:44px;
+  border:1px solid #9fc8ef;
+  border-radius:999px;
+  background:#ffffff;
+  color:#071a2e;
+  padding:9px 13px;
+  font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  box-shadow:0 5px 18px rgba(7,26,46,.18);
+  cursor:pointer;
+}
+.ate-toolbar button.ate-fav-on{
+  background:#ffd43b;
+  border-color:#e4ba16;
+}
+.ate-my-tools{
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(207,217,227,.95);
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:16px;
+  box-shadow:0 8px 22px rgba(7,26,46,.06);
+}
+.ate-my-tools h2{
+  margin:0 0 8px;
+  border-left:5px solid #ffd43b;
+  padding-left:10px;
+  color:#071a2e;
+  font-size:20px;
+}
+.ate-my-tools p{
+  margin:0 0 12px;
+  color:#62707d;
+  line-height:1.45;
+}
+.ate-tool-subhead{
+  margin:15px 0 8px;
+  color:#071a2e;
+  font-weight:900;
+  font-size:15px;
+}
+.ate-link-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+}
+.ate-saved-link{
+  position:relative;
+  min-height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  text-decoration:none;
+  color:#14202b;
+  background:#ffffff;
+  border:1px solid #cfd9e3;
+  border-radius:12px;
+  padding:10px 34px 10px 10px;
+  font-weight:800;
+  line-height:1.25;
+}
+.ate-saved-link:hover{background:#eef7ff;border-color:#9fc8ef}
+.ate-remove{
+  position:absolute;
+  right:6px;
+  top:6px;
+  width:26px;
+  height:26px;
+  border:0;
+  border-radius:50%;
+  background:#eef3f7;
+  color:#62707d;
+  cursor:pointer;
+  font-weight:900;
+}
+.ate-empty{
+  color:#62707d;
+  font-size:13px;
+  padding:8px 0;
+}
+.ate-clear-recent{
+  margin-top:10px;
+  min-height:38px;
+  border:1px solid #9fc8ef;
+  border-radius:10px;
+  background:#eef7ff;
+  color:#071a2e;
+  font-weight:800;
+  padding:7px 10px;
+  cursor:pointer;
+}
+
+/* Dark mode */
+html[data-ate-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0c1724 !important;
+  --card:#122235 !important;
+  --text:#edf4fb !important;
+  --muted:#a9bbca !important;
+  --border:#31475b !important;
+}
+html[data-ate-theme="dark"] body{
+  background:linear-gradient(180deg,#08131f,#0d1b2a 42%,#102235) !important;
+  color:#edf4fb !important;
+}
+html[data-ate-theme="dark"] main,
+html[data-ate-theme="dark"] .panel,
+html[data-ate-theme="dark"] .card,
+html[data-ate-theme="dark"] .nav-category,
+html[data-ate-theme="dark"] .home-search,
+html[data-ate-theme="dark"] .learning-path,
+html[data-ate-theme="dark"] .ate-my-tools,
+html[data-ate-theme="dark"] .entry,
+html[data-ate-theme="dark"] .topic-row,
+html[data-ate-theme="dark"] .advanced-tool,
+html[data-ate-theme="dark"] .advanced-tool-body,
+html[data-ate-theme="dark"] .preset-box,
+html[data-ate-theme="dark"] .cost-box,
+html[data-ate-theme="dark"] .learn-box,
+html[data-ate-theme="dark"] .network-box{
+  color:#edf4fb !important;
+}
+html[data-ate-theme="dark"] .panel,
+html[data-ate-theme="dark"] .card,
+html[data-ate-theme="dark"] .nav-category,
+html[data-ate-theme="dark"] .home-search,
+html[data-ate-theme="dark"] .learning-path,
+html[data-ate-theme="dark"] .ate-my-tools,
+html[data-ate-theme="dark"] .entry,
+html[data-ate-theme="dark"] .topic-row,
+html[data-ate-theme="dark"] .advanced-tool,
+html[data-ate-theme="dark"] .preset-box,
+html[data-ate-theme="dark"] .cost-box,
+html[data-ate-theme="dark"] .learn-box,
+html[data-ate-theme="dark"] .network-box{
+  background:#122235 !important;
+  border-color:#31475b !important;
+}
+html[data-ate-theme="dark"] .tab,
+html[data-ate-theme="dark"] .nav a,
+html[data-ate-theme="dark"] .tool-page-nav a,
+html[data-ate-theme="dark"] .ate-saved-link,
+html[data-ate-theme="dark"] input,
+html[data-ate-theme="dark"] select,
+html[data-ate-theme="dark"] .quiz-option,
+html[data-ate-theme="dark"] .btn:not(.primary):not(.good){
+  background:#172b40 !important;
+  color:#edf4fb !important;
+  border-color:#3a5871 !important;
+}
+html[data-ate-theme="dark"] .result,
+html[data-ate-theme="dark"] .tool-result,
+html[data-ate-theme="dark"] .network-result,
+html[data-ate-theme="dark"] .cost-result,
+html[data-ate-theme="dark"] .learn-item,
+html[data-ate-theme="dark"] .quiz-stat{
+  background:#17314b !important;
+  color:#edf4fb !important;
+  border-color:#3a5871 !important;
+}
+html[data-ate-theme="dark"] h2,
+html[data-ate-theme="dark"] h3,
+html[data-ate-theme="dark"] strong,
+html[data-ate-theme="dark"] .ate-my-tools h2,
+html[data-ate-theme="dark"] .ate-tool-subhead{
+  color:#f4f8fc !important;
+}
+html[data-ate-theme="dark"] p,
+html[data-ate-theme="dark"] .lead,
+html[data-ate-theme="dark"] .note,
+html[data-ate-theme="dark"] .ate-my-tools p,
+html[data-ate-theme="dark"] .ate-empty{
+  color:#a9bbca !important;
+}
+html[data-ate-theme="dark"] th{background:#17314b !important;color:#fff !important}
+html[data-ate-theme="dark"] td{border-color:#31475b !important}
+html[data-ate-theme="dark"] .ate-toolbar button{
+  background:#172b40;
+  color:#fff;
+  border-color:#3a5871;
+}
+html[data-ate-theme="dark"] .ate-toolbar button.ate-fav-on{
+  background:#ffd43b;
+  color:#071a2e;
+  border-color:#e4ba16;
+}
+@media(max-width:700px){
+  .ate-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ate-toolbar{right:9px;bottom:9px}
+}
+@media(max-width:420px){
+  .ate-link-grid{grid-template-columns:1fr}
+  .ate-toolbar{left:9px;right:9px}
+  .ate-toolbar button{flex:1 1 auto}
+}
