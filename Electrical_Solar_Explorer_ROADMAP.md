@@ -691,3 +691,30 @@ A DONCO-BAYCITY™ App
 - Related lesson pages cross-linked
 - Electronics 101 extended from 7 to 9 steps
 - Motors & Industrial Controls extended from 7 to 8 steps
+
+
+## Three-Phase, VFD & Sensors Labs
+- Three-Phase Power Lab
+  - Three waveforms separated by 120 electrical degrees
+  - Wye and Delta line/phase relationships
+  - Phase sequence ABC / ACB
+  - Balanced kVA, kW, kVAR, and power factor
+  - Frequency and period
+- VFD & Motor Speed Lab
+  - Command frequency and acceleration ramp
+  - Motor pole count
+  - Synchronous RPM and estimated slip
+  - Approximate V/Hz behavior
+  - Base frequency/voltage and above-base-frequency concept
+  - Forward/reverse command display
+- Sensors & Controls Lab
+  - Inductive, photoelectric, limit, and capacitive sensor examples
+  - PNP sourcing / NPN sinking concepts
+  - NO / NC behavior
+  - Sinking / sourcing PLC input pairing
+  - Live target and PLC-input states
+  - Fault buttons for mismatch, inversion, and PNP/NPN swap
+- Home categories and search updated
+- Related lesson pages cross-linked
+- Electricity 101 extended to 9 steps
+- Motors & Industrial Controls extended to 10 steps
