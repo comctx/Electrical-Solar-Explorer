@@ -117,6 +117,22 @@ User enters:
 
 The app shows estimated production, charging, runtime, and system compatibility.
 
+### Solar Power Electronics Explorer
+- Solar inverters: string, micro, hybrid, and off-grid
+- MPPT vs. PWM charge controllers
+- Charge-controller power/current estimate
+- PV combiner boxes
+- Series and parallel string concepts
+- PV array Vmp/Imp/power calculator
+- DC disconnects
+- DC-rated fuses and breakers
+- Surge protection
+- Rapid shutdown concepts
+- Battery disconnects, busbars, and shunts
+- Inverter DC-current estimate
+- Grounding and bonding concepts
+- Simplified solar energy-flow diagrams
+
 ## 7. Batteries
 - Lead-acid
 - AGM
