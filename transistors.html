@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Transistors Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+      --good:#1f7a4d;--danger:#b42318;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;padding:24px 18px 20px;text-align:center;
+    }
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1000px;margin:0 auto;padding:18px}
+    .page-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .page-nav a{
+      text-decoration:none;min-height:46px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:11px;padding:10px 14px;font-weight:800;border:1px solid #9fc8ef;
+      background:#eef7ff;color:var(--navy);
+    }
+    .page-nav a.active{background:var(--yellow);border-color:#e4ba16}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px;
+    }
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    h3{margin:0 0 8px;color:var(--navy)}
+    .lead,.note{color:var(--muted);line-height:1.5}
+    .lead{margin:0 0 16px}.note{font-size:13px;margin:10px 0 0}
+    .grid{display:grid;gap:12px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input,select,button{font:inherit}
+    input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white;color:var(--text)}
+    input:focus,select:focus,button:focus{outline:3px solid rgba(11,99,206,.22);outline-offset:2px}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px;min-width:0}
+    .result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .result strong{color:var(--navy);font-size:clamp(20px,4vw,28px);word-break:break-word}
+    .formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+    .warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:10px;padding:10px 12px;color:#6a4300;font-weight:700;line-height:1.45}
+    .status{margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy);line-height:1.45}
+    .status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+    .status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
+    .status.high{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+    .beginner-panel{background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:2px solid #b9d7f5}
+    .beginner-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .beginner-card{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:13px;padding:13px}
+    .beginner-card strong{display:block;color:var(--navy);margin-bottom:5px;font-size:16px}
+    .beginner-card p{margin:0;color:#33495b;line-height:1.5;font-size:14px}
+    .other-words{margin-top:14px;background:#fff7cc;border:1px solid #e5c94a;border-radius:13px;padding:14px}
+    .other-words strong{display:block;color:var(--navy);font-size:17px;margin-bottom:8px}
+    .other-words-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .other-words-item{background:white;border:1px solid #eadb82;border-radius:10px;padding:10px;font-weight:800;color:#263b4c;line-height:1.4}
+    .beginner-tip{margin-top:12px;border-left:5px solid var(--electric);background:#eef7ff;border-radius:10px;padding:11px 13px;line-height:1.5;color:#25394b;font-weight:700}
+    .type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .type-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:13px}
+    .type-card strong{display:block;color:var(--navy);margin-bottom:5px}
+    .type-card small{display:block;color:var(--muted);line-height:1.45}
+    .badge{display:inline-block;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#e9f3ff;color:var(--navy);border:1px solid #b9d7f5}
+    .switch-stage{
+      margin-top:14px;border:1px solid var(--border);background:#fbfdff;border-radius:16px;padding:18px;
+      display:grid;grid-template-columns:minmax(260px,.9fr) minmax(0,1.1fr);gap:18px;align-items:center;
+    }
+    .switch-visual{min-height:230px;display:flex;align-items:center;justify-content:center;position:relative}
+    .rail{position:absolute;left:10%;right:10%;height:8px;background:#607080}
+    .rail.top{top:22%}.rail.bottom{bottom:22%}
+    .transistor-body{width:105px;height:105px;border:7px solid var(--navy);border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:var(--navy);z-index:2}
+    .load{position:absolute;top:7%;width:80px;height:40px;border-radius:9px;border:4px solid #8a8f95;background:#e6edf3;text-align:center;line-height:32px;font-weight:900;color:var(--navy)}
+    .flow-dot{position:absolute;width:15px;height:15px;border-radius:50%;background:var(--yellow);left:50%;top:27%;transform:translateX(-50%);opacity:0}
+    .on .flow-dot{opacity:1;animation:downflow 1.1s linear infinite}
+    @keyframes downflow{from{top:27%}to{top:70%}}
+    .gate-line{position:absolute;left:7%;top:50%;width:34%;height:6px;background:#607080}
+    .gate-dot{position:absolute;left:5%;top:50%;transform:translateY(-50%);width:25px;height:25px;border-radius:50%;background:#c6d4df;border:4px solid #607080}
+    .on .gate-dot{background:var(--yellow);border-color:#c49a00}
+    .on .load{background:#fff7cc;border-color:#e5c94a}
+    .button-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .action{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}
+    .action.primary{background:var(--yellow);border-color:#e4ba16}
+    .comparison-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .comparison-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .comparison-card h3{margin:0 0 8px}.comparison-card ul{margin:8px 0 0 20px;padding:0;color:#33495b;line-height:1.5}
+    .pin-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .pin{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px;text-align:center}
+    .pin strong{display:block;color:var(--navy);font-size:20px}
+    @media(max-width:760px){
+      main{padding:12px}.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .result-grid,.beginner-grid,.other-words-grid,.comparison-grid,.pin-grid{grid-template-columns:1fr}
+      .type-grid{grid-template-columns:1fr 1fr}
+      .switch-stage{grid-template-columns:1fr}
+    }
+    @media(max-width:420px){.type-grid{grid-template-columns:1fr}}
+    footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Transistors Explorer</h1>
+    <p>BJTs, MOSFETs, switching, gain, bias basics, power loss, and transistor types.</p>
+  </header>
+
+  <main>
+    <nav class="page-nav" aria-label="App pages">
+      <a href="index.html">All Things Electrical</a>
+      <a href="capacitor.html">Capacitors</a>
+      <a href="inductors.html">Inductors & Coils</a>
+      <a href="transformers.html">Transformers</a>
+      <a href="diodes.html">Diodes</a>
+      <a href="transistors.html" class="active">Transistors</a>
+    </nav>
+
+    <section class="panel beginner-panel">
+      <h2>Beginner Start Here</h2>
+      <p class="lead">Transistors can look complicated, but the basic idea is simple: a small electrical signal controls a larger current or voltage.</p>
+      <div class="beginner-grid">
+        <div class="beginner-card"><strong>What is a transistor?</strong><p>A transistor is a semiconductor device used mainly as an electronic switch or amplifier.</p></div>
+        <div class="beginner-card"><strong>BJT vs. MOSFET</strong><p>A BJT is controlled by base current. A MOSFET is controlled mainly by voltage between its gate and source.</p></div>
+        <div class="beginner-card"><strong>Switching</strong><p>In switching applications, the goal is usually to move between OFF and ON states with as little power loss as practical.</p></div>
+        <div class="beginner-card"><strong>Amplification</strong><p>In analog circuits, a transistor can make a small changing signal control a larger changing signal.</p></div>
+        <div class="beginner-card"><strong>NPN / PNP and N-channel / P-channel</strong><p>These complementary types use opposite polarities and circuit arrangements. NPN and N-channel devices are especially common in low-side switching.</p></div>
+        <div class="beginner-card"><strong>Ratings matter</strong><p>Voltage, current, power, temperature, gain, gate drive, and safe operating area all matter. The exact part datasheet controls real designs.</p></div>
+      </div>
+      <div class="other-words">
+        <strong>In Other Words</strong>
+        <div class="other-words-grid">
+          <div class="other-words-item">BJT: a small base current controls a larger collector current.</div>
+          <div class="other-words-item">MOSFET: gate-to-source voltage controls the drain-source path.</div>
+          <div class="other-words-item">Switching transistors work best when clearly OFF or appropriately driven ON.</div>
+        </div>
+      </div>
+      <div class="beginner-tip">Start with the <strong>Transistor Switch Simulator</strong>. Then try the BJT base-resistor calculator and MOSFET conduction-loss calculator.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Transistor Switch Simulator</h2>
+      <p class="lead">See how a control signal can turn a transistor-controlled load OFF and ON.</p>
+      <div class="switch-stage">
+        <div id="switchVisual" class="switch-visual">
+          <div class="rail top"></div><div class="rail bottom"></div>
+          <div class="load">LOAD</div>
+          <div class="gate-line"></div><div class="gate-dot"></div>
+          <div class="transistor-body">Q</div>
+          <div class="flow-dot"></div>
+        </div>
+        <div>
+          <h3 id="switchTitle">Transistor OFF</h3>
+          <p id="switchExplain" class="lead">The control input is low, so this simplified switch blocks load current.</p>
+          <div class="button-row">
+            <button id="switchOn" class="action primary" type="button">Turn ON</button>
+            <button id="switchOff" class="action" type="button">Turn OFF</button>
+          </div>
+          <div id="switchStatus" class="status">No load current in this idealized OFF state.</div>
+          <p class="note">This visual is conceptual. Real BJT and MOSFET switching behavior depends on drive level, load, temperature, switching speed, device capacitances, and circuit layout.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>BJT Base Resistor Calculator</h2>
+      <p class="lead">Estimate a base resistor for an NPN transistor used as a simple saturated switch.</p>
+      <div class="grid four">
+        <div class="field"><label for="bjtDriveV">Control voltage (V)</label><input id="bjtDriveV" type="number" min="0" step="any" value="5"></div>
+        <div class="field"><label for="bjtVbe">Base-emitter voltage Vbe (V)</label><input id="bjtVbe" type="number" min="0" step="any" value="0.8"></div>
+        <div class="field"><label for="bjtIc">Desired collector current (mA)</label><input id="bjtIc" type="number" min="0" step="any" value="100"></div>
+        <div class="field"><label for="bjtForcedBeta">Forced beta Ic/Ib</label><input id="bjtForcedBeta" type="number" min="1" step="any" value="10"></div>
+        <div class="field"><label for="bjtVceSat">Assumed Vce(sat) (V)</label><input id="bjtVceSat" type="number" min="0" step="any" value="0.2"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Required base current</small><strong id="bjtIb">—</strong></div>
+        <div class="result"><small>Calculated base resistor</small><strong id="bjtRb">—</strong></div>
+        <div class="result"><small>Base-resistor power</small><strong id="bjtRbPower">—</strong></div>
+        <div class="result"><small>Transistor conduction loss</small><strong id="bjtLoss">—</strong></div>
+      </div>
+      <div id="bjtFormula" class="formula">Ib ≈ Ic ÷ forced beta; Rb ≈ (Vcontrol − Vbe) ÷ Ib.</div>
+      <div id="bjtStatus" class="status">Enter values to estimate the drive.</div>
+      <p class="note">Forced beta is a switching design assumption, not the transistor's guaranteed DC gain. Check the datasheet's Vce(sat) test conditions and the control source's current capability.</p>
+    </section>
+
+    <section class="panel">
+      <h2>BJT Current Gain</h2>
+      <p class="lead">Explore the basic current relationship between base, collector, and emitter current.</p>
+      <div class="grid two">
+        <div class="field"><label for="gainIb">Base current (mA)</label><input id="gainIb" type="number" min="0" step="any" value="1"></div>
+        <div class="field"><label for="gainBeta">DC gain hFE / β</label><input id="gainBeta" type="number" min="0" step="any" value="100"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Idealized collector current</small><strong id="gainIc">—</strong></div>
+        <div class="result"><small>Emitter current</small><strong id="gainIe">—</strong></div>
+        <div class="result"><small>Current gain</small><strong id="gainResult">—</strong></div>
+      </div>
+      <div id="gainFormula" class="formula">Ic ≈ β × Ib; Ie ≈ Ic + Ib.</div>
+      <p class="note">Actual hFE varies widely with device, collector current, collector-emitter voltage, and temperature. This relationship is mainly useful for learning and rough active-region estimates.</p>
+    </section>
+
+    <section class="panel">
+      <h2>MOSFET Switch & Conduction Loss</h2>
+      <p class="lead">Estimate load current and MOSFET conduction loss using an entered on-resistance.</p>
+      <div class="grid four">
+        <div class="field"><label for="mosSupply">Supply voltage (V)</label><input id="mosSupply" type="number" min="0" step="any" value="12"></div>
+        <div class="field"><label for="mosLoad">Load resistance (Ω)</label><input id="mosLoad" type="number" min="0.000001" step="any" value="6"></div>
+        <div class="field"><label for="mosRds">RDS(on) (Ω)</label><input id="mosRds" type="number" min="0" step="any" value="0.03"></div>
+        <div class="field"><label for="mosGate">Gate-to-source drive Vgs (V)</label><input id="mosGate" type="number" min="0" step="any" value="5"></div>
+        <div class="field"><label for="mosThreshold">Vgs(th) datasheet value (V)</label><input id="mosThreshold" type="number" min="0" step="any" value="2"></div>
+        <div class="field"><label for="mosRatedGate">RDS(on) specified at Vgs (V)</label><input id="mosRatedGate" type="number" min="0.001" step="any" value="4.5"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Estimated load current</small><strong id="mosCurrent">—</strong></div>
+        <div class="result"><small>MOSFET voltage drop</small><strong id="mosDrop">—</strong></div>
+        <div class="result"><small>MOSFET conduction loss</small><strong id="mosLoss">—</strong></div>
+        <div class="result"><small>Load power</small><strong id="mosLoadPower">—</strong></div>
+      </div>
+      <div id="mosStatus" class="status">Enter MOSFET values.</div>
+      <div id="mosFormula" class="formula">I ≈ Vsupply ÷ (Rload + RDS(on)); PMOS ≈ I² × RDS(on).</div>
+      <div class="warning">Vgs(th) is only the threshold where conduction begins under a small test current; it is not the voltage that guarantees low RDS(on). Use the datasheet RDS(on) specification at a gate voltage your circuit can actually provide.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Transistor Power & Junction Temperature</h2>
+      <p class="lead">Estimate junction temperature from device dissipation, ambient temperature, and thermal resistance.</p>
+      <div class="grid four">
+        <div class="field"><label for="thermPower">Device power loss (W)</label><input id="thermPower" type="number" min="0" step="any" value="1"></div>
+        <div class="field"><label for="thermAmbient">Ambient temperature (°C)</label><input id="thermAmbient" type="number" step="any" value="25"></div>
+        <div class="field"><label for="thermTheta">Thermal resistance θJA (°C/W)</label><input id="thermTheta" type="number" min="0" step="any" value="62.5"></div>
+        <div class="field"><label for="thermMax">Maximum junction temperature (°C)</label><input id="thermMax" type="number" step="any" value="150"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Temperature rise</small><strong id="thermRise">—</strong></div>
+        <div class="result"><small>Estimated junction temperature</small><strong id="thermJunction">—</strong></div>
+        <div class="result"><small>Margin to entered maximum</small><strong id="thermMargin">—</strong></div>
+      </div>
+      <div id="thermStatus" class="status">Enter thermal values.</div>
+      <div id="thermFormula" class="formula">Tj ≈ Ta + P × θJA.</div>
+      <p class="note">θJA depends strongly on package, PCB copper area, airflow, mounting, heatsinking, and test conditions. For real thermal design, use the datasheet thermal information and appropriate transient/steady-state model.</p>
+    </section>
+
+    <section class="panel">
+      <h2>BJT vs. MOSFET</h2>
+      <p class="lead">Both can switch and amplify, but they are driven differently.</p>
+      <div class="comparison-grid">
+        <div class="comparison-card">
+          <h3>BJT</h3>
+          <ul>
+            <li>Terminals: base, collector, emitter.</li>
+            <li>Base current controls collector current.</li>
+            <li>Switching designs often use enough base current to reach low Vce(sat).</li>
+            <li>Can be very useful in small-signal amplification and simple switching.</li>
+          </ul>
+        </div>
+        <div class="comparison-card">
+          <h3>MOSFET</h3>
+          <ul>
+            <li>Terminals: gate, drain, source.</li>
+            <li>Gate voltage controls the drain-source channel.</li>
+            <li>DC gate current is ideally very small, though the gate capacitance must be charged and discharged during switching.</li>
+            <li>Power MOSFETs are common in efficient switching and power conversion.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Pin & Terminal Guide</h2>
+      <p class="lead">Learn the terminal names, but never assume a physical pin order from the package alone.</p>
+      <div class="pin-grid">
+        <div class="pin"><small>BJT</small><strong>Base (B)</strong><span>Control terminal</span></div>
+        <div class="pin"><small>BJT</small><strong>Collector (C)</strong><span>Main current path</span></div>
+        <div class="pin"><small>BJT</small><strong>Emitter (E)</strong><span>Main current path / reference</span></div>
+        <div class="pin"><small>MOSFET</small><strong>Gate (G)</strong><span>Voltage-control terminal</span></div>
+        <div class="pin"><small>MOSFET</small><strong>Drain (D)</strong><span>Main current path</span></div>
+        <div class="pin"><small>MOSFET</small><strong>Source (S)</strong><span>Main current path / Vgs reference</span></div>
+      </div>
+      <div class="warning">Pin order varies by transistor part number and package. Two parts in the same-looking package can have different pinouts. Verify the exact datasheet before connecting a real device.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Transistor Types & Uses</h2>
+      <p class="lead">Common transistor families and where they are used.</p>
+      <div class="type-grid">
+        <div class="type-card"><strong>NPN BJT</strong><small>Very common for low-side switching, signal amplification, and general-purpose circuits.</small><span class="badge">BJT</span></div>
+        <div class="type-card"><strong>PNP BJT</strong><small>Complementary to NPN and often used in high-side or complementary stages.</small><span class="badge">BJT</span></div>
+        <div class="type-card"><strong>N-Channel MOSFET</strong><small>Common in efficient low-side power switching and switching converters.</small><span class="badge">MOSFET</span></div>
+        <div class="type-card"><strong>P-Channel MOSFET</strong><small>Often used for simpler high-side switching at moderate currents and voltages.</small><span class="badge">MOSFET</span></div>
+        <div class="type-card"><strong>Darlington Pair</strong><small>Two BJTs connected for very high current gain, with higher voltage drop and slower switching than many alternatives.</small><span class="badge">High gain</span></div>
+        <div class="type-card"><strong>JFET</strong><small>Voltage-controlled field-effect transistor used in high-input-impedance and analog circuits.</small><span class="badge">Analog / RF</span></div>
+        <div class="type-card"><strong>IGBT</strong><small>Power switching device combining MOS gate control with bipolar conduction characteristics, common at higher voltages and power levels.</small><span class="badge">Power</span></div>
+        <div class="type-card"><strong>Phototransistor</strong><small>Light-sensitive transistor used in optical sensing, isolation, and detection.</small><span class="badge">Light sensing</span></div>
+        <div class="type-card"><strong>RF Transistor</strong><small>Designed for high-frequency amplification or switching, with package and parasitic behavior optimized for RF operation.</small><span class="badge">High frequency</span></div>
+      </div>
+      <div class="warning">For real transistor circuits, check the exact device's voltage ratings, current ratings, SOA, gain or RDS(on), drive requirements, switching speed, thermal limits, and package pinout.</div>
+    </section>
+  </main>
+
+  <footer>A DONCO-BAYCITY™ App</footer>
+
+  <script>
+    function fmt(n,d=3){
+      if(!Number.isFinite(n))return "—";
+      return n.toLocaleString(undefined,{maximumFractionDigits:d});
+    }
+    function formatA(a){
+      const x=Math.abs(a);
+      if(x>=1)return fmt(a,3)+" A";
+      if(x>=.001)return fmt(a*1000,3)+" mA";
+      if(x>=.000001)return fmt(a*1e6,3)+" µA";
+      return fmt(a*1e9,3)+" nA";
+    }
+    function formatV(v){
+      const x=Math.abs(v);
+      if(x>=1000)return fmt(v/1000,3)+" kV";
+      if(x>=1)return fmt(v,3)+" V";
+      if(x>=.001)return fmt(v*1000,3)+" mV";
+      return fmt(v*1e6,3)+" µV";
+    }
+    function formatOhms(r){
+      const x=Math.abs(r);
+      if(x>=1e6)return fmt(r/1e6,3)+" MΩ";
+      if(x>=1e3)return fmt(r/1e3,3)+" kΩ";
+      if(x<1&&x>0)return fmt(r*1000,3)+" mΩ";
+      return fmt(r,3)+" Ω";
+    }
+    function formatPower(w){
+      const x=Math.abs(w);
+      if(x>=1000)return fmt(w/1000,3)+" kW";
+      if(x>=1)return fmt(w,3)+" W";
+      if(x>=.001)return fmt(w*1000,3)+" mW";
+      return fmt(w*1e6,3)+" µW";
+    }
+
+    function setSwitch(on){
+      const visual=document.getElementById("switchVisual");
+      visual.classList.toggle("on",on);
+      document.getElementById("switchTitle").textContent=on?"Transistor ON":"Transistor OFF";
+      document.getElementById("switchExplain").textContent=on
+        ?"The control input is active, so this simplified transistor switch allows load current."
+        :"The control input is low, so this simplified switch blocks load current.";
+      const status=document.getElementById("switchStatus");
+      status.className="status "+(on?"good":"");
+      status.textContent=on?"Load current is flowing in this idealized ON state.":"No load current in this idealized OFF state.";
+    }
+    document.getElementById("switchOn").addEventListener("click",()=>setSwitch(true));
+    document.getElementById("switchOff").addEventListener("click",()=>setSwitch(false));
+
+    function updateBjt(){
+      const drive=Math.max(0,Number(document.getElementById("bjtDriveV").value)||0);
+      const vbe=Math.max(0,Number(document.getElementById("bjtVbe").value)||0);
+      const ic=Math.max(0,Number(document.getElementById("bjtIc").value)||0)/1000;
+      const beta=Math.max(1,Number(document.getElementById("bjtForcedBeta").value)||1);
+      const vce=Math.max(0,Number(document.getElementById("bjtVceSat").value)||0);
+      const ib=ic/beta;
+      const status=document.getElementById("bjtStatus");
+      status.className="status";
+
+      if(drive<=vbe || ib<=0){
+        document.getElementById("bjtIb").textContent=formatA(ib);
+        document.getElementById("bjtRb").textContent="No headroom";
+        document.getElementById("bjtRbPower").textContent="—";
+        document.getElementById("bjtLoss").textContent=formatPower(ic*vce);
+        document.getElementById("bjtFormula").textContent="Control voltage must exceed the entered Vbe to calculate a positive base resistor.";
+        status.classList.add("high");
+        status.textContent="The entered control voltage is not high enough above Vbe for this simple base-resistor calculation.";
+        return;
+      }
+      const rb=(drive-vbe)/ib;
+      const rbPower=ib*ib*rb;
+      const loss=ic*vce;
+      document.getElementById("bjtIb").textContent=formatA(ib);
+      document.getElementById("bjtRb").textContent=formatOhms(rb);
+      document.getElementById("bjtRbPower").textContent=formatPower(rbPower);
+      document.getElementById("bjtLoss").textContent=formatPower(loss);
+      document.getElementById("bjtFormula").textContent=
+        "Ib ≈ "+formatA(ic)+" ÷ "+fmt(beta,2)+" = "+formatA(ib)+
+        "; Rb ≈ ("+formatV(drive)+" − "+formatV(vbe)+") ÷ "+formatA(ib)+" = "+formatOhms(rb)+".";
+      status.classList.add("good");
+      status.textContent="This provides the entered forced-beta base current. Verify source-current capability and transistor saturation data.";
+    }
+    ["bjtDriveV","bjtVbe","bjtIc","bjtForcedBeta","bjtVceSat"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateBjt);el.addEventListener("change",updateBjt);
+    });
+
+    function updateGain(){
+      const ib=Math.max(0,Number(document.getElementById("gainIb").value)||0)/1000;
+      const beta=Math.max(0,Number(document.getElementById("gainBeta").value)||0);
+      const ic=ib*beta;
+      const ie=ic+ib;
+      document.getElementById("gainIc").textContent=formatA(ic);
+      document.getElementById("gainIe").textContent=formatA(ie);
+      document.getElementById("gainResult").textContent=fmt(beta,2);
+      document.getElementById("gainFormula").textContent=
+        "Ic ≈ β × Ib = "+fmt(beta,2)+" × "+formatA(ib)+" = "+formatA(ic)+"; Ie ≈ "+formatA(ie)+".";
+    }
+    ["gainIb","gainBeta"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateGain);el.addEventListener("change",updateGain);
+    });
+
+    function updateMos(){
+      const vs=Math.max(0,Number(document.getElementById("mosSupply").value)||0);
+      const load=Math.max(1e-12,Number(document.getElementById("mosLoad").value)||1e-12);
+      const rds=Math.max(0,Number(document.getElementById("mosRds").value)||0);
+      const vgs=Math.max(0,Number(document.getElementById("mosGate").value)||0);
+      const th=Math.max(0,Number(document.getElementById("mosThreshold").value)||0);
+      const ratedGate=Math.max(.001,Number(document.getElementById("mosRatedGate").value)||.001);
+      const i=vs/(load+rds);
+      const drop=i*rds;
+      const loss=i*i*rds;
+      const loadPower=i*i*load;
+      document.getElementById("mosCurrent").textContent=formatA(i);
+      document.getElementById("mosDrop").textContent=formatV(drop);
+      document.getElementById("mosLoss").textContent=formatPower(loss);
+      document.getElementById("mosLoadPower").textContent=formatPower(loadPower);
+      document.getElementById("mosFormula").textContent=
+        "I ≈ "+formatV(vs)+" ÷ ("+formatOhms(load)+" + "+formatOhms(rds)+") = "+formatA(i)+
+        "; MOSFET loss ≈ I²RDS(on) = "+formatPower(loss)+".";
+      const status=document.getElementById("mosStatus");
+      status.className="status";
+      if(vgs<th){
+        status.classList.add("high");
+        status.textContent="Vgs is below the entered threshold voltage. This simple on-resistance calculation should not be treated as valid.";
+      }else if(vgs<ratedGate){
+        status.classList.add("warn");
+        status.textContent="Vgs is above threshold but below the gate voltage at which the entered RDS(on) is specified. Actual resistance may be much higher.";
+      }else{
+        status.classList.add("good");
+        status.textContent="Vgs meets or exceeds the entered RDS(on) specification voltage. Still check current, temperature, SOA, and switching conditions.";
+      }
+    }
+    ["mosSupply","mosLoad","mosRds","mosGate","mosThreshold","mosRatedGate"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateMos);el.addEventListener("change",updateMos);
+    });
+
+    function updateThermal(){
+      const p=Math.max(0,Number(document.getElementById("thermPower").value)||0);
+      const ta=Number(document.getElementById("thermAmbient").value)||0;
+      const theta=Math.max(0,Number(document.getElementById("thermTheta").value)||0);
+      const maxT=Number(document.getElementById("thermMax").value)||0;
+      const rise=p*theta;
+      const tj=ta+rise;
+      const margin=maxT-tj;
+      document.getElementById("thermRise").textContent=fmt(rise,2)+" °C";
+      document.getElementById("thermJunction").textContent=fmt(tj,2)+" °C";
+      document.getElementById("thermMargin").textContent=fmt(margin,2)+" °C";
+      document.getElementById("thermFormula").textContent=
+        "Tj ≈ "+fmt(ta,2)+" °C + "+fmt(p,3)+" W × "+fmt(theta,2)+" °C/W = "+fmt(tj,2)+" °C.";
+      const status=document.getElementById("thermStatus");
+      status.className="status";
+      if(tj>=maxT){
+        status.classList.add("high");status.textContent="The estimate reaches or exceeds the entered maximum junction temperature.";
+      }else if(margin<20){
+        status.classList.add("warn");status.textContent="The estimated junction temperature is within 20 °C of the entered maximum. Real conditions and margin deserve close review.";
+      }else{
+        status.classList.add("good");status.textContent="The simple steady-state estimate is below the entered maximum, with the displayed temperature margin.";
+      }
+    }
+    ["thermPower","thermAmbient","thermTheta","thermMax"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateThermal);el.addEventListener("change",updateThermal);
+    });
+
+    setSwitch(false);
+    updateBjt();
+    updateGain();
+    updateMos();
+    updateThermal();
+  </script>
+</body>
+</html>
