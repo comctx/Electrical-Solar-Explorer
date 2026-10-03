@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><title>Transformer Lab</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.94}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1080px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.start{background:#fffbed;border:1px solid #e5c94a;border-radius:16px;padding:16px;margin-bottom:16px}.start h2{margin-bottom:10px}.start ol{margin:0;padding-left:22px;line-height:1.6}.start li{margin-bottom:5px}
+.grid{display:grid;gap:10px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px}input,select{width:100%;min-height:44px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}.btn{min-height:44px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}
+.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}.result strong{display:block;color:var(--navy);font-size:22px}.feedback{margin-top:12px;background:#eef7ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.feedback.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}.feedback.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three,.four{grid-template-columns:1fr}}
+</style>
+<style>.xfmr{width:100%;max-width:720px;margin:auto;display:block;background:#f8fbff;border:1px solid var(--border);border-radius:14px}.coil{stroke:#071a2e;stroke-width:4;fill:none}.core{stroke:#667581;stroke-width:7}.arrow{stroke:#0b63ce;stroke-width:3;fill:none}.meterline{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}</style>
+</head><body><header><h1>Transformer Lab</h1><p>Change turns ratio and load to see ideal transformer relationships.</p></header><main>
+<nav class="nav"><a href="index.html">← Home</a><a href="transformers.html">Transformers</a><a href="advanced-transformers-distribution.html">Advanced Transformers</a><a href="electrical-calculator.html">Calculator</a></nav>
+<section class="start"><h2>Beginner Start Here</h2><ol><li>The primary winding receives AC energy.</li><li>The secondary winding delivers AC energy to a load.</li><li>Voltage ratio follows the turns ratio: V₂/V₁ = N₂/N₁.</li><li>In an ideal transformer, current changes in the opposite direction.</li><li>Real transformers have losses, heating, regulation, insulation limits, and VA ratings not modeled here.</li></ol></section>
+<section class="panel"><h2>Set the Transformer</h2><div class="grid four">
+<div class="field"><label for="vin">Primary Voltage (V RMS)</label><input id="vin" type="number" min="1" max="480" value="120"></div>
+<div class="field"><label for="n1">Primary Turns</label><input id="n1" type="number" min="1" value="1000"></div>
+<div class="field"><label for="n2">Secondary Turns</label><input id="n2" type="number" min="1" value="100"></div>
+<div class="field"><label for="load">Load Resistance (Ω)</label><input id="load" type="number" min=".1" step=".1" value="12"></div>
+</div><div style="margin-top:10px"><button id="swap" class="btn">Swap Windings</button></div></section>
+<section class="panel"><h2>Visual Transformer</h2><svg class="xfmr" viewBox="0 0 720 300">
+<path class="core" d="M330 40V260M390 40V260"/>
+<path class="coil" d="M190 70c0-28 28-28 28 0 0-28 28-28 28 0 0-28 28-28 28 0 0-28 28-28 28 0 0-28 28-28 28 0 0-28 28-28 28 0"/>
+<path class="coil" d="M432 90c0-30 28-30 28 0 0-30 28-30 28 0 0-30 28-30 28 0 0-30 28-30 28 0"/>
+<text x="155" y="45" class="meterline">Primary</text><text x="475" y="65" class="meterline">Secondary</text>
+<path class="arrow" d="M295 150H325"/><path class="arrow" d="M395 150H425"/>
+<text id="ratioText" x="270" y="285" class="meterline"></text>
+</svg></section>
+<section class="panel"><h2>Live Results</h2><div class="grid four">
+<div class="result"><small>Secondary Voltage</small><strong id="vout"></strong></div><div class="result"><small>Secondary Current</small><strong id="i2"></strong></div><div class="result"><small>Primary Current (ideal)</small><strong id="i1"></strong></div><div class="result"><small>Load Power</small><strong id="pout"></strong></div>
+</div><div id="kind" class="feedback"></div></section>
+<section class="panel"><h2>Try These Presets</h2><div class="grid three"><button class="btn preset" data-p="stepdown">120 V → about 12 V</button><button class="btn preset" data-p="isolation">1:1 isolation ratio</button><button class="btn preset" data-p="stepup">12 V → about 120 V</button></div></section>
+<section class="panel"><h2>Safety Note</h2><p class="lead">This is an idealized educational model. It does not size conductors, fuses, insulation, cores, VA ratings, or protection. Real transformer work must follow equipment ratings, manufacturer instructions, and applicable code.</p></section>
+</main><footer>A DONCO-BAYCITY™ App</footer><script>
+function fmt(x,d=2){return Number(x.toFixed(d)).toString()}
+function calc(){const V1=Math.max(.1,+vin.value||.1),N1=Math.max(1,+n1.value||1),N2=Math.max(1,+n2.value||1),R=Math.max(.1,+load.value||.1),ratio=N2/N1,V2=V1*ratio,I2=V2/R,P=V2*I2,I1=P/V1;vout.textContent=fmt(V2,2)+" V";i2.textContent=fmt(I2,3)+" A";i1.textContent=fmt(I1,3)+" A";pout.textContent=fmt(P,2)+" W";ratioText.textContent="Turns ratio N2/N1 = "+fmt(ratio,3);kind.textContent=ratio<1?"Step-down: secondary voltage is lower and ideal available current is proportionally higher.":ratio>1?"Step-up: secondary voltage is higher and ideal available current is proportionally lower.":"1:1 ratio: ideal secondary voltage equals primary voltage."}
+[vin,n1,n2,load].forEach(e=>e.addEventListener("input",calc));swap.onclick=()=>{const a=n1.value;n1.value=n2.value;n2.value=a;calc()};
+document.querySelectorAll(".preset").forEach(b=>b.onclick=()=>{if(b.dataset.p==="stepdown"){vin.value=120;n1.value=1000;n2.value=100;load.value=12}if(b.dataset.p==="isolation"){vin.value=120;n1.value=1000;n2.value=1000;load.value=120}if(b.dataset.p==="stepup"){vin.value=12;n1.value=100;n2.value=1000;load.value=1200}calc()});calc();
+</script></body></html>
