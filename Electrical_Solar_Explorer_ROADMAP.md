@@ -303,21 +303,29 @@ Step through a simple instruction one clock cycle at a time and watch data move 
 - Sensing distance, hysteresis, response time, and output types
 - Interactive switch and sensor simulations
 
-## 12. Virtual Test Equipment
+## 12. Test Equipment Explorer
 ### Virtual Multimeter
-- Voltage
-- Current
+- DC and AC voltage
 - Resistance
 - Continuity
 - Diode mode
+- Simulated readings and explanations
 
-User places virtual probes on circuit points and sees simulated readings.
+### Oscilloscope Explorer
+- Sine, square, and triangle waveforms
+- Frequency, period, amplitude, and peak-to-peak voltage
+- Waveform visualization
 
-Possible future tools:
-- Oscilloscope
-- Clamp meter
-- Logic probe
-- Bench power supply
+### Other Test Equipment
+- Clamp meter concepts
+- Inrush current
+- Insulation resistance / megohmmeter
+- Logic probe basics
+- Continuity testing
+- Safe meter lead and jack use
+- CAT ratings and high-energy measurement concepts
+- Common measurement mistakes
+- Oscilloscope grounding cautions
 
 ## 13. Interactive Circuit Lab
 ### Build It and Test It
