@@ -63,13 +63,58 @@ const quizzes={
 ["After a repair you should:",["Verify normal operation","Assume it is fixed","Remove protection","Skip testing"],0]]
 };
 
+const explanations={
+"Electrical Basics":[
+"Resistance is measured in ohms (Ω); it describes opposition to current flow.",
+"Ohm's Law relates voltage, current, and resistance: V = I × R.",
+"DC means direct current: the current has a consistent polarity/direction rather than alternating periodically.",
+"Electrical power is measured in watts (W).",
+"Electric current is measured in amperes, or amps (A)."
+],
+"Components":[
+"A capacitor stores energy in an electric field between its conductive plates.",
+"A diode is designed to conduct primarily in one direction when properly biased.",
+"A MOSFET is a semiconductor device commonly used as an electronically controlled switch or amplifier.",
+"An inductor stores energy in the magnetic field produced by current through its winding.",
+"LED stands for light-emitting diode, so an LED is a specialized diode."
+],
+"Motors & Controls":[
+"VFD means Variable Frequency Drive; it controls AC motor operation by varying output frequency and voltage.",
+"A contactor is an electrically operated switching device intended to control power loads such as motors.",
+"Motor overload protection responds to sustained overcurrent/heating conditions that can damage a motor.",
+"A limit switch is commonly operated by machine position or mechanical travel.",
+"Three-phase motors are commonly controlled with starters/contactors or variable-frequency drives."
+],
+"PLCs & Automation":[
+"PLC means Programmable Logic Controller, an industrial controller used for machine and process logic.",
+"4–20 mA is a standard industrial analog signal range used by many transmitters and control systems.",
+"Ladder logic is a graphical programming language widely associated with PLC control.",
+"HMI means Human-Machine Interface; it lets an operator view and interact with a machine or process.",
+"A PNP sensor output is commonly called sourcing because it supplies positive voltage/current to the input load."
+],
+"Test Equipment":[
+"An oscilloscope plots an electrical signal vertically as voltage and horizontally as time.",
+"A clamp meter senses the magnetic field around a current-carrying conductor to determine current.",
+"Resistance measurements are normally made on a de-energized circuit because the meter supplies its own small test signal.",
+"A megohmmeter applies a test voltage to evaluate high insulation resistance.",
+"A logic probe is designed to indicate digital logic states and pulse activity."
+],
+"Troubleshooting":[
+"Defining the symptom gives you a known starting point and prevents random part replacement.",
+"An open circuit is a broken or interrupted current path, so normal current cannot flow through that path.",
+"A short circuit creates an unintended low-resistance path that can allow excessive current.",
+"Ohm's Law applies to a resistive bad connection: voltage drop increases with current and resistance (V = I × R).",
+"After a repair, normal operation and protection should be verified rather than assumed."
+]
+};
+
 const cats=document.getElementById("categories"),panel=document.getElementById("quizPanel"),finish=document.getElementById("finishPanel");
 let category="",index=0,score=0,selected=null,checked=false;
 function saved(){try{return JSON.parse(localStorage.getItem("ateQuizProgress")||"{}")}catch{return{}}}
 function renderCats(){const s=saved();cats.innerHTML=Object.keys(quizzes).map(name=>'<div class="card category-card"><strong>'+name+'</strong><p>5 questions</p><p class="note">'+(s[name]!==undefined?'Best score: '+s[name]+'/5':'Not completed yet')+'</p><button class="btn primary" onclick="startQuiz(\''+name.replace(/'/g,"\'")+'\')">Start Quiz</button></div>').join("")}
 window.startQuiz=function(name){category=name;index=0;score=0;selected=null;checked=false;document.querySelector(".panel").style.display="none";finish.style.display="none";panel.style.display="block";showQ()}
 function showQ(){const q=quizzes[category][index];qmeta.textContent=category+" · Question "+(index+1)+" of "+quizzes[category].length;qtext.textContent=q[0];options.innerHTML=q[1].map((x,i)=>'<button class="quiz-option" data-i="'+i+'">'+x+'</button>').join("");[...options.children].forEach(b=>b.onclick=()=>{if(checked)return;selected=+b.dataset.i;[...options.children].forEach(x=>x.classList.toggle("selected",x===b));nextBtn.disabled=false});feedback.textContent="Choose an answer.";checkBtn.disabled=false;nextBtn.disabled=true;nextBtn.textContent=index===quizzes[category].length-1?"Finish Quiz":"Next Question";checked=false;selected=null}
-checkBtn.onclick=()=>{if(selected===null){feedback.textContent="Choose an answer first.";return}checked=true;const q=quizzes[category][index],correct=q[2];[...options.children].forEach((b,i)=>{if(i===correct)b.classList.add("correct");else if(i===selected)b.classList.add("wrong")});if(selected===correct){score++;feedback.textContent="Correct."}else feedback.textContent="Not quite. The correct answer is "+q[1][correct]+".";checkBtn.disabled=true;nextBtn.disabled=false};
+checkBtn.onclick=()=>{if(selected===null){feedback.textContent="Choose an answer first.";return}checked=true;const q=quizzes[category][index],correct=q[2],why=explanations[category][index];[...options.children].forEach((b,i)=>{if(i===correct)b.classList.add("correct");else if(i===selected)b.classList.add("wrong")});if(selected===correct){score++;feedback.textContent="Correct. Why: "+why}else feedback.textContent="Not quite. The correct answer is "+q[1][correct]+". Why: "+why;checkBtn.disabled=true;nextBtn.disabled=false};
 nextBtn.onclick=()=>{if(selected===null)return;if(!checked&&selected===quizzes[category][index][2])score++;index++;if(index<quizzes[category].length)showQ();else finishQuiz()};
 function finishQuiz(){panel.style.display="none";finish.style.display="block";finalScore.textContent=score+" / "+quizzes[category].length;finalText.textContent=score===5?"Excellent — perfect score.":score>=4?"Very good — you know this section well.":score>=3?"Good start — review the missed ideas and try again.":"Review the related Explorer pages and try again.";const s=saved();s[category]=Math.max(score,s[category]||0);localStorage.setItem("ateQuizProgress",JSON.stringify(s));renderCats()}
 backBtn.onclick=()=>{finish.style.display="none";document.querySelector(".panel").style.display="block"};renderCats();
