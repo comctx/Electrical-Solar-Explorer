@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Wiring & Installation Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;padding:24px 18px 20px;text-align:center;
+    }
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1000px;margin:0 auto;padding:18px}
+    .page-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .page-nav a{
+      text-decoration:none;min-height:46px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:11px;padding:10px 14px;font-weight:800;border:1px solid #9fc8ef;
+      background:#eef7ff;color:var(--navy);
+    }
+    .page-nav a.active{background:var(--yellow);border-color:#e4ba16}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px;
+    }
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    .lead,.note{color:var(--muted);line-height:1.5}
+    .lead{margin:0 0 16px}.note{font-size:13px;margin:10px 0 0}
+    .grid{display:grid;gap:12px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input,select,button{font:inherit}
+    input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white;color:var(--text)}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px}
+    .result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .result strong{color:var(--navy);font-size:clamp(20px,4vw,28px)}
+    .formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+    .warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:10px;padding:10px 12px;color:#6a4300;font-weight:700;line-height:1.45}
+    .status{margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy);line-height:1.45}
+    .status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+    .status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
+    .status.high{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+
+    .beginner-panel{background:linear-gradient(180deg,#fff 0%,#f8fbff 100%);border:2px solid #b9d7f5}
+    .concept-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .concept-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .concept-card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}
+    .concept-card p{margin:0;color:#33495b;line-height:1.5}
+    .badge{display:inline-block;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#e9f3ff;color:var(--navy);border:1px solid #b9d7f5}
+
+    .fault-stage{display:grid;grid-template-columns:minmax(300px,1fr) minmax(0,1fr);gap:16px;align-items:center;margin-top:14px}
+    .fault-visual{min-height:250px;border:1px solid var(--border);border-radius:14px;background:#fbfdff;padding:20px;position:relative}
+    .conductor-line{height:12px;border-radius:999px;margin:28px 0;background:#2d2d2d;position:relative}
+    .neutral-line{background:#cfd7de}.ground-line{background:#55a05f}
+    .fault-arrow{position:absolute;right:16%;top:79px;font-size:34px;font-weight:900;color:#b42318;opacity:0}
+    .fault-visual.fault .fault-arrow{opacity:1}
+    .device-box{position:absolute;left:42%;top:82px;width:125px;height:74px;border:4px solid #607080;border-radius:12px;background:white;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--navy)}
+    .fault-visual.fault .device-box{border-color:#b42318;background:#fdecea}
+    .trip-badge{position:absolute;right:18px;bottom:18px;padding:8px 12px;border-radius:999px;background:#eaf7ef;border:1px solid #9ed0b3;color:#185c3b;font-weight:900}
+    .fault-visual.fault .trip-badge{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
+    .button-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .action{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}
+    .action.primary{background:var(--yellow);border-color:#e4ba16}
+
+    .material-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .material-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .material-card strong{display:block;color:var(--navy);margin-bottom:5px}
+
+    @media(max-width:760px){
+      main{padding:12px}.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .result-grid,.concept-grid,.material-grid,.fault-stage{grid-template-columns:1fr}
+    }
+    footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Wiring & Installation Explorer</h1>
+  <p>Conductors, insulation, AWG, ampacity, ground faults, overcurrent, loads, and wiring fundamentals.</p>
+</header>
+
+<main>
+  <nav class="page-nav" aria-label="App pages">
+    <a href="index.html">All Things Electrical</a>
+    <a href="electrical-basics.html">Electrical Basics</a>
+    <a href="wiring-installation.html" class="active">Wiring & Installation</a>
+    <a href="capacitor.html">Capacitors</a>
+    <a href="inductors.html">Inductors & Coils</a>
+    <a href="transformers.html">Transformers</a>
+    <a href="diodes.html">Diodes</a>
+    <a href="transistors.html">Transistors</a>
+    <a href="relays.html">Relays & Contactors</a>
+    <a href="integrated-circuits.html">Integrated Circuits</a>
+    <a href="processors.html">Processors</a>
+  </nav>
+
+  <section class="panel beginner-panel">
+    <h2>Beginner Start Here</h2>
+    <p class="lead">These are the basic terms used when talking about electrical wiring and installation.</p>
+    <div class="concept-grid">
+      <div class="concept-card"><strong>Conductor</strong><p>A material that carries electric current. Copper and aluminum are common wiring conductors.</p><span class="badge">Carries current</span></div>
+      <div class="concept-card"><strong>Insulation</strong><p>A non-conductive covering around a conductor that helps prevent unwanted contact, leakage, and short circuits.</p><span class="badge">Protective covering</span></div>
+      <div class="concept-card"><strong>AWG</strong><p>American Wire Gauge is a standardized way of describing conductor size. In AWG, a smaller gauge number generally means a larger conductor.</p><span class="badge">Wire size</span></div>
+      <div class="concept-card"><strong>Ampacity</strong><p>The maximum current a conductor is permitted to carry under specified conditions without exceeding temperature limits.</p><span class="badge">Current capability</span></div>
+      <div class="concept-card"><strong>Ground Fault / Earth Leakage</strong><p>Unwanted current flowing to ground or earth instead of remaining in the intended circuit path. GFCI/RCD devices detect current imbalance and can disconnect the circuit.</p><span class="badge">Fault current</span></div>
+      <div class="concept-card"><strong>Overcurrent</strong><p>Current above what a conductor, circuit, or equipment is designed to carry. Fuses and circuit breakers are common overcurrent-protection devices.</p><span class="badge">Too much current</span></div>
+      <div class="concept-card"><strong>Load</strong><p>A device or piece of equipment that uses electrical power—for example a lamp, heater, motor, appliance, or electronic circuit.</p><span class="badge">Consumes power</span></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Copper vs. Aluminum Conductors</h2>
+    <div class="material-grid">
+      <div class="material-card"><strong>Copper</strong><p class="lead">High conductivity, common in branch circuits and electronics, and mechanically compact for a given resistance.</p></div>
+      <div class="material-card"><strong>Aluminum</strong><p class="lead">Lighter and often economical for larger conductors, but terminations, conductor size, connector ratings, oxide control, and installation practices matter.</p></div>
+    </div>
+    <div class="warning">Never assume a connector or device listed for copper is also suitable for aluminum. Use conductors, terminals, compounds, and installation methods approved for the actual material and application.</div>
+  </section>
+
+  <section class="panel">
+    <h2>AWG Resistance Estimator</h2>
+    <p class="lead">Estimate conductor resistance from wire size, material, and one-way length.</p>
+    <div class="grid four">
+      <div class="field"><label for="awgSize">AWG size</label>
+        <select id="awgSize">
+          <option>18</option><option>16</option><option>14</option><option selected>12</option><option>10</option>
+          <option>8</option><option>6</option><option>4</option><option>3</option><option>2</option><option>1</option>
+          <option>1/0</option><option>2/0</option><option>3/0</option><option>4/0</option>
+        </select>
+      </div>
+      <div class="field"><label for="awgMaterial">Material</label><select id="awgMaterial"><option value="copper">Copper</option><option value="aluminum">Aluminum</option></select></div>
+      <div class="field"><label for="awgLength">One-way length (ft)</label><input id="awgLength" type="number" min="0" step="any" value="100"></div>
+      <div class="field"><label for="awgCurrent">Current (A)</label><input id="awgCurrent" type="number" min="0" step="any" value="10"></div>
+    </div>
+    <div class="result-grid">
+      <div class="result"><small>Estimated loop resistance</small><strong id="awgResistance">—</strong></div>
+      <div class="result"><small>Estimated voltage drop</small><strong id="awgDrop">—</strong></div>
+      <div class="result"><small>Conductor loss</small><strong id="awgLoss">—</strong></div>
+    </div>
+    <div id="awgFormula" class="formula">Loop resistance uses twice the one-way length.</div>
+    <p class="note">Resistance values are approximate and vary with conductor construction and temperature. This tool does not determine code-compliant ampacity.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Ampacity & Overcurrent Checker</h2>
+    <p class="lead">Compare a load current with an ampacity value and overcurrent-protection rating that you enter from the applicable code, equipment instructions, or engineering data.</p>
+    <div class="grid three">
+      <div class="field"><label for="ampLoad">Load current (A)</label><input id="ampLoad" type="number" min="0" step="any" value="12"></div>
+      <div class="field"><label for="ampWire">Entered conductor ampacity (A)</label><input id="ampWire" type="number" min="0.001" step="any" value="20"></div>
+      <div class="field"><label for="ampProtection">Breaker/fuse rating (A)</label><input id="ampProtection" type="number" min="0.001" step="any" value="20"></div>
+    </div>
+    <div class="result-grid">
+      <div class="result"><small>Load vs. conductor ampacity</small><strong id="ampWirePct">—</strong></div>
+      <div class="result"><small>Load vs. protection rating</small><strong id="ampProtectionPct">—</strong></div>
+      <div class="result"><small>Entered protection vs. ampacity</small><strong id="ampCompare">—</strong></div>
+    </div>
+    <div id="ampStatus" class="status">Enter ratings from the real installation.</div>
+    <div class="warning">Ampacity is not determined by AWG alone. Insulation temperature rating, terminal ratings, ambient temperature, conductor count, cable/conduit conditions, continuous loads, equipment rules, and local electrical code all matter.</div>
+  </section>
+
+  <section class="panel">
+    <h2>Ground Fault / Earth Leakage Simulator</h2>
+    <p class="lead">See the difference between normal current returning on the intended path and fault current leaking toward ground.</p>
+    <div class="fault-stage">
+      <div id="faultVisual" class="fault-visual">
+        <div class="conductor-line"></div>
+        <div class="device-box">LOAD</div>
+        <div class="conductor-line neutral-line"></div>
+        <div class="conductor-line ground-line"></div>
+        <div class="fault-arrow">↓</div>
+        <div id="tripBadge" class="trip-badge">Balanced</div>
+      </div>
+      <div>
+        <h3 id="faultTitle">Normal Operation</h3>
+        <p id="faultExplain" class="lead">Current leaving on the energized conductor returns on the intended circuit conductor, so a GFCI/RCD sees little or no imbalance.</p>
+        <div class="button-row">
+          <button id="normalBtn" class="action primary" type="button">Normal</button>
+          <button id="faultBtn" class="action" type="button">Ground Fault</button>
+        </div>
+        <div id="faultStatus" class="status good">No leakage is shown in this simplified example.</div>
+      </div>
+    </div>
+    <div class="warning">A GFCI/RCD is designed to reduce shock risk from current imbalance; it is not a substitute for overcurrent protection, proper grounding/bonding, correct wiring, or safe work practices.</div>
+  </section>
+
+  <section class="panel">
+    <h2>Load & Power Calculator</h2>
+    <p class="lead">Estimate current from voltage and power for a simple load.</p>
+    <div class="grid three">
+      <div class="field"><label for="loadVoltage">Voltage (V)</label><input id="loadVoltage" type="number" min="0.001" step="any" value="120"></div>
+      <div class="field"><label for="loadPower">Load power (W)</label><input id="loadPower" type="number" min="0" step="any" value="1200"></div>
+      <div class="field"><label for="loadPf">Power factor</label><input id="loadPf" type="number" min="0.01" max="1" step="0.01" value="1"></div>
+    </div>
+    <div class="result-grid">
+      <div class="result"><small>Estimated current</small><strong id="loadCurrent">—</strong></div>
+      <div class="result"><small>Apparent power</small><strong id="loadVA">—</strong></div>
+    </div>
+    <div id="loadFormula" class="formula">Single-phase estimate: I ≈ P ÷ (V × PF).</div>
+    <p class="note">Motors, transformers, electronic power supplies, and nonlinear loads can have starting current, harmonics, or other behavior not captured by this simple steady-state calculation.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Installation Basics</h2>
+    <div class="concept-grid">
+      <div class="concept-card"><strong>Conductor Identification</strong><p>Color can help, but it should never be the only method used to determine conductor function.</p></div>
+      <div class="concept-card"><strong>Terminations</strong><p>Connections must match conductor material, size, temperature rating, and terminal listing, and be tightened according to equipment instructions.</p></div>
+      <div class="concept-card"><strong>Protection</strong><p>Breakers and fuses protect conductors and equipment against overcurrent when properly selected and installed.</p></div>
+      <div class="concept-card"><strong>Environment</strong><p>Wet locations, heat, sunlight, burial, chemicals, vibration, and physical damage all affect wiring-method and insulation choices.</p></div>
+    </div>
+    <div class="warning">This page teaches concepts, not jurisdiction-specific installation instructions. Electrical work can present shock, arc-flash, and fire hazards. Follow applicable code, permits, equipment instructions, and qualified-person requirements for real installations.</div>
+  </section>
+</main>
+
+<footer>A DONCO-BAYCITY™ App</footer>
+
+<script>
+  function fmt(n,d=3){if(!Number.isFinite(n))return "—";return n.toLocaleString(undefined,{maximumFractionDigits:d});}
+  function formatOhms(r){if(r>=1e3)return fmt(r/1e3,3)+" kΩ";if(r<1)return fmt(r*1000,3)+" mΩ";return fmt(r,3)+" Ω";}
+  function formatPower(w){if(w>=1000)return fmt(w/1000,3)+" kW";if(w>=1)return fmt(w,3)+" W";return fmt(w*1000,3)+" mW";}
+
+  const copper={
+    "18":6.385,"16":4.016,"14":2.525,"12":1.588,"10":0.9989,"8":0.6282,"6":0.3951,
+    "4":0.2485,"3":0.1970,"2":0.1563,"1":0.1239,"1/0":0.0983,"2/0":0.0779,"3/0":0.0618,"4/0":0.0490
+  };
+
+  function updateAwg(){
+    const size=document.getElementById("awgSize").value;
+    const material=document.getElementById("awgMaterial").value;
+    const length=Math.max(0,Number(document.getElementById("awgLength").value)||0);
+    const current=Math.max(0,Number(document.getElementById("awgCurrent").value)||0);
+    const ohmsPer1000=copper[size]*(material==="aluminum"?1.64:1);
+    const loopR=ohmsPer1000*(length*2)/1000;
+    const drop=current*loopR;
+    const loss=current*current*loopR;
+    document.getElementById("awgResistance").textContent=formatOhms(loopR);
+    document.getElementById("awgDrop").textContent=fmt(drop,3)+" V";
+    document.getElementById("awgLoss").textContent=formatPower(loss);
+    document.getElementById("awgFormula").textContent=
+      (material==="copper"?"Copper":"Approx. aluminum")+" "+size+" AWG ≈ "+fmt(ohmsPer1000,4)+" Ω/1000 ft; loop resistance = "+formatOhms(loopR)+".";
+  }
+  ["awgSize","awgMaterial","awgLength","awgCurrent"].forEach(id=>{
+    const el=document.getElementById(id);el.addEventListener("input",updateAwg);el.addEventListener("change",updateAwg);
+  });
+
+  function updateAmpacity(){
+    const load=Math.max(0,Number(document.getElementById("ampLoad").value)||0);
+    const ampacity=Math.max(.001,Number(document.getElementById("ampWire").value)||.001);
+    const protection=Math.max(.001,Number(document.getElementById("ampProtection").value)||.001);
+    const wp=load/ampacity*100,pp=load/protection*100;
+    document.getElementById("ampWirePct").textContent=fmt(wp,1)+"%";
+    document.getElementById("ampProtectionPct").textContent=fmt(pp,1)+"%";
+    document.getElementById("ampCompare").textContent=protection<=ampacity?"≤ ampacity":"> ampacity";
+    const s=document.getElementById("ampStatus");s.className="status";
+    if(load>ampacity||protection>ampacity){s.classList.add("high");s.textContent="One or more entered values exceed the entered conductor ampacity.";}
+    else if(wp>=80||pp>=80){s.classList.add("warn");s.textContent="The load is close to one or more entered ratings. Continuous-load and code rules may require additional margin.";}
+    else{s.classList.add("good");s.textContent="The entered load is below the entered ampacity and protection ratings. Verify that those ratings are appropriate for the actual installation.";}
+  }
+  ["ampLoad","ampWire","ampProtection"].forEach(id=>{
+    const el=document.getElementById(id);el.addEventListener("input",updateAmpacity);el.addEventListener("change",updateAmpacity);
+  });
+
+  function setFault(fault){
+    document.getElementById("faultVisual").classList.toggle("fault",fault);
+    document.getElementById("faultTitle").textContent=fault?"Ground Fault / Leakage":"Normal Operation";
+    document.getElementById("faultExplain").textContent=fault
+      ?"Some current is leaving the intended return path and flowing toward ground, creating an imbalance that a GFCI/RCD can detect."
+      :"Current leaving on the energized conductor returns on the intended circuit conductor, so a GFCI/RCD sees little or no imbalance.";
+    document.getElementById("tripBadge").textContent=fault?"Imbalance":"Balanced";
+    const s=document.getElementById("faultStatus");s.className="status "+(fault?"warn":"good");
+    s.textContent=fault?"A protective device may trip when leakage exceeds its operating threshold.":"No leakage is shown in this simplified example.";
+  }
+  document.getElementById("normalBtn").addEventListener("click",()=>setFault(false));
+  document.getElementById("faultBtn").addEventListener("click",()=>setFault(true));
+
+  function updateLoad(){
+    const v=Math.max(.001,Number(document.getElementById("loadVoltage").value)||.001);
+    const p=Math.max(0,Number(document.getElementById("loadPower").value)||0);
+    const pf=Math.min(1,Math.max(.01,Number(document.getElementById("loadPf").value)||1));
+    const i=p/(v*pf);
+    const va=p/pf;
+    document.getElementById("loadCurrent").textContent=fmt(i,3)+" A";
+    document.getElementById("loadVA").textContent=fmt(va,3)+" VA";
+    document.getElementById("loadFormula").textContent="I ≈ "+fmt(p,3)+" W ÷ ("+fmt(v,3)+" V × "+fmt(pf,2)+") = "+fmt(i,3)+" A.";
+  }
+  ["loadVoltage","loadPower","loadPf"].forEach(id=>{
+    const el=document.getElementById(id);el.addEventListener("input",updateLoad);el.addEventListener("change",updateLoad);
+  });
+
+  updateAwg();updateAmpacity();setFault(false);updateLoad();
+</script>
+</body>
+</html>
