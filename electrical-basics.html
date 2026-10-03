@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Electrical Basics — AC/DC & Circuits</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+      --good:#1f7a4d;--danger:#b42318;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;padding:24px 18px 20px;text-align:center;
+    }
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1000px;margin:0 auto;padding:18px}
+    .page-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .page-nav a{
+      text-decoration:none;min-height:46px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:11px;padding:10px 14px;font-weight:800;border:1px solid #9fc8ef;
+      background:#eef7ff;color:var(--navy);
+    }
+    .page-nav a.active{background:var(--yellow);border-color:#e4ba16}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px;
+    }
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    h3{margin:0 0 8px;color:var(--navy)}
+    .lead,.note{color:var(--muted);line-height:1.5}
+    .lead{margin:0 0 16px}.note{font-size:13px;margin:10px 0 0}
+    .grid{display:grid;gap:12px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input,select,button{font:inherit}
+    input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white;color:var(--text)}
+    input:focus,select:focus,button:focus{outline:3px solid rgba(11,99,206,.22);outline-offset:2px}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px;min-width:0}
+    .result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .result strong{color:var(--navy);font-size:clamp(20px,4vw,28px);word-break:break-word}
+    .formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+    .warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:10px;padding:10px 12px;color:#6a4300;font-weight:700;line-height:1.45}
+    .status{margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy);line-height:1.45}
+    .status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+    .status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
+    .status.high{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+
+    .beginner-panel{background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:2px solid #b9d7f5}
+    .beginner-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .beginner-card{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:13px;padding:13px}
+    .beginner-card strong{display:block;color:var(--navy);margin-bottom:5px;font-size:16px}
+    .beginner-card p{margin:0;color:#33495b;line-height:1.5;font-size:14px}
+    .other-words{margin-top:14px;background:#fff7cc;border:1px solid #e5c94a;border-radius:13px;padding:14px}
+    .other-words strong{display:block;color:var(--navy);font-size:17px;margin-bottom:8px}
+    .other-words-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .other-words-item{background:white;border:1px solid #eadb82;border-radius:10px;padding:10px;font-weight:800;color:#263b4c;line-height:1.4}
+
+    .concept-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .concept-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .concept-card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}
+    .concept-card p{margin:0;color:#33495b;line-height:1.5}
+    .badge{display:inline-block;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#e9f3ff;color:var(--navy);border:1px solid #b9d7f5}
+
+    .circuit-stage{margin-top:14px;border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:18px;display:grid;grid-template-columns:minmax(320px,1fr) minmax(0,1fr);gap:18px;align-items:center}
+    .circuit-visual{position:relative;min-height:270px;background:white;border:1px solid #d7e1ea;border-radius:14px;overflow:hidden}
+    .wire-line{position:absolute;background:#607080;border-radius:999px}
+    .wire-top{left:14%;right:14%;top:22%;height:7px}
+    .wire-bottom{left:14%;right:14%;bottom:22%;height:7px}
+    .wire-left{left:14%;top:22%;bottom:22%;width:7px}
+    .wire-right{right:14%;top:22%;bottom:22%;width:7px}
+    .battery{position:absolute;left:8%;top:50%;transform:translateY(-50%);width:52px;height:90px}
+    .battery .long{position:absolute;left:7px;top:9px;width:7px;height:72px;background:var(--navy)}
+    .battery .short{position:absolute;right:7px;top:24px;width:7px;height:42px;background:var(--navy)}
+    .lamp{position:absolute;right:7%;top:50%;transform:translateY(-50%);width:70px;height:70px;border:6px solid #8a8f95;border-radius:50%;background:#e6edf3;transition:.2s}
+    .lamp.on{background:#fff7cc;border-color:#e5c94a;box-shadow:0 0 28px rgba(255,212,59,.55)}
+    .switch-arm{position:absolute;top:18%;left:43%;width:95px;height:8px;background:#4e5b66;border-radius:999px;transform-origin:left center;transform:rotate(-18deg);transition:.2s}
+    .switch-arm.closed{transform:rotate(0deg)}
+    .switch-dot{position:absolute;top:18%;left:42%;width:22px;height:22px;border-radius:50%;background:var(--navy)}
+    .flow-dot{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--yellow);top:20%;left:18%;opacity:0}
+    .flowing .flow-dot{opacity:1;animation:loopflow 2.4s linear infinite}
+    @keyframes loopflow{
+      0%{left:18%;top:20%}25%{left:78%;top:20%}50%{left:78%;top:76%}75%{left:18%;top:76%}100%{left:18%;top:20%}
+    }
+
+    .button-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .action{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}
+    .action.primary{background:var(--yellow);border-color:#e4ba16}
+
+    .parallel-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+    .mini-circuit{border:1px solid #b9d7f5;background:#f8fbff;border-radius:14px;padding:14px}
+    .mini-circuit strong{color:var(--navy)}
+    .branch-lines{display:grid;gap:8px;margin-top:10px}
+    .branch{height:14px;border-radius:999px;background:#d6e4ef;position:relative;overflow:hidden}
+    .branch::after{content:"";position:absolute;left:0;top:0;bottom:0;background:var(--electric);width:var(--fill,50%)}
+
+    .wave-wrap{margin-top:14px;border:1px solid var(--border);border-radius:14px;background:#fbfdff;padding:12px}
+    .wave-wrap svg{width:100%;height:auto;display:block;background:white;border:1px solid #d7e1ea;border-radius:10px}
+    .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:13px;font-weight:700}
+    .legend span::before{content:"";display:inline-block;width:18px;height:4px;border-radius:999px;margin-right:6px;vertical-align:middle}
+    .legend .ac::before{background:#0b63ce}.legend .dc::before{background:#d18a00}
+
+    .wiring-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .wire-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .wire-card strong{display:block;color:var(--navy);margin-bottom:5px}
+    .wire-card p{margin:0;color:#33495b;line-height:1.5}
+    .wire-swatch{height:12px;border-radius:999px;margin-bottom:10px}
+    .hot{background:#2d2d2d}.neutral{background:#d7dde2;border:1px solid #9aa6b2}.ground{background:#55a05f}
+
+    @media(max-width:760px){
+      main{padding:12px}.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .result-grid,.beginner-grid,.other-words-grid,.concept-grid,.wiring-grid{grid-template-columns:1fr}
+      .circuit-stage,.parallel-wrap{grid-template-columns:1fr}
+    }
+    footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Electrical Basics — AC/DC & Circuits</h1>
+    <p>Circuits, series and parallel, open and short circuits, AC/DC, hot, neutral, ground, frequency, and RMS.</p>
+  </header>
+
+  <main>
+    <nav class="page-nav" aria-label="App pages">
+      <a href="index.html">All Things Electrical</a>
+      <a href="electrical-basics.html" class="active">Electrical Basics</a>
+      <a href="capacitor.html">Capacitors</a>
+      <a href="inductors.html">Inductors & Coils</a>
+      <a href="transformers.html">Transformers</a>
+      <a href="diodes.html">Diodes</a>
+      <a href="transistors.html">Transistors</a>
+      <a href="relays.html">Relays & Contactors</a>
+      <a href="integrated-circuits.html">Integrated Circuits</a>
+      <a href="processors.html">Processors</a>
+    </nav>
+
+    <section class="panel beginner-panel">
+      <h2>Beginner Start Here</h2>
+      <p class="lead">These are the core ideas that make the rest of All Things Electrical easier to understand.</p>
+      <div class="beginner-grid">
+        <div class="beginner-card"><strong>Voltage</strong><p>Voltage is electrical potential difference—the “push” that can drive current through a circuit.</p></div>
+        <div class="beginner-card"><strong>Current</strong><p>Current is the rate of electric charge flow through a path.</p></div>
+        <div class="beginner-card"><strong>Resistance</strong><p>Resistance opposes current flow and is measured in ohms.</p></div>
+        <div class="beginner-card"><strong>Power</strong><p>Electrical power is the rate at which electrical energy is transferred or converted, measured in watts.</p></div>
+        <div class="beginner-card"><strong>AC</strong><p>Alternating current changes direction periodically. Utility power systems use AC.</p></div>
+        <div class="beginner-card"><strong>DC</strong><p>Direct current maintains one polarity direction. Batteries and many electronic circuits use DC.</p></div>
+      </div>
+      <div class="other-words">
+        <strong>In Other Words</strong>
+        <div class="other-words-grid">
+          <div class="other-words-item">Voltage is the push.</div>
+          <div class="other-words-item">Current is the flow.</div>
+          <div class="other-words-item">Resistance limits the flow.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Circuit Basics</h2>
+      <div class="concept-grid">
+        <div class="concept-card"><strong>Circuit</strong><p>A complete conductive path that allows current to flow from a source, through the load, and back to the source.</p><span class="badge">Complete path</span></div>
+        <div class="concept-card"><strong>Series Circuit</strong><p>Components are connected end-to-end. The same current flows through every series component.</p><span class="badge">Same current</span></div>
+        <div class="concept-card"><strong>Parallel Circuit</strong><p>Components are connected across the same two nodes. Each branch has the same voltage, while total current splits among the branches.</p><span class="badge">Same voltage</span></div>
+        <div class="concept-card"><strong>Open Circuit</strong><p>A broken or disconnected path. With no complete path, normal circuit current does not flow.</p><span class="badge">Broken path</span></div>
+        <div class="concept-card"><strong>Short Circuit</strong><p>An unintended very-low-resistance path that can allow dangerously high current unless protective devices interrupt it.</p><span class="badge">Low resistance</span></div>
+        <div class="concept-card"><strong>Ground / Earth</strong><p>A reference point and/or protective connection to earth or bonded conductive parts, depending on the system. Equipment grounding normally is not intended to carry regular load current.</p><span class="badge">Reference / fault path</span></div>
+        <div class="concept-card"><strong>Neutral</strong><p>A grounded circuit conductor that normally carries return current in many AC systems. Neutral and equipment ground are not interchangeable.</p><span class="badge">Circuit conductor</span></div>
+        <div class="concept-card"><strong>Hot / Live / Phase</strong><p>A conductor energized at voltage relative to neutral or ground. It can present a shock hazard even when a load is switched off elsewhere.</p><span class="badge">Energized conductor</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Open vs. Closed Circuit Simulator</h2>
+      <p class="lead">Open and close the switch to see why a complete path is required for current to flow.</p>
+      <div class="circuit-stage">
+        <div id="circuitVisual" class="circuit-visual">
+          <div class="wire-line wire-top"></div><div class="wire-line wire-bottom"></div><div class="wire-line wire-left"></div><div class="wire-line wire-right"></div>
+          <div class="battery"><div class="long"></div><div class="short"></div></div>
+          <div id="lamp" class="lamp"></div>
+          <div class="switch-dot"></div><div id="switchArm" class="switch-arm"></div>
+          <div class="flow-dot"></div>
+        </div>
+        <div>
+          <h3 id="circuitTitle">Open Circuit</h3>
+          <p id="circuitExplain" class="lead">The path is broken at the switch, so current does not circulate through the load.</p>
+          <div class="button-row">
+            <button id="closeCircuit" class="action primary" type="button">Close Circuit</button>
+            <button id="openCircuit" class="action" type="button">Open Circuit</button>
+          </div>
+          <div id="circuitStatus" class="status">Current: 0 A in this ideal open-circuit example.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Series vs. Parallel Calculator</h2>
+      <p class="lead">Compare two resistors connected in series or parallel from the same supply voltage.</p>
+      <div class="grid four">
+        <div class="field"><label for="spVoltage">Supply voltage (V)</label><input id="spVoltage" type="number" min="0" step="any" value="12"></div>
+        <div class="field"><label for="spR1">R1 (Ω)</label><input id="spR1" type="number" min="0.000001" step="any" value="6"></div>
+        <div class="field"><label for="spR2">R2 (Ω)</label><input id="spR2" type="number" min="0.000001" step="any" value="6"></div>
+      </div>
+      <div class="parallel-wrap">
+        <div class="mini-circuit">
+          <strong>Series</strong>
+          <div class="result-grid" style="grid-template-columns:1fr 1fr">
+            <div class="result"><small>Total resistance</small><strong id="seriesR">—</strong></div>
+            <div class="result"><small>Circuit current</small><strong id="seriesI">—</strong></div>
+          </div>
+          <div class="branch-lines"><div class="branch" id="seriesBranch" style="--fill:50%"></div></div>
+          <p class="note">The same current flows through R1 and R2. The source voltage divides across them.</p>
+        </div>
+        <div class="mini-circuit">
+          <strong>Parallel</strong>
+          <div class="result-grid" style="grid-template-columns:1fr 1fr">
+            <div class="result"><small>Total resistance</small><strong id="parallelR">—</strong></div>
+            <div class="result"><small>Total current</small><strong id="parallelI">—</strong></div>
+          </div>
+          <div class="branch-lines"><div class="branch" id="branch1"></div><div class="branch" id="branch2"></div></div>
+          <p class="note">Each branch sees the full source voltage. Branch currents add to the source current.</p>
+        </div>
+      </div>
+      <div id="spFormula" class="formula">Series: Rtotal = R1 + R2. Parallel: 1/Rtotal = 1/R1 + 1/R2.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Short Circuit Demonstration</h2>
+      <p class="lead">See how reducing resistance can make current rise sharply. This is a calculation only—not a procedure to try physically.</p>
+      <div class="grid three">
+        <div class="field"><label for="shortV">Source voltage (V)</label><input id="shortV" type="number" min="0" step="any" value="12"></div>
+        <div class="field"><label for="shortR">Path resistance (Ω)</label><input id="shortR" type="number" min="0.001" step="any" value="6"></div>
+        <div class="field"><label for="shortLimit">Source/protection current reference (A)</label><input id="shortLimit" type="number" min="0.001" step="any" value="15"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Calculated current</small><strong id="shortI">—</strong></div>
+        <div class="result"><small>Calculated power in path</small><strong id="shortP">—</strong></div>
+        <div class="result"><small>Current vs. entered reference</small><strong id="shortPct">—</strong></div>
+      </div>
+      <div id="shortStatus" class="status">Enter source and resistance values.</div>
+      <div id="shortFormula" class="formula">I = V ÷ R.</div>
+      <div class="warning">Actual fault current is limited by source impedance, wiring impedance, transformers, batteries, and protective devices. Fault currents can be extremely high and can cause burns, arcing, fire, equipment damage, or shock. Do not create intentional shorts.</div>
+    </section>
+
+    <section class="panel">
+      <h2>AC vs. DC</h2>
+      <p class="lead">DC keeps one polarity direction. AC periodically reverses polarity and current direction.</p>
+      <div class="wave-wrap">
+        <svg viewBox="0 0 700 240" aria-label="AC and DC waveform comparison">
+          <line x1="35" y1="120" x2="665" y2="120" stroke="#9aa8b5" stroke-width="1.5"/>
+          <path id="acPath" d="" fill="none" stroke="#0b63ce" stroke-width="4"/>
+          <path id="dcPath" d="" fill="none" stroke="#d18a00" stroke-width="4"/>
+        </svg>
+        <div class="legend"><span class="ac">AC waveform</span><span class="dc">DC level</span></div>
+      </div>
+      <div class="grid three" style="margin-top:14px">
+        <div class="field"><label for="acVrms">AC RMS voltage (V)</label><input id="acVrms" type="number" min="0" step="any" value="120"></div>
+        <div class="field"><label for="acHz">Frequency (Hz)</label><input id="acHz" type="number" min="0.001" step="any" value="60"></div>
+        <div class="field"><label for="dcV">DC voltage (V)</label><input id="dcV" type="number" min="0" step="any" value="12"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>AC peak voltage</small><strong id="acPeak">—</strong></div>
+        <div class="result"><small>AC period</small><strong id="acPeriod">—</strong></div>
+        <div class="result"><small>Cycles per second</small><strong id="acCycles">—</strong></div>
+      </div>
+      <div id="acFormula" class="formula">For a sine wave: Vpeak ≈ Vrms × √2; period = 1 ÷ frequency.</div>
+      <p class="note">RMS is a way to express AC magnitude so that, for a resistive load, the RMS value corresponds to the same heating effect as that DC voltage. Non-sinusoidal waveforms require the actual RMS calculation.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Hot • Neutral • Ground</h2>
+      <p class="lead">These terms describe different conductor roles in common AC wiring systems.</p>
+      <div class="wiring-grid">
+        <div class="wire-card"><div class="wire-swatch hot"></div><strong>Hot / Live / Phase</strong><p>Carries voltage relative to neutral/ground and supplies energy to the load. It can remain hazardous even when current is low or zero.</p></div>
+        <div class="wire-card"><div class="wire-swatch neutral"></div><strong>Neutral</strong><p>A grounded circuit conductor that normally carries return current in many AC systems. It is part of the normal current path.</p></div>
+        <div class="wire-card"><div class="wire-swatch ground"></div><strong>Equipment Ground / Earth</strong><p>A protective bonding/fault-current path. It normally should not carry regular load current.</p></div>
+      </div>
+      <div class="warning">Neutral and equipment ground serve different purposes and are not interchangeable. Bonding and grounding rules depend on the system, equipment, jurisdiction, and point in the distribution system. Never rely on wire color alone; identify conductors correctly and follow applicable electrical code and manufacturer instructions.</div>
+    </section>
+
+    <section class="panel">
+      <h2>DC Positive • Negative • Ground</h2>
+      <p class="lead">DC systems use different conventions, and “ground” does not always mean earth.</p>
+      <div class="concept-grid">
+        <div class="concept-card"><strong>Positive (+)</strong><p>The conductor at higher potential relative to the chosen negative/reference point in a typical positive-ground-referenced DC circuit.</p></div>
+        <div class="concept-card"><strong>Negative (−)</strong><p>Often used as the return/reference in battery-powered electronics, but not universally.</p></div>
+        <div class="concept-card"><strong>DC Ground / Common</strong><p>May mean circuit common, chassis, signal reference, or earth depending on the design. These are not automatically the same node.</p></div>
+        <div class="concept-card"><strong>Earth Ground</strong><p>A physical connection to earth used for safety, shielding, lightning protection, reference, or other system-specific purposes.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>A DONCO-BAYCITY™ App</footer>
+
+  <script>
+    function fmt(n,d=3){
+      if(!Number.isFinite(n))return "—";
+      return n.toLocaleString(undefined,{maximumFractionDigits:d});
+    }
+    function formatA(a){
+      const x=Math.abs(a);
+      if(x>=1)return fmt(a,3)+" A";
+      if(x>=.001)return fmt(a*1000,3)+" mA";
+      return fmt(a*1e6,3)+" µA";
+    }
+    function formatOhms(r){
+      if(r>=1e6)return fmt(r/1e6,3)+" MΩ";
+      if(r>=1e3)return fmt(r/1e3,3)+" kΩ";
+      if(r<1)return fmt(r*1000,3)+" mΩ";
+      return fmt(r,3)+" Ω";
+    }
+    function formatPower(w){
+      if(w>=1000)return fmt(w/1000,3)+" kW";
+      if(w>=1)return fmt(w,3)+" W";
+      return fmt(w*1000,3)+" mW";
+    }
+    function formatTime(s){
+      if(s>=1)return fmt(s,4)+" s";
+      if(s>=.001)return fmt(s*1000,4)+" ms";
+      return fmt(s*1e6,4)+" µs";
+    }
+
+    function setCircuit(closed){
+      document.getElementById("circuitVisual").classList.toggle("flowing",closed);
+      document.getElementById("switchArm").classList.toggle("closed",closed);
+      document.getElementById("lamp").classList.toggle("on",closed);
+      document.getElementById("circuitTitle").textContent=closed?"Closed Circuit":"Open Circuit";
+      document.getElementById("circuitExplain").textContent=closed
+        ?"The path is complete, so current can circulate from the source through the load and back to the source."
+        :"The path is broken at the switch, so current does not circulate through the load.";
+      const s=document.getElementById("circuitStatus");
+      s.className="status "+(closed?"good":"");
+      s.textContent=closed?"Current is flowing in this idealized complete circuit.":"Current: 0 A in this ideal open-circuit example.";
+    }
+    document.getElementById("closeCircuit").addEventListener("click",()=>setCircuit(true));
+    document.getElementById("openCircuit").addEventListener("click",()=>setCircuit(false));
+
+    function updateSeriesParallel(){
+      const v=Math.max(0,Number(document.getElementById("spVoltage").value)||0);
+      const r1=Math.max(1e-12,Number(document.getElementById("spR1").value)||1e-12);
+      const r2=Math.max(1e-12,Number(document.getElementById("spR2").value)||1e-12);
+      const rs=r1+r2;
+      const is=v/rs;
+      const rp=1/(1/r1+1/r2);
+      const ip=v/rp;
+      const i1=v/r1,i2=v/r2;
+      document.getElementById("seriesR").textContent=formatOhms(rs);
+      document.getElementById("seriesI").textContent=formatA(is);
+      document.getElementById("parallelR").textContent=formatOhms(rp);
+      document.getElementById("parallelI").textContent=formatA(ip);
+      const total=i1+i2||1;
+      document.getElementById("branch1").style.setProperty("--fill",(i1/total*100)+"%");
+      document.getElementById("branch2").style.setProperty("--fill",(i2/total*100)+"%");
+      document.getElementById("spFormula").textContent=
+        "Series: "+formatOhms(r1)+" + "+formatOhms(r2)+" = "+formatOhms(rs)+
+        ", current = "+formatA(is)+". Parallel: equivalent = "+formatOhms(rp)+
+        ", total current = "+formatA(ip)+".";
+    }
+    ["spVoltage","spR1","spR2"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateSeriesParallel);el.addEventListener("change",updateSeriesParallel);
+    });
+
+    function updateShort(){
+      const v=Math.max(0,Number(document.getElementById("shortV").value)||0);
+      const r=Math.max(.001,Number(document.getElementById("shortR").value)||.001);
+      const ref=Math.max(.001,Number(document.getElementById("shortLimit").value)||.001);
+      const i=v/r;
+      const p=v*i;
+      const pct=i/ref*100;
+      document.getElementById("shortI").textContent=formatA(i);
+      document.getElementById("shortP").textContent=formatPower(p);
+      document.getElementById("shortPct").textContent=fmt(pct,1)+"%";
+      document.getElementById("shortFormula").textContent="I = "+fmt(v,3)+" V ÷ "+formatOhms(r)+" = "+formatA(i)+".";
+      const s=document.getElementById("shortStatus");
+      s.className="status";
+      if(pct>=100){s.classList.add("high");s.textContent="Calculated current meets or exceeds the entered current reference.";}
+      else if(pct>=80){s.classList.add("warn");s.textContent="Calculated current is approaching the entered current reference.";}
+      else{s.classList.add("good");s.textContent="Calculated current is below the entered reference. This is only a simple V/R model.";}
+    }
+    ["shortV","shortR","shortLimit"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateShort);el.addEventListener("change",updateShort);
+    });
+
+    function drawWaves(){
+      const ac=[];
+      for(let i=0;i<=240;i++){
+        const x=35+(630*i/240);
+        const y=120-Math.sin(i/240*Math.PI*4)*72;
+        ac.push((i===0?"M":"L")+x.toFixed(1)+","+y.toFixed(1));
+      }
+      document.getElementById("acPath").setAttribute("d",ac.join(" "));
+      document.getElementById("dcPath").setAttribute("d","M35,72 L665,72");
+    }
+
+    function updateAc(){
+      const vrms=Math.max(0,Number(document.getElementById("acVrms").value)||0);
+      const hz=Math.max(.001,Number(document.getElementById("acHz").value)||.001);
+      const peak=vrms*Math.SQRT2;
+      const period=1/hz;
+      document.getElementById("acPeak").textContent=fmt(peak,3)+" V";
+      document.getElementById("acPeriod").textContent=formatTime(period);
+      document.getElementById("acCycles").textContent=fmt(hz,3)+" cycles/s";
+      document.getElementById("acFormula").textContent=
+        "For a sine wave: "+fmt(vrms,3)+" V RMS × √2 = "+fmt(peak,3)+" V peak. "+
+        "At "+fmt(hz,3)+" Hz, one cycle lasts "+formatTime(period)+".";
+    }
+    ["acVrms","acHz","dcV"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateAc);el.addEventListener("change",updateAc);
+    });
+
+    setCircuit(false);
+    updateSeriesParallel();
+    updateShort();
+    drawWaves();
+    updateAc();
+  </script>
+</body>
+</html>
