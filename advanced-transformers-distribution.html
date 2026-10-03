@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f3b63"><title>Advanced Transformers & Power Distribution Explorer</title>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}.result{margin-top:12px;background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.phase{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.phase div{padding:16px;border-radius:14px;color:#fff;text-align:center;font-weight:900}.pa{background:#b42318}.pb{background:#0b63ce}.pc{background:#b68100}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three,.phase{grid-template-columns:1fr}}
+</style></head><body>
+<header><h1>Advanced Transformers & Power Distribution Explorer</h1><p>Three-phase systems, delta/wye, CTs and PTs, autotransformers, isolation, kVA, phase relationships, and distribution concepts.</p></header>
+<main><nav class="nav"><a href="index.html">All Things Electrical</a><a href="transformers.html">Transformers</a><a href="wiring-installation.html">Wiring & Installation</a><a href="generators-alternators.html">Generators & Alternators</a><a href="protection-devices.html">Protection Devices</a><a href="grounding-bonding-shielding.html">Grounding & Shielding</a><a class="active" href="advanced-transformers-distribution.html">Advanced Transformers & Distribution</a><a href="test-equipment.html">Test Equipment</a><a href="processors.html">Processors</a></nav>
+
+<section class="panel"><h2>Three-Phase Basics</h2><p class="lead">Three sinusoidal phase voltages are separated by 120 electrical degrees. Balanced three-phase systems transfer power smoothly and are widely used for motors and distribution.</p><div class="phase"><div class="pa">Phase A<br>0°</div><div class="pb">Phase B<br>120°</div><div class="pc">Phase C<br>240°</div></div></section>
+
+<section class="panel"><h2>Delta vs. Wye</h2><table><thead><tr><th>Connection</th><th>Relationship</th><th>Common characteristics</th></tr></thead><tbody>
+<tr><td>Wye (Y)</td><td>Line voltage = √3 × phase voltage; line current = phase current for a balanced ideal system.</td><td>Can provide a neutral point; common in distribution.</td></tr>
+<tr><td>Delta (Δ)</td><td>Line voltage = phase voltage; line current = √3 × phase current for a balanced ideal system.</td><td>No inherent neutral; closed-loop winding connection.</td></tr>
+</tbody></table></section>
+
+<section class="panel"><h2>Three-Phase Power Calculator</h2><div class="grid three"><div class="field"><label>Line voltage (V)</label><input id="vline" type="number" value="480" min="0"></div><div class="field"><label>Line current (A)</label><input id="iline" type="number" value="30" min="0"></div><div class="field"><label>Power factor</label><input id="pf" type="number" value="0.90" min="0" max="1" step="any"></div></div><div id="p3out" class="result"></div><div class="formula">Balanced three-phase real power ≈ √3 × Vline × Iline × power factor.</div></section>
+
+<section class="panel"><h2>Transformer Ratio Calculator</h2><div class="grid three"><div class="field"><label>Primary voltage</label><input id="vp" type="number" value="480" min="0.001"></div><div class="field"><label>Primary turns</label><input id="np" type="number" value="1000" min="1"></div><div class="field"><label>Secondary turns</label><input id="ns" type="number" value="250" min="1"></div></div><div id="ratioOut" class="result"></div><div class="formula">Ideal transformer: Vs/Vp = Ns/Np. Current ratio is inverse of turns ratio in the ideal model.</div></section>
+
+<section class="panel"><h2>Instrument Transformers</h2><div class="grid two">
+<div class="card"><strong>Current Transformer (CT)</strong><p>Produces a scaled current for metering/protection. A CT secondary should not be left open while primary current flows because hazardous voltage can develop.</p><span class="badge">Current measurement</span></div>
+<div class="card"><strong>Potential / Voltage Transformer (PT/VT)</strong><p>Produces a scaled voltage for metering and protective relays while providing isolation appropriate to its design.</p><span class="badge">Voltage measurement</span></div>
+</div></section>
+
+<section class="panel"><h2>Transformer Types</h2><div class="grid three">
+<div class="card"><strong>Isolation transformer</strong><p>Transfers power magnetically while providing galvanic isolation between windings.</p></div>
+<div class="card"><strong>Autotransformer</strong><p>Uses a shared winding; compact and efficient for voltage conversion but does not provide isolation between input and output.</p></div>
+<div class="card"><strong>Control transformer</strong><p>Supplies control-voltage circuits in industrial equipment.</p></div>
+<div class="card"><strong>Distribution transformer</strong><p>Steps distribution voltage to utilization voltage for buildings and loads.</p></div>
+<div class="card"><strong>Dry-type transformer</strong><p>Uses air/resin insulation rather than liquid-filled cooling/insulation systems.</p></div>
+<div class="card"><strong>Pad-mounted transformer</strong><p>Enclosed outdoor distribution transformer commonly used with underground distribution.</p></div></div></section>
+
+<section class="panel"><h2>kVA vs. kW</h2><div class="grid two"><div class="card"><strong>kVA</strong><p>Apparent power: RMS volts × RMS amps, including phase relationships.</p></div><div class="card"><strong>kW</strong><p>Real power actually converted to useful work/heat, related to kVA through power factor.</p></div></div></section>
+
+<section class="panel"><h2>Power Distribution Path</h2><table><thead><tr><th>Stage</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>Generation</td><td>Creates electrical power.</td></tr><tr><td>Step-up transformer</td><td>Raises voltage for efficient transmission.</td></tr><tr><td>Transmission</td><td>Moves bulk power long distances.</td></tr><tr><td>Substation</td><td>Switches, protects, measures, and changes voltage levels.</td></tr><tr><td>Distribution feeder</td><td>Delivers power toward neighborhoods/facilities.</td></tr><tr><td>Distribution transformer</td><td>Reduces voltage to utilization levels.</td></tr><tr><td>Service / panel</td><td>Distributes power to branch circuits and loads.</td></tr></tbody></table></section>
+
+<section class="panel"><h2>Safety</h2><div class="warning">Distribution and transformer equipment can involve lethal voltage, arc-flash energy, stored energy, and high fault current. This section is educational only; real installation, switching, testing, and protection work requires appropriate training, equipment ratings, procedures, and applicable electrical rules.</div></section>
+</main><footer>A DONCO-BAYCITY™ App</footer>
+<script>
+function p3(){const v=+vline.value,i=+iline.value,p=+pf.value;const kva=Math.sqrt(3)*v*i/1000,kw=kva*p;p3out.textContent="Apparent power: "+kva.toFixed(2)+" kVA · Real power: "+kw.toFixed(2)+" kW"}[vline,iline,pf].forEach(x=>x.addEventListener("input",p3));p3();
+function ratio(){const Vp=+vp.value,Np=+np.value,Ns=+ns.value,Vs=Vp*Ns/Np;ratioOut.textContent="Turns ratio Np:Ns = "+(Np/Ns).toFixed(3)+":1 · Ideal secondary voltage: "+Vs.toFixed(2)+" V"}[vp,np,ns].forEach(x=>x.addEventListener("input",ratio));ratio();
+</script></body></html>
