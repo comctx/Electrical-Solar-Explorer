@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>Sensors & Switches Explorer</title>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}input[type=range]{padding:0;border:0}.result{margin-top:12px;background:#eef7ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.result.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.sim{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(0,1.1fr);gap:18px;align-items:center}.track{position:relative;height:190px;border-radius:16px;background:#e7edf2;border:2px solid #b7c4cf;overflow:hidden}.target{position:absolute;top:70px;left:15px;width:70px;height:50px;border-radius:10px;background:#667788;transition:.15s}.sensor{position:absolute;right:18px;top:64px;width:58px;height:62px;border-radius:10px;background:#0b63ce;border:5px solid #074d9d}.beam{position:absolute;right:76px;top:92px;height:6px;background:#ff3b30;width:190px;opacity:.85}.switch{position:absolute;right:20px;bottom:20px;width:95px;height:50px;background:#8a99a8;border-radius:8px}.lever{position:absolute;width:90px;height:8px;background:#4a5866;right:78px;bottom:64px;transform-origin:right center;transform:rotate(-18deg);transition:.15s}.lever.hit{transform:rotate(-3deg)}.lamp{display:inline-block;width:18px;height:18px;border-radius:50%;background:#8795a1;margin-right:7px;vertical-align:-3px}.lamp.on{background:#32b26e;box-shadow:0 0 12px rgba(50,178,110,.7)}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){main{padding:12px}.two,.three,.sim{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1>Sensors & Switches Explorer</h1><p>Limit switches, proximity sensors, photoelectric sensors, contact logic, industrial outputs, and detection concepts.</p></header>
+<main>
+<nav class="nav">
+<a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="vacuum-tubes.html">Vacuum Tubes</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a href="motors-controls.html">Motors & Controls</a><a href="generators-alternators.html">Generators & Alternators</a><a href="solar-power-electronics.html">Solar Power Electronics</a><a class="active" href="sensors-switches.html">Sensors & Switches</a><a href="processors.html">Processors</a>
+</nav>
+
+<section class="panel">
+<h2>Beginner Start Here</h2>
+<div class="grid three">
+<div class="card"><strong>Limit Switch</strong><p>A mechanical switch actuated by direct contact with a machine part, cam, door, carriage, or stop.</p><span class="badge">Contact sensing</span></div>
+<div class="card"><strong>Inductive Proximity Sensor</strong><p>Detects nearby metal without physical contact by using an electromagnetic field.</p><span class="badge">Metal detection</span></div>
+<div class="card"><strong>Capacitive Proximity Sensor</strong><p>Detects changes in capacitance and can sense many metals and nonmetals.</p><span class="badge">Many materials</span></div>
+<div class="card"><strong>Photoelectric Sensor</strong><p>Uses light to detect an object when a beam is interrupted or reflected.</p><span class="badge">Optical sensing</span></div>
+<div class="card"><strong>Normally Open</strong><p>Open in the normal state; changes to closed/on when actuated.</p><span class="badge">NO</span></div>
+<div class="card"><strong>Normally Closed</strong><p>Closed in the normal state; changes to open/off when actuated.</p><span class="badge">NC</span></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Limit Switch Types</h2>
+<table><thead><tr><th>Actuator</th><th>Typical use</th></tr></thead><tbody>
+<tr><td>Plunger</td><td>Direct movement presses the actuator.</td></tr>
+<tr><td>Roller plunger</td><td>A roller reduces sliding friction as a cam or part passes.</td></tr>
+<tr><td>Lever / roller lever</td><td>Provides more reach and permits actuation by passing motion.</td></tr>
+<tr><td>Whisker / spring rod</td><td>Flexible actuator senses objects from different approach directions.</td></tr>
+<tr><td>Safety interlock</td><td>Purpose-designed device for monitoring guards or doors in a safety system.</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>Limit Switch Simulator</h2>
+<div class="sim">
+<div class="track"><div id="limitTarget" class="target"></div><div class="switch"></div><div id="lever" class="lever"></div></div>
+<div><div class="field"><label>Move the machine part</label><input id="limitPos" type="range" min="0" max="100" value="15"></div><div id="limitResult" class="result"><span id="limitLamp" class="lamp"></span>Switch not actuated</div><div class="formula">Mechanical limit switches require physical contact. Actuator direction, overtravel, position, and wear matter.</div></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Proximity Sensor Types</h2>
+<div class="grid three">
+<div class="card"><strong>Inductive</strong><p>Detects metal. Actual sensing distance depends on target material, size, and sensor design.</p></div>
+<div class="card"><strong>Capacitive</strong><p>Can detect many conductive and nonconductive materials including some liquids, plastics, powders, and glass.</p></div>
+<div class="card"><strong>Magnetic / Hall / Reed</strong><p>Detects a magnetic field. Common with cylinders, doors, rotating equipment, and position sensing.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Proximity Detection Simulator</h2>
+<div class="sim">
+<div class="track"><div id="proxTarget" class="target"></div><div class="sensor"></div></div>
+<div>
+<div class="field"><label>Sensor type</label><select id="proxType"><option value="inductive">Inductive</option><option value="capacitive">Capacitive</option></select></div>
+<div class="field" style="margin-top:10px"><label>Target material</label><select id="material"><option value="steel">Steel</option><option value="aluminum">Aluminum</option><option value="plastic">Plastic</option><option value="glass">Glass</option><option value="water">Water</option></select></div>
+<div class="field" style="margin-top:10px"><label>Target position</label><input id="proxPos" type="range" min="0" max="100" value="25"></div>
+<div id="proxResult" class="result">No target detected</div>
+</div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Photoelectric Sensor Modes</h2>
+<table><thead><tr><th>Mode</th><th>Arrangement</th><th>Notes</th></tr></thead><tbody>
+<tr><td>Through-beam</td><td>Separate emitter and receiver face each other.</td><td>Long range and strong sensing margin; needs alignment and wiring at both sides.</td></tr>
+<tr><td>Retroreflective</td><td>Emitter/receiver are together and aim at a reflector.</td><td>One powered sensor location; polarized versions help with shiny targets.</td></tr>
+<tr><td>Diffuse reflective</td><td>Light reflects directly from the object.</td><td>Simple installation; range depends on target color, finish, size, and angle.</td></tr>
+<tr><td>Background suppression</td><td>Optics evaluate returned-light geometry.</td><td>Helps distinguish a target from a background at a different distance.</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>Photoelectric Beam Simulator</h2>
+<div class="sim">
+<div class="track"><div id="photoTarget" class="target"></div><div class="sensor"></div><div id="beam" class="beam"></div></div>
+<div>
+<div class="field"><label>Mode</label><select id="photoMode"><option value="through">Through-beam</option><option value="retro">Retroreflective</option><option value="diffuse">Diffuse</option></select></div>
+<div class="field" style="margin-top:10px"><label>Move target through sensing area</label><input id="photoPos" type="range" min="0" max="100" value="10"></div>
+<div id="photoResult" class="result">Beam clear</div>
+</div>
+</div>
+</section>
+
+<section class="panel">
+<h2>PNP, NPN, Sourcing & Sinking</h2>
+<div class="grid two">
+<div class="card"><strong>PNP sensor output</strong><p>Common industrial DC convention where an active output sources positive voltage to the load or PLC input.</p></div>
+<div class="card"><strong>NPN sensor output</strong><p>Common industrial DC convention where an active output provides a path toward 0 V.</p></div>
+</div>
+<div class="formula">Sensor and PLC/input circuits must be electrically compatible. Manufacturer wiring diagrams take priority because pinouts, wire colors, and conventions can vary.</div>
+</section>
+
+<section class="panel">
+<h2>Important Sensor Specifications</h2>
+<table><thead><tr><th>Specification</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>Sensing distance</td><td>Nominal distance at which the target can be detected under specified test conditions.</td></tr>
+<tr><td>Hysteresis</td><td>Difference between the turn-on and turn-off positions; helps prevent chatter near the switching point.</td></tr>
+<tr><td>Response time / frequency</td><td>How quickly the sensor can recognize changing targets.</td></tr>
+<tr><td>Output type</td><td>Relay, transistor, PNP, NPN, analog, or communication output depending on model.</td></tr>
+<tr><td>Supply voltage</td><td>Voltage range required to power the sensor.</td></tr>
+<tr><td>Ingress rating</td><td>Environmental protection against dust and water where specified.</td></tr>
+<tr><td>Light-on / dark-on</td><td>Defines whether a photoelectric output is active when light is received or when the beam is blocked.</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>Where They Are Used</h2>
+<div class="grid three">
+<div class="card"><strong>Conveyors</strong><p>Detect boxes, count products, confirm position, and stop travel.</p></div>
+<div class="card"><strong>Machine tools</strong><p>Confirm home/end positions and monitor guards or fixtures.</p></div>
+<div class="card"><strong>Packaging</strong><p>Detect products, labels, containers, and registration marks.</p></div>
+<div class="card"><strong>Hydraulic / pneumatic cylinders</strong><p>Magnetic sensors can confirm piston position without mechanical contact.</p></div>
+<div class="card"><strong>Doors & gates</strong><p>Limit switches and magnetic sensors can indicate open/closed position.</p></div>
+<div class="card"><strong>Automation / PLCs</strong><p>Sensors provide the input information a control system uses to make decisions.</p></div>
+</div>
+</section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+<script>
+function place(el,val,maxLeft=205){el.style.left=(15+(+val/100)*maxLeft)+"px"}
+function limitSim(){place(limitTarget,limitPos.value);const hit=+limitPos.value>78;lever.classList.toggle("hit",hit);limitLamp.classList.toggle("on",hit);limitResult.className="result"+(hit?" good":"");limitResult.lastChild.textContent=hit?" Switch actuated":" Switch not actuated"}limitPos.oninput=limitSim;limitSim();
+
+function proxSim(){place(proxTarget,proxPos.value);const near=+proxPos.value>70;const type=proxType.value,mat=material.value;const compatible=type==="capacitive"||["steel","aluminum"].includes(mat);const detected=near&&compatible;proxResult.className="result"+(detected?" good":"");proxResult.textContent=detected?"Target detected":near&&!compatible?"Target is close, but this sensor type does not detect that material in this simplified model.":"No target detected"}[proxType,material,proxPos].forEach(x=>x.addEventListener("input",proxSim));proxSim();
+
+function photoSim(){place(photoTarget,photoPos.value);const p=+photoPos.value;const mode=photoMode.value;const hit=p>48&&p<88;beam.style.opacity=hit&&mode!=="diffuse"?".18":".85";const detected=mode==="diffuse"?p>65:hit;photoResult.className="result"+(detected?" good":"");photoResult.textContent=detected?(mode==="through"?"Beam interrupted — target detected":mode==="retro"?"Reflected path interrupted — target detected":"Reflected light detected from target"):"No target detected / beam clear"}[photoMode,photoPos].forEach(x=>x.addEventListener("input",photoSim));photoSim();
+</script>
+</body>
+</html>
