@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>Motors & Controls Explorer</title>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d;--warn:#9a6200}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}h3{margin:0 0 6px;color:var(--navy)}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input,select,button{font:inherit}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white}.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700}.result strong{font-size:clamp(20px,4vw,28px);color:var(--navy)}.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.motor-stage{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(0,1.1fr);gap:18px;align-items:center}.motor{position:relative;width:280px;height:180px;margin:auto;background:#9aa8b6;border:8px solid #53616e;border-radius:32px;box-shadow:inset 0 0 0 6px #c9d2d9}.motor:before,.motor:after{content:"";position:absolute;top:66px;width:45px;height:48px;background:#53616e}.motor:before{left:-48px;border-radius:14px 0 0 14px}.motor:after{right:-48px;border-radius:0 14px 14px 0}.rotor{position:absolute;left:50%;top:50%;width:100px;height:100px;margin:-50px;border:16px solid #d8a126;border-radius:50%;background:#283848}.shaft{position:absolute;left:50%;top:50%;width:140px;height:18px;margin:-9px -70px;background:#d6dde3;border-radius:9px}.spin{animation:spin 1.2s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.btn{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.button-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.starter{display:grid;grid-template-columns:repeat(4,minmax(100px,1fr));gap:10px;align-items:center}.block{padding:14px;border:2px solid #9fc8ef;background:#f8fbff;border-radius:13px;text-align:center;font-weight:800;color:var(--navy)}.block.on{background:#eaf7ef;border-color:#70b88f}.arrow{text-align:center;font-size:26px;color:var(--blue);font-weight:900}.lamp{width:22px;height:22px;border-radius:50%;display:inline-block;background:#687783;vertical-align:middle;margin-right:7px}.lamp.on{background:#36b37e;box-shadow:0 0 14px rgba(54,179,126,.8)}
+.parts-list{columns:2;column-gap:28px}.parts-list li{break-inside:avoid;margin-bottom:8px;line-height:1.45}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){main{padding:12px}.two,.three,.four,.results,.motor-stage,.starter{grid-template-columns:1fr}.parts-list{columns:1}.arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<header><h1>Motors & Controls Explorer</h1><p>Motor types, internal parts, starting methods, controls, protection, speed, slip, and the equipment commonly used around electric motors.</p></header>
+<main>
+<nav class="nav">
+<a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="vacuum-tubes.html">Vacuum Tubes</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a class="active" href="motors-controls.html">Motors & Controls</a><a href="processors.html">Processors</a>
+</nav>
+
+<section class="panel">
+<h2>Beginner Start Here</h2><p class="lead">An electric motor converts electrical energy into mechanical rotation. The motor is only part of the system: starting, switching, protection, speed control, sensing, and the mechanical load all matter.</p>
+<div class="grid three">
+<div class="card"><strong>Stator</strong><p>The stationary magnetic part of the motor. In many AC motors, windings in the stator create a rotating magnetic field.</p><span class="badge">Stationary</span></div>
+<div class="card"><strong>Rotor</strong><p>The rotating part inside the stator. Electromagnetic forces produce torque on the rotor.</p><span class="badge">Rotating</span></div>
+<div class="card"><strong>Shaft</strong><p>Carries torque from the rotor to the machine, fan, pump, gearbox, pulley, or other load.</p><span class="badge">Mechanical output</span></div>
+<div class="card"><strong>Bearings</strong><p>Support the shaft and let it rotate with low friction. Bearing wear is a common source of motor noise and vibration.</p><span class="badge">Support</span></div>
+<div class="card"><strong>Windings</strong><p>Insulated coils of wire that create magnetic fields when current flows.</p><span class="badge">Electromagnetic</span></div>
+<div class="card"><strong>Cooling fan</strong><p>Moves air over the motor frame or through the motor to remove heat.</p><span class="badge">Temperature control</span></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Motor Types</h2>
+<div class="grid three">
+<div class="card"><strong>Single-Phase Induction</strong><p>Common in homes and small equipment. Many use a start winding and capacitor to create starting torque.</p></div>
+<div class="card"><strong>Three-Phase Induction</strong><p>Widely used in industry. Three-phase power naturally creates a rotating magnetic field.</p></div>
+<div class="card"><strong>DC Brushed Motor</strong><p>Uses brushes and a commutator to switch current in the rotating armature.</p></div>
+<div class="card"><strong>Brushless DC (BLDC)</strong><p>Uses electronic commutation instead of brushes. Common in fans, tools, vehicles, and automation.</p></div>
+<div class="card"><strong>Synchronous Motor</strong><p>Rotor speed locks to the rotating magnetic field rather than operating with induction-motor slip.</p></div>
+<div class="card"><strong>Stepper / Servo</strong><p>Used when position and motion control are important. Servos normally include feedback; steppers move in discrete steps.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Associated Motor Parts & Controls</h2>
+<ul class="parts-list">
+<li><strong>Start capacitor:</strong> provides phase shift and extra starting torque for certain single-phase motors.</li>
+<li><strong>Run capacitor:</strong> remains in the circuit while running on capacitor-run designs to improve operating characteristics.</li>
+<li><strong>Centrifugal switch:</strong> mechanically disconnects a start winding or start capacitor after the motor accelerates on some designs.</li>
+<li><strong>Potential/current relay:</strong> can switch start components based on motor electrical conditions.</li>
+<li><strong>Contactor:</strong> electrically operated power switch used to connect and disconnect a motor.</li>
+<li><strong>Overload relay:</strong> protects against sustained motor overcurrent/overheating; it is different from short-circuit protection.</li>
+<li><strong>Motor starter:</strong> commonly combines a contactor with overload protection and control functions.</li>
+<li><strong>Fuse/circuit breaker:</strong> provides branch-circuit and short-circuit protection as designed for the system.</li>
+<li><strong>VFD:</strong> variable-frequency drive changes AC frequency and voltage to control compatible AC motor speed and torque.</li>
+<li><strong>Soft starter:</strong> reduces electrical and mechanical stress during starting without providing full variable-speed control like a VFD.</li>
+<li><strong>Encoder:</strong> measures shaft position, speed, or direction for feedback systems.</li>
+<li><strong>Thermal protector:</strong> opens or signals when motor temperature exceeds a safe limit.</li>
+<li><strong>Brushes:</strong> sliding electrical contacts used in brushed motors.</li>
+<li><strong>Commutator:</strong> segmented rotating switch used with brushes in DC motors and universal motors.</li>
+<li><strong>Coupling:</strong> connects the motor shaft to another shaft while accommodating the intended alignment/motion.</li>
+<li><strong>Gearbox:</strong> trades speed for torque or changes the mechanical relationship between motor and load.</li>
+</ul>
+</section>
+
+<section class="panel">
+<h2>Motor Animation</h2><p class="lead">A simplified view of a rotor and shaft. Start or stop the simulated rotation.</p>
+<div class="motor-stage">
+<div class="motor"><div id="rotor" class="rotor"><div class="shaft"></div></div></div>
+<div><div class="button-row"><button id="runMotor" class="btn primary">Run Motor</button><button id="stopMotor" class="btn">Stop Motor</button></div>
+<div class="formula">Real motors produce torque because magnetic fields interact. The exact field pattern depends on motor type and construction.</div></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>AC Motor Synchronous Speed Calculator</h2><p class="lead">For an AC rotating magnetic field, synchronous speed depends on line frequency and the number of motor poles.</p>
+<div class="grid two">
+<div class="field"><label>Frequency</label><select id="freq"><option value="50">50 Hz</option><option value="60" selected>60 Hz</option></select></div>
+<div class="field"><label>Number of poles</label><select id="poles"><option>2</option><option selected>4</option><option>6</option><option>8</option><option>10</option><option>12</option></select></div>
+</div>
+<div class="results"><div class="result"><small>Synchronous speed</small><strong id="syncOut">—</strong></div><div class="result"><small>Mechanical revolutions per second</small><strong id="rpsOut">—</strong></div><div class="result"><small>Field period per cycle</small><strong id="periodOut">—</strong></div></div>
+<div class="formula">Synchronous RPM = 120 × frequency ÷ poles</div>
+</section>
+
+<section class="panel">
+<h2>Induction Motor Slip Calculator</h2><p class="lead">An induction motor normally runs slightly below synchronous speed. That difference is called slip.</p>
+<div class="grid two">
+<div class="field"><label>Synchronous speed (RPM)</label><input id="syncRpm" type="number" value="1800" min="1"></div>
+<div class="field"><label>Measured running speed (RPM)</label><input id="actualRpm" type="number" value="1740" min="0"></div>
+</div>
+<div class="results"><div class="result"><small>Slip RPM</small><strong id="slipRpmOut">—</strong></div><div class="result"><small>Slip</small><strong id="slipPctOut">—</strong></div><div class="result"><small>Rotor speed</small><strong id="actualOut">—</strong></div></div>
+<div class="formula">Slip % = (synchronous RPM − actual RPM) ÷ synchronous RPM × 100</div>
+</section>
+
+<section class="panel">
+<h2>Horsepower & Kilowatt Converter</h2>
+<div class="grid two">
+<div class="field"><label>Horsepower</label><input id="hp" type="number" value="1" min="0" step="any"></div>
+<div class="field"><label>Kilowatts</label><input id="kw" type="number" value="0.746" min="0" step="any"></div>
+</div>
+<p class="note">This is a unit conversion only: 1 mechanical horsepower ≈ 0.746 kW. It does not account for motor efficiency.</p>
+</section>
+
+<section class="panel">
+<h2>Starter / Control Concept Simulator</h2><p class="lead">This shows the idea of a control command energizing a contactor so power can reach a motor. It is not a field-wiring diagram.</p>
+<div class="starter">
+<div id="controlBlock" class="block"><span id="controlLamp" class="lamp"></span>Control command</div>
+<div class="arrow">→</div>
+<div id="contactorBlock" class="block"><span id="contactorLamp" class="lamp"></span>Contactor</div>
+<div id="motorBlock" class="block"><span id="motorLamp" class="lamp"></span>Motor</div>
+</div>
+<div class="button-row"><button id="startBtn" class="btn primary">Press START</button><button id="stopBtn" class="btn">Press STOP</button><button id="tripBtn" class="btn">Simulate Overload Trip</button><button id="resetBtn" class="btn">Reset Overload</button></div>
+<div id="starterStatus" class="formula">Motor stopped. Overload reset.</div>
+</section>
+
+<section class="panel">
+<h2>VFD vs. Soft Starter</h2>
+<table><thead><tr><th>Feature</th><th>VFD</th><th>Soft starter</th></tr></thead><tbody>
+<tr><td>Controls starting current</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Controls running speed</td><td>Yes, over an appropriate range</td><td>Generally no</td></tr>
+<tr><td>Changes output frequency</td><td>Yes</td><td>No</td></tr>
+<tr><td>Useful for</td><td>Speed control, process control, energy savings in suitable variable-torque loads</td><td>Smoother starts/stops and reduced mechanical/electrical stress</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>Motor Nameplate Basics</h2>
+<table><thead><tr><th>Item</th><th>What it tells you</th></tr></thead><tbody>
+<tr><td>Voltage</td><td>Rated supply voltage or allowable connection voltage range/configuration.</td></tr>
+<tr><td>FLA / rated current</td><td>Current at rated load under specified conditions.</td></tr>
+<tr><td>HP / kW</td><td>Rated mechanical output power.</td></tr>
+<tr><td>RPM</td><td>Rated operating speed under specified load.</td></tr>
+<tr><td>Hz</td><td>Rated supply frequency.</td></tr>
+<tr><td>Phase</td><td>Single-phase or three-phase supply requirement.</td></tr>
+<tr><td>Service factor</td><td>Manufacturer-defined allowable loading margin under specified conditions, where provided.</td></tr>
+<tr><td>Insulation class</td><td>Thermal capability of the winding insulation system.</td></tr>
+<tr><td>Duty</td><td>Continuous, intermittent, or other operating-duty classification.</td></tr>
+<tr><td>Enclosure</td><td>Construction suited to the specified environment, such as open or totally enclosed designs.</td></tr>
+</tbody></table>
+<div class="warning">For real motor installation or mains-voltage wiring, use the motor/drive manufacturer instructions and applicable electrical code. Disconnect and verify power before servicing, and do not rely on wire color alone.</div>
+</section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+<script>
+const rotor=document.getElementById("rotor");
+runMotor.onclick=()=>rotor.classList.add("spin");stopMotor.onclick=()=>rotor.classList.remove("spin");
+
+function syncCalc(){const f=+freq.value,p=+poles.value,rpm=120*f/p;syncOut.textContent=rpm.toFixed(0)+" RPM";rpsOut.textContent=(rpm/60).toFixed(1)+" r/s";periodOut.textContent=(1000/f).toFixed(2)+" ms";}
+freq.onchange=syncCalc;poles.onchange=syncCalc;syncCalc();
+
+function slipCalc(){const s=+syncRpm.value,a=+actualRpm.value;if(s<=0){slipRpmOut.textContent=slipPctOut.textContent=actualOut.textContent="—";return}const d=s-a;slipRpmOut.textContent=d.toFixed(0)+" RPM";slipPctOut.textContent=(d/s*100).toFixed(2)+"%";actualOut.textContent=a.toFixed(0)+" RPM";}
+syncRpm.oninput=slipCalc;actualRpm.oninput=slipCalc;slipCalc();
+
+let lock=false;hp.oninput=()=>{if(lock)return;lock=true;kw.value=(+hp.value*.7457).toFixed(3);lock=false};kw.oninput=()=>{if(lock)return;lock=true;hp.value=(+kw.value/.7457).toFixed(3);lock=false};
+
+let overload=false,running=false;
+function renderStarter(){const on=running&&!overload;controlBlock.classList.toggle("on",running);controlLamp.classList.toggle("on",running);contactorBlock.classList.toggle("on",on);contactorLamp.classList.toggle("on",on);motorBlock.classList.toggle("on",on);motorLamp.classList.toggle("on",on);starterStatus.textContent=overload?"Overload tripped: contactor released and motor stopped. Reset is required before restarting.":on?"START command active: contactor energized and motor running.":"Motor stopped. Overload reset.";}
+startBtn.onclick=()=>{if(!overload)running=true;renderStarter()};stopBtn.onclick=()=>{running=false;renderStarter()};tripBtn.onclick=()=>{overload=true;running=false;renderStarter()};resetBtn.onclick=()=>{overload=false;running=false;renderStarter()};renderStarter();
+</script>
+</body>
+</html>
