@@ -539,3 +539,15 @@ A DONCO-BAYCITY™ App
 - Overall completion percentage
 - Quiz score summary
 - Local progress storage with no account required
+
+
+## UX, Favorites & Accessibility
+- Favorites saved locally from any Explorer/tool page
+- Home-screen My Tools section
+- Recently Viewed history
+- Dark Mode shared across the app
+- About / Help / Safety page
+- Local-storage explanation for favorites, history, quiz scores, and progress
+- Strong keyboard focus indicators
+- Reduced-motion support for users who request it
+- Shared enhancement code so these features stay consistent across pages
