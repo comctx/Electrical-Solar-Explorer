@@ -599,3 +599,18 @@ A DONCO-BAYCITY™ App
 - Schematic Practice Exercises with six beginner questions, hints, explanations, and score
 - All three use the shared Beginner Start Here style
 - Linked from Home search and their related learning pages
+
+
+## Guided Courses, Flashcards & Multimeter
+- Electrical Symbol Flashcards with 16 common schematic symbols
+- Randomized answer choices, explanations, and best-score storage
+- Beginner Courses with four guided learning paths:
+  - Electricity 101
+  - Electronics 101
+  - Schematics & Troubleshooting
+  - Motors & Industrial Controls
+- Per-step course completion stored locally on the device
+- My Progress expanded to show guided-course progress and symbol-flashcard best score
+- Circuit Lab Virtual Multimeter with DC Volts, Resistance, and Continuity modes
+- Resistance and continuity modes require simulated Master Power OFF
+- Simplified de-energized resistance/continuity path model for beginner practice
