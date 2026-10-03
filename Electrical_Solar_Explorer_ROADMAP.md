@@ -746,3 +746,35 @@ A DONCO-BAYCITY™ App
 - Added new Power & Energy guided course as course #5 with 11 steps
 - Existing four course indexes preserved
 - Home categories/search and related lessons cross-linked
+
+
+## Final Backlog Completion
+- Grounding & Bonding Trainer
+  - Equipment grounding conductor fault-path concept
+  - Neutral vs equipment grounding vs shielding roles
+  - Grounding electrode concept
+  - Open EGC and incorrect-bonding teaching scenarios
+  - Explicit code/manufacturer safety limitation
+- Sensors-to-PLC Trainer
+  - PNP/NPN, sourcing/sinking input pairing
+  - NO/NC target logic
+  - 24 VDC sensor supply, output, and PLC common concepts
+  - Open output, open common, lost supply, and mismatch diagnosis
+- Troubleshooting Trainer upgraded with Beginner, Intermediate, and Advanced levels
+  - Reduced clues at higher levels
+  - Hints unlock after measurements
+  - Two additional fault types: low source voltage and high-resistance connection
+  - Wins and best measurement counts stored locally for mastery
+- Mastery & Achievements page
+  - Course-completion badges
+  - Symbol Master, Quiz Ace, Quiz Scholar
+  - Troubleshooter and Advanced Diagnostician badges
+  - Overall All Things Electrical Master badge
+- Electricity 101 extended to 10 steps
+- Motors & Industrial Controls extended to 11 steps
+- My Progress reset now clears troubleshooting mastery data too
+- Shared visual consistency pass
+  - Unified lesson navigation styling
+  - Consistent panel treatment and mobile navigation
+  - Automatic Beginner Start Here block on older educational pages that lacked one
+  - Existing dedicated Start Here / How to Use sections are preserved
