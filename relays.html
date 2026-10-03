@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Relays & Contactors Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+      --good:#1f7a4d;--danger:#b42318;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;padding:24px 18px 20px;text-align:center;
+    }
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1000px;margin:0 auto;padding:18px}
+    .page-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .page-nav a{
+      text-decoration:none;min-height:46px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:11px;padding:10px 14px;font-weight:800;border:1px solid #9fc8ef;
+      background:#eef7ff;color:var(--navy);
+    }
+    .page-nav a.active{background:var(--yellow);border-color:#e4ba16}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px;
+    }
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    h3{margin:0 0 8px;color:var(--navy)}
+    .lead,.note{color:var(--muted);line-height:1.5}
+    .lead{margin:0 0 16px}.note{font-size:13px;margin:10px 0 0}
+    .grid{display:grid;gap:12px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input,select,button{font:inherit}
+    input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white;color:var(--text)}
+    input:focus,select:focus,button:focus{outline:3px solid rgba(11,99,206,.22);outline-offset:2px}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px;min-width:0}
+    .result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .result strong{color:var(--navy);font-size:clamp(20px,4vw,28px);word-break:break-word}
+    .formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+    .warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:10px;padding:10px 12px;color:#6a4300;font-weight:700;line-height:1.45}
+    .status{margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy);line-height:1.45}
+    .status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+    .status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
+    .status.high{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+
+    .beginner-panel{background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:2px solid #b9d7f5}
+    .beginner-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .beginner-card{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:13px;padding:13px}
+    .beginner-card strong{display:block;color:var(--navy);margin-bottom:5px;font-size:16px}
+    .beginner-card p{margin:0;color:#33495b;line-height:1.5;font-size:14px}
+    .other-words{margin-top:14px;background:#fff7cc;border:1px solid #e5c94a;border-radius:13px;padding:14px}
+    .other-words strong{display:block;color:var(--navy);font-size:17px;margin-bottom:8px}
+    .other-words-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .other-words-item{background:white;border:1px solid #eadb82;border-radius:10px;padding:10px;font-weight:800;color:#263b4c;line-height:1.4}
+    .beginner-tip{margin-top:12px;border-left:5px solid var(--electric);background:#eef7ff;border-radius:10px;padding:11px 13px;line-height:1.5;color:#25394b;font-weight:700}
+
+    .relay-stage{
+      margin-top:14px;border:1px solid var(--border);background:#fbfdff;border-radius:16px;padding:18px;
+      display:grid;grid-template-columns:minmax(280px,.95fr) minmax(0,1.05fr);gap:18px;align-items:center;
+    }
+    .relay-visual{height:280px;position:relative;border:1px solid #d7e1ea;border-radius:14px;background:white;overflow:hidden}
+    .coil-shape{
+      position:absolute;left:9%;top:50%;transform:translateY(-50%);width:92px;height:130px;
+      border:8px solid var(--electric);border-radius:42px;background:#eef7ff;transition:.18s;
+    }
+    .coil-shape::after{content:"COIL";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--navy);font-size:13px}
+    .armature{
+      position:absolute;left:34%;top:48%;width:155px;height:10px;background:#4e5b66;border-radius:999px;
+      transform-origin:left center;transform:rotate(-14deg);transition:transform .2s;
+    }
+    .pivot{position:absolute;left:32%;top:45%;width:24px;height:24px;border-radius:50%;background:var(--navy)}
+    .contact{position:absolute;width:26px;height:26px;border-radius:50%;border:5px solid #607080;background:white}
+    .contact.com{left:66%;top:44%}
+    .contact.nc{right:9%;top:30%}
+    .contact.no{right:9%;bottom:28%}
+    .contact-label{position:absolute;font-size:12px;font-weight:900;color:var(--navy)}
+    .label-com{left:65%;top:56%}.label-nc{right:7%;top:20%}.label-no{right:7%;bottom:18%}
+    .path-line{position:absolute;height:5px;background:#b8c5cf;border-radius:999px;transform-origin:left center;transition:.2s}
+    .path-left{left:68%;top:48%;width:110px;transform:rotate(-18deg)}
+    .relay-visual.energized .coil-shape{background:#fff7cc;box-shadow:0 0 0 9px rgba(255,212,59,.24)}
+    .relay-visual.energized .armature{transform:rotate(14deg)}
+    .relay-visual.energized .path-left{transform:rotate(18deg);background:var(--electric)}
+    .relay-visual:not(.energized) .path-left{background:var(--electric)}
+    .button-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .action{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}
+    .action.primary{background:var(--yellow);border-color:#e4ba16}
+    .contact-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .contact-card{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px;text-align:center}
+    .contact-card strong{display:block;color:var(--navy);font-size:20px}
+    .contact-card.active{background:#fff7cc;border-color:#e5c94a}
+
+    .seal-stage{
+      display:grid;grid-template-columns:minmax(260px,.9fr) minmax(0,1.1fr);gap:16px;align-items:center;margin-top:14px
+    }
+    .seal-visual{min-height:230px;border:1px solid var(--border);border-radius:14px;background:#fbfdff;padding:18px;display:grid;gap:10px}
+    .seal-row{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center}
+    .seal-block{border:2px solid #8ca0b3;border-radius:10px;padding:12px;text-align:center;font-weight:900;background:white}
+    .seal-block.active{background:#fff7cc;border-color:#e5c94a}
+    .seal-line{height:7px;border-radius:999px;background:#c8d3dc}
+    .seal-line.active{background:var(--electric)}
+
+    .type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .type-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:13px}
+    .type-card strong{display:block;color:var(--navy);margin-bottom:5px}
+    .type-card small{display:block;color:var(--muted);line-height:1.45}
+    .badge{display:inline-block;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#e9f3ff;color:var(--navy);border:1px solid #b9d7f5}
+    .comparison-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .comparison-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .comparison-card h3{margin:0 0 8px}.comparison-card ul{margin:8px 0 0 20px;padding:0;color:#33495b;line-height:1.5}
+
+    @media(max-width:760px){
+      main{padding:12px}.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .result-grid,.beginner-grid,.other-words-grid,.comparison-grid,.contact-grid{grid-template-columns:1fr}
+      .type-grid{grid-template-columns:1fr 1fr}
+      .relay-stage,.seal-stage{grid-template-columns:1fr}
+    }
+    @media(max-width:420px){.type-grid{grid-template-columns:1fr}}
+    footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Relays & Contactors Explorer</h1>
+    <p>Coils, NO/NC contacts, relay logic, flyback protection, contact ratings, and contactor control.</p>
+  </header>
+
+  <main>
+    <nav class="page-nav" aria-label="App pages">
+      <a href="index.html">All Things Electrical</a>
+      <a href="capacitor.html">Capacitors</a>
+      <a href="inductors.html">Inductors & Coils</a>
+      <a href="transformers.html">Transformers</a>
+      <a href="diodes.html">Diodes</a>
+      <a href="transistors.html">Transistors</a>
+      <a href="relays.html" class="active">Relays & Contactors</a>
+    </nav>
+
+    <section class="panel beginner-panel">
+      <h2>Beginner Start Here</h2>
+      <p class="lead">A relay uses an electrical control signal to open or close contacts. A contactor is the same general idea, built for heavier-duty switching.</p>
+      <div class="beginner-grid">
+        <div class="beginner-card"><strong>What is a relay?</strong><p>An electromechanical relay energizes a coil, creates a magnetic field, and moves an armature that changes one or more contacts.</p></div>
+        <div class="beginner-card"><strong>What do COM, NO, and NC mean?</strong><p>COM is the moving common contact. NO means normally open. NC means normally closed. “Normally” means the coil is not energized.</p></div>
+        <div class="beginner-card"><strong>What is a contactor?</strong><p>A contactor is a heavy-duty relay intended for switching loads such as motors, heaters, lighting, and industrial equipment.</p></div>
+        <div class="beginner-card"><strong>Coil and contacts are different circuits</strong><p>The coil is the control side. The contacts switch the load side. In an electromechanical relay they are usually electrically isolated from each other.</p></div>
+        <div class="beginner-card"><strong>Why add a flyback diode?</strong><p>A DC relay coil stores magnetic energy. When current is interrupted, the collapsing field can create a high-voltage spike. A flyback diode provides a safe current path and protects the driver.</p></div>
+        <div class="beginner-card"><strong>Contact ratings matter</strong><p>AC and DC ratings can differ, and motors, solenoids, lamps, and other inductive or high-inrush loads can be harder on contacts than a simple resistive load.</p></div>
+      </div>
+      <div class="other-words">
+        <strong>In Other Words</strong>
+        <div class="other-words-grid">
+          <div class="other-words-item">Coil OFF: COM is connected to NC.</div>
+          <div class="other-words-item">Coil ON: COM moves to NO.</div>
+          <div class="other-words-item">A contactor is a relay designed for larger switching duties.</div>
+        </div>
+      </div>
+      <div class="beginner-tip">Start with the <strong>Animated Relay</strong>. Energize and release the coil while watching COM move between NC and NO.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Animated Relay & Contact Explorer</h2>
+      <p class="lead">See exactly what happens to COM, NC, and NO as the coil changes state.</p>
+      <div class="relay-stage">
+        <div id="relayVisual" class="relay-visual">
+          <div class="coil-shape"></div>
+          <div class="pivot"></div>
+          <div class="armature"></div>
+          <div class="contact com"></div>
+          <div class="contact nc"></div>
+          <div class="contact no"></div>
+          <div class="path-line path-left"></div>
+          <div class="contact-label label-com">COM</div>
+          <div class="contact-label label-nc">NC</div>
+          <div class="contact-label label-no">NO</div>
+        </div>
+        <div>
+          <h3 id="relayStateTitle">Coil De-energized</h3>
+          <p id="relayStateExplain" class="lead">The relay is in its normal state. COM is connected to NC and the NO contact is open.</p>
+          <div class="button-row">
+            <button id="relayOn" class="action primary" type="button">Energize Coil</button>
+            <button id="relayOff" class="action" type="button">Release Coil</button>
+          </div>
+          <div class="contact-grid">
+            <div id="cardCom" class="contact-card active"><small>COM</small><strong>Moving contact</strong></div>
+            <div id="cardNC" class="contact-card active"><small>NC</small><strong id="ncState">Connected</strong></div>
+            <div id="cardNO" class="contact-card"><small>NO</small><strong id="noState">Open</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Relay Coil Calculator</h2>
+      <p class="lead">Estimate coil current, resistance, and power from any two known values.</p>
+      <div class="grid three">
+        <div class="field"><label for="coilVoltage">Coil voltage (V)</label><input id="coilVoltage" type="number" min="0" step="any" value="12"></div>
+        <div class="field"><label for="coilResistance">Coil resistance (Ω)</label><input id="coilResistance" type="number" min="0.000001" step="any" value="240"></div>
+        <div class="field"><label for="coilMode">Calculate from</label>
+          <select id="coilMode">
+            <option value="vr">Voltage + resistance</option>
+            <option value="vi">Voltage + current</option>
+          </select>
+        </div>
+        <div class="field"><label for="coilCurrentInput">Coil current (mA, used in V + I mode)</label><input id="coilCurrentInput" type="number" min="0.001" step="any" value="50"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Coil current</small><strong id="coilCurrent">—</strong></div>
+        <div class="result"><small>Coil resistance</small><strong id="coilResistanceOut">—</strong></div>
+        <div class="result"><small>Coil power</small><strong id="coilPower">—</strong></div>
+      </div>
+      <div id="coilFormula" class="formula">I = V ÷ R; P = V × I.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Flyback / Coil Turn-Off</h2>
+      <p class="lead">Estimate stored coil energy and the ideal voltage produced by a rapid current change.</p>
+      <div class="grid four">
+        <div class="field"><label for="flyL">Coil inductance (mH)</label><input id="flyL" type="number" min="0.000001" step="any" value="100"></div>
+        <div class="field"><label for="flyI">Coil current (A)</label><input id="flyI" type="number" min="0" step="any" value="0.05"></div>
+        <div class="field"><label for="flyTime">Current change time (µs)</label><input id="flyTime" type="number" min="0.001" step="any" value="100"></div>
+        <div class="field"><label for="flyType">Coil supply</label>
+          <select id="flyType"><option value="dc">DC coil</option><option value="ac">AC coil</option></select>
+        </div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Stored magnetic energy</small><strong id="flyEnergy">—</strong></div>
+        <div class="result"><small>Ideal induced voltage magnitude</small><strong id="flyVoltage">—</strong></div>
+        <div class="result"><small>Rate of current change</small><strong id="flyDidt">—</strong></div>
+      </div>
+      <div id="flyStatus" class="status">DC coils commonly use a flyback diode when slow release is acceptable.</div>
+      <div id="flyFormula" class="formula">E = ½LI² and |V| = L × |ΔI ÷ Δt|.</div>
+      <div class="warning">A flyback diode is for DC coils and must be oriented so it is normally reverse-biased. Do not place a simple diode directly across an AC coil. AC coils and applications needing faster release use other suppression methods such as RC snubbers, MOVs, or appropriately selected bidirectional suppressors.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Contact Load & Rating Checker</h2>
+      <p class="lead">Compare an entered load with the relay or contactor ratings you have from its datasheet or nameplate.</p>
+      <div class="grid four">
+        <div class="field"><label for="contactVoltage">Load voltage (V)</label><input id="contactVoltage" type="number" min="0" step="any" value="120"></div>
+        <div class="field"><label for="contactCurrent">Load current (A)</label><input id="contactCurrent" type="number" min="0" step="any" value="5"></div>
+        <div class="field"><label for="ratedVoltage">Entered contact voltage rating (V)</label><input id="ratedVoltage" type="number" min="0.001" step="any" value="250"></div>
+        <div class="field"><label for="ratedCurrent">Entered contact current rating (A)</label><input id="ratedCurrent" type="number" min="0.001" step="any" value="10"></div>
+        <div class="field"><label for="loadType">Load type</label>
+          <select id="loadType">
+            <option value="resistive">Resistive</option>
+            <option value="motor">Motor / inductive</option>
+            <option value="lamp">Lamp / high inrush</option>
+            <option value="capacitive">Capacitive / power supply</option>
+          </select>
+        </div>
+        <div class="field"><label for="systemType">System</label><select id="systemType"><option value="ac">AC</option><option value="dc">DC</option></select></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Load apparent power</small><strong id="contactVA">—</strong></div>
+        <div class="result"><small>Voltage-rating usage</small><strong id="contactVUse">—</strong></div>
+        <div class="result"><small>Current-rating usage</small><strong id="contactIUse">—</strong></div>
+      </div>
+      <div id="contactStatus" class="status">Enter contact ratings from the actual device.</div>
+      <p class="note">This comparison does not convert a resistive rating into a safe motor, lamp, capacitive, or DC rating. Those loads can require much lower allowable current. Use the exact manufacturer's utilization/contact rating for the actual load type and switching voltage.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Start / Stop Contactor Seal-In Simulation</h2>
+      <p class="lead">See how a momentary START button and a normally closed STOP button can control a contactor with an auxiliary holding contact.</p>
+      <div class="seal-stage">
+        <div class="seal-visual">
+          <div class="seal-row"><div id="startBlock" class="seal-block">START (NO)</div><div id="startLine" class="seal-line"></div></div>
+          <div class="seal-row"><div id="stopBlock" class="seal-block active">STOP (NC)</div><div id="stopLine" class="seal-line active"></div></div>
+          <div class="seal-row"><div id="auxBlock" class="seal-block">AUX (NO)</div><div id="auxLine" class="seal-line"></div></div>
+          <div class="seal-row"><div id="contactorBlock" class="seal-block">CONTACTOR</div><div id="contactorLine" class="seal-line"></div></div>
+        </div>
+        <div>
+          <h3 id="sealTitle">Contactor OFF</h3>
+          <p id="sealExplain" class="lead">START is open, STOP is closed, and the auxiliary holding contact is open.</p>
+          <div class="button-row">
+            <button id="startBtn" class="action primary" type="button">Press START</button>
+            <button id="stopBtn" class="action" type="button">Press STOP</button>
+            <button id="resetSeal" class="action" type="button">Reset</button>
+          </div>
+          <div id="sealStatus" class="status">The contactor coil is de-energized.</div>
+        </div>
+      </div>
+      <div class="formula">When START briefly energizes the coil, an auxiliary NO contact closes in parallel with START and keeps the coil energized after START is released. Pressing STOP opens the control circuit and drops the contactor out.</div>
+      <div class="warning">This is a control-logic teaching simulation, not a wiring instruction for a real machine. Actual motor-control circuits require properly rated contactors, overload protection, disconnecting means, control transformers where applicable, code-compliant wiring, interlocks, and manufacturer instructions.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Relay vs. Contactor</h2>
+      <div class="comparison-grid">
+        <div class="comparison-card">
+          <h3>Relay</h3>
+          <ul>
+            <li>Common for control signals and smaller loads.</li>
+            <li>Available with many contact arrangements such as SPDT and DPDT.</li>
+            <li>Can provide galvanic isolation between coil and contacts.</li>
+            <li>Mechanical, reed, latching, time-delay, and solid-state versions exist.</li>
+          </ul>
+        </div>
+        <div class="comparison-card">
+          <h3>Contactor</h3>
+          <ul>
+            <li>Designed for repeated switching of larger loads.</li>
+            <li>Common in motor, heater, lighting, and industrial control.</li>
+            <li>Often includes auxiliary contacts for seal-in, interlocking, or status.</li>
+            <li>Frequently used with overload relays and other motor-protection devices.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Relay & Contactor Types</h2>
+      <p class="lead">Common switching devices and where they are used.</p>
+      <div class="type-grid">
+        <div class="type-card"><strong>SPST Relay</strong><small>One simple contact path. Available as normally open or normally closed.</small><span class="badge">Basic switching</span></div>
+        <div class="type-card"><strong>SPDT Relay</strong><small>One common contact switches between NC and NO.</small><span class="badge">Changeover</span></div>
+        <div class="type-card"><strong>DPDT Relay</strong><small>Two changeover contact sets operated together.</small><span class="badge">Two circuits</span></div>
+        <div class="type-card"><strong>Latching Relay</strong><small>Remains in its last state without continuous coil power, depending on design.</small><span class="badge">Memory</span></div>
+        <div class="type-card"><strong>Reed Relay</strong><small>Magnetically operated sealed reed contacts, useful for small signals and instrumentation.</small><span class="badge">Signals</span></div>
+        <div class="type-card"><strong>Time-Delay Relay</strong><small>Adds intentional on-delay, off-delay, interval, or other timing behavior.</small><span class="badge">Timing</span></div>
+        <div class="type-card"><strong>Solid-State Relay</strong><small>Uses semiconductor switching instead of moving contacts. AC and DC SSRs are not interchangeable.</small><span class="badge">No moving contacts</span></div>
+        <div class="type-card"><strong>Contactor</strong><small>Heavy-duty electrically operated switch for larger loads and frequent operation.</small><span class="badge">Power switching</span></div>
+        <div class="type-card"><strong>Overload Relay</strong><small>Motor-protection device that trips the control circuit when sustained overload conditions are detected.</small><span class="badge">Motor protection</span></div>
+      </div>
+      <div class="warning">Never assume a contact rating applies to every load type. AC vs. DC, resistive vs. inductive, inrush current, duty cycle, ambient temperature, enclosure, and switching frequency can all change the allowable load.</div>
+    </section>
+  </main>
+
+  <footer>A DONCO-BAYCITY™ App</footer>
+
+  <script>
+    function fmt(n,d=3){
+      if(!Number.isFinite(n))return "—";
+      return n.toLocaleString(undefined,{maximumFractionDigits:d});
+    }
+    function formatA(a){
+      const x=Math.abs(a);
+      if(x>=1)return fmt(a,3)+" A";
+      if(x>=.001)return fmt(a*1000,3)+" mA";
+      if(x>=.000001)return fmt(a*1e6,3)+" µA";
+      return fmt(a*1e9,3)+" nA";
+    }
+    function formatV(v){
+      const x=Math.abs(v);
+      if(x>=1000)return fmt(v/1000,3)+" kV";
+      if(x>=1)return fmt(v,3)+" V";
+      if(x>=.001)return fmt(v*1000,3)+" mV";
+      return fmt(v*1e6,3)+" µV";
+    }
+    function formatOhms(r){
+      const x=Math.abs(r);
+      if(x>=1e6)return fmt(r/1e6,3)+" MΩ";
+      if(x>=1e3)return fmt(r/1e3,3)+" kΩ";
+      if(x<1&&x>0)return fmt(r*1000,3)+" mΩ";
+      return fmt(r,3)+" Ω";
+    }
+    function formatPower(w){
+      const x=Math.abs(w);
+      if(x>=1000)return fmt(w/1000,3)+" kW";
+      if(x>=1)return fmt(w,3)+" W";
+      if(x>=.001)return fmt(w*1000,3)+" mW";
+      return fmt(w*1e6,3)+" µW";
+    }
+
+    function setRelay(energized){
+      const visual=document.getElementById("relayVisual");
+      visual.classList.toggle("energized",energized);
+      document.getElementById("relayStateTitle").textContent=energized?"Coil Energized":"Coil De-energized";
+      document.getElementById("relayStateExplain").textContent=energized
+        ?"The magnetic field pulls the armature. COM leaves NC and connects to NO."
+        :"The relay is in its normal state. COM is connected to NC and the NO contact is open.";
+      document.getElementById("ncState").textContent=energized?"Open":"Connected";
+      document.getElementById("noState").textContent=energized?"Connected":"Open";
+      document.getElementById("cardNC").classList.toggle("active",!energized);
+      document.getElementById("cardNO").classList.toggle("active",energized);
+    }
+    document.getElementById("relayOn").addEventListener("click",()=>setRelay(true));
+    document.getElementById("relayOff").addEventListener("click",()=>setRelay(false));
+
+    function updateCoil(){
+      const v=Math.max(0,Number(document.getElementById("coilVoltage").value)||0);
+      const mode=document.getElementById("coilMode").value;
+      let r=Math.max(1e-12,Number(document.getElementById("coilResistance").value)||1e-12);
+      let i;
+      if(mode==="vi"){
+        i=Math.max(.000001,Number(document.getElementById("coilCurrentInput").value)||.001)/1000;
+        r=v>0?v/i:0;
+      }else{
+        i=v/r;
+      }
+      const p=v*i;
+      document.getElementById("coilCurrent").textContent=formatA(i);
+      document.getElementById("coilResistanceOut").textContent=formatOhms(r);
+      document.getElementById("coilPower").textContent=formatPower(p);
+      document.getElementById("coilFormula").textContent=
+        mode==="vi"
+        ?"R = V ÷ I = "+formatV(v)+" ÷ "+formatA(i)+" = "+formatOhms(r)+"; P = "+formatPower(p)+"."
+        :"I = V ÷ R = "+formatV(v)+" ÷ "+formatOhms(r)+" = "+formatA(i)+"; P = "+formatPower(p)+".";
+    }
+    ["coilVoltage","coilResistance","coilMode","coilCurrentInput"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateCoil);el.addEventListener("change",updateCoil);
+    });
+
+    function updateFlyback(){
+      const l=Math.max(1e-15,Number(document.getElementById("flyL").value)||1e-15)*1e-3;
+      const i=Math.max(0,Number(document.getElementById("flyI").value)||0);
+      const t=Math.max(1e-12,Number(document.getElementById("flyTime").value)||1e-12)*1e-6;
+      const type=document.getElementById("flyType").value;
+      const energy=.5*l*i*i;
+      const didt=i/t;
+      const voltage=l*didt;
+      document.getElementById("flyEnergy").textContent=
+        energy>=1?fmt(energy,4)+" J":energy>=.001?fmt(energy*1000,4)+" mJ":fmt(energy*1e6,4)+" µJ";
+      document.getElementById("flyVoltage").textContent=formatV(voltage);
+      document.getElementById("flyDidt").textContent=
+        didt>=1e6?fmt(didt/1e6,3)+" MA/s":didt>=1e3?fmt(didt/1e3,3)+" kA/s":fmt(didt,3)+" A/s";
+      document.getElementById("flyFormula").textContent=
+        "E = ½LI² = "+(energy>=.001?fmt(energy*1000,4)+" mJ":fmt(energy*1e6,4)+" µJ")+
+        "; ideal |V| = L × |ΔI ÷ Δt| = "+formatV(voltage)+".";
+      const status=document.getElementById("flyStatus");
+      status.className="status "+(type==="dc"?"good":"warn");
+      status.textContent=type==="dc"
+        ?"For a DC coil, a correctly oriented flyback diode is a common suppression method when slower release is acceptable."
+        :"For an AC coil, do not use a simple diode directly across the coil. Use a suppression method intended for AC service.";
+    }
+    ["flyL","flyI","flyTime","flyType"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateFlyback);el.addEventListener("change",updateFlyback);
+    });
+
+    function updateContact(){
+      const v=Math.max(0,Number(document.getElementById("contactVoltage").value)||0);
+      const i=Math.max(0,Number(document.getElementById("contactCurrent").value)||0);
+      const rv=Math.max(.001,Number(document.getElementById("ratedVoltage").value)||.001);
+      const ri=Math.max(.001,Number(document.getElementById("ratedCurrent").value)||.001);
+      const loadType=document.getElementById("loadType").value;
+      const system=document.getElementById("systemType").value;
+      const vUse=v/rv*100;
+      const iUse=i/ri*100;
+      document.getElementById("contactVA").textContent=fmt(v*i,3)+" VA";
+      document.getElementById("contactVUse").textContent=fmt(vUse,1)+"%";
+      document.getElementById("contactIUse").textContent=fmt(iUse,1)+"%";
+      const status=document.getElementById("contactStatus");
+      status.className="status";
+      if(vUse>100||iUse>100){
+        status.classList.add("high");
+        status.textContent="The entered load exceeds at least one entered contact rating.";
+      }else if(loadType!=="resistive"||system==="dc"){
+        status.classList.add("warn");
+        status.textContent="The basic voltage/current comparison is below the entered ratings, but this load type may require a substantially lower manufacturer rating. Check the exact datasheet utilization category or load rating.";
+      }else if(vUse>=80||iUse>=80){
+        status.classList.add("warn");
+        status.textContent="The resistive AC load is close to at least one entered rating. Check duty cycle, temperature, switching frequency, and manufacturer margin.";
+      }else{
+        status.classList.add("good");
+        status.textContent="The resistive AC load is below the entered voltage and current ratings. Confirm the exact device rating for the real application.";
+      }
+    }
+    ["contactVoltage","contactCurrent","ratedVoltage","ratedCurrent","loadType","systemType"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateContact);el.addEventListener("change",updateContact);
+    });
+
+    let latched=false;
+    function renderSeal(){
+      document.getElementById("auxBlock").classList.toggle("active",latched);
+      document.getElementById("auxLine").classList.toggle("active",latched);
+      document.getElementById("contactorBlock").classList.toggle("active",latched);
+      document.getElementById("contactorLine").classList.toggle("active",latched);
+      document.getElementById("sealTitle").textContent=latched?"Contactor ON — Held In":"Contactor OFF";
+      document.getElementById("sealExplain").textContent=latched
+        ?"The contactor coil is energized and its auxiliary NO contact is closed, providing the holding path after START is released."
+        :"START is open, STOP is closed, and the auxiliary holding contact is open.";
+      const status=document.getElementById("sealStatus");
+      status.className="status "+(latched?"good":"");
+      status.textContent=latched?"The contactor coil is energized through the seal-in path.":"The contactor coil is de-energized.";
+    }
+    document.getElementById("startBtn").addEventListener("click",()=>{
+      document.getElementById("startBlock").classList.add("active");
+      document.getElementById("startLine").classList.add("active");
+      latched=true;renderSeal();
+      setTimeout(()=>{
+        document.getElementById("startBlock").classList.remove("active");
+        document.getElementById("startLine").classList.remove("active");
+      },350);
+    });
+    document.getElementById("stopBtn").addEventListener("click",()=>{
+      document.getElementById("stopBlock").classList.remove("active");
+      document.getElementById("stopLine").classList.remove("active");
+      latched=false;renderSeal();
+      setTimeout(()=>{
+        document.getElementById("stopBlock").classList.add("active");
+        document.getElementById("stopLine").classList.add("active");
+      },350);
+    });
+    document.getElementById("resetSeal").addEventListener("click",()=>{
+      latched=false;
+      document.getElementById("startBlock").classList.remove("active");
+      document.getElementById("startLine").classList.remove("active");
+      document.getElementById("stopBlock").classList.add("active");
+      document.getElementById("stopLine").classList.add("active");
+      renderSeal();
+    });
+
+    setRelay(false);
+    updateCoil();
+    updateFlyback();
+    updateContact();
+    renderSeal();
+  </script>
+</body>
+</html>
