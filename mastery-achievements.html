@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mastery & Achievements</title>
+<link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.94}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1100px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.badges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.badge{border:1px solid var(--border);border-radius:16px;padding:16px;background:#f8fbff;min-height:185px}.badge.locked{opacity:.62;filter:grayscale(.75)}.medal{font-size:42px;line-height:1}.badge h3{margin:8px 0 5px;color:var(--navy)}.badge p{margin:0 0 8px;color:#40566a;line-height:1.45}.status{display:inline-block;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900;background:#e5edf4;color:#526779}.badge.unlocked{background:#fffbed;border-color:#e5c94a;box-shadow:0 8px 20px rgba(255,212,59,.15)}.badge.unlocked .status{background:#eaf7ef;color:#185c3b}.bar{height:18px;background:#e5edf4;border-radius:999px;overflow:hidden}.bar>div{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue2));width:0}.summary{font-size:25px;font-weight:900;color:var(--navy);margin:8px 0}@media(max-width:800px){.badges{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.badges{grid-template-columns:1fr}}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+</style></head><body>
+<header><h1>Mastery & Achievements</h1><p>See what you have learned across All Things Electrical.</p></header><main>
+<nav class="nav"><a href="index.html">← Home</a><a href="beginner-courses.html">Beginner Courses</a><a href="progress.html">My Progress</a><a href="quizzes.html">Quizzes</a></nav>
+<section class="panel"><h2>Overall Mastery</h2><div id="summary" class="summary"></div><div class="bar"><div id="bar"></div></div><p class="note">Achievements are calculated from learning progress stored locally on this device/browser.</p></section>
+<section class="panel"><h2>Your Badges</h2><div id="badges" class="badges"></div></section>
+<section class="panel"><h2>How to Unlock More</h2><p class="lead">Complete guided-course steps, practice schematic symbols, earn strong quiz scores, and solve troubleshooting rounds at higher difficulty. There is no penalty for repeating a lesson or simulator.</p></section>
+</main><footer>A DONCO-BAYCITY™ App</footer>
+<script>
+function obj(k){try{return JSON.parse(localStorage.getItem(k)||"{}")}catch{return{}}}
+const cp=obj("ateCourseProgress"),qp=obj("ateQuizProgress"),wins=obj("ateTroubleshootWins"),best=+localStorage.getItem("ateSymbolBest")||0;
+const courseDefs=[["Electricity 101",10,0],["Electronics 101",9,1],["Schematics & Troubleshooting",6,2],["Motors & Industrial Controls",11,3],["Power & Energy",11,4]];
+function courseDone(ci,total){for(let si=0;si<total;si++)if(!cp[ci+"-"+si])return false;return true}
+const quizVals=Object.values(qp).map(Number),anyPerfect=quizVals.some(x=>x>=5),sixStrong=["Electrical Basics","Components","Motors & Controls","PLCs & Automation","Test Equipment","Troubleshooting"].every(n=>(+qp[n]||0)>=4);
+const allCourses=courseDefs.every(([,total,ci])=>courseDone(ci,total));
+const anyProgress=Object.keys(cp).some(k=>cp[k])||quizVals.length||best>0;
+const data=[
+["🌱","First Steps","Begin learning anywhere in the app.",anyProgress,"Open a course, quiz, or flashcard practice."],
+["⚡","Electricity 101","Complete the Electricity 101 guided course.",courseDone(0,10),"Finish all 10 Electricity 101 steps."],
+["🔧","Electronics Builder","Complete the Electronics 101 guided course.",courseDone(1,9),"Finish all 9 Electronics 101 steps."],
+["📐","Schematic Reader","Complete Schematics & Troubleshooting.",courseDone(2,6),"Finish all 6 schematic/troubleshooting course steps."],
+["⚙️","Industrial Controls","Complete Motors & Industrial Controls.",courseDone(3,11),"Finish all 11 industrial-controls steps."],
+["🔋","Power & Energy","Complete the Power & Energy guided course.",courseDone(4,11),"Finish all 11 Power & Energy steps."],
+["🧠","Symbol Master","Score 16/16 on Symbol Flashcards.",best>=16,"Reach a perfect symbol-flashcard score."],
+["🏅","Quiz Ace","Earn a perfect 5/5 on any electrical quiz.",anyPerfect,"Earn 5/5 on any quiz category."],
+["📚","Quiz Scholar","Score at least 4/5 in every quiz category.",sixStrong,"Reach 4/5 or better in all six quiz categories."],
+["🔎","Troubleshooter","Solve at least one Intermediate troubleshooting round.",(+wins.intermediate||0)>=1,"Solve an Intermediate troubleshooting fault."],
+["🕵️","Advanced Diagnostician","Solve three Advanced troubleshooting rounds.",(+wins.advanced||0)>=3,"Solve 3 Advanced troubleshooting rounds."],
+["🏆","All Things Electrical Master","Complete all five guided courses.",allCourses,"Complete every guided course."]
+];
+const unlocked=data.filter(x=>x[3]).length;summary.textContent=unlocked+" of "+data.length+" achievements unlocked";bar.style.width=(unlocked/data.length*100)+"%";
+badges.innerHTML=data.map(x=>'<article class="badge '+(x[3]?'unlocked':'locked')+'"><div class="medal">'+x[0]+'</div><h3>'+x[1]+'</h3><p>'+x[2]+'</p><span class="status">'+(x[3]?'Unlocked ✓':'Locked')+'</span><p class="note" style="margin-top:9px">'+(x[3]?'Achievement earned.':x[4])+'</p></article>').join("");
+</script></body></html>
