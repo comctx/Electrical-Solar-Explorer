@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Batteries & Energy Storage Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;padding:24px 18px 20px;text-align:center;
+    }
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1000px;margin:0 auto;padding:18px}
+    .page-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .page-nav a{
+      text-decoration:none;min-height:46px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:11px;padding:10px 14px;font-weight:800;border:1px solid #9fc8ef;
+      background:#eef7ff;color:var(--navy);
+    }
+    .page-nav a.active{background:var(--yellow);border-color:#e4ba16}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px;
+    }
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    h3{margin:0 0 8px;color:var(--navy)}
+    .lead,.note{color:var(--muted);line-height:1.5}
+    .lead{margin:0 0 16px}.note{font-size:13px;margin:10px 0 0}
+    .grid{display:grid;gap:12px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input,select,button{font:inherit}
+    input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white;color:var(--text)}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px}
+    .result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .result strong{color:var(--navy);font-size:clamp(20px,4vw,28px)}
+    .formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+    .warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:10px;padding:10px 12px;color:#6a4300;font-weight:700;line-height:1.45}
+    .status{margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy);line-height:1.45}
+    .status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+    .status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
+    .status.high{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+
+    .beginner-panel{background:linear-gradient(180deg,#fff 0%,#f8fbff 100%);border:2px solid #b9d7f5}
+    .concept-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .concept-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .concept-card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}
+    .concept-card p{margin:0;color:#33495b;line-height:1.5}
+    .badge{display:inline-block;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#e9f3ff;color:var(--navy);border:1px solid #b9d7f5}
+
+    .bank-stage{display:grid;grid-template-columns:minmax(300px,1fr) minmax(0,1fr);gap:16px;align-items:center;margin-top:14px}
+    .battery-bank{border:1px solid var(--border);border-radius:14px;background:#fbfdff;padding:18px;display:grid;gap:12px;min-height:250px}
+    .battery-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .cell{width:72px;height:42px;border:3px solid #607080;border-radius:7px;background:white;position:relative}
+    .cell::after{content:"";position:absolute;right:-8px;top:12px;width:8px;height:14px;background:#607080;border-radius:0 3px 3px 0}
+    .cell strong{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:12px}
+    .wire{height:5px;background:#607080;flex:1 1 20px;border-radius:999px}
+    .button-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .action{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}
+    .action.primary{background:var(--yellow);border-color:#e4ba16}
+
+    .soc-meter{height:34px;border:1px solid #9fc8ef;border-radius:999px;background:#edf3f8;overflow:hidden;margin-top:14px}
+    .soc-fill{height:100%;width:100%;background:linear-gradient(90deg,#0b63ce,#1594ff);transition:width .2s}
+    .type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .type-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:13px}
+    .type-card strong{display:block;color:var(--navy);margin-bottom:5px}
+    .type-card small{display:block;color:var(--muted);line-height:1.45}
+    .type-card .badge{margin-top:8px}
+
+    @media(max-width:760px){
+      main{padding:12px}.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .result-grid,.concept-grid,.type-grid,.bank-stage{grid-template-columns:1fr}
+    }
+    footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Batteries & Energy Storage Explorer</h1>
+  <p>Voltage, amp-hours, watt-hours, series/parallel banks, runtime, charging, voltage sag, state of charge, and battery types.</p>
+</header>
+
+<main>
+  <nav class="page-nav" aria-label="App pages">
+    <a href="index.html">All Things Electrical</a>
+    <a href="electrical-basics.html">Electrical Basics</a>
+    <a href="wiring-installation.html">Wiring & Installation</a>
+    <a href="batteries.html" class="active">Batteries</a>
+    <a href="capacitor.html">Capacitors</a>
+    <a href="inductors.html">Inductors & Coils</a>
+    <a href="transformers.html">Transformers</a>
+    <a href="diodes.html">Diodes</a>
+    <a href="transistors.html">Transistors</a>
+    <a href="relays.html">Relays & Contactors</a>
+    <a href="integrated-circuits.html">Integrated Circuits</a>
+    <a href="processors.html">Processors</a>
+  </nav>
+
+  <section class="panel beginner-panel">
+    <h2>Beginner Start Here</h2>
+    <p class="lead">These are the basic ideas behind batteries and energy storage.</p>
+    <div class="concept-grid">
+      <div class="concept-card"><strong>Voltage (V)</strong><p>The electrical potential difference of the battery or battery bank.</p><span class="badge">Electrical pressure</span></div>
+      <div class="concept-card"><strong>Amp-hours (Ah)</strong><p>A capacity rating that describes how much charge a battery can deliver over time under specified test conditions.</p><span class="badge">Charge capacity</span></div>
+      <div class="concept-card"><strong>Watt-hours (Wh)</strong><p>An energy rating. A simple estimate is voltage × amp-hours.</p><span class="badge">Stored energy</span></div>
+      <div class="concept-card"><strong>State of Charge (SOC)</strong><p>An estimate of how much usable charge remains compared with a full battery.</p><span class="badge">How full?</span></div>
+      <div class="concept-card"><strong>Series Connection</strong><p>Battery voltages add while the Ah rating stays approximately the same, assuming matched batteries.</p><span class="badge">Higher voltage</span></div>
+      <div class="concept-card"><strong>Parallel Connection</strong><p>Battery Ah capacities add while voltage stays approximately the same, assuming compatible matched batteries.</p><span class="badge">More capacity</span></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Series / Parallel Battery Bank Calculator</h2>
+    <p class="lead">Build a simple matched battery bank from identical batteries.</p>
+    <div class="grid four">
+      <div class="field"><label for="bankVoltage">Battery voltage (V)</label><input id="bankVoltage" type="number" min="0.001" step="any" value="12"></div>
+      <div class="field"><label for="bankAh">Battery capacity (Ah)</label><input id="bankAh" type="number" min="0.001" step="any" value="100"></div>
+      <div class="field"><label for="seriesCount">Batteries in series</label><input id="seriesCount" type="number" min="1" step="1" value="2"></div>
+      <div class="field"><label for="parallelCount">Parallel strings</label><input id="parallelCount" type="number" min="1" step="1" value="2"></div>
+    </div>
+    <div class="result-grid">
+      <div class="result"><small>Bank voltage</small><strong id="bankVOut">—</strong></div>
+      <div class="result"><small>Bank capacity</small><strong id="bankAhOut">—</strong></div>
+      <div class="result"><small>Nominal energy</small><strong id="bankWhOut">—</strong></div>
+      <div class="result"><small>Total batteries</small><strong id="bankCountOut">—</strong></div>
+    </div>
+    <div class="bank-stage">
+      <div id="bankVisual" class="battery-bank"></div>
+      <div>
+        <h3>How it works</h3>
+        <p class="lead">Series adds voltage. Parallel adds amp-hour capacity. Series-parallel banks combine both.</p>
+        <div id="bankFormula" class="formula">Bank V = battery V × series count. Bank Ah = battery Ah × parallel strings.</div>
+      </div>
+    </div>
+    <div class="warning">Battery banks should use compatible batteries with the same chemistry, nominal voltage, capacity, age, state of charge, and manufacturer guidance. Do not mix battery types or randomly combine unmatched batteries.</div>
+  </section>
+
+  <section class="panel">
+    <h2>Ah ↔ Wh Converter</h2>
+    <div class="grid three">
+      <div class="field"><label for="convV">Voltage (V)</label><input id="convV" type="number" min="0.001" step="any" value="12"></div>
+      <div class="field"><label for="convAh">Amp-hours (Ah)</label><input id="convAh" type="number" min="0" step="any" value="100"></div>
+      <div class="field"><label for="convWh">Watt-hours (Wh)</label><input id="convWh" type="number" min="0" step="any" value="1200"></div>
+    </div>
+    <div class="result-grid">
+      <div class="result"><small>From V × Ah</small><strong id="whFromAh">—</strong></div>
+      <div class="result"><small>Ah from Wh ÷ V</small><strong id="ahFromWh">—</strong></div>
+    </div>
+    <div id="convFormula" class="formula">Wh ≈ V × Ah.</div>
+  </section>
+
+  <section class="panel">
+    <h2>Battery Runtime Calculator</h2>
+    <p class="lead">Estimate runtime from battery energy, load power, usable depth of discharge, and conversion efficiency.</p>
+    <div class="grid four">
+      <div class="field"><label for="runV">Battery/bank voltage (V)</label><input id="runV" type="number" min="0.001" step="any" value="12"></div>
+      <div class="field"><label for="runAh">Capacity (Ah)</label><input id="runAh" type="number" min="0" step="any" value="100"></div>
+      <div class="field"><label for="runLoad">Load power (W)</label><input id="runLoad" type="number" min="0.001" step="any" value="300"></div>
+      <div class="field"><label for="runDod">Usable depth of discharge (%)</label><input id="runDod" type="number" min="1" max="100" step="1" value="80"></div>
+      <div class="field"><label for="runEff">System efficiency (%)</label><input id="runEff" type="number" min="1" max="100" step="1" value="90"></div>
+    </div>
+    <div class="result-grid">
+      <div class="result"><small>Nominal energy</small><strong id="runEnergy">—</strong></div>
+      <div class="result"><small>Usable energy estimate</small><strong id="runUsable">—</strong></div>
+      <div class="result"><small>Estimated runtime</small><strong id="runHours">—</strong></div>
+    </div>
+    <div id="runFormula" class="formula">Runtime ≈ usable Wh ÷ load W.</div>
+    <p class="note">Real runtime varies with battery chemistry, temperature, discharge rate, battery age, inverter behavior, cutoff voltage, and manufacturer capacity-test conditions.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Charge-Time Calculator</h2>
+    <div class="grid four">
+      <div class="field"><label for="chgAh">Battery capacity (Ah)</label><input id="chgAh" type="number" min="0.001" step="any" value="100"></div>
+      <div class="field"><label for="chgSoc">Starting SOC (%)</label><input id="chgSoc" type="number" min="0" max="100" step="1" value="20"></div>
+      <div class="field"><label for="chgCurrent">Charge current (A)</label><input id="chgCurrent" type="number" min="0.001" step="any" value="20"></div>
+      <div class="field"><label for="chgEff">Charge efficiency (%)</label><input id="chgEff" type="number" min="1" max="100" step="1" value="90"></div>
+    </div>
+    <div class="result-grid">
+      <div class="result"><small>Charge to replace</small><strong id="chgNeeded">—</strong></div>
+      <div class="result"><small>Idealized charge time</small><strong id="chgTime">—</strong></div>
+    </div>
+    <div id="chgFormula" class="formula">Time ≈ required Ah ÷ (charger A × efficiency).</div>
+    <p class="note">Many chemistries do not charge at constant current all the way to full. Absorption, tapering, balancing, temperature, and BMS/charger limits can make actual charge time longer.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Voltage Sag & Internal Resistance</h2>
+    <p class="lead">Estimate terminal voltage under load using a simple internal-resistance model.</p>
+    <div class="grid three">
+      <div class="field"><label for="sagOpen">Open-circuit voltage (V)</label><input id="sagOpen" type="number" min="0" step="any" value="12.8"></div>
+      <div class="field"><label for="sagCurrent">Load current (A)</label><input id="sagCurrent" type="number" min="0" step="any" value="50"></div>
+      <div class="field"><label for="sagR">Internal resistance (mΩ)</label><input id="sagR" type="number" min="0" step="any" value="8"></div>
+    </div>
+    <div class="result-grid">
+      <div class="result"><small>Voltage sag</small><strong id="sagDrop">—</strong></div>
+      <div class="result"><small>Loaded terminal voltage</small><strong id="sagLoaded">—</strong></div>
+      <div class="result"><small>Internal heating I²R</small><strong id="sagHeat">—</strong></div>
+    </div>
+    <div id="sagFormula" class="formula">Vloaded ≈ Voc − I × Rinternal.</div>
+  </section>
+
+  <section class="panel">
+    <h2>State of Charge Demonstration</h2>
+    <p class="lead">Move the state-of-charge control to visualize usable energy. This is not a voltage-to-SOC lookup table.</p>
+    <div class="grid two">
+      <div class="field"><label for="socValue">State of charge (%)</label><input id="socValue" type="range" min="0" max="100" step="1" value="80"></div>
+      <div class="field"><label for="socWh">Full battery energy (Wh)</label><input id="socWh" type="number" min="0" step="any" value="1200"></div>
+    </div>
+    <div class="soc-meter"><div id="socFill" class="soc-fill"></div></div>
+    <div class="result-grid">
+      <div class="result"><small>State of charge</small><strong id="socPct">—</strong></div>
+      <div class="result"><small>Energy represented</small><strong id="socEnergy">—</strong></div>
+    </div>
+    <div class="warning">Battery voltage alone is not a universal SOC indicator. Voltage-vs-SOC behavior depends on chemistry, temperature, rest time, load/charge current, age, and cell balance.</div>
+  </section>
+
+  <section class="panel">
+    <h2>12 V / 24 V / 48 V Bank Builder</h2>
+    <div class="grid three">
+      <div class="field"><label for="builderBatteryV">Battery nominal voltage (V)</label><input id="builderBatteryV" type="number" min="0.001" step="any" value="12"></div>
+      <div class="field"><label for="builderTarget">Target bank voltage</label>
+        <select id="builderTarget"><option value="12">12 V</option><option value="24">24 V</option><option value="48" selected>48 V</option></select>
+      </div>
+      <div class="field"><label for="builderParallel">Parallel strings</label><input id="builderParallel" type="number" min="1" step="1" value="1"></div>
+    </div>
+    <div class="result-grid">
+      <div class="result"><small>Batteries per series string</small><strong id="builderSeries">—</strong></div>
+      <div class="result"><small>Total batteries</small><strong id="builderTotal">—</strong></div>
+      <div class="result"><small>Calculated bank voltage</small><strong id="builderVoltage">—</strong></div>
+    </div>
+    <div id="builderStatus" class="status">Enter nominal battery voltage and target.</div>
+  </section>
+
+  <section class="panel">
+    <h2>Battery Types & Uses</h2>
+    <div class="type-grid">
+      <div class="type-card"><strong>Flooded Lead-Acid</strong><small>Traditional vented lead-acid battery used in starting, deep-cycle, and backup applications.</small><span class="badge">Lead-acid</span></div>
+      <div class="type-card"><strong>AGM</strong><small>Sealed valve-regulated lead-acid design using absorbed glass mat separators.</small><span class="badge">VRLA</span></div>
+      <div class="type-card"><strong>Gel</strong><small>Valve-regulated lead-acid chemistry using gelled electrolyte and requiring compatible charging.</small><span class="badge">VRLA</span></div>
+      <div class="type-card"><strong>Lithium-Ion</strong><small>High energy density family used in electronics, tools, vehicles, and many portable systems.</small><span class="badge">Lithium</span></div>
+      <div class="type-card"><strong>LiFePO₄</strong><small>Lithium iron phosphate chemistry common in solar, RV, marine, backup, and stationary storage.</small><span class="badge">Lithium</span></div>
+      <div class="type-card"><strong>NiMH</strong><small>Rechargeable nickel-metal hydride chemistry widely used in AA/AAA cells and some battery packs.</small><span class="badge">Rechargeable</span></div>
+      <div class="type-card"><strong>Alkaline</strong><small>Primary non-rechargeable chemistry commonly used in household cells.</small><span class="badge">Primary cell</span></div>
+      <div class="type-card"><strong>Starter Battery</strong><small>Optimized for short, high-current engine-starting duty rather than repeated deep discharge.</small><span class="badge">High current</span></div>
+      <div class="type-card"><strong>Deep-Cycle Battery</strong><small>Designed for repeated energy delivery over longer discharge periods compared with starter batteries.</small><span class="badge">Energy storage</span></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>BMS, Protection & Charging Basics</h2>
+    <div class="concept-grid">
+      <div class="concept-card"><strong>BMS</strong><p>A battery-management system can monitor cells and provide functions such as overcharge, overdischarge, overcurrent, temperature, and balancing protection depending on the design.</p></div>
+      <div class="concept-card"><strong>Fuse / Overcurrent Protection</strong><p>Battery systems can deliver very high fault current. Properly selected overcurrent protection is important near energy sources.</p></div>
+      <div class="concept-card"><strong>Correct Charger</strong><p>Charging voltage, current, temperature behavior, and charge stages must match the battery chemistry and manufacturer requirements.</p></div>
+      <div class="concept-card"><strong>Temperature</strong><p>Charging and discharging limits often change with temperature. Some lithium chemistries should not be charged below specified temperatures.</p></div>
+      <div class="concept-card"><strong>Polarity</strong><p>Reversed polarity can damage equipment, create arcing, and cause very high current. Verify polarity before connection.</p></div>
+      <div class="concept-card"><strong>Cell Balance</strong><p>Series-connected cells can drift apart in SOC. Many lithium packs use balancing to keep cell voltages within safe limits.</p></div>
+    </div>
+    <div class="warning">Battery packs can store enough energy to cause severe burns, fire, arc hazards, toxic exposure, or explosion if shorted, overcharged, damaged, or incorrectly assembled. Use manufacturer-approved batteries, chargers, BMS/protection devices, fusing, cable sizes, enclosures, and installation practices.</div>
+  </section>
+</main>
+
+<footer>A DONCO-BAYCITY™ App</footer>
+
+<script>
+  function fmt(n,d=3){if(!Number.isFinite(n))return "—";return n.toLocaleString(undefined,{maximumFractionDigits:d});}
+  function formatWh(wh){if(wh>=1000000)return fmt(wh/1000000,3)+" MWh";if(wh>=1000)return fmt(wh/1000,3)+" kWh";return fmt(wh,3)+" Wh";}
+  function formatPower(w){if(w>=1000)return fmt(w/1000,3)+" kW";if(w>=1)return fmt(w,3)+" W";return fmt(w*1000,3)+" mW";}
+  function formatTime(h){if(h>=24)return fmt(h/24,2)+" days";if(h>=1)return fmt(h,2)+" h";return fmt(h*60,2)+" min";}
+
+  function updateBank(){
+    const v=Math.max(.001,Number(document.getElementById("bankVoltage").value)||.001);
+    const ah=Math.max(.001,Number(document.getElementById("bankAh").value)||.001);
+    const s=Math.max(1,Math.floor(Number(document.getElementById("seriesCount").value)||1));
+    const p=Math.max(1,Math.floor(Number(document.getElementById("parallelCount").value)||1));
+    const bankV=v*s,bankAh=ah*p,wh=bankV*bankAh,total=s*p;
+    document.getElementById("bankVOut").textContent=fmt(bankV,3)+" V";
+    document.getElementById("bankAhOut").textContent=fmt(bankAh,3)+" Ah";
+    document.getElementById("bankWhOut").textContent=formatWh(wh);
+    document.getElementById("bankCountOut").textContent=total;
+    document.getElementById("bankFormula").textContent="Bank V = "+fmt(v,3)+" × "+s+" = "+fmt(bankV,3)+" V. Bank Ah = "+fmt(ah,3)+" × "+p+" = "+fmt(bankAh,3)+" Ah.";
+    const vis=document.getElementById("bankVisual");vis.innerHTML="";
+    for(let row=0;row<p;row++){
+      const r=document.createElement("div");r.className="battery-row";
+      for(let i=0;i<s;i++){
+        const cell=document.createElement("div");cell.className="cell";cell.innerHTML="<strong>"+fmt(v,1)+" V</strong>";r.appendChild(cell);
+        if(i<s-1){const wire=document.createElement("div");wire.className="wire";r.appendChild(wire);}
+      }
+      vis.appendChild(r);
+    }
+  }
+  ["bankVoltage","bankAh","seriesCount","parallelCount"].forEach(id=>{const el=document.getElementById(id);el.addEventListener("input",updateBank);el.addEventListener("change",updateBank);});
+
+  function updateConverter(){
+    const v=Math.max(.001,Number(document.getElementById("convV").value)||.001);
+    const ah=Math.max(0,Number(document.getElementById("convAh").value)||0);
+    const wh=Math.max(0,Number(document.getElementById("convWh").value)||0);
+    document.getElementById("whFromAh").textContent=formatWh(v*ah);
+    document.getElementById("ahFromWh").textContent=fmt(wh/v,3)+" Ah";
+    document.getElementById("convFormula").textContent=fmt(v,3)+" V × "+fmt(ah,3)+" Ah = "+formatWh(v*ah)+".";
+  }
+  ["convV","convAh","convWh"].forEach(id=>{const el=document.getElementById(id);el.addEventListener("input",updateConverter);el.addEventListener("change",updateConverter);});
+
+  function updateRuntime(){
+    const v=Math.max(.001,Number(document.getElementById("runV").value)||.001);
+    const ah=Math.max(0,Number(document.getElementById("runAh").value)||0);
+    const load=Math.max(.001,Number(document.getElementById("runLoad").value)||.001);
+    const dod=Math.min(100,Math.max(1,Number(document.getElementById("runDod").value)||100))/100;
+    const eff=Math.min(100,Math.max(1,Number(document.getElementById("runEff").value)||100))/100;
+    const nominal=v*ah,usable=nominal*dod*eff,h=usable/load;
+    document.getElementById("runEnergy").textContent=formatWh(nominal);
+    document.getElementById("runUsable").textContent=formatWh(usable);
+    document.getElementById("runHours").textContent=formatTime(h);
+    document.getElementById("runFormula").textContent="Usable energy ≈ "+formatWh(nominal)+" × "+fmt(dod*100,0)+"% × "+fmt(eff*100,0)+"% = "+formatWh(usable)+". Runtime ≈ "+formatTime(h)+".";
+  }
+  ["runV","runAh","runLoad","runDod","runEff"].forEach(id=>{const el=document.getElementById(id);el.addEventListener("input",updateRuntime);el.addEventListener("change",updateRuntime);});
+
+  function updateCharge(){
+    const ah=Math.max(.001,Number(document.getElementById("chgAh").value)||.001);
+    const soc=Math.min(100,Math.max(0,Number(document.getElementById("chgSoc").value)||0))/100;
+    const current=Math.max(.001,Number(document.getElementById("chgCurrent").value)||.001);
+    const eff=Math.min(100,Math.max(1,Number(document.getElementById("chgEff").value)||100))/100;
+    const needed=ah*(1-soc),time=needed/(current*eff);
+    document.getElementById("chgNeeded").textContent=fmt(needed,3)+" Ah";
+    document.getElementById("chgTime").textContent=formatTime(time);
+    document.getElementById("chgFormula").textContent=fmt(needed,3)+" Ah ÷ ("+fmt(current,3)+" A × "+fmt(eff*100,0)+"%) ≈ "+formatTime(time)+".";
+  }
+  ["chgAh","chgSoc","chgCurrent","chgEff"].forEach(id=>{const el=document.getElementById(id);el.addEventListener("input",updateCharge);el.addEventListener("change",updateCharge);});
+
+  function updateSag(){
+    const voc=Math.max(0,Number(document.getElementById("sagOpen").value)||0);
+    const current=Math.max(0,Number(document.getElementById("sagCurrent").value)||0);
+    const r=Math.max(0,Number(document.getElementById("sagR").value)||0)/1000;
+    const drop=current*r,loaded=Math.max(0,voc-drop),heat=current*current*r;
+    document.getElementById("sagDrop").textContent=fmt(drop,3)+" V";
+    document.getElementById("sagLoaded").textContent=fmt(loaded,3)+" V";
+    document.getElementById("sagHeat").textContent=formatPower(heat);
+    document.getElementById("sagFormula").textContent=fmt(voc,3)+" V − ("+fmt(current,3)+" A × "+fmt(r*1000,3)+" mΩ) = "+fmt(loaded,3)+" V.";
+  }
+  ["sagOpen","sagCurrent","sagR"].forEach(id=>{const el=document.getElementById(id);el.addEventListener("input",updateSag);el.addEventListener("change",updateSag);});
+
+  function updateSoc(){
+    const soc=Math.min(100,Math.max(0,Number(document.getElementById("socValue").value)||0));
+    const wh=Math.max(0,Number(document.getElementById("socWh").value)||0);
+    document.getElementById("socFill").style.width=soc+"%";
+    document.getElementById("socPct").textContent=soc+"%";
+    document.getElementById("socEnergy").textContent=formatWh(wh*soc/100);
+  }
+  ["socValue","socWh"].forEach(id=>{const el=document.getElementById(id);el.addEventListener("input",updateSoc);el.addEventListener("change",updateSoc);});
+
+  function updateBuilder(){
+    const bv=Math.max(.001,Number(document.getElementById("builderBatteryV").value)||.001);
+    const target=Math.max(.001,Number(document.getElementById("builderTarget").value)||.001);
+    const p=Math.max(1,Math.floor(Number(document.getElementById("builderParallel").value)||1));
+    const exact=target/bv;
+    const s=Math.max(1,Math.round(exact));
+    const actual=s*bv,total=s*p;
+    document.getElementById("builderSeries").textContent=s;
+    document.getElementById("builderTotal").textContent=total;
+    document.getElementById("builderVoltage").textContent=fmt(actual,3)+" V";
+    const st=document.getElementById("builderStatus");st.className="status";
+    if(Math.abs(actual-target)>0.01){
+      st.classList.add("warn");st.textContent="The target voltage is not an exact whole-number multiple of the entered battery voltage. Actual nominal bank voltage would be "+fmt(actual,3)+" V.";
+    }else{
+      st.classList.add("good");st.textContent=s+" batteries in series per string × "+p+" parallel string(s) = "+total+" batteries total.";
+    }
+  }
+  ["builderBatteryV","builderTarget","builderParallel"].forEach(id=>{const el=document.getElementById(id);el.addEventListener("input",updateBuilder);el.addEventListener("change",updateBuilder);});
+
+  updateBank();updateConverter();updateRuntime();updateCharge();updateSag();updateSoc();updateBuilder();
+</script>
+</body>
+</html>
