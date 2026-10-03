@@ -67,6 +67,115 @@
       padding:18px;
     }
 
+    .home-search,
+    .learning-path{
+      background:rgba(255,255,255,.78);
+      border:1px solid rgba(207,217,227,.95);
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:16px;
+      box-shadow:0 8px 22px rgba(7,26,46,.06);
+    }
+
+    .home-search h2,
+    .learning-path h2{
+      margin:0 0 8px;
+      border-left:5px solid var(--yellow);
+      padding-left:10px;
+      color:var(--navy);
+      font-size:20px;
+    }
+
+    .home-search p,
+    .learning-path p{
+      margin:0 0 12px;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .search-row{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:9px;
+      align-items:center;
+    }
+
+    .search-row input{
+      min-width:0;
+    }
+
+    .search-clear{
+      min-height:48px;
+      border:1px solid #9fc8ef;
+      border-radius:10px;
+      background:#eef7ff;
+      color:var(--navy);
+      font-weight:800;
+      cursor:pointer;
+      padding:9px 14px;
+    }
+
+    .search-status{
+      margin-top:9px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      min-height:18px;
+    }
+
+    .path-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .path-step{
+      display:block;
+      text-decoration:none;
+      color:var(--text);
+      background:#f8fbff;
+      border:1px solid #b9d7f5;
+      border-radius:14px;
+      padding:13px;
+      min-height:112px;
+    }
+
+    .path-step:hover{
+      background:#eef7ff;
+      border-color:#7eb7ea;
+    }
+
+    .path-number{
+      display:inline-grid;
+      place-items:center;
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      background:var(--yellow);
+      color:var(--navy);
+      font-weight:900;
+      margin-bottom:8px;
+    }
+
+    .path-step strong{
+      display:block;
+      color:var(--navy);
+      margin-bottom:5px;
+      font-size:16px;
+    }
+
+    .path-step span{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .nav-category.search-hidden,
+    .tab.search-hidden{
+      display:none !important;
+    }
+
     .tabs{
       display:block;
       margin-bottom:18px;
@@ -758,6 +867,7 @@
       .tool-grid,.tool-grid.four{grid-template-columns:1fr 1fr}
       .tool-results{grid-template-columns:1fr}
       .category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .path-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
     }
 
     @media (max-width:420px){
@@ -767,6 +877,9 @@
       .history-item{align-items:flex-start}
       .tool-grid,.tool-grid.four{grid-template-columns:1fr}
       .category-grid{grid-template-columns:1fr}
+      .path-grid{grid-template-columns:1fr}
+      .search-row{grid-template-columns:1fr}
+      .search-clear{width:100%}
       .tab{min-height:56px}
       header{padding-top:22px}
     }
@@ -780,6 +893,29 @@
   </header>
 
   <main>
+    <section class="home-search">
+      <h2>Find a Topic</h2>
+      <p>Search the entire learning menu by subject, component, device, or tool.</p>
+      <div class="search-row">
+        <input id="topicSearch" type="search" placeholder="Try: TRIAC, VFD, CT, PLC, oscilloscope, MPPT..." autocomplete="off" aria-label="Search electrical topics">
+        <button id="clearTopicSearch" class="search-clear" type="button">Clear</button>
+      </div>
+      <div id="searchStatus" class="search-status">Showing all topics.</div>
+    </section>
+
+    <section class="learning-path">
+      <h2>Start Learning</h2>
+      <p>New to electrical work? Follow this path from fundamentals to testing and troubleshooting.</p>
+      <div class="path-grid">
+        <a class="path-step" href="electrical-basics.html"><span class="path-number">1</span><strong>Electrical Basics</strong><span>Voltage, current, resistance, power, AC/DC, and Ohm's Law.</span></a>
+        <a class="path-step" href="wiring-installation.html"><span class="path-number">2</span><strong>Wiring & Installation</strong><span>Conductors, insulation, wire sizes, ampacity, connections, and safety concepts.</span></a>
+        <a class="path-step" href="integrated-circuits.html"><span class="path-number">3</span><strong>Electronics & Components</strong><span>Learn the parts that make electronic circuits work.</span></a>
+        <a class="path-step" href="motors-controls.html"><span class="path-number">4</span><strong>Motors & Controls</strong><span>Motors, contactors, overloads, starters, drives, and controls.</span></a>
+        <a class="path-step" href="test-equipment.html"><span class="path-number">5</span><strong>Test Equipment</strong><span>Use multimeters, clamp meters, oscilloscopes, and other instruments.</span></a>
+        <a class="path-step" href="troubleshooting.html"><span class="path-number">6</span><strong>Troubleshooting</strong><span>Use measurements and logic to locate real electrical faults.</span></a>
+      </div>
+    </section>
+
     <div class="tabs">
       <section class="nav-category">
         <h2>Quick Tools</h2>
@@ -1353,6 +1489,78 @@
   <footer>A DONCO-BAYCITY™ App</footer>
 
   <script>
+    const topicKeywords = {
+      "electrical-basics.html":"ohm law voltage volts current amps resistance watts power ac dc frequency rms series parallel circuit short open",
+      "wiring-installation.html":"wire wiring conductor insulation awg gauge ampacity cable ground fault earth leakage receptacle switch line load neutral hot",
+      "protection-devices.html":"fuse breaker gfci rcd afci surge mov tvs overload protection overcurrent",
+      "grounding-bonding-shielding.html":"ground grounding bonding earth neutral shield shielding emi rfi ground loop",
+      "lighting-lamps.html":"light lighting lamp led fluorescent ballast driver hid incandescent halogen lumens lux cri dimming",
+      "batteries.html":"battery batteries lead acid agm lithium lifepo4 amp hour ah watt hour charging runtime",
+      "power-supplies.html":"power supply rectifier bridge diode regulator dc supply ac dc converter",
+      "transformers.html":"transformer turns ratio primary secondary step up step down isolation",
+      "advanced-transformers-distribution.html":"three phase delta wye ct current transformer pt vt potential transformer autotransformer kva distribution substation",
+      "generators-alternators.html":"generator alternator induction stator rotor excitation avr governor slip rings commutator",
+      "solar-power-electronics.html":"solar pv photovoltaic inverter mppt pwm charge controller combiner string rapid shutdown busbar shunt",
+      "power-electronics-modules.html":"power module igbt mosfet inverter drive half bridge full bridge six pack gate driver dc link sic gan",
+      "capacitor.html":"capacitor capacitance farad dielectric electrolytic ceramic charge discharge",
+      "inductors.html":"inductor coil choke inductance henry magnetic field",
+      "diodes.html":"diode rectifier zener schottky junction",
+      "led-lcd.html":"led lcd display seven segment pwm brightness backlight",
+      "transistors.html":"transistor bjt mosfet fet switching amplifier",
+      "vacuum-tubes.html":"vacuum tube valve triode tetrode pentode cathode plate grid",
+      "integrated-circuits.html":"integrated circuit ic chip analog digital package",
+      "op-amps-analog.html":"op amp operational amplifier comparator filter 555 timer instrumentation amplifier analog",
+      "crystals-oscillators.html":"crystal quartz oscillator frequency ppm tcxo ocxo pierce resonator clock",
+      "solid-state-switching.html":"solid state relay ssr scr thyristor triac diac optocoupler zero cross phase control",
+      "motors-controls.html":"motor motors ac dc three phase single phase starter contactor overload vfd soft starter servo stepper encoder",
+      "relays.html":"relay relays contactor coil no nc normally open normally closed",
+      "sensors-switches.html":"sensor sensors switch switches limit proximity inductive capacitive photoelectric reed pressure float flow temperature spst spdt dpdt pnp npn",
+      "plc-automation.html":"plc ladder logic hmi automation 4-20 ma 0-10 v ethernet ip profinet modbus industrial",
+      "processors.html":"processor cpu microprocessor microcontroller alu register memory gpio uart i2c spi pwm",
+      "digital-logic.html":"digital logic gate and or not nand nor xor xnor binary hex flip flop counter adc dac",
+      "fiber-optics.html":"fiber fibre optic optics single mode multimode sfp connector splice attenuation wavelength link budget",
+      "radio-rf.html":"radio rf antenna coax swr modulation am fm frequency wavelength mixer lna transmitter receiver",
+      "test-equipment.html":"test equipment multimeter meter clamp meter oscilloscope scope megohmmeter insulation tester logic probe continuity diode test",
+      "troubleshooting.html":"troubleshooting diagnose fault faults open short intermittent voltage drop testing repair",
+      "electricalPanel":"calculator ohm law volts amps resistance watts electrical calculator",
+      "resistorPanel":"resistor color colour bands resistance tolerance",
+      "solarPanel":"solar calculator panels watts sun hours energy"
+    };
+
+    const topicSearch = document.getElementById("topicSearch");
+    const clearTopicSearch = document.getElementById("clearTopicSearch");
+    const searchStatus = document.getElementById("searchStatus");
+    const searchableTabs = [...document.querySelectorAll(".nav-category .tab")];
+
+    function filterTopics(){
+      const q = topicSearch.value.trim().toLowerCase();
+      let shown = 0;
+
+      searchableTabs.forEach(item => {
+        const key = item.getAttribute("href") || item.dataset.panel || "";
+        const haystack = (item.textContent + " " + key + " " + (topicKeywords[key] || "")).toLowerCase();
+        const match = !q || haystack.includes(q);
+        item.classList.toggle("search-hidden", !match);
+        if(match) shown++;
+      });
+
+      document.querySelectorAll(".nav-category").forEach(category => {
+        const visible = [...category.querySelectorAll(".tab")].some(item => !item.classList.contains("search-hidden"));
+        category.classList.toggle("search-hidden", !visible);
+      });
+
+      searchStatus.textContent = q
+        ? (shown ? shown + " matching topic" + (shown === 1 ? "" : "s") + "." : "No matching topic. Try a broader word.")
+        : "Showing all topics.";
+    }
+
+    topicSearch.addEventListener("input", filterTopics);
+    clearTopicSearch.addEventListener("click", () => {
+      topicSearch.value = "";
+      filterTopics();
+      topicSearch.focus();
+    });
+
     const toolTabs = document.querySelectorAll(".tab[data-panel]");
     const panels = document.querySelectorAll(".panel");
 
