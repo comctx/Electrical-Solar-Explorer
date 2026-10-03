@@ -579,3 +579,15 @@ A DONCO-BAYCITY™ App
 - Interactive current-path example
 - Troubleshooting reading exercise
 - Direct link to Circuit Lab for practice
+
+
+## Component Pictures & Identifiers
+- Beginner-first real-world component identification guide
+- Built-in visual illustrations that do not depend on external image hosting
+- Common markings and identifier clues
+- Matching schematic symbols
+- Plain-English component purpose
+- Quick visual recognition clues
+- Search and category filtering
+- Initial set includes resistors, capacitors, inductors, diodes, LEDs, transistors, ICs, relays, transformers, fuses, switches, circuit breakers, contactors, terminal blocks, motors, batteries, proximity sensors, and solenoids
+- Direct links with Circuit Lab and How to Read Schematics
