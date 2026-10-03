@@ -183,7 +183,21 @@ Interactive lessons for:
 - Motor control diagrams
 - Relay/contactor simulation
 
-## 10. Digital Electronics
+## 10. Generators & Alternators
+- Electromagnetic induction
+- AC vs. DC generation
+- Rotors and stators
+- Field windings and excitation
+- Slip rings and commutators
+- Automotive alternators
+- Rectifier bridges and voltage regulators
+- Portable and standby generators
+- Governors and AVRs
+- Frequency / RPM / pole calculator
+- Mechanical-to-electrical power calculator
+- Generator safety and transfer switches
+
+## 11. Digital Electronics
 - Binary
 - Hexadecimal
 - AND
