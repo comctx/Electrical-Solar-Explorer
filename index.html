@@ -883,10 +883,12 @@
       .tab{min-height:56px}
       header{padding-top:22px}
     }
+  
+    .home-page main > .panel{display:none !important}
   </style>
 </head>
 
-<body>
+<body class="home-page">
   <header>
     <h1>All Things Electrical</h1>
     <p>Electrical & Solar Explorer</p>
@@ -920,9 +922,9 @@
       <section class="nav-category">
         <h2>Quick Tools</h2>
         <div class="category-grid">
-          <button class="tab active" data-panel="electricalPanel">Electrical Calculator</button>
-          <button class="tab" data-panel="resistorPanel">Resistor Bands</button>
-          <button class="tab" data-panel="solarPanel">Solar Calculator</button>
+          <a class="tab" href="electrical-calculator.html">Electrical Calculator</a>
+          <a class="tab" href="resistor-bands.html">Resistor Bands</a>
+          <a class="tab" href="solar-calculator.html">Solar Calculator</a>
         </div>
       </section>
 
@@ -1522,9 +1524,9 @@
       "radio-rf.html":"radio rf antenna coax swr modulation am fm frequency wavelength mixer lna transmitter receiver",
       "test-equipment.html":"test equipment multimeter meter clamp meter oscilloscope scope megohmmeter insulation tester logic probe continuity diode test",
       "troubleshooting.html":"troubleshooting diagnose fault faults open short intermittent voltage drop testing repair",
-      "electricalPanel":"calculator ohm law volts amps resistance watts electrical calculator",
-      "resistorPanel":"resistor color colour bands resistance tolerance",
-      "solarPanel":"solar calculator panels watts sun hours energy"
+      "electrical-calculator.html":"calculator ohm law volts amps resistance watts electrical calculator",
+      "resistor-bands.html":"resistor color colour bands resistance tolerance",
+      "solar-calculator.html":"solar calculator panels watts sun hours energy"
     };
 
     const topicSearch = document.getElementById("topicSearch");
