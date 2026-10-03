@@ -31,18 +31,23 @@ input,select{width:100%;min-height:44px;border:1px solid var(--border);border-ra
 .btn.primary{background:var(--yellow);border-color:#e4ba16}.btn.good{background:#eaf7ef;border-color:#9ed0b3}.btn.danger{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
 .palette{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.palette button{min-height:56px}
 .circuit-wrap{overflow-x:auto;padding:8px 2px}
-.circuit{display:flex;align-items:center;gap:0;min-width:max-content;padding:20px 8px 42px}
-.wire{width:34px;height:5px;background:#687f91;flex:0 0 34px;position:relative}.wire.live{background:#f3a900;box-shadow:0 0 9px rgba(243,169,0,.55)}
-.component{width:154px;min-height:154px;border:1px solid #b9d7f5;border-radius:14px;background:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:10px;position:relative;cursor:grab;text-align:center}
-.component.dragging{opacity:.5}.component.active{border-color:#e4ba16;background:#fffdf2;box-shadow:0 0 16px rgba(255,212,59,.28)}.component.blown{border-color:#e4aaa5;background:#fdecea}
-.schematic-symbol{width:112px;height:64px;color:var(--navy);margin-bottom:4px}
+.circuit{display:flex;align-items:flex-start;gap:0;min-width:max-content;padding:22px 8px 58px;position:relative}
+.wire{width:34px;height:4px;background:#687f91;flex:0 0 34px;position:relative;margin-top:31px}.wire.live{background:#f3a900;box-shadow:0 0 9px rgba(243,169,0,.55)}
+.component{width:138px;min-height:138px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;padding:0 6px 8px;position:relative;cursor:grab;text-align:center}
+.component.dragging{opacity:.45}.component.active{background:transparent;box-shadow:none}.component.blown{background:transparent}
+.schematic-symbol{width:120px;height:64px;color:var(--navy);margin:0 auto 6px}
 .schematic-symbol svg{display:block;width:100%;height:100%;overflow:visible}
 .schematic-symbol .wire-stroke{stroke:currentColor;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .schematic-symbol .thin-stroke{stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .schematic-symbol .symbol-fill{fill:currentColor}
-.component.blown .schematic-symbol{color:#b42318}
-.component .name{font-weight:900;color:var(--navy)}.component .value{font-size:13px;color:var(--muted);margin-top:4px}.component .drop{font-size:12px;color:var(--blue);font-weight:800;margin-top:5px}
-.remove{position:absolute;top:5px;right:6px;border:0;background:transparent;color:#8a1c13;font-size:18px;cursor:pointer}
+.component.active .schematic-symbol{color:#c88200;filter:drop-shadow(0 0 4px rgba(243,169,0,.35))}
+.component.blown .schematic-symbol{color:#b42318;filter:none}
+.component:hover .schematic-symbol{transform:translateY(-1px)}
+.component .name{font-weight:900;color:var(--navy);margin-top:2px}.component .value{font-size:13px;color:var(--muted);margin-top:4px;white-space:nowrap}.component .drop{font-size:12px;color:var(--blue);font-weight:800;margin-top:5px;white-space:nowrap}
+.remove{position:absolute;top:-4px;right:7px;border:0;background:transparent;color:#8a1c13;font-size:17px;cursor:pointer;opacity:.72}
+.remove:hover{opacity:1}
+.circuit:after{content:"";position:absolute;left:8px;right:8px;bottom:34px;height:3px;background:#d9e2ea;border-radius:999px;z-index:0}
+.component,.wire{z-index:1}
 .results{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:13px;padding:13px}.result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}.result strong{font-size:22px;color:var(--navy);word-break:break-word}
 .status{margin-top:12px;border-radius:12px;padding:12px;font-weight:800;background:#eef7ff;border:1px solid #b9d7f5;color:var(--navy)}.status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}.status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}.status.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
 .editor{display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px}.editor.show{display:block}.editor-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -115,7 +120,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 
 <section class="panel">
 <h2>Series Circuit</h2>
-<p class="lead">The circuit uses standard-style electrical schematic symbols. The wire glows when current flows; tap any symbol to edit that component.</p>
+<p class="lead">A schematic-style view of the circuit. Symbols sit directly on the conductor path; the energized path glows when current flows. Tap a symbol to edit it.</p>
 <div class="circuit-wrap"><div id="circuit" class="circuit"></div></div>
 <div id="editor" class="editor">
 <h3 id="editorTitle">Edit Component</h3>
