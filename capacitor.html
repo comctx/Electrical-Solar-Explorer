@@ -302,6 +302,72 @@
       font-weight:700;
     }
 
+    .type-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .type-card{
+      border:1px solid #b9d7f5;
+      background:#f8fbff;
+      border-radius:13px;
+      padding:13px;
+    }
+
+    .type-card strong{
+      color:var(--navy);
+      display:block;
+      margin-bottom:5px;
+    }
+
+    .type-card small{
+      display:block;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .badge{
+      display:inline-block;
+      margin-top:8px;
+      border-radius:999px;
+      padding:4px 8px;
+      font-size:12px;
+      font-weight:800;
+      background:#e9f3ff;
+      color:var(--navy);
+      border:1px solid #b9d7f5;
+    }
+
+    .status{
+      margin-top:12px;
+      border-radius:10px;
+      padding:11px 12px;
+      font-weight:800;
+      border:1px solid #b9d7f5;
+      background:#eef7ff;
+      color:var(--navy);
+    }
+
+    .status.good{
+      background:#eaf7ef;
+      border-color:#9ed0b3;
+      color:#185c3b;
+    }
+
+    .status.warn{
+      background:#fff3d6;
+      border-color:#e5a84a;
+      color:#6a4300;
+    }
+
+    .status.high{
+      background:#fdecea;
+      border-color:#e4aaa5;
+      color:#8a1c13;
+    }
+
     footer{
       text-align:center;
       color:#dbe8f5;
@@ -317,10 +383,12 @@
       .grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
       .result-grid{grid-template-columns:1fr}
       .sim-wrap{grid-template-columns:1fr}
+      .type-grid{grid-template-columns:1fr 1fr}
     }
 
     @media (max-width:420px){
       .unit-row{grid-template-columns:minmax(0,1fr) 88px}
+      .type-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -582,6 +650,144 @@
       <div id="xcFormula" class="formula">Xc = 1 ÷ (2πfC)</div>
       <p class="note">Ideal capacitor calculation only. Real capacitors also have ESR, leakage, voltage limits, temperature effects, and frequency-dependent behavior.</p>
     </section>
+
+    <section class="panel">
+      <h2>Capacitor Types & Uses</h2>
+      <p class="lead">A quick guide to common capacitor families, polarity, and where they are usually found.</p>
+
+      <div class="type-grid">
+        <div class="type-card">
+          <strong>Ceramic</strong>
+          <small>Small, non-polarized, inexpensive, and common in high-frequency bypassing, decoupling, timing, and RF circuits.</small>
+          <span class="badge">Non-polarized</span>
+        </div>
+
+        <div class="type-card">
+          <strong>Aluminum Electrolytic</strong>
+          <small>High capacitance for power-supply filtering and energy storage. Usually polarized and commonly used at lower frequencies.</small>
+          <span class="badge">Usually polarized</span>
+        </div>
+
+        <div class="type-card">
+          <strong>Tantalum</strong>
+          <small>Compact polarized capacitors with stable capacitance. Often used in electronics where space matters.</small>
+          <span class="badge">Polarized</span>
+        </div>
+
+        <div class="type-card">
+          <strong>Film</strong>
+          <small>Non-polarized, stable, and often used in filters, audio, timing, snubbers, and AC applications.</small>
+          <span class="badge">Non-polarized</span>
+        </div>
+
+        <div class="type-card">
+          <strong>Supercapacitor</strong>
+          <small>Very high capacitance for short-term energy storage, backup power, memory hold-up, and burst-energy applications.</small>
+          <span class="badge">Often polarized</span>
+        </div>
+
+        <div class="type-card">
+          <strong>Motor Start / Run</strong>
+          <small>Special AC capacitors used with single-phase motors. Start capacitors are intermittent-duty; run capacitors are continuous-duty.</small>
+          <span class="badge">Application-specific</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Voltage Rating & Polarity Guide</h2>
+      <p class="lead">Compare the circuit voltage with the capacitor's marked voltage rating and review polarity.</p>
+
+      <div class="grid three">
+        <div class="field">
+          <label for="vrCircuit">Circuit voltage (V)</label>
+          <input id="vrCircuit" type="number" min="0" step="any" value="12" />
+        </div>
+
+        <div class="field">
+          <label for="vrRating">Capacitor voltage rating (V)</label>
+          <input id="vrRating" type="number" min="0.001" step="any" value="25" />
+        </div>
+
+        <div class="field">
+          <label for="vrPolarity">Capacitor type</label>
+          <select id="vrPolarity">
+            <option value="polarized">Polarized</option>
+            <option value="nonpolar">Non-polarized</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Voltage headroom</small>
+          <strong id="vrHeadroom">13 V</strong>
+        </div>
+        <div class="result">
+          <small>Rating usage</small>
+          <strong id="vrUsage">48%</strong>
+        </div>
+        <div class="result">
+          <small>Polarity</small>
+          <strong id="vrPolarityResult">Observe + / −</strong>
+        </div>
+      </div>
+
+      <div id="vrStatus" class="status good">Circuit voltage is below the capacitor's marked voltage rating.</div>
+      <div class="warning">Never exceed a capacitor's marked voltage rating. For polarized capacitors, reverse polarity can damage the part. Actual design margin depends on capacitor type, temperature, ripple, transients, manufacturer guidance, and the application.</div>
+    </section>
+
+    <section class="panel">
+      <h2>LC Resonance Calculator</h2>
+      <p class="lead">Combine an inductor and capacitor to find the ideal resonant frequency.</p>
+
+      <div class="grid two">
+        <div class="field">
+          <label>Inductance</label>
+          <div class="unit-row">
+            <input id="lcL" type="number" min="0.000001" step="any" value="10" />
+            <select id="lcLu">
+              <option value="1e-6">µH</option>
+              <option value="1e-3" selected>mH</option>
+              <option value="1">H</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Capacitance</label>
+          <div class="unit-row">
+            <input id="lcC" type="number" min="0.000001" step="any" value="0.1" />
+            <select id="lcCu">
+              <option value="1e-12">pF</option>
+              <option value="1e-9">nF</option>
+              <option value="1e-6" selected>µF</option>
+              <option value="1e-3">mF</option>
+              <option value="1">F</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Resonant frequency</small>
+          <strong id="lcFreq">5.033 kHz</strong>
+        </div>
+        <div class="result">
+          <small>Inductive reactance at resonance</small>
+          <strong id="lcXL">316.23 Ω</strong>
+        </div>
+        <div class="result">
+          <small>Capacitive reactance at resonance</small>
+          <strong id="lcXC">316.23 Ω</strong>
+        </div>
+      </div>
+
+      <div id="lcFormula" class="formula">f₀ = 1 ÷ (2π√LC)</div>
+      <p class="note">Ideal LC calculation. Real circuits also include resistance, losses, parasitic capacitance/inductance, and component tolerances.</p>
+    </section>
+
   </main>
 
   <footer>A DONCO-BAYCITY™ App</footer>
@@ -811,11 +1017,77 @@
       el.addEventListener("change",updateReactance);
     });
 
+    function updateVoltageGuide(){
+      const circuit = Math.max(0,Number(document.getElementById("vrCircuit").value) || 0);
+      const rating = Math.max(0.001,Number(document.getElementById("vrRating").value) || 0.001);
+      const polarity = document.getElementById("vrPolarity").value;
+
+      const headroom = rating - circuit;
+      const usage = (circuit / rating) * 100;
+
+      document.getElementById("vrHeadroom").textContent = fmt(headroom,2) + " V";
+      document.getElementById("vrUsage").textContent = fmt(usage,1) + "%";
+      document.getElementById("vrPolarityResult").textContent =
+        polarity === "polarized" ? "Observe + / −" : "No fixed polarity";
+
+      const status = document.getElementById("vrStatus");
+      status.className = "status";
+
+      if (circuit > rating){
+        status.classList.add("high");
+        status.textContent = "Circuit voltage exceeds the capacitor's marked voltage rating.";
+      } else if (usage >= 90){
+        status.classList.add("warn");
+        status.textContent = "Circuit voltage is close to the capacitor's marked rating; review application margin and transient conditions.";
+      } else {
+        status.classList.add("good");
+        status.textContent = "Circuit voltage is below the capacitor's marked voltage rating.";
+      }
+    }
+
+    ["vrCircuit","vrRating","vrPolarity"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateVoltageGuide);
+      el.addEventListener("change",updateVoltageGuide);
+    });
+
+    function formatFrequency(hz){
+      if (hz >= 1e9) return fmt(hz / 1e9,4) + " GHz";
+      if (hz >= 1e6) return fmt(hz / 1e6,4) + " MHz";
+      if (hz >= 1e3) return fmt(hz / 1e3,4) + " kHz";
+      return fmt(hz,4) + " Hz";
+    }
+
+    function updateLC(){
+      const l = Math.max(1e-15,Number(document.getElementById("lcL").value) || 1e-15) *
+        Number(document.getElementById("lcLu").value);
+      const c = Math.max(1e-15,Number(document.getElementById("lcC").value) || 1e-15) *
+        Number(document.getElementById("lcCu").value);
+
+      const f0 = 1 / (2 * Math.PI * Math.sqrt(l * c));
+      const xl = 2 * Math.PI * f0 * l;
+      const xc = 1 / (2 * Math.PI * f0 * c);
+
+      document.getElementById("lcFreq").textContent = formatFrequency(f0);
+      document.getElementById("lcXL").textContent = formatOhms(xl);
+      document.getElementById("lcXC").textContent = formatOhms(xc);
+      document.getElementById("lcFormula").textContent =
+        "f₀ = 1 ÷ (2π√LC) = " + formatFrequency(f0);
+    }
+
+    ["lcL","lcLu","lcC","lcCu"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateLC);
+      el.addEventListener("change",updateLC);
+    });
+
     updateEquivalent();
     updateRC();
     updateCode();
     updateEnergy();
     updateReactance();
+    updateVoltageGuide();
+    updateLC();
     updateSimVisual();
   </script>
 </body>
