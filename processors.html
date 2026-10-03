@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Processors & Microprocessors Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+      --good:#1f7a4d;--danger:#b42318;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;padding:24px 18px 20px;text-align:center;
+    }
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1000px;margin:0 auto;padding:18px}
+    .page-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .page-nav a{
+      text-decoration:none;min-height:46px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:11px;padding:10px 14px;font-weight:800;border:1px solid #9fc8ef;
+      background:#eef7ff;color:var(--navy);
+    }
+    .page-nav a.active{background:var(--yellow);border-color:#e4ba16}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px;
+    }
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    h3{margin:0 0 8px;color:var(--navy)}
+    .lead,.note{color:var(--muted);line-height:1.5}
+    .lead{margin:0 0 16px}.note{font-size:13px;margin:10px 0 0}
+    .grid{display:grid;gap:12px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input,select,button{font:inherit}
+    input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white;color:var(--text)}
+    input:focus,select:focus,button:focus{outline:3px solid rgba(11,99,206,.22);outline-offset:2px}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px;min-width:0}
+    .result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .result strong{color:var(--navy);font-size:clamp(20px,4vw,28px);word-break:break-word}
+    .formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+    .warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:10px;padding:10px 12px;color:#6a4300;font-weight:700;line-height:1.45}
+    .status{margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy);line-height:1.45}
+    .status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+    .status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
+
+    .beginner-panel{background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:2px solid #b9d7f5}
+    .beginner-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .beginner-card{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:13px;padding:13px}
+    .beginner-card strong{display:block;color:var(--navy);margin-bottom:5px;font-size:16px}
+    .beginner-card p{margin:0;color:#33495b;line-height:1.5;font-size:14px}
+    .other-words{margin-top:14px;background:#fff7cc;border:1px solid #e5c94a;border-radius:13px;padding:14px}
+    .other-words strong{display:block;color:var(--navy);font-size:17px;margin-bottom:8px}
+    .other-words-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .other-words-item{background:white;border:1px solid #eadb82;border-radius:10px;padding:10px;font-weight:800;color:#263b4c;line-height:1.4}
+    .beginner-tip{margin-top:12px;border-left:5px solid var(--electric);background:#eef7ff;border-radius:10px;padding:11px 13px;line-height:1.5;color:#25394b;font-weight:700}
+
+    .cpu-stage{display:grid;grid-template-columns:minmax(330px,1.1fr) minmax(0,.9fr);gap:16px;align-items:center;margin-top:14px}
+    .cpu-diagram{border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:340px;position:relative}
+    .cpu-block{border:2px solid #b9d7f5;border-radius:14px;background:white;padding:14px;text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:100px;transition:.2s}
+    .cpu-block strong{color:var(--navy);font-size:18px;margin-bottom:5px}
+    .cpu-block span{color:var(--muted);font-size:13px;line-height:1.35}
+    .cpu-block.active{background:#fff7cc;border-color:#e5c94a;box-shadow:0 0 0 5px rgba(255,212,59,.16)}
+    .cpu-bus{grid-column:1 / -1;background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:10px;text-align:center;font-weight:900;color:var(--navy)}
+    .button-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .action{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}
+    .action.primary{background:var(--yellow);border-color:#e4ba16}
+    .step-list{display:grid;gap:8px;margin-top:12px}
+    .step-item{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:10px;padding:10px;font-weight:800;color:var(--navy)}
+    .step-item.active{background:#fff7cc;border-color:#e5c94a}
+
+    .registers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+    .register{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:10px;padding:10px;text-align:center}
+    .register small{display:block;color:var(--muted);font-weight:800}
+    .register strong{display:block;color:var(--navy);font-size:20px;margin-top:4px}
+
+    .type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .type-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:13px}
+    .type-card strong{display:block;color:var(--navy);margin-bottom:5px}
+    .type-card small{display:block;color:var(--muted);line-height:1.45}
+    .badge{display:inline-block;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#e9f3ff;color:var(--navy);border:1px solid #b9d7f5}
+    .comparison-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .comparison-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .comparison-card h3{margin:0 0 8px}.comparison-card ul{margin:8px 0 0 20px;padding:0;color:#33495b;line-height:1.5}
+
+    @media(max-width:760px){
+      main{padding:12px}.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .result-grid,.beginner-grid,.other-words-grid,.comparison-grid{grid-template-columns:1fr}
+      .type-grid{grid-template-columns:1fr 1fr}
+      .cpu-stage{grid-template-columns:1fr}
+      .registers{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:420px){.type-grid,.registers{grid-template-columns:1fr}}
+    footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Processors & Microprocessors Explorer</h1>
+    <p>CPU basics, fetch-decode-execute, registers, ALU operations, binary, clocks, memory, cores, and buses.</p>
+  </header>
+
+  <main>
+    <nav class="page-nav" aria-label="App pages">
+      <a href="index.html">All Things Electrical</a>
+      <a href="capacitor.html">Capacitors</a>
+      <a href="inductors.html">Inductors & Coils</a>
+      <a href="transformers.html">Transformers</a>
+      <a href="diodes.html">Diodes</a>
+      <a href="transistors.html">Transistors</a>
+      <a href="relays.html">Relays & Contactors</a>
+      <a href="integrated-circuits.html">Integrated Circuits</a>
+      <a href="processors.html" class="active">Processors</a>
+    </nav>
+
+    <section class="panel beginner-panel">
+      <h2>Beginner Start Here</h2>
+      <p class="lead">A processor follows instructions. It moves data, performs operations, makes decisions, and coordinates the rest of a computer or electronic system.</p>
+      <div class="beginner-grid">
+        <div class="beginner-card"><strong>What is a CPU?</strong><p>The central processing unit executes instructions and controls data movement. In many systems, the CPU is the main computational engine.</p></div>
+        <div class="beginner-card"><strong>What is a microprocessor?</strong><p>A microprocessor is a processor implemented as an integrated circuit, traditionally relying on external memory and peripherals for a complete system.</p></div>
+        <div class="beginner-card"><strong>What is a microcontroller?</strong><p>A microcontroller combines a processor core with memory and peripherals such as timers, GPIO, ADCs, and communication interfaces on one chip.</p></div>
+        <div class="beginner-card"><strong>What is the ALU?</strong><p>The arithmetic logic unit performs operations such as addition, subtraction, AND, OR, XOR, comparisons, and shifts.</p></div>
+        <div class="beginner-card"><strong>What are registers?</strong><p>Registers are very small, very fast storage locations inside the processor used for data, addresses, instructions, and intermediate results.</p></div>
+        <div class="beginner-card"><strong>What does the clock do?</strong><p>The clock provides timing that coordinates processor activity. Clock frequency is important, but it does not by itself tell you how fast two different processors will perform useful work.</p></div>
+      </div>
+      <div class="other-words">
+        <strong>In Other Words</strong>
+        <div class="other-words-grid">
+          <div class="other-words-item">Memory holds instructions and data.</div>
+          <div class="other-words-item">The control unit decides what operation happens next.</div>
+          <div class="other-words-item">The ALU and other execution units do the actual computational work.</div>
+        </div>
+      </div>
+      <div class="beginner-tip">Start with <strong>Inside the CPU</strong>. Step through Fetch → Decode → Execute → Store, then use the Mini ALU to see an instruction operate on two values.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Inside the CPU — Instruction Cycle</h2>
+      <p class="lead">Step through a simplified instruction cycle and watch which part of the processor is active.</p>
+      <div class="cpu-stage">
+        <div class="cpu-diagram">
+          <div id="blockPC" class="cpu-block"><strong>Program Counter</strong><span>Points to the next instruction.</span></div>
+          <div id="blockControl" class="cpu-block"><strong>Control Unit</strong><span>Decodes instructions and directs data flow.</span></div>
+          <div id="blockRegisters" class="cpu-block"><strong>Registers</strong><span>Hold fast working values and operands.</span></div>
+          <div id="blockALU" class="cpu-block"><strong>ALU</strong><span>Performs arithmetic and logic operations.</span></div>
+          <div id="blockBus" class="cpu-bus">Address • Data • Control Buses</div>
+          <div id="blockMemory" class="cpu-block" style="grid-column:1 / -1"><strong>Memory / Cache</strong><span>Stores instructions and data for the processor to use.</span></div>
+        </div>
+        <div>
+          <h3 id="cycleTitle">Ready</h3>
+          <p id="cycleExplain" class="lead">Press Next Step or Auto Run to begin the simplified CPU instruction cycle.</p>
+          <div class="button-row">
+            <button id="cycleNext" class="action primary" type="button">Next Step</button>
+            <button id="cycleAuto" class="action" type="button">Auto Run</button>
+            <button id="cycleStop" class="action" type="button">Stop</button>
+            <button id="cycleReset" class="action" type="button">Reset</button>
+          </div>
+          <div class="step-list">
+            <div id="stepFetch" class="step-item">1. Fetch</div>
+            <div id="stepDecode" class="step-item">2. Decode</div>
+            <div id="stepExecute" class="step-item">3. Execute</div>
+            <div id="stepStore" class="step-item">4. Store / Write Back</div>
+          </div>
+          <p class="note">Real processors pipeline and overlap many operations, predict branches, use caches, reorder work, and execute multiple instructions at once. This animation shows the basic conceptual sequence.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Mini ALU</h2>
+      <p class="lead">Choose two 8-bit values and an operation. Watch the result in decimal, hexadecimal, and binary.</p>
+      <div class="grid three">
+        <div class="field"><label for="aluA">Register A (0–255)</label><input id="aluA" type="number" min="0" max="255" step="1" value="25"></div>
+        <div class="field"><label for="aluOp">Operation</label>
+          <select id="aluOp">
+            <option value="add">ADD</option>
+            <option value="sub">SUBTRACT</option>
+            <option value="and">AND</option>
+            <option value="or">OR</option>
+            <option value="xor">XOR</option>
+            <option value="shl">SHIFT LEFT A</option>
+            <option value="shr">SHIFT RIGHT A</option>
+          </select>
+        </div>
+        <div class="field"><label for="aluB">Register B (0–255)</label><input id="aluB" type="number" min="0" max="255" step="1" value="10"></div>
+      </div>
+      <div class="registers">
+        <div class="register"><small>A</small><strong id="regA">25</strong></div>
+        <div class="register"><small>B</small><strong id="regB">10</strong></div>
+        <div class="register"><small>RESULT</small><strong id="regResult">35</strong></div>
+        <div class="register"><small>CARRY / BORROW</small><strong id="regCarry">0</strong></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Decimal</small><strong id="aluDecimal">—</strong></div>
+        <div class="result"><small>Hexadecimal</small><strong id="aluHex">—</strong></div>
+        <div class="result"><small>8-bit binary</small><strong id="aluBinary">—</strong></div>
+      </div>
+      <div id="aluFormula" class="formula">ADD: A + B.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Binary • Decimal • Hex Converter</h2>
+      <p class="lead">Enter a value in any one format and see the same number represented three ways.</p>
+      <div class="grid three">
+        <div class="field"><label for="convDecimal">Decimal</label><input id="convDecimal" type="number" min="0" step="1" value="255"></div>
+        <div class="field"><label for="convHex">Hexadecimal</label><input id="convHex" type="text" value="FF"></div>
+        <div class="field"><label for="convBinary">Binary</label><input id="convBinary" type="text" value="11111111"></div>
+      </div>
+      <div id="convStatus" class="status good">255 decimal = FF hex = 11111111 binary.</div>
+      <p class="note">Hexadecimal is convenient because one hex digit represents exactly four binary bits.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Clock, Cycles & Instruction Time</h2>
+      <p class="lead">Estimate how long a number of clock cycles takes at a given clock frequency.</p>
+      <div class="grid three">
+        <div class="field"><label for="clockFreq">Clock frequency (MHz)</label><input id="clockFreq" type="number" min="0.000001" step="any" value="100"></div>
+        <div class="field"><label for="clockCycles">Clock cycles</label><input id="clockCycles" type="number" min="1" step="1" value="4"></div>
+        <div class="field"><label for="clockInstructions">Instructions</label><input id="clockInstructions" type="number" min="1" step="1" value="1000"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Clock period</small><strong id="clockPeriod">—</strong></div>
+        <div class="result"><small>Time for entered cycles</small><strong id="cycleTime">—</strong></div>
+        <div class="result"><small>Idealized time for entered instructions</small><strong id="instructionTime">—</strong></div>
+      </div>
+      <div id="clockFormula" class="formula">Clock period = 1 ÷ frequency.</div>
+      <p class="note">The instruction estimate assumes the entered cycles per instruction for every instruction. Real CPUs vary widely due to pipelines, cache misses, branches, parallel execution, memory delays, and instruction mix.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Address Bus & Memory Capacity</h2>
+      <p class="lead">See how address width determines the number of unique memory locations a processor can identify.</p>
+      <div class="grid three">
+        <div class="field"><label for="addressBits">Address bits</label><input id="addressBits" type="number" min="1" max="64" step="1" value="16"></div>
+        <div class="field"><label for="bytesPerAddress">Bytes per addressable location</label><input id="bytesPerAddress" type="number" min="1" step="1" value="1"></div>
+        <div class="field"><label for="dataBusBits">Data bus width (bits)</label><input id="dataBusBits" type="number" min="1" max="1024" step="1" value="8"></div>
+      </div>
+      <div class="result-grid">
+        <div class="result"><small>Addressable locations</small><strong id="addressLocations">—</strong></div>
+        <div class="result"><small>Theoretical address span</small><strong id="addressCapacity">—</strong></div>
+        <div class="result"><small>Data moved per bus transfer</small><strong id="dataTransfer">—</strong></div>
+      </div>
+      <div id="addressFormula" class="formula">Locations = 2^address bits.</div>
+      <p class="note">Actual usable memory depends on architecture, memory mapping, operating mode, reserved regions, physical address implementation, and system design—not just the theoretical width.</p>
+    </section>
+
+    <section class="panel">
+      <h2>CPU vs. Microprocessor vs. Microcontroller</h2>
+      <div class="comparison-grid">
+        <div class="comparison-card">
+          <h3>CPU</h3>
+          <ul>
+            <li>The processing engine that executes instructions.</li>
+            <li>Contains execution units, registers, control logic, and usually cache.</li>
+            <li>May be one part of a larger chip or system-on-chip.</li>
+          </ul>
+        </div>
+        <div class="comparison-card">
+          <h3>Microprocessor</h3>
+          <ul>
+            <li>A processor implemented as an integrated circuit.</li>
+            <li>Traditionally uses external RAM, storage, and many peripherals.</li>
+            <li>Common in general-purpose computing and larger embedded systems.</li>
+          </ul>
+        </div>
+        <div class="comparison-card">
+          <h3>Microcontroller</h3>
+          <ul>
+            <li>Combines CPU, memory, and peripherals on one chip.</li>
+            <li>Often includes GPIO, timers, ADC, PWM, serial interfaces, and flash memory.</li>
+            <li>Common in appliances, vehicles, controls, sensors, and embedded devices.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Cores, Threads, Cache & Clock Speed</h2>
+      <p class="lead">Modern processor performance depends on many features working together.</p>
+      <div class="type-grid">
+        <div class="type-card"><strong>Core</strong><small>An independent processor execution core capable of running its own instruction stream.</small><span class="badge">Parallel work</span></div>
+        <div class="type-card"><strong>Thread</strong><small>A sequence of instructions scheduled for execution. Some cores support multiple hardware threads.</small><span class="badge">Instruction stream</span></div>
+        <div class="type-card"><strong>Cache</strong><small>Small, fast memory near the CPU that keeps frequently used instructions and data closer than main RAM.</small><span class="badge">Fast memory</span></div>
+        <div class="type-card"><strong>Clock Speed</strong><small>The rate of the processor's clock. Higher frequency can help, but architecture and workload determine actual performance.</small><span class="badge">Timing</span></div>
+        <div class="type-card"><strong>Pipeline</strong><small>Breaks instruction processing into stages so multiple instructions can be in progress at the same time.</small><span class="badge">Throughput</span></div>
+        <div class="type-card"><strong>Branch Prediction</strong><small>Guesses which path code will take so the pipeline can keep working before the decision is fully known.</small><span class="badge">Control flow</span></div>
+        <div class="type-card"><strong>SIMD / Vector Units</strong><small>Perform the same operation on multiple data elements in parallel.</small><span class="badge">Data parallelism</span></div>
+        <div class="type-card"><strong>Memory Controller</strong><small>Coordinates transfers between the processor and main memory; often integrated into modern processors.</small><span class="badge">Memory access</span></div>
+        <div class="type-card"><strong>Bus / Interconnect</strong><small>Moves addresses, data, and control information among processor blocks, memory, and peripherals.</small><span class="badge">Communication</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>8-bit • 16-bit • 32-bit • 64-bit</h2>
+      <p class="lead">“Bitness” can describe several related processor properties, so context matters.</p>
+      <div class="type-grid">
+        <div class="type-card"><strong>8-bit</strong><small>Common in simple embedded controllers. Typical arithmetic and registers may naturally operate on 8-bit values.</small><span class="badge">0–255 unsigned</span></div>
+        <div class="type-card"><strong>16-bit</strong><small>Provides wider arithmetic and address/data handling than 8-bit designs while remaining efficient for embedded control.</small><span class="badge">65,536 values</span></div>
+        <div class="type-card"><strong>32-bit</strong><small>Very common in microcontrollers, embedded processors, and earlier generations of desktop computing.</small><span class="badge">Wider data</span></div>
+        <div class="type-card"><strong>64-bit</strong><small>Common in modern general-purpose processors and many higher-end embedded systems, with wider integer registers and address capabilities.</small><span class="badge">Large address space</span></div>
+      </div>
+      <div class="warning">Processor “bitness” does not always equal address-bus width, data-bus width, instruction length, or every internal register size. Check the architecture documentation for the exact meaning.</div>
+    </section>
+  </main>
+
+  <footer>A DONCO-BAYCITY™ App</footer>
+
+  <script>
+    function fmt(n,d=3){
+      if(!Number.isFinite(n))return "—";
+      return n.toLocaleString(undefined,{maximumFractionDigits:d});
+    }
+    function formatTime(s){
+      if(s>=1)return fmt(s,6)+" s";
+      if(s>=.001)return fmt(s*1000,6)+" ms";
+      if(s>=.000001)return fmt(s*1e6,6)+" µs";
+      if(s>=1e-9)return fmt(s*1e9,6)+" ns";
+      return fmt(s*1e12,6)+" ps";
+    }
+    function formatBytes(bytes){
+      const units=["B","KB","MB","GB","TB","PB","EB"];
+      let v=bytes,u=0;
+      while(v>=1024&&u<units.length-1){v/=1024;u++;}
+      return fmt(v,4)+" "+units[u];
+    }
+
+    const cycleSteps=[
+      {name:"Fetch",explain:"The program counter identifies the next instruction. The processor fetches that instruction from cache or memory.",blocks:["blockPC","blockBus","blockMemory"],step:"stepFetch"},
+      {name:"Decode",explain:"The control unit interprets the instruction and determines which operands and execution resources are needed.",blocks:["blockControl","blockRegisters"],step:"stepDecode"},
+      {name:"Execute",explain:"The ALU or another execution unit performs the requested arithmetic, logic, comparison, branch, load, or store operation.",blocks:["blockALU","blockRegisters"],step:"stepExecute"},
+      {name:"Store / Write Back",explain:"The result is written to a register, cache, memory, or another destination, and the processor continues to the next instruction.",blocks:["blockRegisters","blockBus","blockMemory"],step:"stepStore"}
+    ];
+    let cycleIndex=-1;
+    let cycleTimer=null;
+
+    function renderCycle(){
+      document.querySelectorAll(".cpu-block,.cpu-bus,.step-item").forEach(el=>el.classList.remove("active"));
+      if(cycleIndex<0){
+        document.getElementById("cycleTitle").textContent="Ready";
+        document.getElementById("cycleExplain").textContent="Press Next Step or Auto Run to begin the simplified CPU instruction cycle.";
+        return;
+      }
+      const step=cycleSteps[cycleIndex];
+      step.blocks.forEach(id=>document.getElementById(id).classList.add("active"));
+      document.getElementById(step.step).classList.add("active");
+      document.getElementById("cycleTitle").textContent=step.name;
+      document.getElementById("cycleExplain").textContent=step.explain;
+    }
+    function nextCycle(){
+      cycleIndex=(cycleIndex+1)%cycleSteps.length;
+      renderCycle();
+    }
+    document.getElementById("cycleNext").addEventListener("click",nextCycle);
+    document.getElementById("cycleAuto").addEventListener("click",()=>{
+      if(cycleTimer)clearInterval(cycleTimer);
+      if(cycleIndex<0)nextCycle();
+      cycleTimer=setInterval(nextCycle,1200);
+    });
+    document.getElementById("cycleStop").addEventListener("click",()=>{if(cycleTimer)clearInterval(cycleTimer);cycleTimer=null;});
+    document.getElementById("cycleReset").addEventListener("click",()=>{
+      if(cycleTimer)clearInterval(cycleTimer);
+      cycleTimer=null;cycleIndex=-1;renderCycle();
+    });
+
+    function clamp8(v){return Math.max(0,Math.min(255,Math.floor(Number(v)||0)));}
+    function bin8(v){return (v&255).toString(2).padStart(8,"0");}
+    function updateAlu(){
+      const a=clamp8(document.getElementById("aluA").value);
+      const b=clamp8(document.getElementById("aluB").value);
+      const op=document.getElementById("aluOp").value;
+      let raw=0,result=0,carry=0,label="";
+      if(op==="add"){
+        raw=a+b;result=raw&255;carry=raw>255?1:0;label="ADD: "+a+" + "+b+" = "+raw+"; 8-bit result = "+result+".";
+      }else if(op==="sub"){
+        raw=a-b;carry=raw<0?1:0;result=((raw%256)+256)%256;label="SUBTRACT: "+a+" − "+b+" = "+raw+"; 8-bit result = "+result+".";
+      }else if(op==="and"){
+        result=(a&b)&255;label="AND compares each bit: a bit is 1 only when both input bits are 1.";
+      }else if(op==="or"){
+        result=(a|b)&255;label="OR compares each bit: a bit is 1 when either input bit is 1.";
+      }else if(op==="xor"){
+        result=(a^b)&255;label="XOR compares each bit: a bit is 1 when the two input bits differ.";
+      }else if(op==="shl"){
+        raw=a<<1;result=raw&255;carry=(a&128)?1:0;label="SHIFT LEFT moves every bit one place left; the top bit becomes carry.";
+      }else{
+        carry=a&1;result=(a>>>1)&255;label="SHIFT RIGHT moves every bit one place right; the low bit becomes carry.";
+      }
+      document.getElementById("regA").textContent=a;
+      document.getElementById("regB").textContent=b;
+      document.getElementById("regResult").textContent=result;
+      document.getElementById("regCarry").textContent=carry;
+      document.getElementById("aluDecimal").textContent=result;
+      document.getElementById("aluHex").textContent="0x"+result.toString(16).toUpperCase().padStart(2,"0");
+      document.getElementById("aluBinary").textContent=bin8(result);
+      document.getElementById("aluFormula").textContent=label;
+    }
+    ["aluA","aluOp","aluB"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateAlu);el.addEventListener("change",updateAlu);
+    });
+
+    let convLock=false;
+    function setConverter(v){
+      if(convLock)return;
+      convLock=true;
+      const n=Math.max(0,Math.floor(v));
+      document.getElementById("convDecimal").value=String(n);
+      document.getElementById("convHex").value=n.toString(16).toUpperCase();
+      document.getElementById("convBinary").value=n.toString(2);
+      document.getElementById("convStatus").className="status good";
+      document.getElementById("convStatus").textContent=n+" decimal = "+n.toString(16).toUpperCase()+" hex = "+n.toString(2)+" binary.";
+      convLock=false;
+    }
+    document.getElementById("convDecimal").addEventListener("input",e=>{
+      const v=parseInt(e.target.value,10);
+      if(Number.isFinite(v)&&v>=0)setConverter(v);
+    });
+    document.getElementById("convHex").addEventListener("input",e=>{
+      const s=e.target.value.trim();
+      if(/^[0-9a-fA-F]+$/.test(s))setConverter(parseInt(s,16));
+    });
+    document.getElementById("convBinary").addEventListener("input",e=>{
+      const s=e.target.value.trim();
+      if(/^[01]+$/.test(s))setConverter(parseInt(s,2));
+    });
+
+    function updateClock(){
+      const mhz=Math.max(1e-12,Number(document.getElementById("clockFreq").value)||1e-12);
+      const cycles=Math.max(1,Number(document.getElementById("clockCycles").value)||1);
+      const instructions=Math.max(1,Number(document.getElementById("clockInstructions").value)||1);
+      const hz=mhz*1e6;
+      const period=1/hz;
+      const cycleTime=cycles*period;
+      const total=instructions*cycles*period;
+      document.getElementById("clockPeriod").textContent=formatTime(period);
+      document.getElementById("cycleTime").textContent=formatTime(cycleTime);
+      document.getElementById("instructionTime").textContent=formatTime(total);
+      document.getElementById("clockFormula").textContent=
+        "Clock period = 1 ÷ "+fmt(mhz,4)+" MHz = "+formatTime(period)+
+        ". With "+fmt(cycles,0)+" cycles/instruction, "+fmt(instructions,0)+" instructions take about "+formatTime(total)+" in this idealized model.";
+    }
+    ["clockFreq","clockCycles","clockInstructions"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateClock);el.addEventListener("change",updateClock);
+    });
+
+    function updateAddress(){
+      const bits=Math.max(1,Math.min(64,Math.floor(Number(document.getElementById("addressBits").value)||1)));
+      const bytesPer=Math.max(1,Math.floor(Number(document.getElementById("bytesPerAddress").value)||1));
+      const dataBits=Math.max(1,Math.floor(Number(document.getElementById("dataBusBits").value)||1));
+      const locations=Math.pow(2,bits);
+      const capacity=locations*bytesPer;
+      document.getElementById("addressLocations").textContent=
+        locations>=1e12?locations.toExponential(4):locations.toLocaleString();
+      document.getElementById("addressCapacity").textContent=formatBytes(capacity);
+      document.getElementById("dataTransfer").textContent=
+        dataBits%8===0?fmt(dataBits/8,4)+" bytes ("+dataBits+" bits)":dataBits+" bits";
+      document.getElementById("addressFormula").textContent=
+        "2^"+bits+" = "+(locations>=1e12?locations.toExponential(4):locations.toLocaleString())+
+        " addressable locations; at "+bytesPer+" byte(s) each, theoretical span = "+formatBytes(capacity)+".";
+    }
+    ["addressBits","bytesPerAddress","dataBusBits"].forEach(id=>{
+      const el=document.getElementById(id);el.addEventListener("input",updateAddress);el.addEventListener("change",updateAddress);
+    });
+
+    renderCycle();
+    updateAlu();
+    setConverter(255);
+    updateClock();
+    updateAddress();
+  </script>
+</body>
+</html>
