@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Crystals & Oscillators Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;padding:24px 18px 20px;text-align:center;
+    }
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1000px;margin:0 auto;padding:18px}
+    .page-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .page-nav a{
+      text-decoration:none;min-height:46px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:11px;padding:10px 14px;font-weight:800;border:1px solid #9fc8ef;
+      background:#eef7ff;color:var(--navy);
+    }
+    .page-nav a.active{background:var(--yellow);border-color:#e4ba16}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px;
+    }
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    h3{margin:0 0 8px;color:var(--navy)}
+    .lead,.note{color:var(--muted);line-height:1.5}
+    .lead{margin:0 0 16px}.note{font-size:13px;margin:10px 0 0}
+    .grid{display:grid;gap:12px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input,select,button{font:inherit}
+    input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white;color:var(--text)}
+    input:focus,select:focus,button:focus{outline:3px solid rgba(11,99,206,.22);outline-offset:2px}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{border:1px solid #b9d7f5;background:#e9f3ff;border-radius:12px;padding:12px}
+    .result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .result strong{color:var(--navy);font-size:clamp(20px,4vw,28px);word-break:break-word}
+    .formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+    .warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:10px;padding:10px 12px;color:#6a4300;font-weight:700;line-height:1.45}
+    .status{margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy);line-height:1.45}
+    .status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+    .status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
+
+    .beginner-panel{background:linear-gradient(180deg,#fff 0%,#f8fbff 100%);border:2px solid #b9d7f5}
+    .concept-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .concept-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .concept-card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}
+    .concept-card p{margin:0;color:#33495b;line-height:1.5}
+    .badge{display:inline-block;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#e9f3ff;color:var(--navy);border:1px solid #b9d7f5}
+
+    .clock-stage{display:grid;grid-template-columns:minmax(320px,1.2fr) minmax(0,.8fr);gap:16px;align-items:center;margin-top:14px}
+    .scope{border:1px solid var(--border);border-radius:16px;background:#06182a;padding:12px}
+    .scope svg{display:block;width:100%;height:auto}
+    .button-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .action{min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}
+    .action.primary{background:var(--yellow);border-color:#e4ba16}
+
+    .divider-chain{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px}
+    .divider-box{min-width:105px;border:1px solid #b9d7f5;background:#f8fbff;border-radius:12px;padding:12px;text-align:center}
+    .divider-box strong{display:block;color:var(--navy);margin-bottom:4px}
+    .arrow{font-size:24px;font-weight:900;color:var(--electric)}
+
+    .type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .type-card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:13px}
+    .type-card strong{display:block;color:var(--navy);margin-bottom:5px}
+    .type-card small{display:block;color:var(--muted);line-height:1.45}
+
+    @media(max-width:760px){
+      main{padding:12px}
+      .grid.two,.grid.three,.grid.four,.result-grid,.concept-grid,.type-grid,.clock-stage{grid-template-columns:1fr}
+    }
+    footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Crystals & Oscillators Explorer</h1>
+  <p>Quartz resonance, clock signals, frequency, period, PPM accuracy, load capacitance, oscillator types, and frequency division.</p>
+</header>
+
+<main>
+<nav class="page-nav" aria-label="App pages">
+  <a href="index.html">All Things Electrical</a>
+  <a href="electrical-basics.html">Electrical Basics</a>
+  <a href="wiring-installation.html">Wiring & Installation</a>
+  <a href="batteries.html">Batteries</a>
+  <a href="power-supplies.html">Power Supplies & Rectifiers</a>
+  <a href="capacitor.html">Capacitors</a>
+  <a href="inductors.html">Inductors & Coils</a>
+  <a href="transformers.html">Transformers</a>
+  <a href="diodes.html">Diodes</a>
+  <a href="transistors.html">Transistors</a>
+  <a href="vacuum-tubes.html">Vacuum Tubes</a>
+  <a href="relays.html">Relays & Contactors</a>
+  <a href="integrated-circuits.html">Integrated Circuits</a>
+  <a href="crystals-oscillators.html" class="active">Crystals & Oscillators</a>
+  <a href="processors.html">Processors</a>
+</nav>
+
+<section class="panel beginner-panel">
+  <h2>Beginner Start Here</h2>
+  <p class="lead">Crystals and oscillators provide the repeating timing signals that keep digital circuits, radios, clocks, and processors running at precise rates.</p>
+  <div class="concept-grid">
+    <div class="concept-card"><strong>Quartz Crystal</strong><p>A piezoelectric resonator that vibrates electrically at a very specific natural frequency. It helps set the frequency but is not, by itself, a complete oscillator.</p><span class="badge">Frequency reference</span></div>
+    <div class="concept-card"><strong>Oscillator</strong><p>A complete circuit that repeatedly generates an electrical waveform without needing a repeating input signal.</p><span class="badge">Creates the clock</span></div>
+    <div class="concept-card"><strong>Frequency</strong><p>How many cycles occur each second. It is measured in hertz: Hz, kHz, MHz, and GHz.</p><span class="badge">Cycles per second</span></div>
+    <div class="concept-card"><strong>Period</strong><p>The time for one complete cycle. Higher frequency means a shorter period.</p><span class="badge">Time per cycle</span></div>
+    <div class="concept-card"><strong>PPM</strong><p>Parts per million expresses frequency accuracy or tolerance. A small PPM error can accumulate into noticeable clock error over time.</p><span class="badge">Accuracy</span></div>
+    <div class="concept-card"><strong>Clock Signal</strong><p>A repeating waveform used to coordinate when digital circuits change state and perform operations.</p><span class="badge">Digital timing</span></div>
+  </div>
+  <div class="formula">In other words: the <strong>crystal is the precise resonator</strong>; the <strong>oscillator is the circuit that uses a timing element to produce a repeating signal</strong>.</div>
+</section>
+
+<section class="panel">
+  <h2>Clock Waveform Simulator</h2>
+  <p class="lead">Watch a simplified digital clock signal and change its displayed frequency.</p>
+  <div class="clock-stage">
+    <div class="scope">
+      <svg viewBox="0 0 720 260" aria-label="Animated digital clock waveform">
+        <defs>
+          <pattern id="grid" width="36" height="26" patternUnits="userSpaceOnUse">
+            <path d="M36 0H0V26" fill="none" stroke="#17334e" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect x="0" y="0" width="720" height="260" fill="url(#grid)"/>
+        <line x1="30" y1="130" x2="690" y2="130" stroke="#4f789c" stroke-width="1.5"/>
+        <path id="clockPath" d="" fill="none" stroke="#ffd43b" stroke-width="5" stroke-linejoin="round"/>
+        <circle id="clockDot" cx="30" cy="70" r="7" fill="#1594ff"/>
+      </svg>
+    </div>
+    <div>
+      <div class="field"><label for="clockFreq">Displayed clock frequency</label>
+        <select id="clockFreq">
+          <option value="1">1 Hz</option>
+          <option value="1000">1 kHz</option>
+          <option value="1000000" selected>1 MHz</option>
+          <option value="8000000">8 MHz</option>
+          <option value="16000000">16 MHz</option>
+        </select>
+      </div>
+      <div class="result-grid" style="grid-template-columns:1fr 1fr">
+        <div class="result"><small>Frequency</small><strong id="clockFreqOut">—</strong></div>
+        <div class="result"><small>Period</small><strong id="clockPeriodOut">—</strong></div>
+      </div>
+      <div class="button-row">
+        <button id="clockRun" class="action primary" type="button">Run Clock</button>
+        <button id="clockSlow" class="action" type="button">Slow Motion</button>
+        <button id="clockStop" class="action" type="button">Stop</button>
+      </div>
+      <p class="note">The animation is slowed so the edges can be seen. A real MHz clock switches far too quickly for the eye to follow.</p>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Frequency ↔ Period Calculator</h2>
+  <div class="grid three">
+    <div class="field"><label for="fpFrequency">Frequency</label><input id="fpFrequency" type="number" min="0.000001" step="any" value="16"></div>
+    <div class="field"><label for="fpUnit">Frequency unit</label><select id="fpUnit"><option value="1">Hz</option><option value="1000">kHz</option><option value="1000000" selected>MHz</option><option value="1000000000">GHz</option></select></div>
+  </div>
+  <div class="result-grid">
+    <div class="result"><small>Frequency</small><strong id="fpHz">—</strong></div>
+    <div class="result"><small>Period</small><strong id="fpPeriod">—</strong></div>
+    <div class="result"><small>Cycles in 1 ms</small><strong id="fpCyclesMs">—</strong></div>
+  </div>
+  <div id="fpFormula" class="formula">Period = 1 ÷ frequency.</div>
+</section>
+
+<section class="panel">
+  <h2>PPM Accuracy & Clock Error</h2>
+  <p class="lead">See how a small frequency error can accumulate over time.</p>
+  <div class="grid three">
+    <div class="field"><label for="ppmFreq">Nominal frequency (MHz)</label><input id="ppmFreq" type="number" min="0.000001" step="any" value="10"></div>
+    <div class="field"><label for="ppmValue">Tolerance / error (PPM)</label><input id="ppmValue" type="number" min="0" step="any" value="20"></div>
+  </div>
+  <div class="result-grid">
+    <div class="result"><small>Frequency error</small><strong id="ppmHzError">—</strong></div>
+    <div class="result"><small>Possible time error per day</small><strong id="ppmDay">—</strong></div>
+    <div class="result"><small>Possible time error per year</small><strong id="ppmYear">—</strong></div>
+  </div>
+  <div id="ppmFormula" class="formula">PPM error = nominal frequency × PPM ÷ 1,000,000.</div>
+  <p class="note">This treats the PPM error as constant. Real crystals also change with temperature, aging, load capacitance, drive level, supply conditions, and circuit design.</p>
+</section>
+
+<section class="panel">
+  <h2>Crystal Load Capacitance Calculator</h2>
+  <p class="lead">Estimate crystal load capacitance from two external capacitors and stray capacitance, or estimate equal capacitor values for a target load capacitance.</p>
+  <div class="grid four">
+    <div class="field"><label for="loadC1">C1 (pF)</label><input id="loadC1" type="number" min="0.001" step="any" value="22"></div>
+    <div class="field"><label for="loadC2">C2 (pF)</label><input id="loadC2" type="number" min="0.001" step="any" value="22"></div>
+    <div class="field"><label for="loadStray">Estimated stray capacitance (pF)</label><input id="loadStray" type="number" min="0" step="any" value="3"></div>
+    <div class="field"><label for="loadTarget">Target crystal CL (pF)</label><input id="loadTarget" type="number" min="0.001" step="any" value="12.5"></div>
+  </div>
+  <div class="result-grid">
+    <div class="result"><small>Calculated load capacitance</small><strong id="loadCalculated">—</strong></div>
+    <div class="result"><small>Equal C1 = C2 estimate</small><strong id="loadEqualCaps">—</strong></div>
+  </div>
+  <div id="loadFormula" class="formula">CL ≈ (C1 × C2) ÷ (C1 + C2) + Cstray.</div>
+  <p class="note">Real oscillator design depends on the IC input/output capacitance, PCB layout, crystal ESR, drive level, gain margin, and manufacturer recommendations. Use this as a teaching estimate, not a substitute for the crystal and IC datasheets.</p>
+</section>
+
+<section class="panel">
+  <h2>Frequency Divider Simulator</h2>
+  <p class="lead">Each divide-by-2 stage cuts the incoming clock frequency in half.</p>
+  <div class="grid two">
+    <div class="field"><label for="divInput">Input frequency (MHz)</label><input id="divInput" type="number" min="0.000001" step="any" value="8"></div>
+    <div class="field"><label for="divStages">Divide-by-2 stages</label><input id="divStages" type="number" min="1" max="8" step="1" value="3"></div>
+  </div>
+  <div id="dividerChain" class="divider-chain"></div>
+  <div class="formula">A chain of flip-flops or counters can divide a clock by powers of two: ÷2, ÷4, ÷8, ÷16, and so on.</div>
+</section>
+
+<section class="panel">
+  <h2>Oscillator Types</h2>
+  <div class="type-grid">
+    <div class="type-card"><strong>RC Oscillator</strong><small>Uses resistor-capacitor timing. Simple and inexpensive, but usually less precise than a quartz reference.</small><span class="badge">Simple timing</span></div>
+    <div class="type-card"><strong>LC Oscillator</strong><small>Uses an inductor-capacitor resonant circuit. Common in tunable radio-frequency circuits.</small><span class="badge">RF resonance</span></div>
+    <div class="type-card"><strong>Crystal Oscillator</strong><small>Uses quartz resonance for much better frequency stability than typical RC oscillators.</small><span class="badge">Precise clock</span></div>
+    <div class="type-card"><strong>Ceramic Resonator</strong><small>Works similarly to a crystal but is generally less precise and often cheaper.</small><span class="badge">Moderate precision</span></div>
+    <div class="type-card"><strong>MEMS Oscillator</strong><small>Uses a microscopic mechanical resonator plus electronics in an integrated timing device.</small><span class="badge">Modern timing</span></div>
+    <div class="type-card"><strong>XO</strong><small>A packaged crystal oscillator containing the resonator and oscillator circuit.</small><span class="badge">Complete oscillator</span></div>
+    <div class="type-card"><strong>TCXO</strong><small>Temperature-compensated crystal oscillator that corrects much of the crystal's temperature drift.</small><span class="badge">Higher stability</span></div>
+    <div class="type-card"><strong>OCXO</strong><small>Oven-controlled crystal oscillator keeps the crystal at a controlled temperature for very high stability.</small><span class="badge">Precision reference</span></div>
+    <div class="type-card"><strong>VCO</strong><small>Voltage-controlled oscillator changes frequency in response to a control voltage and is often used in PLLs.</small><span class="badge">Tunable</span></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>How a Processor Uses a Clock</h2>
+  <div class="concept-grid">
+    <div class="concept-card"><strong>Clock Source</strong><p>A crystal, oscillator module, RC oscillator, MEMS oscillator, or other source provides a reference frequency.</p></div>
+    <div class="concept-card"><strong>PLL</strong><p>A phase-locked loop can multiply, divide, or condition a reference to create other internal clock frequencies.</p></div>
+    <div class="concept-card"><strong>Clock Distribution</strong><p>The processor distributes clocks to logic blocks so operations occur in a coordinated sequence.</p></div>
+    <div class="concept-card"><strong>Not One Instruction per Tick</strong><p>Modern processors use pipelines, multiple clock domains, caches, and parallel execution, so clock frequency alone does not determine performance.</p></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Accuracy, Stability & Real-World Effects</h2>
+  <div class="concept-grid">
+    <div class="concept-card"><strong>Initial Tolerance</strong><p>The frequency offset when the device is new and measured under specified conditions.</p></div>
+    <div class="concept-card"><strong>Temperature Drift</strong><p>Frequency changes as temperature moves away from the crystal's reference temperature.</p></div>
+    <div class="concept-card"><strong>Aging</strong><p>Crystal frequency can slowly change over months and years.</p></div>
+    <div class="concept-card"><strong>Load Capacitance</strong><p>The capacitance presented by the oscillator circuit shifts the actual operating frequency relative to the crystal's calibration condition.</p></div>
+    <div class="concept-card"><strong>Drive Level</strong><p>Too much crystal drive can affect frequency, reliability, and startup behavior.</p></div>
+    <div class="concept-card"><strong>Jitter & Phase Noise</strong><p>Short-term timing variation matters in high-speed digital, communications, RF, and precision measurement systems.</p></div>
+  </div>
+  <div class="warning">For a real design, follow the processor/IC clock requirements and the crystal or oscillator manufacturer's datasheet for frequency, ESR, load capacitance, drive level, startup margin, supply voltage, layout, and temperature range.</div>
+</section>
+</main>
+
+<footer>A DONCO-BAYCITY™ App</footer>
+
+<script>
+function fmt(n,d=3){if(!Number.isFinite(n))return "—";return n.toLocaleString(undefined,{maximumFractionDigits:d});}
+function formatHz(hz){
+  const a=Math.abs(hz);
+  if(a>=1e9)return fmt(hz/1e9,6)+" GHz";
+  if(a>=1e6)return fmt(hz/1e6,6)+" MHz";
+  if(a>=1e3)return fmt(hz/1e3,6)+" kHz";
+  return fmt(hz,6)+" Hz";
+}
+function formatTime(s){
+  const a=Math.abs(s);
+  if(a>=1)return fmt(s,9)+" s";
+  if(a>=1e-3)return fmt(s*1e3,6)+" ms";
+  if(a>=1e-6)return fmt(s*1e6,6)+" µs";
+  if(a>=1e-9)return fmt(s*1e9,6)+" ns";
+  return fmt(s*1e12,6)+" ps";
+}
+
+const clockPath=document.getElementById("clockPath");
+const clockDot=document.getElementById("clockDot");
+let clockTimer=null,clockX=30,clockSlow=false;
+function buildClockPath(){
+  const pts=[];
+  const x0=30,x1=690,high=70,low=190,step=55;
+  let x=x0,y=high;
+  pts.push("M"+x+","+y);
+  while(x<x1){
+    x=Math.min(x+step,x1);pts.push("H"+x);
+    y=y===high?low:high;pts.push("V"+y);
+  }
+  clockPath.setAttribute("d",pts.join(" "));
+}
+function updateClockReadout(){
+  const hz=Number(document.getElementById("clockFreq").value)||1;
+  document.getElementById("clockFreqOut").textContent=formatHz(hz);
+  document.getElementById("clockPeriodOut").textContent=formatTime(1/hz);
+}
+function startClock(slow){
+  if(clockTimer)clearInterval(clockTimer);
+  clockSlow=slow;
+  clockTimer=setInterval(()=>{
+    clockX+=slow?3:8;
+    if(clockX>690)clockX=30;
+    const phase=Math.floor((clockX-30)/55);
+    const y=phase%2===0?70:190;
+    clockDot.setAttribute("cx",clockX);
+    clockDot.setAttribute("cy",y);
+  },60);
+}
+document.getElementById("clockRun").onclick=()=>startClock(false);
+document.getElementById("clockSlow").onclick=()=>startClock(true);
+document.getElementById("clockStop").onclick=()=>{if(clockTimer)clearInterval(clockTimer);clockTimer=null;};
+document.getElementById("clockFreq").onchange=updateClockReadout;
+
+function updateFP(){
+  const f=Math.max(1e-12,Number(document.getElementById("fpFrequency").value)||1e-12);
+  const mul=Number(document.getElementById("fpUnit").value)||1;
+  const hz=f*mul,p=1/hz;
+  document.getElementById("fpHz").textContent=formatHz(hz);
+  document.getElementById("fpPeriod").textContent=formatTime(p);
+  document.getElementById("fpCyclesMs").textContent=fmt(hz*.001,3);
+  document.getElementById("fpFormula").textContent="Period = 1 ÷ "+formatHz(hz)+" = "+formatTime(p)+".";
+}
+["fpFrequency","fpUnit"].forEach(id=>{const e=document.getElementById(id);e.oninput=updateFP;e.onchange=updateFP;});
+
+function updatePPM(){
+  const fMHz=Math.max(1e-12,Number(document.getElementById("ppmFreq").value)||1e-12);
+  const ppm=Math.max(0,Number(document.getElementById("ppmValue").value)||0);
+  const hz=fMHz*1e6;
+  const hzErr=hz*ppm/1e6;
+  const secDay=86400*ppm/1e6;
+  const secYear=31557600*ppm/1e6;
+  document.getElementById("ppmHzError").textContent="± "+formatHz(hzErr);
+  document.getElementById("ppmDay").textContent="± "+fmt(secDay,3)+" s";
+  document.getElementById("ppmYear").textContent="± "+fmt(secYear,2)+" s";
+  document.getElementById("ppmFormula").textContent=fmt(ppm,3)+" PPM at "+fmt(fMHz,6)+" MHz ≈ ±"+fmt(hzErr,3)+" Hz. If constant, that equals about ±"+fmt(secDay,3)+" seconds/day.";
+}
+["ppmFreq","ppmValue"].forEach(id=>{const e=document.getElementById(id);e.oninput=updatePPM;e.onchange=updatePPM;});
+
+function updateLoadC(){
+  const c1=Math.max(.001,Number(document.getElementById("loadC1").value)||.001);
+  const c2=Math.max(.001,Number(document.getElementById("loadC2").value)||.001);
+  const stray=Math.max(0,Number(document.getElementById("loadStray").value)||0);
+  const target=Math.max(.001,Number(document.getElementById("loadTarget").value)||.001);
+  const cl=(c1*c2)/(c1+c2)+stray;
+  const equal=Math.max(0,2*(target-stray));
+  document.getElementById("loadCalculated").textContent=fmt(cl,3)+" pF";
+  document.getElementById("loadEqualCaps").textContent=equal>0?fmt(equal,3)+" pF each":"Target ≤ stray";
+  document.getElementById("loadFormula").textContent="CL ≈ ("+fmt(c1,3)+" × "+fmt(c2,3)+") ÷ ("+fmt(c1,3)+" + "+fmt(c2,3)+") + "+fmt(stray,3)+" = "+fmt(cl,3)+" pF. If C1=C2, estimate ≈ 2 × (target CL − stray).";
+}
+["loadC1","loadC2","loadStray","loadTarget"].forEach(id=>{const e=document.getElementById(id);e.oninput=updateLoadC;e.onchange=updateLoadC;});
+
+function updateDivider(){
+  const input=Math.max(1e-12,Number(document.getElementById("divInput").value)||1e-12)*1e6;
+  const stages=Math.min(8,Math.max(1,Math.floor(Number(document.getElementById("divStages").value)||1)));
+  const wrap=document.getElementById("dividerChain");wrap.innerHTML="";
+  let f=input;
+  const first=document.createElement("div");first.className="divider-box";first.innerHTML="<strong>Input</strong>"+formatHz(f);wrap.appendChild(first);
+  for(let i=1;i<=stages;i++){
+    const arrow=document.createElement("div");arrow.className="arrow";arrow.textContent="→";wrap.appendChild(arrow);
+    f/=2;
+    const box=document.createElement("div");box.className="divider-box";box.innerHTML="<strong>÷ "+Math.pow(2,i)+"</strong>"+formatHz(f);wrap.appendChild(box);
+  }
+}
+["divInput","divStages"].forEach(id=>{const e=document.getElementById(id);e.oninput=updateDivider;e.onchange=updateDivider;});
+
+buildClockPath();updateClockReadout();updateFP();updatePPM();updateLoadC();updateDivider();
+</script>
+</body>
+</html>
