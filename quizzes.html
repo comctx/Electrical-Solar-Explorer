@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Electrical Quizzes</title><style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+input,select,button{font:inherit}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff}.btn{min-height:42px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.btn.good{background:#eaf7ef;border-color:#9ed0b3}
+.result{margin-top:12px;background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}}
+</style>
+<style>
+.quiz-option{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid #b9d7f5;border-radius:10px;background:#fff;cursor:pointer}.quiz-option.selected{background:#fff7cc;border-color:#e5c94a}.quiz-option.correct{background:#eaf7ef;border-color:#9ed0b3}.quiz-option.wrong{background:#fdecea;border-color:#e4aaa5}.qmeta{font-size:13px;color:var(--muted);font-weight:700}.score{font-size:28px;color:var(--navy);font-weight:900}.category-card button{margin-top:10px}
+</style></head><body>
+<header><h1>Electrical Quizzes</h1><p>Short quizzes covering the major sections of All Things Electrical.</p></header><nav class="nav"><a href="index.html">All Things Electrical</a><a href="glossary.html">Glossary</a><a href="quizzes.html">Quizzes</a><a href="progress.html">My Progress</a></nav>
+<main>
+<section class="panel"><h2>Choose a Quiz</h2><div id="categories" class="grid three"></div></section>
+<section id="quizPanel" class="panel" style="display:none"><div class="qmeta" id="qmeta"></div><h2 id="qtext"></h2><div id="options"></div><div class="grid two" style="margin-top:12px"><button id="checkBtn" class="btn primary">Check Answer</button><button id="nextBtn" class="btn" disabled>Next Question</button></div><div id="feedback" class="result">Choose an answer.</div></section>
+<section id="finishPanel" class="panel" style="display:none"><h2>Quiz Complete</h2><div id="finalScore" class="score"></div><p id="finalText" class="lead"></p><button id="backBtn" class="btn primary">Choose Another Quiz</button></section>
+</main><footer>A DONCO-BAYCITY™ App</footer>
+<script>
+const quizzes={
+"Electrical Basics":[
+["What unit measures electrical resistance?",["Ampere","Ohm","Watt","Volt"],1],
+["Which formula is Ohm's Law?",["V = I × R","P = V × I","E = mc²","f = 1/T"],0],
+["What does DC mean?",["Dual current","Direct current","Distributed current","Dynamic circuit"],1],
+["Power is measured in:",["Ohms","Henries","Watts","Farads"],2],
+["Current is measured in:",["Amperes","Volts","Watts","Teslas"],0]],
+"Components":[
+["Which component stores energy in an electric field?",["Inductor","Capacitor","Relay","Fuse"],1],
+["A diode normally conducts primarily in:",["One direction","Both directions equally","No direction","Only at RF"],0],
+["A MOSFET is commonly used as a:",["Mechanical switch","Semiconductor switch","Transformer winding","Fuse"],1],
+["An inductor stores energy mainly in a:",["Magnetic field","Chemical bond","Vacuum","Light beam"],0],
+["An LED is a type of:",["Relay","Diode","Transformer","Resistor"],1]],
+"Motors & Controls":[
+["What does VFD stand for?",["Variable Frequency Drive","Voltage Fuse Device","Variable Field Diode","Virtual Frequency Detector"],0],
+["A contactor is primarily used to:",["Measure resistance","Switch power loads","Store charge","Generate RF"],1],
+["A motor overload is intended to protect against:",["Sustained overload heating","All lightning surges","Every short circuit","Low RF signal"],0],
+["A limit switch usually detects:",["Position","Voltage phase angle","Frequency only","Battery chemistry"],0],
+["A three-phase motor is commonly controlled by:",["Starter or VFD","Crystal oscillator only","LED driver","Photodiode"],0]],
+"PLCs & Automation":[
+["PLC stands for:",["Programmable Logic Controller","Power Line Capacitor","Phase Load Counter","Pulse Logic Coil"],0],
+["4–20 mA is commonly used as a:",["Industrial analog signal","RF impedance","Fuse rating","Logic gate"],0],
+["Ladder logic is associated with:",["PLCs","Vacuum tubes only","Fiber optics only","Battery chemistry"],0],
+["An HMI is used for:",["Human-machine interaction","High magnetic insulation","Heat measurement isolation","Harmonic motor impedance"],0],
+["PNP sensor outputs are commonly described as:",["Sourcing","Sinking","Mechanical","Optical only"],0]],
+"Test Equipment":[
+["Which tool displays voltage versus time?",["Oscilloscope","Clamp meter","Fuse","Contactor"],0],
+["A clamp meter measures current by sensing:",["Magnetic field","Light color","Capacitance only","Temperature only"],0],
+["Resistance measurements are normally made with the circuit:",["De-energized","At maximum voltage","Shorted to ground","Running at full load"],0],
+["A megohmmeter is used mainly for:",["Insulation resistance","RF SWR","LED brightness","Motor speed"],0],
+["A logic probe is used on:",["Digital logic signals","Hydraulic pressure","Lamp lumens","Fiber attenuation only"],0]],
+"Troubleshooting":[
+["A good first troubleshooting step is to:",["Define the symptom","Replace every part","Bypass all safeties","Increase fuse size"],0],
+["An open circuit usually means:",["Broken current path","Very low resistance path","Perfect operation","High RF gain"],0],
+["A short circuit usually creates:",["Unexpected low-resistance path","Infinite resistance","No current possibility","Optical isolation"],0],
+["Voltage drop across a bad connection is related to:",["I × R","f × C","lux × lumen","SWR only"],0],
+["After a repair you should:",["Verify normal operation","Assume it is fixed","Remove protection","Skip testing"],0]]
+};
+
+const cats=document.getElementById("categories"),panel=document.getElementById("quizPanel"),finish=document.getElementById("finishPanel");
+let category="",index=0,score=0,selected=null,checked=false;
+function saved(){try{return JSON.parse(localStorage.getItem("ateQuizProgress")||"{}")}catch{return{}}}
+function renderCats(){const s=saved();cats.innerHTML=Object.keys(quizzes).map(name=>'<div class="card category-card"><strong>'+name+'</strong><p>5 questions</p><p class="note">'+(s[name]!==undefined?'Best score: '+s[name]+'/5':'Not completed yet')+'</p><button class="btn primary" onclick="startQuiz(\''+name.replace(/'/g,"\'")+'\')">Start Quiz</button></div>').join("")}
+window.startQuiz=function(name){category=name;index=0;score=0;selected=null;checked=false;document.querySelector(".panel").style.display="none";finish.style.display="none";panel.style.display="block";showQ()}
+function showQ(){const q=quizzes[category][index];qmeta.textContent=category+" · Question "+(index+1)+" of "+quizzes[category].length;qtext.textContent=q[0];options.innerHTML=q[1].map((x,i)=>'<button class="quiz-option" data-i="'+i+'">'+x+'</button>').join("");[...options.children].forEach(b=>b.onclick=()=>{if(checked)return;selected=+b.dataset.i;[...options.children].forEach(x=>x.classList.toggle("selected",x===b))});feedback.textContent="Choose an answer.";checkBtn.disabled=false;nextBtn.disabled=true;checked=false;selected=null}
+checkBtn.onclick=()=>{if(selected===null){feedback.textContent="Choose an answer first.";return}checked=true;const q=quizzes[category][index],correct=q[2];[...options.children].forEach((b,i)=>{if(i===correct)b.classList.add("correct");else if(i===selected)b.classList.add("wrong")});if(selected===correct){score++;feedback.textContent="Correct."}else feedback.textContent="Not quite. The correct answer is "+q[1][correct]+".";checkBtn.disabled=true;nextBtn.disabled=false};
+nextBtn.onclick=()=>{index++;if(index<quizzes[category].length)showQ();else finishQuiz()};
+function finishQuiz(){panel.style.display="none";finish.style.display="block";finalScore.textContent=score+" / "+quizzes[category].length;finalText.textContent=score===5?"Excellent — perfect score.":score>=4?"Very good — you know this section well.":score>=3?"Good start — review the missed ideas and try again.":"Review the related Explorer pages and try again.";const s=saved();s[category]=Math.max(score,s[category]||0);localStorage.setItem("ateQuizProgress",JSON.stringify(s));renderCats()}
+backBtn.onclick=()=>{finish.style.display="none";document.querySelector(".panel").style.display="block"};renderCats();
+</script></body></html>
