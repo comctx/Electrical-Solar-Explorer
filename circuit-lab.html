@@ -53,10 +53,12 @@ input,select{width:100%;min-height:44px;border:1px solid var(--border);border-ra
 .editor{display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px}.editor.show{display:block}.editor-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}.legend div{background:#f8fbff;border:1px solid var(--border);border-radius:11px;padding:10px;font-size:13px}
 
-/* voltmeter */
+/* virtual multimeter */
 .meter-panel{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:16px;align-items:start}
 .voltmeter{border:2px solid #27364a;border-radius:18px;background:#263241;color:#fff;padding:16px;text-align:center}
 .voltmeter .screen{background:#d7f6d1;color:#143a16;border-radius:10px;padding:16px 10px;font:900 34px/1 monospace;margin-bottom:12px}
+.meter-mode{margin-bottom:10px;text-align:left}.meter-mode label{display:block;font-size:12px;font-weight:900;margin-bottom:5px}.meter-mode select{background:#fff;color:#071a2e}
+.meter-note{margin-top:10px;border-radius:9px;padding:9px;font-size:12px;font-weight:800;background:#eef7ff;color:#071a2e}.meter-note.warn{background:#fff3d6;color:#6a4300}.meter-note.good{background:#eaf7ef;color:#185c3b}
 .probe-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .probe-btn{min-height:44px;border:2px solid;border-radius:10px;background:#fff;font-weight:900;cursor:pointer}.probe-btn.red{border-color:var(--red);color:var(--red)}.probe-btn.black{border-color:var(--black);color:var(--black)}.probe-btn.selected{box-shadow:0 0 0 4px rgba(21,148,255,.18)}
 .node-row{display:flex;flex-wrap:wrap;gap:9px}.node-btn{min-width:95px;border:1px solid #9fc8ef;background:#f8fbff;border-radius:12px;padding:10px;cursor:pointer;text-align:center}.node-dot{width:16px;height:16px;border-radius:50%;background:#687f91;margin:0 auto 6px;border:3px solid #fff;box-shadow:0 0 0 2px #687f91}.node-btn.red-probe .node-dot{background:var(--red);box-shadow:0 0 0 2px var(--red)}.node-btn.black-probe .node-dot{background:var(--black);box-shadow:0 0 0 2px var(--black)}.node-btn strong{display:block;font-size:12px;color:var(--navy)}.node-btn span{font-size:11px;color:var(--muted)}
@@ -89,7 +91,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <li><strong>Add components</strong> — tap Switch, Resistor, Lamp, LED, Motor, Fuse, or Ammeter.</li>
 <li><strong>Tap a component to edit it</strong> — change resistance, ratings, or open/close a switch.</li>
 <li><strong>Watch the live readings</strong> — current, resistance, power, and voltage drops update automatically.</li>
-<li><strong>Use the voltmeter</strong> — choose the red or black probe, then tap circuit nodes to move it.</li>
+<li><strong>Use the virtual multimeter</strong> — choose DC Volts, Resistance, or Continuity, then move the red and black probes.</li>
 <li><strong>Try the Parallel Branch Lab</strong> — turn branches on and off and watch the branch currents add together.</li>
 </ol>
 <div class="tip">Tip: Start with the <strong>Series Lamp Demo</strong> or <strong>Parallel Lamp Demo</strong> to see a working circuit before building your own.</div>
@@ -131,21 +133,23 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </section>
 
 <section class="panel">
-<h2>Virtual Voltmeter</h2>
-<p class="lead">Choose the red or black probe, then tap any circuit node to move that probe. The meter reads red minus black.</p>
+<h2>Virtual Multimeter</h2>
+<p class="lead">Use the same red and black probes in three beginner meter modes. DC Volts works with the circuit powered. Resistance and continuity require the simulated source to be OFF.</p>
 <div class="meter-panel">
 <div class="voltmeter">
+<div class="meter-mode"><label for="meterMode">Meter Mode</label><select id="meterMode"><option value="volts">DC Volts</option><option value="ohms">Resistance (Ω)</option><option value="continuity">Continuity</option></select></div>
 <div id="vmReading" class="screen">0.00 V</div>
 <div class="probe-controls">
 <button id="redProbeBtn" class="probe-btn red selected">🔴 Move Red Probe</button>
 <button id="blackProbeBtn" class="probe-btn black">⚫ Move Black Probe</button>
 </div>
 <p id="probeText" style="margin:12px 0 0;font-size:13px">Red: Source + · Black: Return</p>
+<div id="meterNote" class="meter-note">DC Volts measures the potential difference between the two probes.</div>
 </div>
 <div>
 <h3 style="margin-top:0">Circuit Nodes</h3>
 <div id="nodeRow" class="node-row"></div>
-<p class="note">A voltmeter measures the potential difference between two points. Move the probes to compare the source, individual components, and different points in the series path.</p>
+<p class="note"><strong>Meter habit:</strong> voltage is measured on an energized circuit when appropriate; resistance and continuity are checked only on a de-energized circuit. This simulator uses a simplified resistance model. Real equipment may require isolation, discharge, and manufacturer procedures before resistance testing.</p>
 </div>
 </div>
 </section>
@@ -249,6 +253,19 @@ function nodePotentials(s){
  });
  nodes.push(0);
  return nodes;
+}
+
+function resistanceBetweenNodes(a,b){
+ const lo=Math.min(a,b),hi=Math.max(a,b);
+ if(lo===hi)return 0;
+ let total=0;
+ for(let k=lo;k<hi;k++){
+   if(k>=parts.length)continue;
+   const r=effectiveResistance(parts[k]);
+   if(!Number.isFinite(r))return Infinity;
+   total+=r;
+ }
+ return total;
 }
 
 function displayValue(p,s){
@@ -378,10 +395,33 @@ function renderNodes(s){
  const labels=["Source +",...parts.map((p,i)=>"After "+(i+1)+" "+p.name),"Return"];
  if(blackNode<0)blackNode=labels.length-1;
  redNode=Math.min(redNode,labels.length-1);blackNode=Math.min(blackNode,labels.length-1);
- row.innerHTML=labels.map((label,i)=>'<button class="node-btn '+(i===redNode?"red-probe ":"")+(i===blackNode?"black-probe":"")+'" data-node="'+i+'"><div class="node-dot"></div><strong>'+label+'</strong><span>'+fmt(potentials[i]||0,2)+' V</span></button>').join("");
+ const mode=meterMode.value;
+ row.innerHTML=labels.map((label,i)=>'<button class="node-btn '+(i===redNode?"red-probe ":"")+(i===blackNode?"black-probe":"")+'" data-node="'+i+'"><div class="node-dot"></div><strong>'+label+'</strong><span>'+(mode==="volts"?fmt(potentials[i]||0,2)+" V":"Probe point")+'</span></button>').join("");
  row.querySelectorAll(".node-btn").forEach(b=>b.onclick=()=>{const i=+b.dataset.node;if(activeProbe==="red")redNode=i;else blackNode=i;renderNodes(s)});
- const reading=(potentials[redNode]||0)-(potentials[blackNode]||0);
- vmReading.textContent=fmt(reading,2)+" V";probeText.textContent="Red: "+labels[redNode]+" · Black: "+labels[blackNode];
+ probeText.textContent="Red: "+labels[redNode]+" · Black: "+labels[blackNode];
+ meterNote.className="meter-note";
+ if(mode==="volts"){
+   const reading=(potentials[redNode]||0)-(potentials[blackNode]||0);
+   vmReading.textContent=fmt(reading,2)+" V";
+   meterNote.textContent="DC Volts measures red probe potential minus black probe potential.";
+   return;
+ }
+ if(powerState.value!=="off"){
+   vmReading.textContent="POWER ON";
+   meterNote.classList.add("warn");
+   meterNote.textContent="Turn Master Power OFF before using Resistance or Continuity mode.";
+   return;
+ }
+ const r=resistanceBetweenNodes(redNode,blackNode);
+ if(mode==="ohms"){
+   vmReading.textContent=Number.isFinite(r)?fmt(r,2)+" Ω":"OPEN";
+   meterNote.textContent=Number.isFinite(r)?"Simplified resistance between the selected nodes.":"The selected path contains an open switch, blown fuse, or other open path.";
+ }else{
+   const continuity=Number.isFinite(r)&&r<=5;
+   vmReading.textContent=continuity?"BEEP":"OPEN";
+   meterNote.classList.add(continuity?"good":"warn");
+   meterNote.textContent=continuity?"Continuity detected (simulated path is 5 Ω or less).":"No low-resistance continuity between the selected nodes.";
+ }
 }
 
 function openEditor(){
@@ -468,6 +508,7 @@ clearCircuit.onclick=()=>{parts=[];selectedId=null;editor.classList.remove("show
 presetLamp.onclick=()=>{parts=[{id:seq++,type:"switch",...clone(defaults.switch)},{id:seq++,type:"fuse",...clone(defaults.fuse)},{id:seq++,type:"lamp",...clone(defaults.lamp)},{id:seq++,type:"meter",...clone(defaults.meter)}];sourceV.value=12;powerState.value="on";selectedId=null;editor.classList.remove("show");redNode=0;blackNode=-1;render()};
 redProbeBtn.onclick=()=>{activeProbe="red";redProbeBtn.classList.add("selected");blackProbeBtn.classList.remove("selected")};
 blackProbeBtn.onclick=()=>{activeProbe="black";blackProbeBtn.classList.add("selected");redProbeBtn.classList.remove("selected")};
+meterMode.onchange=()=>render();
 presetLamp.click();
 </script>
 </body>
