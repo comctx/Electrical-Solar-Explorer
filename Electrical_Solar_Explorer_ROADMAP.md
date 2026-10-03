@@ -614,3 +614,17 @@ A DONCO-BAYCITY™ App
 - Circuit Lab Virtual Multimeter with DC Volts, Resistance, and Continuity modes
 - Resistance and continuity modes require simulated Master Power OFF
 - Simplified de-energized resistance/continuity path model for beginner practice
+
+
+## Continue Learning, Quiz Explanations & Oscilloscope
+- Smart Continue Learning panel on Home
+- Uses locally stored guided-course progress to point to the next unfinished step
+- Also offers the most recently viewed lesson for quick review
+- Electrical Quizzes now include a plain-English "Why" explanation for every question when Check Answer is used
+- Beginner Oscilloscope Lab added
+- Waveform choices: sine, square, triangle, and DC
+- Adjustable amplitude, frequency, DC offset, volts/div, and time/div
+- Auto Set display control
+- Live frequency, period, peak-to-peak, and cycles-on-screen readouts
+- Preset learning examples and a quick frequency/period check
+- Linked from Home/search, Test Equipment, and Circuit Lab
