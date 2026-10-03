@@ -113,6 +113,57 @@ function makeSavedGrid(items,type){
   });
   return grid;
 }
+function getNextCourseStep(){
+  const courses=[
+    {name:"Electricity 101",steps:[["Electrical Basics","electrical-basics.html"],["Wiring & Installation","wiring-installation.html"],["Protection Devices","protection-devices.html"],["Grounding, Bonding & Shielding","grounding-bonding-shielding.html"],["Test Equipment","test-equipment.html"],["Electrical Basics Quiz","quizzes.html"]]},
+    {name:"Electronics 101",steps:[["Component Pictures & Identifiers","component-identification.html"],["Resistors / Ohm's Law","electrical-basics.html"],["Capacitors","capacitor.html"],["Inductors & Coils","inductors.html"],["Diodes & LEDs","diodes.html"],["Transistors","transistors.html"],["Integrated Circuits","integrated-circuits.html"]]},
+    {name:"Schematics & Troubleshooting",steps:[["How to Read Schematics","reading-schematics.html"],["Symbol Flashcards","symbol-flashcards.html"],["Schematic Practice","schematic-practice.html"],["Circuit Lab","circuit-lab.html"],["Troubleshooting","troubleshooting.html"],["Troubleshooting Trainer","troubleshooting-trainer.html"]]},
+    {name:"Motors & Industrial Controls",steps:[["Relays & Contactors","relays.html"],["Relay / Contactor Simulator","relay-contactor-simulator.html"],["Sensors & Switches","sensors-switches.html"],["Motors & Controls","motors-controls.html"],["PLCs & Automation","plc-automation.html"],["Troubleshooting Trainer","troubleshooting-trainer.html"]]}
+  ];
+  const progress=safeParse("ateCourseProgress",{});
+  let best=null;
+  courses.forEach((course,ci)=>{
+    const done=course.steps.filter((_,si)=>progress[ci+"-"+si]).length;
+    const next=course.steps.findIndex((_,si)=>!progress[ci+"-"+si]);
+    if(next>=0){
+      const candidate={course:course.name,done,total:course.steps.length,title:course.steps[next][0],href:course.steps[next][1],step:next+1};
+      if(!best || (done>0&&best.done===0) || done>best.done) best=candidate;
+    }
+  });
+  return best;
+}
+function renderContinueLearning(){
+  if(!isHome()) return;
+  let sec=document.getElementById("ateContinueLearning");
+  if(!sec){
+    sec=document.createElement("section");
+    sec.id="ateContinueLearning";
+    sec.className="ate-my-tools";
+    const my=document.getElementById("ateMyTools");
+    if(my) my.insertAdjacentElement("beforebegin",sec);
+    else{
+      const learning=document.querySelector(".learning-path");
+      const tabs=document.querySelector(".tabs");
+      if(learning) learning.insertAdjacentElement("afterend",sec);
+      else if(tabs) tabs.insertAdjacentElement("beforebegin",sec);
+      else document.querySelector("main")?.prepend(sec);
+    }
+  }
+  sec.replaceChildren();
+  const h=document.createElement("h2");h.textContent="Continue Learning";sec.appendChild(h);
+  const next=getNextCourseStep();
+  const p=document.createElement("p");
+  p.textContent=next?"Pick up where you left off, or review your most recent lesson.":"Your guided courses are complete. Keep your skills fresh with practice.";
+  sec.appendChild(p);
+  const items=[];
+  if(next) items.push({href:next.href,title:next.course+" · Step "+next.step+": "+next.title});
+  else items.push({href:"quizzes.html",title:"Review with Electrical Quizzes"});
+  const recent=getRecent()[0];
+  if(recent && !items.some(x=>x.href===recent.href)) items.push({href:recent.href,title:"Review: "+recent.title});
+  if(items.length<2) items.push({href:"beginner-courses.html",title:"Open Beginner Courses"});
+  sec.appendChild(makeSavedGrid(items.slice(0,2),"recent"));
+}
+
 function renderHomeTools(){
   if(!isHome()) return;
   let sec=document.getElementById("ateMyTools");
@@ -149,5 +200,6 @@ document.addEventListener("DOMContentLoaded",()=>{
   recordRecent();
   makeToolbar();
   renderHomeTools();
+  renderContinueLearning();
 });
 })();
