@@ -253,6 +253,24 @@ Flip inputs between 0 and 1 and watch outputs change instantly.
 ### Inside the CPU Simulation
 Step through a simple instruction one clock cycle at a time and watch data move through the processor.
 
+## Sensors & Switches
+- Pushbuttons
+- Toggle, rocker, slide, rotary, selector, and key switches
+- Emergency-stop concepts
+- DIP and reed switches
+- SPST, SPDT, DPST, and DPDT contact arrangements
+- Normally-open and normally-closed contacts
+- Momentary vs. maintained action
+- Snap action, contact bounce, and debounce
+- Pressure, float/level, flow, temperature, and vacuum switches
+- Limit switches
+- Inductive and capacitive proximity sensors
+- Magnetic / Hall / reed sensing
+- Photoelectric sensors: through-beam, retroreflective, diffuse, background suppression
+- PNP/NPN and sourcing/sinking concepts
+- Sensing distance, hysteresis, response time, and output types
+- Interactive switch and sensor simulations
+
 ## 12. Virtual Test Equipment
 ### Virtual Multimeter
 - Voltage
