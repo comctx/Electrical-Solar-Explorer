@@ -18,6 +18,11 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </head><body><header><h1>Interactive Troubleshooting Trainer</h1><p>Use a virtual voltmeter to find a fault instead of guessing.</p></header><main>
 <nav class="nav"><a href="index.html">← Home</a><a href="circuit-lab.html">Circuit Lab</a><a href="reading-schematics.html">How to Read Schematics</a><a href="test-equipment.html">Test Equipment</a></nav>
 <section class="start"><h2>Beginner Start Here</h2><ol><li>Read the symptom.</li><li>Measure one point at a time.</li><li>Compare what you expected with what the meter shows.</li><li>Find the first place where the expected voltage changes.</li><li>Choose the fault only after you have evidence.</li></ol></section>
+<section class="panel"><h2>Choose Difficulty</h2><div class="grid three">
+<button class="btn level good" data-level="beginner">Beginner</button>
+<button class="btn level" data-level="intermediate">Intermediate</button>
+<button class="btn level" data-level="advanced">Advanced</button>
+</div><div id="levelExplain" class="result">Beginner gives the most clues and teaches the measurement path.</div></section>
 <section class="panel"><h2>Training Circuit</h2><p class="lead">This is a simulated 12 V DC lamp circuit. Each new round secretly inserts one fault.</p><div class="schem-wrap"><svg class="schematic" viewBox="0 0 760 250">
 <path id="path1" class="wire" d="M90 80H190"/><path id="path2" class="wire" d="M240 80H330"/><path id="path3" class="wire" d="M390 80H480"/><path id="path4" class="wire" d="M540 80H660V190H90V135"/>
 <path class="thin" d="M90 95v40M105 103v24"/><text class="label" x="54" y="112">12 V</text><text class="small" x="45" y="150">Source</text>
@@ -26,21 +31,51 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <circle cx="510" cy="80" r="29" class="thin"/><path class="thin" d="M490 60l40 40M530 60l-40 40"/><text class="small" x="493" y="125">Lamp L1</text>
 <circle cx="190" cy="190" r="5" fill="#0b63ce"/><circle cx="330" cy="190" r="5" fill="#0b63ce"/><circle cx="480" cy="190" r="5" fill="#0b63ce"/>
 <text class="small" x="170" y="216">TP1</text><text class="small" x="310" y="216">TP2</text><text class="small" x="460" y="216">TP3</text>
-</svg></div><div id="symptom" class="result"></div></section>
+</svg></div><div id="symptom" class="result"></div><div id="hint" class="note" style="margin-top:10px"></div></section>
 <section class="panel"><h2>Take a Measurement</h2><div class="tests"><div class="field"><label>Red Probe</label><select id="red"><option value="src">Source +</option><option value="fuseOut">After fuse</option><option value="switchOut">After switch</option><option value="lampOut">After lamp</option><option value="return">Return / 0 V</option></select></div><div class="field"><label>Black Probe</label><select id="black"><option value="return">Return / 0 V</option><option value="src">Source +</option><option value="fuseOut">After fuse</option><option value="switchOut">After switch</option><option value="lampOut">After lamp</option></select></div><button id="measure" class="btn primary">Measure Voltage</button></div><div class="meter"><strong id="reading">0.00 V</strong><span>Virtual voltmeter</span></div><div id="history" class="history"></div></section>
 <section class="panel"><h2>What Is the Fault?</h2><div id="choices" class="choices"></div><div id="feedback" class="result">Take measurements, then choose a diagnosis.</div><button id="newRound" class="btn primary" style="margin-top:10px">New Fault</button></section>
 <section class="panel"><h2>Troubleshooting Habit</h2><p class="lead">A good technician does not replace parts at random. Start at a known reference, divide the circuit into sections, and use measurements to narrow the fault location.</p><p class="note">Educational low-voltage simulation only. Do not use this trainer as instructions for energized work on real equipment.</p></section>
 </main><footer>A DONCO-BAYCITY™ App</footer>
 <script>
 const faults=[
-{id:"fuse",name:"Blown fuse",sym:"Lamp is dark. Source voltage is present.",nodes:{src:12,fuseOut:0,switchOut:0,lampOut:0,return:0}},
-{id:"switch",name:"Open switch / failed switch",sym:"Lamp is dark. Fuse is good, but the control path is open.",nodes:{src:12,fuseOut:12,switchOut:0,lampOut:0,return:0}},
-{id:"return",name:"Open return wire",sym:"Lamp is dark even though voltage reaches the load side.",nodes:{src:12,fuseOut:12,switchOut:12,lampOut:12,return:0}},
-{id:"lamp",name:"Open lamp",sym:"Lamp is dark. Power reaches the lamp input.",nodes:{src:12,fuseOut:12,switchOut:12,lampOut:0,return:0}}
+{id:"fuse",name:"Blown fuse",beginner:"Lamp is dark. Source voltage is present.",intermediate:"Lamp is dark. An upstream protective path may be open.",advanced:"L1 does not operate.",hint:"Compare source voltage with the point immediately after F1.",nodes:{src:12,fuseOut:0,switchOut:0,lampOut:0,return:0}},
+{id:"switch",name:"Open switch / failed switch",beginner:"Lamp is dark. Fuse is good, but the control path is open.",intermediate:"Lamp is dark. Voltage is lost between the fuse and load.",advanced:"L1 does not operate.",hint:"Measure before and after SW1.",nodes:{src:12,fuseOut:12,switchOut:0,lampOut:0,return:0}},
+{id:"return",name:"Open return wire",beginner:"Lamp is dark even though voltage reaches the load side.",intermediate:"Lamp input has voltage but current still cannot complete the path.",advanced:"L1 does not operate.",hint:"If both sides of the load sit near source potential, inspect the return path.",nodes:{src:12,fuseOut:12,switchOut:12,lampOut:12,return:0}},
+{id:"lamp",name:"Open lamp",beginner:"Lamp is dark. Power reaches the lamp input.",intermediate:"The path is intact up to the load, but the load itself may be open.",advanced:"L1 does not operate.",hint:"Compare the two lamp terminals to the return reference.",nodes:{src:12,fuseOut:12,switchOut:12,lampOut:0,return:0}},
+{id:"low",name:"Low source voltage",beginner:"Lamp is very dim. The entire circuit is receiving less voltage than expected.",intermediate:"All test points are proportionally low.",advanced:"L1 is unusually dim.",hint:"Start by checking the source itself.",nodes:{src:6,fuseOut:6,switchOut:6,lampOut:0,return:0}},
+{id:"resistive",name:"High-resistance connection",beginner:"Lamp is dim. A connection is dropping excessive voltage under load.",intermediate:"Source voltage is normal, but a large drop appears before the load.",advanced:"L1 is dim under load.",hint:"Look for a large voltage difference across a point that should have very little drop.",nodes:{src:12,fuseOut:8,switchOut:8,lampOut:0,return:0}}
 ];
-let fault=null,tests=0;
-function start(){fault=faults[Math.floor(Math.random()*faults.length)];tests=0;history.innerHTML="";reading.textContent="0.00 V";symptom.textContent=fault.sym;feedback.className="result";feedback.textContent="Take measurements, then choose a diagnosis.";choices.innerHTML=faults.map(f=>'<button class="btn" data-fault="'+f.id+'">'+f.name+'</button>').join("");choices.querySelectorAll("button").forEach(b=>b.onclick=()=>diagnose(b.dataset.fault))}
-function diagnose(id){if(id===fault.id){feedback.className="result good";feedback.textContent="Correct — "+fault.name+". You found the fault after "+tests+" measurement"+(tests===1?"":"s")+"."}else{feedback.className="result bad";feedback.textContent="Not quite. Keep measuring and find where the expected voltage changes."}}
-measure.onclick=()=>{const rv=fault.nodes[red.value],bv=fault.nodes[black.value],v=rv-bv;tests++;reading.textContent=v.toFixed(2)+" V";const d=document.createElement("div");d.textContent="Test "+tests+": "+red.options[red.selectedIndex].text+" to "+black.options[black.selectedIndex].text+" = "+v.toFixed(2)+" V";history.prepend(d)};
-newRound.onclick=start;start();
+let fault=null,tests=0,level="beginner",solved=false;
+function levelText(){return level==="beginner"?"Beginner gives the full symptom and an immediate hint.":level==="intermediate"?"Intermediate gives fewer clues; the hint appears after two measurements.":"Advanced gives minimal symptoms; the hint appears only after three measurements."}
+function saveWin(){
+ const wins=JSON.parse(localStorage.getItem("ateTroubleshootWins")||'{"beginner":0,"intermediate":0,"advanced":0}');
+ wins[level]=(wins[level]||0)+1;localStorage.setItem("ateTroubleshootWins",JSON.stringify(wins));
+ const best=JSON.parse(localStorage.getItem("ateTroubleshootBest")||"{}");
+ if(best[level]===undefined||tests<best[level]){best[level]=tests;localStorage.setItem("ateTroubleshootBest",JSON.stringify(best))}
+}
+function start(){
+ fault=faults[Math.floor(Math.random()*faults.length)];tests=0;solved=false;history.innerHTML="";reading.textContent="0.00 V";
+ symptom.textContent=fault[level];hint.textContent=level==="beginner"?"Hint: "+fault.hint:"";
+ feedback.className="result";feedback.textContent="Take measurements, then choose a diagnosis.";
+ let opts=[...faults];if(level==="beginner")opts=opts.slice(0,4).includes(fault)?opts.slice(0,4):[fault,...opts.filter(x=>x!==fault).slice(0,3)];
+ opts=opts.sort(()=>Math.random()-.5);
+ choices.innerHTML=opts.map(f=>'<button class="btn" data-fault="'+f.id+'">'+f.name+'</button>').join("");
+ choices.querySelectorAll("button").forEach(b=>b.onclick=()=>diagnose(b.dataset.fault));
+}
+function diagnose(id){
+ if(id===fault.id){
+   feedback.className="result good";feedback.textContent="Correct — "+fault.name+". You found the fault after "+tests+" measurement"+(tests===1?"":"s")+".";
+   if(!solved){solved=true;saveWin()}
+ }else{
+   feedback.className="result bad";feedback.textContent=level==="advanced"?"Not correct. Use the measurements to isolate the first abnormal section.":"Not quite. Keep measuring and find where the expected voltage changes.";
+ }
+}
+measure.onclick=()=>{
+ const rv=fault.nodes[red.value],bv=fault.nodes[black.value],v=rv-bv;tests++;reading.textContent=v.toFixed(2)+" V";
+ const d=document.createElement("div");d.textContent="Test "+tests+": "+red.options[red.selectedIndex].text+" to "+black.options[black.selectedIndex].text+" = "+v.toFixed(2)+" V";history.prepend(d);
+ if(level==="intermediate"&&tests>=2)hint.textContent="Hint: "+fault.hint;
+ if(level==="advanced"&&tests>=3)hint.textContent="Hint unlocked: "+fault.hint;
+};
+document.querySelectorAll(".level").forEach(b=>b.onclick=()=>{level=b.dataset.level;document.querySelectorAll(".level").forEach(x=>x.classList.toggle("good",x===b));levelExplain.textContent=levelText();start()});
+newRound.onclick=start;levelExplain.textContent=levelText();start();
 </script></body></html>
