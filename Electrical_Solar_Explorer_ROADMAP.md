@@ -551,3 +551,16 @@ A DONCO-BAYCITY™ App
 - Strong keyboard focus indicators
 - Reduced-motion support for users who request it
 - Shared enhancement code so these features stay consistent across pages
+
+
+## Circuit Lab
+- Low-voltage educational DC circuit builder
+- Add and rearrange switches, resistors, lamps, LEDs, motors, fuses, and an ammeter
+- Adjustable 1–24 V source
+- Open/close switch behavior
+- Live current, voltage drop, resistance, and power calculations
+- Lamp brightness and motor-running indications
+- Fuse trip and reset behavior
+- Drag-to-reorder series components
+- Preset demonstration circuit
+- Future expansion: parallel branches, voltmeter probes, capacitor transients, relay control circuits, and more advanced simulation
