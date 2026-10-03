@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><title>Battery & Charging Lab</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.94}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1100px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.start{background:#fffbed;border:1px solid #e5c94a;border-radius:16px;padding:16px;margin-bottom:16px}.start h2{margin-bottom:10px}.start ol{margin:0;padding-left:22px;line-height:1.6}.start li{margin-bottom:5px}
+.grid{display:grid;gap:10px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px}input,select{width:100%;min-height:44px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}.btn{min-height:44px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.btn.good{background:#eaf7ef;border-color:#9ed0b3}.btn.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}.result strong{display:block;color:var(--navy);font-size:22px}.feedback{margin-top:12px;background:#eef7ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.feedback.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}.feedback.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three,.four{grid-template-columns:1fr}}
+</style>
+<style>.bank{display:grid;grid-template-columns:repeat(4,minmax(80px,1fr));gap:10px}.cell{border:2px solid #60788d;border-radius:10px;background:#f8fbff;padding:14px;text-align:center}.cell strong{display:block;color:#071a2e;font-size:20px}.chargebar{height:18px;border-radius:999px;background:#e5edf4;overflow:hidden}.chargebar>div{height:100%;background:linear-gradient(90deg,#0b63ce,#1594ff);width:0}</style>
+</head><body><header><h1>Battery & Charging Lab</h1><p>Explore series/parallel battery banks, watt-hours, runtime, voltage sag, and simplified charge stages.</p></header><main>
+<nav class="nav"><a href="index.html">← Home</a><a href="batteries.html">Batteries</a><a href="solar-power-electronics.html">Solar Power Electronics</a><a href="electrical-calculator.html">Calculator</a></nav>
+<section class="start"><h2>Beginner Start Here</h2><ol><li>Series batteries add voltage.</li><li>Parallel strings add amp-hour capacity.</li><li>Energy is approximately volts × amp-hours = watt-hours.</li><li>Higher load current causes more internal voltage drop.</li><li>Charging method depends on battery chemistry and manufacturer limits.</li></ol></section>
+<section class="panel"><h2>Build the Battery Bank</h2><div class="grid four">
+<div class="field"><label for="chem">Chemistry</label><select id="chem"><option value="lead">Lead-Acid / AGM concept</option><option value="lfp">LiFePO₄ concept</option><option value="liion">Li-ion concept</option></select></div>
+<div class="field"><label for="cellV">Battery / Cell Nominal Voltage (V)</label><input id="cellV" type="number" min=".5" step=".1" value="12"></div>
+<div class="field"><label for="ah">Capacity per Unit (Ah)</label><input id="ah" type="number" min=".1" step=".1" value="100"></div>
+<div class="field"><label for="series">Units in Series</label><input id="series" type="number" min="1" max="8" value="1"></div>
+<div class="field"><label for="parallel">Parallel Strings</label><input id="parallel" type="number" min="1" max="8" value="2"></div>
+<div class="field"><label for="loadA">Load Current (A)</label><input id="loadA" type="number" min=".1" step=".1" value="20"></div>
+<div class="field"><label for="internalR">Internal Resistance per Unit (mΩ)</label><input id="internalR" type="number" min="0" step=".1" value="8"></div>
+<div class="field"><label for="soc">State of Charge (%)</label><input id="soc" type="number" min="0" max="100" value="80"></div>
+</div></section>
+<section class="panel"><h2>Battery Bank View</h2><div id="bank" class="bank"></div></section>
+<section class="panel"><h2>Live Results</h2><div class="grid four"><div class="result"><small>Bank Voltage</small><strong id="bankV"></strong></div><div class="result"><small>Bank Capacity</small><strong id="bankAh"></strong></div><div class="result"><small>Nominal Energy</small><strong id="wh"></strong></div><div class="result"><small>Estimated Runtime</small><strong id="runtime"></strong></div></div><div class="grid three" style="margin-top:10px"><div class="result"><small>Loaded Voltage</small><strong id="loadedV"></strong></div><div class="result"><small>Internal Loss</small><strong id="loss"></strong></div><div class="result"><small>Approx. Remaining Energy</small><strong id="remain"></strong></div></div><div id="explain" class="feedback"></div></section>
+<section class="panel"><h2>Simplified Charging Stages</h2><div class="chargebar"><div id="chargeFill"></div></div><div id="chargeText" class="feedback"></div></section>
+<section class="panel"><h2>Safety Note</h2><p class="lead">This is an educational energy model, not a charging prescription. Real charging voltage, current, temperature limits, balancing, ventilation, BMS settings, and fire precautions depend on the exact battery and manufacturer instructions.</p></section>
+</main><footer>A DONCO-BAYCITY™ App</footer><script>
+function f(x,d=2){return Number(x.toFixed(d)).toString()}
+function render(){const v=Math.max(.1,+cellV.value||.1),cap=Math.max(.1,+ah.value||.1),s=Math.max(1,+series.value||1),p=Math.max(1,+parallel.value||1),I=Math.max(.1,+loadA.value||.1),r=Math.max(0,+internalR.value||0)/1000,S=Math.max(0,Math.min(100,+soc.value||0));const V=v*s,AH=cap*p,E=V*AH,req=I/p,Rbank=r*s/p,drop=I*Rbank,VL=Math.max(0,V-drop),PLOSS=I*I*Rbank,hrs=(AH*(S/100))/I;
+bankV.textContent=f(V,1)+" V";bankAh.textContent=f(AH,1)+" Ah";wh.textContent=f(E,0)+" Wh";runtime.textContent=f(hrs,2)+" h";loadedV.textContent=f(VL,2)+" V";loss.textContent=f(PLOSS,2)+" W";remain.textContent=f(E*S/100,0)+" Wh";chargeFill.style.width=S+"%";
+bank.innerHTML=Array.from({length:Math.min(16,s*p)},(_,i)=>'<div class="cell"><strong>'+f(v,1)+' V</strong><span>'+f(cap,0)+' Ah</span><br><small>Unit '+(i+1)+'</small></div>').join("");
+let stage="";if(chem.value==="lead")stage=S<80?"Bulk concept":"Absorption / float concept";else stage=S<95?"Constant-current region concept":"Constant-voltage / taper concept";chargeText.textContent=stage+". Exact charge targets depend on the specific battery.";
+explain.textContent="Each parallel string carries about "+f(req,2)+" A in this simplified balanced model. Series raises voltage; parallel raises Ah capacity.";
+}
+[chem,cellV,ah,series,parallel,loadA,internalR,soc].forEach(e=>e.addEventListener("input",render));render();
+</script></body></html>
