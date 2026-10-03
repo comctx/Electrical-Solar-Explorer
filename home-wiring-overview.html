@@ -1,76 +1,188 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Basic Home Wiring — Meter to End Device</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How a House Is Wired</title>
 <link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script>
 <style>
-:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d;--bad:#b42318}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
-header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.94}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
-main{max-width:1120px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
-.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
-.start{background:#fffbed;border:1px solid #e5c94a;border-radius:16px;padding:16px;margin-bottom:16px}.start ol{margin:0;padding-left:22px;line-height:1.6}.start li{margin-bottom:5px}
-.grid{display:grid;gap:10px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-.btn{min-height:44px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.btn.good{background:#eaf7ef;border-color:#9ed0b3}
-.wrap{overflow-x:auto}.diagram{width:100%;min-width:980px;height:520px;background:#fff;border:1px solid var(--border);border-radius:14px}.wire{stroke:#586f80;stroke-width:5;fill:none;stroke-linecap:round}.hot{stroke:#d64b3c}.neutral{stroke:#5f7180}.ground{stroke:#1f7a4d}.active{stroke:#f3a900!important;filter:drop-shadow(0 0 4px rgba(243,169,0,.55))}.box{fill:#eef7ff;stroke:#071a2e;stroke-width:3}.label{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}.small{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#62707d}
-.stepcards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.stepcard{border:1px solid var(--border);border-radius:14px;padding:13px;background:#f8fbff}.stepcard strong{display:block;color:var(--navy);margin-bottom:5px}.stepcard span{color:#40566a;line-height:1.45;font-size:13px}
-.feedback{margin-top:12px;background:#eef7ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}
+header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.95}
+header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1180px;margin:auto;padding:18px}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.start{background:#fffbed;border:1px solid #e5c94a;border-radius:16px;padding:16px;margin-bottom:16px}
+.start ol{margin:0;padding-left:22px;line-height:1.6}.start li{margin-bottom:5px}
+.controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.btn{min-height:46px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 11px;cursor:pointer}.btn.on{background:#fff7cc;border-color:#e5c94a;box-shadow:0 0 0 2px rgba(255,212,59,.25) inset}
+.wrap{overflow-x:auto}.house{width:100%;min-width:1050px;height:700px;background:#fdfefe;border:1px solid var(--border);border-radius:14px}
+.room{fill:#f8fbff;stroke:#9fb2c2;stroke-width:3}.panelbox{fill:#e9f3ff;stroke:#071a2e;stroke-width:3}.appliance{fill:#fff;stroke:#60788d;stroke-width:2}
+.label{font:700 15px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}.small{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#526779}
+.circuit{fill:none;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;opacity:.12;transition:.25s}.circuit.show{opacity:.95;filter:drop-shadow(0 0 4px rgba(0,0,0,.14))}
+.c-general{stroke:#1594ff}.c-light{stroke:#f3a900}.c-kitchen{stroke:#d34b9b}.c-bath{stroke:#14a56d}.c-laundry{stroke:#8a5bd3}.c-240{stroke:#d64b3c}.c-ground{stroke:#1f7a4d;stroke-dasharray:12 9}
+.outlet{fill:#fff;stroke:#071a2e;stroke-width:2}.switch{fill:#fff;stroke:#071a2e;stroke-width:2}.light{fill:#fffbed;stroke:#b58b00;stroke-width:3}.gfci{fill:#eaf7ef;stroke:#1f7a4d;stroke-width:3}
+.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:12px}.legend div{border:1px solid var(--border);border-radius:10px;padding:9px;background:#f8fbff;font-size:13px}.swatch{display:inline-block;width:18px;height:5px;border-radius:4px;vertical-align:middle;margin-right:6px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{border:1px solid var(--border);border-radius:14px;padding:14px;background:#f8fbff}.card strong{display:block;color:var(--navy);margin-bottom:5px}.card p{margin:0;color:#40566a;line-height:1.5}
 .warn{background:#fff3d6;border:1px solid #e5a84a;color:#6a4300;border-radius:12px;padding:13px;line-height:1.5}
-@media(max-width:800px){.stepcards{grid-template-columns:repeat(2,minmax(0,1fr))}.two,.three{grid-template-columns:1fr}}@media(max-width:520px){main{padding:12px}.stepcards{grid-template-columns:1fr}}
+@media(max-width:850px){.controls,.legend{grid-template-columns:repeat(2,minmax(0,1fr))}.cards{grid-template-columns:1fr}}
+@media(max-width:520px){main{padding:12px}.controls,.legend{grid-template-columns:1fr}}
 footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
-</style></head><body>
-<header><h1>Basic Home Wiring — Meter to End Device</h1><p>Follow the electrical path from the utility service to a receptacle, light, or 240 V load.</p></header><main>
-<nav class="nav"><a href="index.html">← Home</a><a href="wiring-installation.html">Wiring & Installation</a><a href="grounding-bonding-shielding.html">Grounding & Bonding</a><a href="protection-devices.html">Protection Devices</a><a href="lugs-ferrules-splices.html">Lugs, Ferrules & Splices</a></nav>
+</style>
+</head>
+<body>
+<header><h1>How a House Is Wired</h1><p>Panel, switches, lights, receptacles, kitchen, bath, laundry, and 240 V loads.</p></header>
+<main>
+<nav class="nav"><a href="index.html">← Home</a><a href="wiring-installation.html">Wiring & Installation</a><a href="protection-devices.html">Protection Devices</a><a href="grounding-bonding-shielding.html">Grounding & Bonding</a><a href="lugs-ferrules-splices.html">Lugs, Ferrules & Splices</a></nav>
 
 <section class="start"><h2>Beginner Start Here</h2><ol>
-<li>Start at the utility/service entrance and move one block at a time toward the load.</li>
-<li>The <strong>meter measures energy use</strong>; it is not the branch-circuit protection device.</li>
-<li>The <strong>service disconnect/main</strong> and panel distribute power through breakers to branch circuits.</li>
-<li>Branch circuits carry power to end devices such as receptacles, lights, fixed appliances, and equipment.</li>
-<li>Grounding and bonding provide specific safety functions and are not interchangeable with the neutral conductor.</li>
+<li>The <strong>panel</strong> is the distribution point for branch circuits.</li>
+<li>Each branch circuit leaves a breaker and serves one or more loads allowed by the circuit design and applicable code.</li>
+<li><strong>Switches</strong> control loads such as lights; <strong>receptacles</strong> provide connection points for plug-in loads.</li>
+<li>Some areas and appliances use dedicated or specially protected circuits.</li>
+<li>This page shows the <strong>layout and relationships</strong>, not a wire-by-wire installation procedure.</li>
 </ol></section>
 
-<section class="panel"><h2>Choose an End Device</h2><div class="grid three"><button class="btn load primary" data-load="receptacle">120 V Receptacle</button><button class="btn load" data-load="light">120 V Light & Switch</button><button class="btn load" data-load="240">240 V Appliance Concept</button></div><div id="modeExplain" class="feedback"></div></section>
+<section class="panel">
+<h2>Interactive House Wiring Overview</h2>
+<p class="lead">Turn circuit groups on and off to see how a typical house is divided into branch circuits. The route shown is conceptual; actual cable/raceway routing depends on the building and approved installation method.</p>
+<div class="controls">
+<button class="btn on" data-c="general">General Receptacles</button>
+<button class="btn on" data-c="light">Lighting & Switches</button>
+<button class="btn on" data-c="kitchen">Kitchen Circuits</button>
+<button class="btn on" data-c="bath">Bathroom / GFCI</button>
+<button class="btn on" data-c="laundry">Laundry</button>
+<button class="btn on" data-c="240">240 V Loads</button>
+<button class="btn on" data-c="ground">Grounding / Bonding</button>
+<button id="allBtn" class="btn">Hide All Circuits</button>
+</div>
 
-<section class="panel"><h2>Meter-to-Load Path</h2><div class="wrap"><svg class="diagram" viewBox="0 0 1060 520">
-<rect x="35" y="70" width="145" height="120" rx="14" class="box"/><text class="label" x="68" y="105">Utility</text><text class="small" x="55" y="132">Service drop / lateral</text><text class="small" x="55" y="153">Utility-owned side</text>
-<rect x="225" y="70" width="145" height="120" rx="14" class="box"/><text class="label" x="270" y="105">Meter</text><text class="small" x="247" y="132">Measures energy</text><text class="small" x="247" y="153">Not a DIY work point</text>
-<rect x="415" y="70" width="160" height="120" rx="14" class="box"/><text class="label" x="447" y="105">Main Disconnect</text><text class="small" x="440" y="132">Service disconnect</text><text class="small" x="440" y="153">Overcurrent protection</text>
-<rect x="620" y="70" width="160" height="120" rx="14" class="box"/><text class="label" x="670" y="105">Panel</text><text class="small" x="642" y="132">Bus / breakers</text><text class="small" x="642" y="153">Branch distribution</text>
-<rect x="835" y="70" width="180" height="120" rx="14" class="box"/><text class="label" x="872" y="105">Branch Circuit</text><text class="small" x="862" y="132">Cable / raceway</text><text class="small" x="862" y="153">Breaker-protected path</text>
-<path id="service1" class="wire hot" d="M180 110H225"/><path id="service2" class="wire hot" d="M370 110H415"/><path id="service3" class="wire hot" d="M575 110H620"/><path id="service4" class="wire hot" d="M780 110H835"/>
-<path class="wire neutral" d="M180 150H225M370 150H415M575 150H620M780 150H835"/>
+<div class="wrap" style="margin-top:14px">
+<svg class="house" viewBox="0 0 1120 700" aria-label="Simplified house floor plan with panel and branch circuits">
+<text class="label" x="35" y="35">Simplified Floor Plan — conceptual branch-circuit layout</text>
 
-<rect x="835" y="250" width="180" height="150" rx="14" class="box"/><text id="loadTitle" class="label" x="870" y="285">120 V Receptacle</text><text id="loadLine1" class="small" x="858" y="315">Hot + neutral + equipment ground</text><text id="loadLine2" class="small" x="858" y="338">Branch circuit end device</text>
-<path id="branchHot" class="wire hot" d="M925 190V250"/><path id="branchNeutral" class="wire neutral" d="M955 190V250"/><path id="branchGround" class="wire ground" d="M985 190V250"/>
+<!-- rooms -->
+<rect x="35" y="70" width="220" height="560" rx="10" class="room"/>
+<rect x="275" y="70" width="365" height="260" rx="10" class="room"/>
+<rect x="660" y="70" width="425" height="260" rx="10" class="room"/>
+<rect x="275" y="350" width="250" height="280" rx="10" class="room"/>
+<rect x="545" y="350" width="220" height="280" rx="10" class="room"/>
+<rect x="785" y="350" width="300" height="280" rx="10" class="room"/>
 
-<rect x="415" y="270" width="365" height="135" rx="14" class="box"/><text class="label" x="448" y="302">Grounding & Bonding Concept</text><text class="small" x="448" y="330">Bonding connects metal parts together at permitted locations.</text><text class="small" x="448" y="352">Equipment grounding conductors provide a fault-current path.</text><text class="small" x="448" y="374">Grounding electrodes connect the system to earth for defined functions.</text>
-<path class="wire ground" d="M700 190V270"/><path class="wire ground" d="M620 405V455H540"/><path d="M510 460h60M520 474h40M530 488h20" stroke="#1f7a4d" stroke-width="4"/><text class="small" x="585" y="477">Grounding electrode concept</text>
+<text class="label" x="92" y="100">Garage / Utility</text>
+<text class="label" x="405" y="100">Living Room</text>
+<text class="label" x="835" y="100">Kitchen</text>
+<text class="label" x="355" y="380">Bedroom</text>
+<text class="label" x="610" y="380">Bath</text>
+<text class="label" x="900" y="380">Laundry / Mechanical</text>
 
-<text class="small" x="65" y="225">Utility boundary and ownership vary by location.</text>
-</svg></div></section>
+<!-- panel -->
+<rect x="70" y="165" width="150" height="290" rx="12" class="panelbox"/>
+<text class="label" x="107" y="195">Circuit Panel</text>
+<text class="small" x="90" y="225">Main / service equipment</text>
+<text class="small" x="90" y="247">or downstream panel</text>
+<line x1="95" y1="275" x2="195" y2="275" stroke="#071a2e" stroke-width="3"/>
+<text class="small" x="91" y="300">Branch breakers</text>
+<text class="small" x="91" y="326">Neutral termination</text>
+<text class="small" x="91" y="352">Equipment grounding</text>
+<text class="small" x="91" y="378">arrangement depends</text>
+<text class="small" x="91" y="400">on panel location/type</text>
 
-<section class="panel"><h2>What Each Stage Does</h2><div class="stepcards">
-<div class="stepcard"><strong>1. Utility Service</strong><span>Brings electrical service to the property through overhead or underground conductors.</span></div>
-<div class="stepcard"><strong>2. Meter</strong><span>Measures energy usage for billing. Meter sockets and service conductors can remain hazardous even when branch breakers are off.</span></div>
-<div class="stepcard"><strong>3. Service Disconnect</strong><span>Provides the service disconnecting means and service overcurrent protection, depending on the installation.</span></div>
-<div class="stepcard"><strong>4. Panel / Load Center</strong><span>Distributes power to branch-circuit breakers. The neutral and equipment-grounding arrangement depends on whether this is service equipment or downstream equipment.</span></div>
-<div class="stepcard"><strong>5. Branch Breaker</strong><span>Protects the branch-circuit conductors from overcurrent. GFCI/AFCI functions may also be required depending on circuit and location.</span></div>
-<div class="stepcard"><strong>6. Branch Wiring</strong><span>Carries power through cable or raceway to the end device. Conductor size, insulation, temperature rating, and installation method matter.</span></div>
-<div class="stepcard"><strong>7. Switches / Controls</strong><span>Control loads such as lighting. The exact conductor arrangement depends on the circuit design; do not rely on color alone.</span></div>
-<div class="stepcard"><strong>8. End Device</strong><span>Receptacle, luminaire, appliance, motor, or other load uses the delivered electrical energy.</span></div>
+<!-- conceptual circuit paths -->
+<path class="circuit c-general show" data-circuit="general" d="M220 290H315V185H585V245H500M315 185V455H495"/>
+<path class="circuit c-light show" data-circuit="light" d="M220 320H350V145H455M350 320V470H420M350 320H600V450M600 320H890V150"/>
+<path class="circuit c-kitchen show" data-circuit="kitchen" d="M220 350H760V190H1035M760 190V270H1035"/>
+<path class="circuit c-bath show" data-circuit="bath" d="M220 380H620V520H720"/>
+<path class="circuit c-laundry show" data-circuit="laundry" d="M220 410H850V500H1030"/>
+<path class="circuit c-240 show" data-circuit="240" d="M220 440H820V565H1015M820 565V240H955"/>
+<path class="circuit c-ground show" data-circuit="ground" d="M145 455V570H245M145 570H70"/>
+
+<!-- living outlets -->
+<g><rect x="305" y="155" width="24" height="34" rx="3" class="outlet"/><circle cx="313" cy="166" r="2" fill="#071a2e"/><circle cx="321" cy="166" r="2" fill="#071a2e"/><path d="M313 176h8" stroke="#071a2e" stroke-width="2"/></g>
+<g><rect x="560" y="238" width="24" height="34" rx="3" class="outlet"/><circle cx="568" cy="249" r="2" fill="#071a2e"/><circle cx="576" cy="249" r="2" fill="#071a2e"/></g>
+<g><rect x="470" y="300" width="24" height="34" rx="3" class="outlet"/><circle cx="478" cy="311" r="2" fill="#071a2e"/><circle cx="486" cy="311" r="2" fill="#071a2e"/></g>
+<!-- bedroom outlets -->
+<g><rect x="300" y="435" width="24" height="34" rx="3" class="outlet"/><circle cx="308" cy="446" r="2" fill="#071a2e"/><circle cx="316" cy="446" r="2" fill="#071a2e"/></g>
+<g><rect x="475" y="575" width="24" height="34" rx="3" class="outlet"/><circle cx="483" cy="586" r="2" fill="#071a2e"/><circle cx="491" cy="586" r="2" fill="#071a2e"/></g>
+
+<!-- light/switch pairs -->
+<circle cx="455" cy="145" r="19" class="light"/><path d="M442 132l26 26M468 132l-26 26" stroke="#b58b00" stroke-width="3"/>
+<rect x="375" y="265" width="28" height="38" rx="4" class="switch"/><text class="small" x="384" y="288">S</text>
+<circle cx="420" cy="470" r="19" class="light"/><path d="M407 457l26 26M433 457l-26 26" stroke="#b58b00" stroke-width="3"/>
+<rect x="300" y="520" width="28" height="38" rx="4" class="switch"/><text class="small" x="309" y="543">S</text>
+<circle cx="600" cy="450" r="19" class="light"/><path d="M587 437l26 26M613 437l-26 26" stroke="#b58b00" stroke-width="3"/>
+<rect x="555" y="500" width="28" height="38" rx="4" class="switch"/><text class="small" x="564" y="523">S</text>
+<circle cx="890" cy="150" r="19" class="light"/><path d="M877 137l26 26M903 137l-26 26" stroke="#b58b00" stroke-width="3"/>
+
+<!-- kitchen -->
+<rect x="790" y="165" width="70" height="56" rx="7" class="appliance"/><text class="small" x="805" y="196">Counter</text>
+<rect x="905" y="165" width="70" height="56" rx="7" class="appliance"/><text class="small" x="921" y="196">Counter</text>
+<rect x="1000" y="135" width="55" height="92" rx="7" class="appliance"/><text class="small" x="1011" y="184">Fridge</text>
+<g><rect x="800" y="245" width="26" height="38" rx="3" class="gfci"/><text class="small" x="801" y="300">GFCI</text></g>
+<g><rect x="920" y="245" width="26" height="38" rx="3" class="gfci"/><text class="small" x="921" y="300">GFCI</text></g>
+<rect x="960" y="255" width="80" height="52" rx="7" class="appliance"/><text class="small" x="979" y="285">Range</text>
+
+<!-- bath -->
+<rect x="680" y="500" width="28" height="40" rx="4" class="gfci"/><text class="small" x="669" y="560">GFCI receptacle</text>
+
+<!-- laundry -->
+<rect x="825" y="455" width="85" height="90" rx="7" class="appliance"/><text class="small" x="842" y="500">Washer</text>
+<rect x="935" y="455" width="85" height="90" rx="7" class="appliance"/><text class="small" x="958" y="500">Dryer</text>
+<rect x="915" y="555" width="120" height="50" rx="7" class="appliance"/><text class="small" x="930" y="585">Water Heater / HVAC</text>
+
+<!-- grounding electrode concept -->
+<path d="M55 585h45M62 600h31M70 615h15" stroke="#1f7a4d" stroke-width="4"/><text class="small" x="105" y="603">Grounding electrode concept</text>
+
+<!-- circuit labels -->
+<text class="small" x="225" y="283">Branch circuits leave panel</text>
+</svg>
+</div>
+
+<div class="legend">
+<div><span class="swatch" style="background:#1594ff"></span>General receptacle circuits</div>
+<div><span class="swatch" style="background:#f3a900"></span>Lighting / switch circuits</div>
+<div><span class="swatch" style="background:#d34b9b"></span>Kitchen branch circuits</div>
+<div><span class="swatch" style="background:#14a56d"></span>Bathroom / GFCI circuit</div>
+<div><span class="swatch" style="background:#8a5bd3"></span>Laundry circuit</div>
+<div><span class="swatch" style="background:#d64b3c"></span>240 V load circuits</div>
+<div><span class="swatch" style="background:#1f7a4d"></span>Grounding / bonding concept</div>
+</div>
+</section>
+
+<section class="panel"><h2>How the Pieces Fit Together</h2><div class="cards">
+<div class="card"><strong>Panel & Breakers</strong><p>The panel distributes power to branch circuits. Each branch breaker protects the conductors associated with that circuit according to the approved design.</p></div>
+<div class="card"><strong>Receptacles</strong><p>General receptacles may be supplied by branch circuits serving permitted areas. Kitchens, bathrooms, laundry, garages, and outdoor locations often have additional requirements.</p></div>
+<div class="card"><strong>Switches & Lights</strong><p>A wall switch controls the lighting load or a control input. The actual cable arrangement can vary, so this diagram shows the relationship rather than conductor-by-conductor connections.</p></div>
+<div class="card"><strong>Kitchen</strong><p>Kitchen countertop and appliance loads commonly involve multiple branch circuits and GFCI/AFCI requirements depending on the location and current code.</p></div>
+<div class="card"><strong>Bathroom</strong><p>Bathroom receptacles require personnel protection and have specific branch-circuit rules. The exact arrangement depends on the installation and applicable code.</p></div>
+<div class="card"><strong>Laundry</strong><p>Laundry equipment can include 120 V and 240 V loads. A dryer, water heater, HVAC equipment, or range may use dedicated circuits according to equipment requirements.</p></div>
 </div></section>
 
-<section class="panel"><h2>120 V vs 240 V Concept</h2><div class="grid two"><div class="stepcard"><strong>Typical 120 V branch</strong><span>Uses one ungrounded conductor plus a neutral for the load current, with an equipment-grounding path for fault conditions.</span></div><div class="stepcard"><strong>Typical 240 V branch</strong><span>Uses two ungrounded conductors. Some 240 V loads also require a neutral; others do not. Equipment grounding is still separate from normal load current.</span></div></div></section>
+<section class="panel"><h2>What the Diagram Intentionally Does Not Show</h2><p class="lead">It does not specify conductor size, breaker rating, box fill, cable routing, receptacle spacing, required circuit counts, service size, conductor colors, or exact terminal connections. Those details depend on the installation, equipment, local requirements, and the electrical code in effect.</p></section>
 
-<section class="panel"><h2>Protection You Will See in Homes</h2><div class="grid three"><div class="stepcard"><strong>Breaker / Fuse</strong><span>Protects conductors and equipment from overcurrent.</span></div><div class="stepcard"><strong>GFCI</strong><span>Detects current imbalance that can indicate leakage to ground and trips rapidly for personnel protection.</span></div><div class="stepcard"><strong>AFCI</strong><span>Detects certain arcing signatures associated with damaged or unsafe wiring conditions.</span></div></div></section>
-
-<section class="panel"><h2>Critical Safety Boundary</h2><div class="warn"><strong>Do not treat this page as a wiring procedure.</strong> Meter sockets, service conductors, service disconnects, and panels can contain lethal energy, and some parts may remain energized even when a main breaker is off. Utility rules, permits, inspections, manufacturer instructions, and electrical code requirements apply. Service and panel work should be handled by qualified people authorized for that work.</div><p class="note" style="margin-top:10px">Also: never identify conductors by color alone. Verify the circuit, labeling, documentation, and safe de-energized condition using appropriate procedures and test equipment.</p></section>
-</main><footer>A DONCO-BAYCITY™ App</footer>
+<section class="panel"><h2>Safety Boundary</h2><div class="warn"><strong>Educational overview — not a step-by-step house-wiring guide.</strong> Service equipment, panels, branch circuits, and fixed wiring can expose a person to lethal shock, arc-flash, and fire hazards. Permits, inspections, utility requirements, equipment instructions, and applicable electrical code matter. Never rely on conductor color alone, and do not assume a circuit is de-energized because a switch or breaker was operated.</div></section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
 <script>
-let mode="receptacle";
-const data={
-receptacle:{title:"120 V Receptacle",l1:"Hot + neutral + equipment ground",l2:"Typical general branch-circuit end device",msg:"A typical 120 V receptacle branch uses one ungrounded conductor and a neutral for load current, plus an equipment-grounding path for fault conditions."},
-light:{title:"120 V Light & Switch",l1:"Branch power → switch/control → light",l2:"Exact cable arrangement varies",msg:"A lighting branch adds a control device in the current path. Modern wiring methods vary, so this overview shows function rather than a wire-by-wire hookup."},
-"240":{title:"240 V Appliance Concept",l1:"Two ungrounded conductors + equipment ground",l2:"Some loads also require a neutral",msg:"A 240 V load is supplied from both ungrounded legs. Whether a neutral is required depends on the appliance or equipment design."}
+const buttons=[...document.querySelectorAll("[data-c]")];
+function updateAllLabel(){
+ const on=buttons.filter(b=>b.classList.contains("on")).length;
+ allBtn.textContent=on?"Hide All Circuits":"Show All Circuits";
+}
+buttons.forEach(b=>b.onclick=()=>{
+ b.classList.toggle("on");
+ document.querySelectorAll('[data-circuit="'+b.dataset.c+'"]').forEach(p=>p.classList.toggle("show",b.classList.contains("on")));
+ updateAllLabel();
+});
+allBtn.onclick=()=>{
+ const any=buttons.some(b=>b.classList.contains("on"));
+ buttons.forEach(b=>{b.classList.toggle("on",!any);document.querySelectorAll('[data-circuit="'+b.dataset.c+'"]').forEach(p=>p.classList.toggle("show",!any))});
+ updateAllLabel();
 };
-function render(){const d=data[mode];loadTitle.textContent=d.title;loadLine1.textContent=d.l1;loadLine2.textContent=d.l2;modeExplain.textContent=d.msg;document.querySelectorAll(".load").forEach(b=>b.classList.toggle("primary",b.dataset.load===mode));[service1,service2,service3,service4,branchHot].forEach(x=>x.classList.add("active"));branchNeutral.classList.toggle("active",mode!=="240");branchGround.classList.add("active")}
-document.querySelectorAll(".load").forEach(b=>b.onclick=()=>{mode=b.dataset.load;render()});render();
-</script></body></html>
+updateAllLabel();
+</script>
+</body>
+</html>
