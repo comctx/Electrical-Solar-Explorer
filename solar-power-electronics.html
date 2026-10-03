@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>Solar Power Electronics Explorer</title>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:white;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.flow{display:grid;grid-template-columns:repeat(7,minmax(90px,1fr));gap:8px;align-items:center}.block{padding:12px;border:2px solid #9fc8ef;background:#f8fbff;border-radius:12px;text-align:center;font-weight:800;color:var(--navy)}.arrow{text-align:center;font-size:23px;color:var(--blue);font-weight:900}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:white;font:inherit}.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700}.result strong{font-size:clamp(20px,4vw,28px);color:var(--navy)}.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){main{padding:12px}.two,.three,.results,.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<header><h1>Solar Power Electronics Explorer</h1><p>Solar inverters, charge controllers, PV combiners, DC protection, batteries, and system flow.</p></header>
+<main>
+<nav class="nav">
+<a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="vacuum-tubes.html">Vacuum Tubes</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a href="motors-controls.html">Motors & Controls</a><a href="generators-alternators.html">Generators & Alternators</a><a class="active" href="solar-power-electronics.html">Solar Power Electronics</a><a href="processors.html">Processors</a>
+</nav>
+
+<section class="panel">
+<h2>Beginner Start Here</h2>
+<div class="grid three">
+<div class="card"><strong>Solar Inverter</strong><p>Converts DC electricity from PV modules or batteries into AC electricity.</p><span class="badge">DC → AC</span></div>
+<div class="card"><strong>Charge Controller</strong><p>Controls charging energy from a PV array into a battery system.</p><span class="badge">PV → battery</span></div>
+<div class="card"><strong>PV Combiner</strong><p>Brings multiple PV source circuits together into a common output and may contain protection and disconnecting devices.</p><span class="badge">Combines strings</span></div>
+<div class="card"><strong>DC Disconnect</strong><p>Provides a means of isolating part of the DC system where required by equipment design or code.</p></div>
+<div class="card"><strong>Fuse / Breaker</strong><p>Protects conductors and equipment from excessive current when correctly selected for the system.</p></div>
+<div class="card"><strong>Battery Inverter/Charger</strong><p>Can power AC loads from batteries and, in some systems, recharge batteries from an approved AC source.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Typical Solar Energy Flow</h2>
+<div class="flow"><div class="block">PV modules</div><div class="arrow">→</div><div class="block">Combiner</div><div class="arrow">→</div><div class="block">Charge controller</div><div class="arrow">→</div><div class="block">Battery</div></div>
+<div class="flow" style="margin-top:10px"><div class="block">Battery / PV DC</div><div class="arrow">→</div><div class="block">Inverter</div><div class="arrow">→</div><div class="block">AC distribution</div><div class="arrow">→</div><div class="block">Loads</div></div>
+<p class="note">Grid-tied, microinverter, hybrid, optimizer, and battery systems can use different architectures. This is a simplified learning diagram.</p>
+</section>
+
+<section class="panel">
+<h2>Inverter Types</h2>
+<table><thead><tr><th>Type</th><th>What it does</th><th>Common use</th></tr></thead><tbody>
+<tr><td>String inverter</td><td>Converts DC from one or more PV strings to AC.</td><td>Residential and commercial arrays</td></tr>
+<tr><td>Microinverter</td><td>Converts DC to AC at or near an individual module.</td><td>Module-level conversion</td></tr>
+<tr><td>Hybrid inverter</td><td>Coordinates PV, batteries, and often grid/generator input.</td><td>Battery-backed solar</td></tr>
+<tr><td>Off-grid inverter</td><td>Creates AC without depending on the utility grid.</td><td>Standalone systems</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>MPPT vs. PWM Charge Controllers</h2>
+<div class="grid two">
+<div class="card"><strong>MPPT</strong><p>Uses power electronics to operate the PV array near a useful maximum-power point while converting voltage/current to the battery side.</p><span class="badge">More flexible</span></div>
+<div class="card"><strong>PWM</strong><p>Connects the array to the battery in a switched manner. Simpler, but array operating voltage is pulled closer to battery voltage during charging.</p><span class="badge">Simpler</span></div>
+</div>
+<div class="formula">MPPT does not create energy. It converts voltage and current so available PV power can be transferred more effectively under suitable conditions.</div>
+</section>
+
+<section class="panel">
+<h2>Charge Controller Power Estimate</h2>
+<div class="grid three">
+<div class="field"><label>PV array power (W)</label><input id="pvPower" type="number" value="1200" min="0"></div>
+<div class="field"><label>Battery charging voltage (V)</label><input id="batV" type="number" value="28.8" min="0.1" step="any"></div>
+<div class="field"><label>Estimated efficiency (%)</label><input id="ctrlEff" type="number" value="95" min="1" max="100"></div>
+</div>
+<div class="results"><div class="result"><small>Approx. battery current</small><strong id="batCurrent">—</strong></div><div class="result"><small>Delivered power</small><strong id="delivered">—</strong></div><div class="result"><small>Estimated loss</small><strong id="loss">—</strong></div></div>
+<div class="formula">Battery current ≈ PV power × efficiency ÷ charging voltage</div>
+</section>
+
+<section class="panel">
+<h2>PV String & Combiner Concepts</h2>
+<div class="grid three">
+<div class="card"><strong>Series modules</strong><p>Voltages add while string current remains approximately that of one module under matched conditions.</p></div>
+<div class="card"><strong>Parallel strings</strong><p>String currents add while operating voltage remains approximately the same.</p></div>
+<div class="card"><strong>Combiner box</strong><p>Provides a common point for multiple strings and may contain string fuses/breakers, disconnects, surge protection, and monitoring.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>PV Array Series / Parallel Calculator</h2>
+<div class="grid three">
+<div class="field"><label>Module Vmp (V)</label><input id="vmp" type="number" value="40" min="0" step="any"></div>
+<div class="field"><label>Module Imp (A)</label><input id="imp" type="number" value="10" min="0" step="any"></div>
+<div class="field"><label>Modules per string</label><input id="seriesN" type="number" value="8" min="1" step="1"></div>
+<div class="field"><label>Parallel strings</label><input id="parallelN" type="number" value="2" min="1" step="1"></div>
+</div>
+<div class="results"><div class="result"><small>Approx. array Vmp</small><strong id="arrayV">—</strong></div><div class="result"><small>Approx. array Imp</small><strong id="arrayI">—</strong></div><div class="result"><small>Approx. array power</small><strong id="arrayP">—</strong></div></div>
+<div class="formula">Series: voltage adds. Parallel: current adds. Array power ≈ Vmp × Imp.</div>
+<p class="note">Actual design must also consider Voc, Isc, temperature correction, wire ampacity, controller/inverter limits, overcurrent protection, and applicable code.</p>
+</section>
+
+<section class="panel">
+<h2>Inverter Load Estimate</h2>
+<div class="grid three">
+<div class="field"><label>AC load (W)</label><input id="loadW" type="number" value="1000" min="0"></div>
+<div class="field"><label>Battery voltage (V)</label><select id="invBat"><option>12</option><option selected>24</option><option>48</option></select></div>
+<div class="field"><label>Estimated inverter efficiency (%)</label><input id="invEff" type="number" value="90" min="1" max="100"></div>
+</div>
+<div class="results"><div class="result"><small>Approx. DC current</small><strong id="dcCurrent">—</strong></div><div class="result"><small>DC input power</small><strong id="dcPower">—</strong></div><div class="result"><small>Estimated loss</small><strong id="invLoss">—</strong></div></div>
+<div class="formula">Approx. DC current ≈ AC load ÷ efficiency ÷ battery voltage</div>
+</section>
+
+<section class="panel">
+<h2>Protection & Balance-of-System Parts</h2>
+<table><thead><tr><th>Part</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>PV combiner</td><td>Combines multiple source circuits and may house string protection/disconnects.</td></tr>
+<tr><td>DC disconnect</td><td>Isolates portions of the DC system where required.</td></tr>
+<tr><td>DC-rated fuse/breaker</td><td>Provides overcurrent protection when selected for the applicable DC ratings and design.</td></tr>
+<tr><td>Surge protective device</td><td>Helps limit transient overvoltage events.</td></tr>
+<tr><td>Rapid shutdown equipment</td><td>Reduces energized conductor voltage in specified areas where required.</td></tr>
+<tr><td>Battery disconnect</td><td>Provides a means to isolate the battery system.</td></tr>
+<tr><td>Busbar</td><td>Low-resistance common connection point for high-current conductors.</td></tr>
+<tr><td>Shunt</td><td>Precision low-resistance element used to measure current in many battery monitors.</td></tr>
+<tr><td>Grounding / bonding hardware</td><td>Provides required equipment bonding/grounding paths according to system design and code.</td></tr>
+</tbody></table>
+</section>
+
+<section class="panel">
+<h2>Solar Safety</h2>
+<div class="warning">PV modules can produce voltage whenever illuminated, and battery systems can deliver extremely high fault current. Treat PV and battery conductors as potentially energized, use appropriately rated DC equipment, follow manufacturer instructions, and use applicable electrical-code requirements for disconnects, overcurrent protection, grounding/bonding, rapid shutdown, conductor sizing, and equipment locations.</div>
+</section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+<script>
+function controllerCalc(){const p=+pvPower.value,v=+batV.value,e=+ctrlEff.value/100;if(p<=0||v<=0){batCurrent.textContent=delivered.textContent=loss.textContent="—";return}const out=p*e;batCurrent.textContent=(out/v).toFixed(1)+" A";delivered.textContent=out.toFixed(0)+" W";loss.textContent=(p-out).toFixed(0)+" W"}[pvPower,batV,ctrlEff].forEach(x=>x.addEventListener("input",controllerCalc));controllerCalc();
+function arrayCalc(){const v=+vmp.value,i=+imp.value,s=+seriesN.value,p=+parallelN.value;const av=v*s,ai=i*p;arrayV.textContent=av.toFixed(1)+" V";arrayI.textContent=ai.toFixed(1)+" A";arrayP.textContent=(av*ai/1000).toFixed(2)+" kW"}[vmp,imp,seriesN,parallelN].forEach(x=>x.addEventListener("input",arrayCalc));arrayCalc();
+function inverterCalc(){const load=+loadW.value,v=+invBat.value,e=+invEff.value/100;if(load<0||v<=0||e<=0){return}const input=load/e;dcCurrent.textContent=(input/v).toFixed(1)+" A";dcPower.textContent=input.toFixed(0)+" W";invLoss.textContent=(input-load).toFixed(0)+" W"}[loadW,invBat,invEff].forEach(x=>x.addEventListener("input",inverterCalc));inverterCalc();
+</script>
+</body>
+</html>
