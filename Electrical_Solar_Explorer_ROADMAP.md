@@ -168,6 +168,22 @@ Interactive lessons for:
 - Amplifiers
 - Power supplies
 
+### Power Electronics & Power Modules Explorer
+- Power MOSFETs and IGBTs
+- Single-switch, half-bridge, full-bridge, and six-pack modules
+- Intelligent power modules (IPMs)
+- Gate-driver circuits and isolation
+- Freewheel diodes and snubbers
+- DC-link capacitors
+- Laminated busbars
+- Current and temperature sensing
+- Heatsinks, cold plates, and thermal interface materials
+- Precharge circuits and contactors
+- Switching-loss and conduction-loss concepts
+- Silicon, SiC, and GaN power devices
+- Applications in VFDs, solar inverters, UPS systems, EV drives, and converters
+- Interactive half-bridge simulator
+
 ### LEDs & LCDs Explorer
 - LED polarity and forward voltage
 - LED resistor calculator
