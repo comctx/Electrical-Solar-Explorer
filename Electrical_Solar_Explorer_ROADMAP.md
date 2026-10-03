@@ -566,3 +566,16 @@ A DONCO-BAYCITY™ App
 - Parallel branches with independent branch switches and live branch currents
 - Virtual voltmeter with movable red/black probes and node-voltage readings
 - Future expansion: capacitor transients, relay control circuits, and more advanced simulation
+
+
+## How to Read Schematics
+- Dedicated schematic-reading learning page
+- Common electrical symbols
+- 7-step schematic reading method
+- Series vs. parallel explanation
+- Junctions, crossings, and nodes
+- Reference designators
+- Relay coils and NO/NC contacts
+- Interactive current-path example
+- Troubleshooting reading exercise
+- Direct link to Circuit Lab for practice
