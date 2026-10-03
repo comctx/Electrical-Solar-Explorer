@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Capacitor Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;
+      --electric:#0b63ce;
+      --electric2:#1594ff;
+      --yellow:#ffd43b;
+      --card:#ffffff;
+      --text:#14202b;
+      --muted:#62707d;
+      --border:#cfd9e3;
+      --good:#1f7a4d;
+      --danger:#b42318;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%, rgba(21,148,255,.16), transparent 32%),
+        radial-gradient(circle at 90% 10%, rgba(255,212,59,.18), transparent 28%),
+        linear-gradient(180deg, #dfeaf4 0%, #edf4f9 42%, #f7fafc 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:white;
+      padding:24px 18px 20px;
+      text-align:center;
+    }
+
+    header h1{
+      margin:0 0 6px;
+      font-size:clamp(28px,6vw,42px);
+    }
+
+    header p{
+      margin:0;
+      opacity:.92;
+    }
+
+    header::after{
+      content:"";
+      display:block;
+      width:90px;
+      height:5px;
+      margin:15px auto 0;
+      border-radius:999px;
+      background:var(--yellow);
+    }
+
+    main{
+      max-width:1000px;
+      margin:0 auto;
+      padding:18px;
+    }
+
+    .page-nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .page-nav a{
+      text-decoration:none;
+      min-height:46px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:11px;
+      padding:10px 14px;
+      font-weight:800;
+      border:1px solid #9fc8ef;
+      background:#eef7ff;
+      color:var(--navy);
+    }
+
+    .page-nav a.active{
+      background:var(--yellow);
+      border-color:#e4ba16;
+    }
+
+    .panel{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);
+      margin-bottom:16px;
+    }
+
+    h2{
+      margin:0 0 6px;
+      color:var(--navy);
+      border-left:5px solid var(--yellow);
+      padding-left:10px;
+    }
+
+    h3{
+      color:var(--navy);
+      margin:0 0 8px;
+    }
+
+    .lead,.note{
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .lead{margin:0 0 16px}
+    .note{font-size:13px;margin:10px 0 0}
+
+    .grid{
+      display:grid;
+      gap:12px;
+    }
+
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+
+    .field label{
+      display:block;
+      font-weight:800;
+      font-size:14px;
+      margin-bottom:6px;
+    }
+
+    input,select,button{
+      font:inherit;
+    }
+
+    input,select{
+      width:100%;
+      min-height:46px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:9px 11px;
+      background:white;
+      color:var(--text);
+    }
+
+    input:focus,select:focus,button:focus{
+      outline:3px solid rgba(11,99,206,.22);
+      outline-offset:2px;
+    }
+
+    .unit-row{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 100px;
+      gap:8px;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .result{
+      border:1px solid #b9d7f5;
+      background:#e9f3ff;
+      border-radius:12px;
+      padding:12px;
+      min-width:0;
+    }
+
+    .result small{
+      display:block;
+      color:var(--muted);
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .result strong{
+      color:var(--navy);
+      font-size:clamp(20px,4vw,28px);
+      word-break:break-word;
+    }
+
+    .formula{
+      margin-top:12px;
+      background:#fff7cc;
+      border:1px solid #e5c94a;
+      border-radius:11px;
+      padding:11px 12px;
+      line-height:1.5;
+      font-weight:700;
+    }
+
+    .subcard{
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#fbfdff;
+      padding:14px;
+      margin-top:14px;
+    }
+
+    .sim-wrap{
+      display:grid;
+      grid-template-columns:220px minmax(0,1fr);
+      gap:18px;
+      align-items:center;
+      margin-top:14px;
+    }
+
+    .capacitor-visual{
+      width:180px;
+      height:220px;
+      margin:auto;
+      border:6px solid var(--navy);
+      border-radius:24px;
+      position:relative;
+      overflow:hidden;
+      background:white;
+      box-shadow:inset 0 0 0 4px #dce9f4;
+    }
+
+    .capacitor-fill{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:0%;
+      background:linear-gradient(180deg,var(--electric2),var(--electric));
+      transition:height .08s linear;
+    }
+
+    .capacitor-label{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:2;
+      font-weight:900;
+      color:var(--navy);
+      font-size:24px;
+      text-shadow:0 1px 0 white;
+    }
+
+    .sim-controls{
+      display:grid;
+      gap:10px;
+    }
+
+    .button-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .action{
+      min-height:43px;
+      border:1px solid #9fc8ef;
+      border-radius:10px;
+      background:#eef7ff;
+      color:var(--navy);
+      font-weight:800;
+      padding:8px 12px;
+      cursor:pointer;
+    }
+
+    .action.primary{
+      background:var(--yellow);
+      border-color:#e4ba16;
+    }
+
+    .charge-bar{
+      height:16px;
+      border-radius:999px;
+      overflow:hidden;
+      background:#e6edf3;
+      border:1px solid var(--border);
+    }
+
+    .charge-bar > div{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--electric),var(--electric2));
+      transition:width .08s linear;
+    }
+
+    .warning{
+      margin-top:12px;
+      background:#fff3d6;
+      border:1px solid #e5a84a;
+      border-radius:10px;
+      padding:10px 12px;
+      color:#6a4300;
+      font-weight:700;
+    }
+
+    footer{
+      text-align:center;
+      color:#dbe8f5;
+      background:var(--navy);
+      font-size:13px;
+      font-weight:700;
+      padding:24px 16px;
+      margin-top:20px;
+    }
+
+    @media (max-width:760px){
+      main{padding:12px}
+      .grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .result-grid{grid-template-columns:1fr}
+      .sim-wrap{grid-template-columns:1fr}
+    }
+
+    @media (max-width:420px){
+      .unit-row{grid-template-columns:minmax(0,1fr) 88px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Capacitor Explorer</h1>
+    <p>Capacitance, RC timing, stored energy, codes, reactance, and charging simulations.</p>
+  </header>
+
+  <main>
+    <nav class="page-nav" aria-label="App pages">
+      <a href="index.html">Electrical & Solar</a>
+      <a href="capacitor.html" class="active">Capacitors</a>
+    </nav>
+
+    <section class="panel">
+      <h2>Series & Parallel Capacitance</h2>
+      <p class="lead">Enter two to four capacitors and choose how they are connected.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label for="capMode">Connection</label>
+          <select id="capMode">
+            <option value="parallel">Parallel</option>
+            <option value="series">Series</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>C1</label>
+          <div class="unit-row">
+            <input id="c1" type="number" min="0" step="any" value="10" />
+            <select id="c1u">
+              <option value="1e-12">pF</option>
+              <option value="1e-9">nF</option>
+              <option value="1e-6" selected>µF</option>
+              <option value="1e-3">mF</option>
+              <option value="1">F</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>C2</label>
+          <div class="unit-row">
+            <input id="c2" type="number" min="0" step="any" value="22" />
+            <select id="c2u">
+              <option value="1e-12">pF</option>
+              <option value="1e-9">nF</option>
+              <option value="1e-6" selected>µF</option>
+              <option value="1e-3">mF</option>
+              <option value="1">F</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>C3 (optional)</label>
+          <div class="unit-row">
+            <input id="c3" type="number" min="0" step="any" placeholder="Optional" />
+            <select id="c3u">
+              <option value="1e-12">pF</option>
+              <option value="1e-9">nF</option>
+              <option value="1e-6" selected>µF</option>
+              <option value="1e-3">mF</option>
+              <option value="1">F</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>C4 (optional)</label>
+          <div class="unit-row">
+            <input id="c4" type="number" min="0" step="any" placeholder="Optional" />
+            <select id="c4u">
+              <option value="1e-12">pF</option>
+              <option value="1e-9">nF</option>
+              <option value="1e-6" selected>µF</option>
+              <option value="1e-3">mF</option>
+              <option value="1">F</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result">
+          <small>Equivalent capacitance</small>
+          <strong id="capEquivalent">32 µF</strong>
+        </div>
+      </div>
+
+      <div id="capFormula" class="formula">Parallel: 10 µF + 22 µF = 32 µF</div>
+    </section>
+
+    <section class="panel">
+      <h2>RC Time Constant & Charge Simulation</h2>
+      <p class="lead">Change resistance or capacitance and watch how fast the capacitor charges or discharges.</p>
+
+      <div class="grid three">
+        <div class="field">
+          <label>Resistance</label>
+          <div class="unit-row">
+            <input id="rcR" type="number" min="0.000001" step="any" value="10" />
+            <select id="rcRu">
+              <option value="1">Ω</option>
+              <option value="1000" selected>kΩ</option>
+              <option value="1000000">MΩ</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Capacitance</label>
+          <div class="unit-row">
+            <input id="rcC" type="number" min="0.000001" step="any" value="100" />
+            <select id="rcCu">
+              <option value="1e-12">pF</option>
+              <option value="1e-9">nF</option>
+              <option value="1e-6" selected>µF</option>
+              <option value="1e-3">mF</option>
+              <option value="1">F</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="rcSupply">Supply voltage (V)</label>
+          <input id="rcSupply" type="number" min="0" step="any" value="5" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result"><small>Time constant τ = R × C</small><strong id="tauResult">1 s</strong></div>
+        <div class="result"><small>About 63.2% charged</small><strong id="tau1">1 s</strong></div>
+        <div class="result"><small>About 99.3% charged</small><strong id="tau5">5 s</strong></div>
+      </div>
+
+      <div class="sim-wrap">
+        <div class="capacitor-visual">
+          <div id="capFill" class="capacitor-fill"></div>
+          <div id="capPercent" class="capacitor-label">0%</div>
+        </div>
+
+        <div class="sim-controls">
+          <h3>Animated Charge / Discharge</h3>
+          <div id="simVoltage">Capacitor voltage: 0 V</div>
+          <div class="charge-bar"><div id="chargeProgress"></div></div>
+
+          <div class="button-row">
+            <button id="chargeBtn" class="action primary" type="button">Charge</button>
+            <button id="dischargeBtn" class="action" type="button">Discharge</button>
+            <button id="resetSimBtn" class="action" type="button">Reset</button>
+          </div>
+
+          <p class="note">The animation compresses the real timing so long RC values are still easy to watch. The displayed voltage follows the exponential RC curve.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Capacitor Code Decoder</h2>
+      <p class="lead">Decode common three-digit ceramic capacitor markings such as 104, 472, or 221.</p>
+
+      <div class="grid two">
+        <div class="field">
+          <label for="capCode">Three-digit code</label>
+          <input id="capCode" type="text" inputmode="numeric" maxlength="3" value="104" />
+        </div>
+
+        <div class="field">
+          <label for="tolCode">Tolerance letter (optional)</label>
+          <select id="tolCode">
+            <option value="">None</option>
+            <option value="J">J = ±5%</option>
+            <option value="K">K = ±10%</option>
+            <option value="M">M = ±20%</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result"><small>Picofarads</small><strong id="codePf">100,000 pF</strong></div>
+        <div class="result"><small>Nanofarads</small><strong id="codeNf">100 nF</strong></div>
+        <div class="result"><small>Microfarads</small><strong id="codeUf">0.1 µF</strong></div>
+      </div>
+
+      <div id="codeExplain" class="formula">104 = 10 × 10⁴ pF = 100,000 pF = 100 nF = 0.1 µF</div>
+    </section>
+
+    <section class="panel">
+      <h2>Stored Energy</h2>
+      <p class="lead">Calculate how much energy a capacitor stores at a given voltage.</p>
+
+      <div class="grid two">
+        <div class="field">
+          <label>Capacitance</label>
+          <div class="unit-row">
+            <input id="energyC" type="number" min="0" step="any" value="1000" />
+            <select id="energyCu">
+              <option value="1e-12">pF</option>
+              <option value="1e-9">nF</option>
+              <option value="1e-6" selected>µF</option>
+              <option value="1e-3">mF</option>
+              <option value="1">F</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="energyV">Voltage (V)</label>
+          <input id="energyV" type="number" min="0" step="any" value="12" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result"><small>Stored energy</small><strong id="energyJ">0.072 J</strong></div>
+      </div>
+
+      <div id="energyFormula" class="formula">E = ½CV²</div>
+      <div class="warning">Capacitors can retain dangerous voltage after power is removed. This page is educational; verify safe discharge procedures for real equipment.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Capacitive Reactance</h2>
+      <p class="lead">See how a capacitor's opposition to AC changes with frequency.</p>
+
+      <div class="grid three">
+        <div class="field">
+          <label>Capacitance</label>
+          <div class="unit-row">
+            <input id="xcC" type="number" min="0.000001" step="any" value="10" />
+            <select id="xcCu">
+              <option value="1e-12">pF</option>
+              <option value="1e-9">nF</option>
+              <option value="1e-6" selected>µF</option>
+              <option value="1e-3">mF</option>
+              <option value="1">F</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="xcF">Frequency (Hz)</label>
+          <input id="xcF" type="number" min="0.000001" step="any" value="60" />
+        </div>
+
+        <div class="field">
+          <label for="xcV">AC voltage (V, optional)</label>
+          <input id="xcV" type="number" min="0" step="any" value="120" />
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result"><small>Capacitive reactance Xc</small><strong id="xcResult">265.26 Ω</strong></div>
+        <div class="result"><small>Ideal RMS current</small><strong id="xcCurrent">452.4 mA</strong></div>
+      </div>
+
+      <div id="xcFormula" class="formula">Xc = 1 ÷ (2πfC)</div>
+      <p class="note">Ideal capacitor calculation only. Real capacitors also have ESR, leakage, voltage limits, temperature effects, and frequency-dependent behavior.</p>
+    </section>
+  </main>
+
+  <footer>A DONCO-BAYCITY™ App</footer>
+
+  <script>
+    function fmt(n, digits = 3){
+      if (!Number.isFinite(n)) return "—";
+      return n.toLocaleString(undefined,{maximumFractionDigits:digits});
+    }
+
+    function formatCap(f){
+      const a = Math.abs(f);
+      if (a >= 1) return fmt(f,4) + " F";
+      if (a >= 1e-3) return fmt(f * 1e3,4) + " mF";
+      if (a >= 1e-6) return fmt(f * 1e6,4) + " µF";
+      if (a >= 1e-9) return fmt(f * 1e9,4) + " nF";
+      return fmt(f * 1e12,4) + " pF";
+    }
+
+    function formatTime(s){
+      if (s >= 60) return fmt(s / 60,3) + " min";
+      if (s >= 1) return fmt(s,3) + " s";
+      if (s >= 0.001) return fmt(s * 1000,3) + " ms";
+      return fmt(s * 1000000,3) + " µs";
+    }
+
+    function formatOhms(r){
+      if (r >= 1e6) return fmt(r / 1e6,3) + " MΩ";
+      if (r >= 1e3) return fmt(r / 1e3,3) + " kΩ";
+      if (r < 1 && r > 0) return fmt(r * 1000,3) + " mΩ";
+      return fmt(r,3) + " Ω";
+    }
+
+    function formatCurrent(a){
+      const x = Math.abs(a);
+      if (x >= 1) return fmt(a,3) + " A";
+      if (x >= 0.001) return fmt(a * 1000,3) + " mA";
+      if (x >= 0.000001) return fmt(a * 1000000,3) + " µA";
+      return fmt(a * 1e9,3) + " nA";
+    }
+
+    const capIds = ["c1","c2","c3","c4"];
+
+    function updateEquivalent(){
+      const values = capIds.map(id => {
+        const value = document.getElementById(id).value;
+        if (value === "") return null;
+        const unit = Number(document.getElementById(id + "u").value);
+        const numeric = Number(value);
+        return Number.isFinite(numeric) && numeric > 0 ? numeric * unit : null;
+      }).filter(v => v !== null);
+
+      if (values.length < 2){
+        document.getElementById("capEquivalent").textContent = "Enter at least 2 capacitors";
+        document.getElementById("capFormula").textContent = "";
+        return;
+      }
+
+      const mode = document.getElementById("capMode").value;
+      let total;
+
+      if (mode === "parallel"){
+        total = values.reduce((sum,v) => sum + v,0);
+        document.getElementById("capFormula").textContent =
+          "Parallel: " + values.map(formatCap).join(" + ") + " = " + formatCap(total);
+      } else {
+        total = 1 / values.reduce((sum,v) => sum + 1 / v,0);
+        document.getElementById("capFormula").textContent =
+          "Series: 1 ÷ (" + values.map(v => "1/" + formatCap(v)).join(" + ") + ") = " + formatCap(total);
+      }
+
+      document.getElementById("capEquivalent").textContent = formatCap(total);
+    }
+
+    ["capMode","c1","c1u","c2","c2u","c3","c3u","c4","c4u"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateEquivalent);
+      el.addEventListener("change",updateEquivalent);
+    });
+
+    let rcTau = 1;
+    let simTimer = null;
+    let simCharge = 0;
+
+    function updateRC(){
+      const r = Math.max(0.000001,Number(document.getElementById("rcR").value) || 0.000001) *
+        Number(document.getElementById("rcRu").value);
+      const c = Math.max(1e-15,Number(document.getElementById("rcC").value) || 1e-15) *
+        Number(document.getElementById("rcCu").value);
+
+      rcTau = r * c;
+
+      document.getElementById("tauResult").textContent = formatTime(rcTau);
+      document.getElementById("tau1").textContent = formatTime(rcTau);
+      document.getElementById("tau5").textContent = formatTime(rcTau * 5);
+
+      updateSimVisual();
+    }
+
+    function updateSimVisual(){
+      const supply = Math.max(0,Number(document.getElementById("rcSupply").value) || 0);
+      const pct = Math.max(0,Math.min(100,simCharge * 100));
+      const voltage = supply * simCharge;
+
+      document.getElementById("capFill").style.height = pct + "%";
+      document.getElementById("chargeProgress").style.width = pct + "%";
+      document.getElementById("capPercent").textContent = fmt(pct,1) + "%";
+      document.getElementById("simVoltage").textContent = "Capacitor voltage: " + fmt(voltage,3) + " V";
+    }
+
+    function runSimulation(charging){
+      if (simTimer) clearInterval(simTimer);
+
+      const startCharge = simCharge;
+      const start = performance.now();
+      const animationDuration = Math.min(8000,Math.max(1800,2500 + Math.log10(Math.max(rcTau,0.001) + 1) * 900));
+
+      simTimer = setInterval(() => {
+        const elapsed = performance.now() - start;
+        const scaledT = (elapsed / animationDuration) * 5 * rcTau;
+
+        if (charging){
+          const fromZeroCurve = 1 - Math.exp(-scaledT / rcTau);
+          simCharge = startCharge + (1 - startCharge) * fromZeroCurve;
+        } else {
+          simCharge = startCharge * Math.exp(-scaledT / rcTau);
+        }
+
+        updateSimVisual();
+
+        if (elapsed >= animationDuration){
+          simCharge = charging ? 0.993 : 0.007;
+          updateSimVisual();
+          clearInterval(simTimer);
+          simTimer = null;
+        }
+      },60);
+    }
+
+    ["rcR","rcRu","rcC","rcCu","rcSupply"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateRC);
+      el.addEventListener("change",updateRC);
+    });
+
+    document.getElementById("chargeBtn").addEventListener("click",() => runSimulation(true));
+    document.getElementById("dischargeBtn").addEventListener("click",() => runSimulation(false));
+    document.getElementById("resetSimBtn").addEventListener("click",() => {
+      if (simTimer) clearInterval(simTimer);
+      simTimer = null;
+      simCharge = 0;
+      updateSimVisual();
+    });
+
+    function updateCode(){
+      const code = document.getElementById("capCode").value.trim();
+      const tol = document.getElementById("tolCode").value;
+
+      if (!/^\d{3}$/.test(code)){
+        document.getElementById("codePf").textContent = "Enter 3 digits";
+        document.getElementById("codeNf").textContent = "—";
+        document.getElementById("codeUf").textContent = "—";
+        document.getElementById("codeExplain").textContent = "Example: 104 = 100 nF = 0.1 µF.";
+        return;
+      }
+
+      const sig = Number(code.slice(0,2));
+      const multiplier = Number(code[2]);
+      const pf = sig * Math.pow(10,multiplier);
+      const nf = pf / 1000;
+      const uf = pf / 1000000;
+      const tolText = tol ? " " + tol + " tolerance" : "";
+
+      document.getElementById("codePf").textContent = fmt(pf,3) + " pF";
+      document.getElementById("codeNf").textContent = fmt(nf,6) + " nF";
+      document.getElementById("codeUf").textContent = fmt(uf,9) + " µF";
+      document.getElementById("codeExplain").textContent =
+        code + " = " + sig + " × 10^" + multiplier + " pF = " +
+        fmt(pf,3) + " pF = " + fmt(nf,6) + " nF = " + fmt(uf,9) + " µF" + tolText;
+    }
+
+    ["capCode","tolCode"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateCode);
+      el.addEventListener("change",updateCode);
+    });
+
+    function updateEnergy(){
+      const c = Math.max(0,Number(document.getElementById("energyC").value) || 0) *
+        Number(document.getElementById("energyCu").value);
+      const v = Math.max(0,Number(document.getElementById("energyV").value) || 0);
+      const e = 0.5 * c * v * v;
+
+      document.getElementById("energyJ").textContent =
+        e >= 1 ? fmt(e,4) + " J" :
+        e >= 0.001 ? fmt(e * 1000,4) + " mJ" :
+        fmt(e * 1000000,4) + " µJ";
+
+      document.getElementById("energyFormula").textContent =
+        "E = ½CV² = 0.5 × " + formatCap(c) + " × (" + fmt(v) + " V)²";
+    }
+
+    ["energyC","energyCu","energyV"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateEnergy);
+      el.addEventListener("change",updateEnergy);
+    });
+
+    function updateReactance(){
+      const c = Math.max(1e-15,Number(document.getElementById("xcC").value) || 1e-15) *
+        Number(document.getElementById("xcCu").value);
+      const f = Math.max(1e-9,Number(document.getElementById("xcF").value) || 1e-9);
+      const v = Math.max(0,Number(document.getElementById("xcV").value) || 0);
+
+      const xc = 1 / (2 * Math.PI * f * c);
+      const current = xc > 0 ? v / xc : 0;
+
+      document.getElementById("xcResult").textContent = formatOhms(xc);
+      document.getElementById("xcCurrent").textContent = formatCurrent(current);
+      document.getElementById("xcFormula").textContent =
+        "Xc = 1 ÷ (2πfC) = 1 ÷ (2π × " + fmt(f) + " × " + formatCap(c) + ") = " + formatOhms(xc);
+    }
+
+    ["xcC","xcCu","xcF","xcV"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input",updateReactance);
+      el.addEventListener("change",updateReactance);
+    });
+
+    updateEquivalent();
+    updateRC();
+    updateCode();
+    updateEnergy();
+    updateReactance();
+    updateSimVisual();
+  </script>
+</body>
+</html>
