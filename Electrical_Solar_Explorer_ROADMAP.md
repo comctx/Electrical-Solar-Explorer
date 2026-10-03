@@ -778,3 +778,25 @@ A DONCO-BAYCITY™ App
   - Consistent panel treatment and mobile navigation
   - Automatic Beginner Start Here block on older educational pages that lacked one
   - Existing dedicated Start Here / How to Use sections are preserved
+
+
+## Basic Home Wiring Overview
+- New Home Wiring: Meter to End Device lesson
+- Conceptual path:
+  - utility service drop/lateral
+  - meter
+  - service disconnect/main
+  - panel/load center
+  - branch breaker/circuit
+  - end device
+- Interactive end-device modes:
+  - 120 V receptacle
+  - 120 V light & switch
+  - 240 V appliance concept
+- Explains neutral vs equipment grounding path
+- Includes grounding/bonding and grounding-electrode concepts
+- Covers breaker/fuse, GFCI, and AFCI roles at a beginner level
+- Clearly marks service/meter/panel work as a qualified-person safety boundary
+- Warns never to rely on conductor color alone
+- Added to Home/search and cross-linked from Wiring & Installation, Protection Devices, and Grounding & Bonding
+- Appended as Electricity 101 step 11 so existing saved progress positions are preserved
