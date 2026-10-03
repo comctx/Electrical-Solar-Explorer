@@ -346,12 +346,89 @@
       transition:width .08s linear;
     }
 
+    .beginner-panel{
+      background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+      border:2px solid #b9d7f5;
+    }
+
+    .beginner-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .beginner-card{
+      border:1px solid #b9d7f5;
+      background:#e9f3ff;
+      border-radius:13px;
+      padding:13px;
+    }
+
+    .beginner-card strong{
+      display:block;
+      color:var(--navy);
+      margin-bottom:5px;
+      font-size:16px;
+    }
+
+    .beginner-card p{
+      margin:0;
+      color:#33495b;
+      line-height:1.5;
+      font-size:14px;
+    }
+
+    .other-words{
+      margin-top:14px;
+      background:#fff7cc;
+      border:1px solid #e5c94a;
+      border-radius:13px;
+      padding:14px;
+    }
+
+    .other-words strong{
+      color:var(--navy);
+      display:block;
+      margin-bottom:8px;
+      font-size:17px;
+    }
+
+    .other-words-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .other-words-item{
+      background:white;
+      border:1px solid #eadb82;
+      border-radius:10px;
+      padding:10px;
+      font-weight:800;
+      color:#263b4c;
+      line-height:1.4;
+    }
+
+    .beginner-tip{
+      margin-top:12px;
+      border-left:5px solid var(--electric);
+      background:#eef7ff;
+      border-radius:10px;
+      padding:11px 13px;
+      line-height:1.5;
+      color:#25394b;
+      font-weight:700;
+    }
+
     @media (max-width:760px){
       main{padding:12px}
       .grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
       .result-grid{grid-template-columns:1fr}
       .sim-wrap{grid-template-columns:1fr}
       .type-grid{grid-template-columns:1fr 1fr}
+      .beginner-grid{grid-template-columns:1fr}
+      .other-words-grid{grid-template-columns:1fr}
     }
 
     @media (max-width:420px){
@@ -383,6 +460,56 @@
       <a href="inductors.html" class="active">Inductors & Coils</a>
       <a href="transformers.html">Transformers</a>
     </nav>
+
+    <section class="panel beginner-panel">
+      <h2>Beginner Start Here</h2>
+      <p class="lead">New to inductors and coils? These six ideas explain the page before you get into the calculators.</p>
+
+      <div class="beginner-grid">
+        <div class="beginner-card">
+          <strong>What is an inductor?</strong>
+          <p>An inductor is usually a coil of wire. When current flows through the coil, it creates a magnetic field and stores energy in that field.</p>
+        </div>
+
+        <div class="beginner-card">
+          <strong>What does inductance mean?</strong>
+          <p>Inductance tells you how strongly a coil resists a change in current. Its unit is the henry, written H. Smaller values are often shown in mH or µH.</p>
+        </div>
+
+        <div class="beginner-card">
+          <strong>Why does current rise slowly?</strong>
+          <p>When power is first applied, the growing magnetic field creates a voltage that opposes the sudden increase in current. The current therefore builds instead of jumping instantly.</p>
+        </div>
+
+        <div class="beginner-card">
+          <strong>Why does current resist stopping?</strong>
+          <p>When power is removed, the magnetic field collapses. That collapsing field can create a voltage that tries to keep the current flowing. This is called back-EMF or flyback.</p>
+        </div>
+
+        <div class="beginner-card">
+          <strong>What does the core do?</strong>
+          <p>The material inside or around the coil changes how strongly the magnetic field is concentrated. Air, ferrite, iron, and powdered-iron cores are used for different frequencies and power levels.</p>
+        </div>
+
+        <div class="beginner-card">
+          <strong>Where are inductors used?</strong>
+          <p>You find them in power supplies, filters, radios, motors, relays, solenoids, transformers, noise suppressors, and many other electronic and electrical systems.</p>
+        </div>
+      </div>
+
+      <div class="other-words">
+        <strong>In Other Words</strong>
+        <div class="other-words-grid">
+          <div class="other-words-item">A resistor opposes current flow.</div>
+          <div class="other-words-item">A capacitor resists changes in voltage.</div>
+          <div class="other-words-item">An inductor resists changes in current.</div>
+        </div>
+      </div>
+
+      <div class="beginner-tip">
+        A good way to learn this page: start with the RL Current Simulation, press <strong>Energize Coil</strong>, then press <strong>Remove Power</strong>. Watch how the magnetic field builds and collapses before moving into reactance, flyback, and Q factor.
+      </div>
+    </section>
 
     <section class="panel">
       <h2>Series & Parallel Inductance</h2>
