@@ -429,6 +429,48 @@ Pause or slow a simulation so the user can see each stage and read explanations.
 - Electronics mode
 - Advanced circuit mode
 
+## Radio & RF
+- RF frequency and wavelength
+- Quarter-wave antenna estimates
+- Antennas and radiation concepts
+- AM, FM, PM, ASK, FSK, PSK, and QAM
+- 50 Ω and 75 Ω transmission lines
+- Coaxial cable and characteristic impedance
+- SWR and reflected power
+- RF filters
+- Mixers and local oscillators
+- Low-noise amplifiers and power amplifiers
+- Demodulation
+- RF safety concepts
+
+## Advanced Transformers & Power Distribution
+- Three-phase power systems
+- Delta and wye connections
+- Line vs. phase voltage/current relationships
+- Three-phase kVA/kW calculations
+- Transformer turns ratios
+- Current transformers (CTs)
+- Potential / voltage transformers (PTs/VTs)
+- Isolation transformers
+- Autotransformers
+- Control and distribution transformers
+- Dry-type and pad-mounted transformers
+- Generation-to-service distribution path
+- Transformer and distribution safety
+
+## Troubleshooting Explorer
+- Systematic troubleshooting method
+- Symptom definition and expected-condition comparison
+- Divide-and-conquer diagnosis
+- Interactive fault trainer
+- Virtual electrical measurements
+- Open-circuit and short-circuit patterns
+- Voltage-drop and bad-connection heating calculator
+- Intermittent-fault concepts
+- Motor, sensor, power-supply, battery, and control faults
+- Choosing multimeter, scope, clamp meter, insulation tester, and logic tools
+- Safe troubleshooting practices
+
 ## Protection Devices
 - Fuses and circuit breakers
 - GFCI / RCD
