@@ -189,7 +189,7 @@ const defaults={
 function clone(x){return JSON.parse(JSON.stringify(x))}
 function fmt(n,d=2){if(!Number.isFinite(n))return "—";return Number(n.toFixed(d)).toString()}
 function addPart(type){parts.push({id:seq++,type,...clone(defaults[type])});selectedId=parts.at(-1).id;render();openEditor()}
-function effectiveResistance(p){if(p.type==="switch")return p.closed?.01:Infinity;if(p.type==="fuse")return p.blown?.02:Infinity;if(p.type==="led")return Math.max(.1,+p.resistance||.1);return Math.max(.001,+p.resistance||.001)}
+function effectiveResistance(p){if(p.type==="switch")return p.closed?.01:Infinity;if(p.type==="fuse")return p.blown?Infinity:.02;if(p.type==="led")return Math.max(.1,+p.resistance||.1);return Math.max(.001,+p.resistance||.001)}
 
 function solveSeries(){
  const V=powerState.value==="on"?Math.min(24,Math.max(0,+sourceV.value||0)):0;
