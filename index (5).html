@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3b63" />
+  <title>Electrical & Solar Explorer</title>
+  <style>
+    :root{
+      --blue:#0f3b63;
+      --blue2:#185a92;
+      --bg:#f4f7fa;
+      --card:#ffffff;
+      --text:#17212b;
+      --muted:#66717d;
+      --border:#d6dde5;
+      --accent:#f2b134;
+      --good:#1f7a4d;
+      --danger:#b42318;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    header{
+      background:linear-gradient(135deg,var(--blue),var(--blue2));
+      color:white;
+      padding:26px 18px 22px;
+      text-align:center;
+    }
+
+    header h1{
+      margin:0 0 6px;
+      font-size:clamp(26px,6vw,42px);
+    }
+
+    header p{
+      margin:0;
+      opacity:.9;
+      font-size:15px;
+    }
+
+    main{
+      max-width:980px;
+      margin:0 auto;
+      padding:18px;
+    }
+
+    .tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:16px;
+    }
+
+    .tab{
+      flex:1 1 180px;
+      min-height:48px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      background:white;
+      color:var(--text);
+      font-weight:700;
+      font-size:15px;
+      cursor:pointer;
+      padding:10px 14px;
+    }
+
+    .tab.active{
+      background:var(--blue);
+      border-color:var(--blue);
+      color:white;
+    }
+
+    .panel{
+      display:none;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:0 8px 24px rgba(15,59,99,.06);
+    }
+
+    .panel.active{display:block}
+
+    h2{
+      margin:0 0 6px;
+      color:var(--blue);
+    }
+
+    .lead{
+      margin:0 0 18px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .grid{
+      display:grid;
+      gap:14px;
+    }
+
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+
+    .field label{
+      display:block;
+      font-weight:700;
+      font-size:14px;
+      margin-bottom:6px;
+    }
+
+    input,select{
+      width:100%;
+      min-height:48px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:10px 12px;
+      font-size:16px;
+      background:white;
+      color:var(--text);
+    }
+
+    input:focus,select:focus,button:focus{
+      outline:3px solid rgba(24,90,146,.2);
+      outline-offset:2px;
+    }
+
+    .results{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      margin-top:18px;
+    }
+
+    .result{
+      background:#eef5fb;
+      border:1px solid #cbdceb;
+      border-radius:14px;
+      padding:14px;
+      min-width:0;
+    }
+
+    .result small{
+      display:block;
+      color:var(--muted);
+      font-weight:700;
+      margin-bottom:5px;
+    }
+
+    .result strong{
+      font-size:clamp(22px,5vw,32px);
+      color:var(--blue);
+      word-break:break-word;
+    }
+
+    .explain{
+      margin-top:14px;
+      background:#fff8e8;
+      border:1px solid #ecd49a;
+      border-radius:12px;
+      padding:13px;
+      line-height:1.5;
+    }
+
+    .error{
+      min-height:22px;
+      margin-top:10px;
+      color:var(--danger);
+      font-weight:700;
+    }
+
+    .formula-box{
+      margin-top:14px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:13px;
+      background:#fafbfc;
+    }
+
+    .formula-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:7px 14px;
+      margin-top:8px;
+    }
+
+    .resistor-preview{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+      margin:24px 0;
+      overflow-x:auto;
+      padding:10px 0;
+    }
+
+    .wire{
+      width:54px;
+      height:5px;
+      background:#8a8f95;
+      flex:0 0 auto;
+    }
+
+    .res-body{
+      width:58px;
+      height:48px;
+      background:#e6d4a5;
+      border:1px solid #9e8957;
+      flex:0 0 auto;
+    }
+
+    .res-body.left{border-radius:24px 0 0 24px}
+    .res-body.right{border-radius:0 24px 24px 0}
+
+    .band{
+      width:22px;
+      height:82px;
+      border-radius:4px;
+      border:1px solid rgba(0,0,0,.25);
+      flex:0 0 auto;
+    }
+
+    .gap{width:10px;flex:0 0 auto}
+
+    .note{
+      margin-top:14px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    footer{
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+      padding:26px 16px 36px;
+    }
+
+    @media (max-width:700px){
+      main{padding:12px}
+      .grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .results{grid-template-columns:1fr 1fr}
+      .formula-grid{grid-template-columns:1fr}
+    }
+
+    @media (max-width:420px){
+      .results{grid-template-columns:1fr}
+      header{padding-top:22px}
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Electrical & Solar Explorer</h1>
+    <p>Interactive electrical calculations, resistor codes, and solar basics.</p>
+  </header>
+
+  <main>
+    <div class="tabs">
+      <button class="tab active" data-panel="electricalPanel">Electrical Calculator</button>
+      <button class="tab" data-panel="resistorPanel">Resistor Bands</button>
+      <button class="tab" data-panel="solarPanel">Solar Calculator</button>
+    </div>
+
+    <section id="electricalPanel" class="panel active">
+      <h2>Volts • Amps • Ohms • Watts</h2>
+      <p class="lead">Choose any two values you know. The app calculates the other two automatically.</p>
+
+      <div class="grid two">
+        <div>
+          <div class="field">
+            <label for="known1">Known value 1</label>
+            <select id="known1">
+              <option value="V" selected>EMF / Voltage (V)</option>
+              <option value="I">Current (A)</option>
+              <option value="R">Resistance (Ω)</option>
+              <option value="P">Power (W)</option>
+            </select>
+          </div>
+          <div class="field" style="margin-top:10px">
+            <label for="value1">Value</label>
+            <input id="value1" type="number" min="0" step="any" value="12" />
+          </div>
+        </div>
+
+        <div>
+          <div class="field">
+            <label for="known2">Known value 2</label>
+            <select id="known2">
+              <option value="V">EMF / Voltage (V)</option>
+              <option value="I">Current (A)</option>
+              <option value="R" selected>Resistance (Ω)</option>
+              <option value="P">Power (W)</option>
+            </select>
+          </div>
+          <div class="field" style="margin-top:10px">
+            <label for="value2">Value</label>
+            <input id="value2" type="number" min="0" step="any" value="6" />
+          </div>
+        </div>
+      </div>
+
+      <div id="electricalError" class="error" aria-live="polite"></div>
+
+      <div class="results">
+        <div class="result"><small>EMF / Voltage</small><strong id="outV">12 V</strong></div>
+        <div class="result"><small>Current</small><strong id="outI">2 A</strong></div>
+        <div class="result"><small>Resistance</small><strong id="outR">6 Ω</strong></div>
+        <div class="result"><small>Power</small><strong id="outP">24 W</strong></div>
+      </div>
+
+      <div id="electricalExplain" class="explain" aria-live="polite">
+        12 V ÷ 6 Ω = 2 A, and 12 V × 2 A = 24 W.
+      </div>
+
+      <div class="formula-box">
+        <strong>Common formulas</strong>
+        <div class="formula-grid">
+          <div>V = I × R</div>
+          <div>I = V ÷ R</div>
+          <div>R = V ÷ I</div>
+          <div>P = V × I</div>
+          <div>P = I² × R</div>
+          <div>P = V² ÷ R</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="resistorPanel" class="panel">
+      <h2>Interactive Resistor Color Code</h2>
+      <p class="lead">Pick the band colors and the resistance value changes instantly.</p>
+
+      <div class="grid four">
+        <div class="field">
+          <label for="band1">Band 1</label>
+          <select id="band1"></select>
+        </div>
+        <div class="field">
+          <label for="band2">Band 2</label>
+          <select id="band2"></select>
+        </div>
+        <div class="field">
+          <label for="multiplier">Multiplier</label>
+          <select id="multiplier"></select>
+        </div>
+        <div class="field">
+          <label for="tolerance">Tolerance</label>
+          <select id="tolerance"></select>
+        </div>
+      </div>
+
+      <div class="resistor-preview" aria-label="Resistor preview">
+        <div class="wire"></div>
+        <div class="res-body left"></div>
+        <div id="previewBand1" class="band"></div>
+        <div id="previewBand2" class="band"></div>
+        <div id="previewMultiplier" class="band"></div>
+        <div class="gap"></div>
+        <div id="previewTolerance" class="band"></div>
+        <div class="res-body right"></div>
+        <div class="wire"></div>
+      </div>
+
+      <div class="result" style="text-align:center">
+        <small>Resistance</small>
+        <strong id="resistorValue">1 kΩ ±5%</strong>
+      </div>
+    </section>
+
+    <section id="solarPanel" class="panel">
+      <h2>Basic Solar Array Calculator</h2>
+      <p class="lead">Enter the panel count, panel wattage, and peak sun hours.</p>
+
+      <div class="grid three">
+        <div class="field">
+          <label for="panelCount">Number of panels</label>
+          <input id="panelCount" type="number" min="1" max="1000" step="1" value="4" />
+        </div>
+        <div class="field">
+          <label for="panelWatts">Watts per panel</label>
+          <input id="panelWatts" type="number" min="1" max="5000" step="1" value="200" />
+        </div>
+        <div class="field">
+          <label for="sunHours">Peak sun hours</label>
+          <input id="sunHours" type="number" min="0" max="24" step="0.1" value="5" />
+        </div>
+      </div>
+
+      <div class="results">
+        <div class="result">
+          <small>Total array size</small>
+          <strong id="arraySize">800 W</strong>
+        </div>
+        <div class="result">
+          <small>Ideal daily energy</small>
+          <strong id="dailyEnergy">4 kWh</strong>
+        </div>
+      </div>
+
+      <div id="solarExplain" class="explain">
+        4 panels × 200 W = 800 W. At 5 peak sun hours, ideal production is about 4 kWh per day.
+      </div>
+
+      <p class="note">
+        Educational estimate only. Actual solar production depends on weather, orientation, shading,
+        temperature, wiring losses, inverter losses, battery losses, and other system conditions.
+      </p>
+    </section>
+  </main>
+
+  <footer>A DONCO-BAYCITY™ App</footer>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab");
+    const panels = document.querySelectorAll(".panel");
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        panels.forEach(p => p.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.panel).classList.add("active");
+      });
+    });
+
+    function formatNumber(n, maxDigits = 3) {
+      if (!Number.isFinite(n)) return "—";
+      return n.toLocaleString(undefined, { maximumFractionDigits: maxDigits });
+    }
+
+    const known1 = document.getElementById("known1");
+    const known2 = document.getElementById("known2");
+    const value1 = document.getElementById("value1");
+    const value2 = document.getElementById("value2");
+    const electricalError = document.getElementById("electricalError");
+    const electricalExplain = document.getElementById("electricalExplain");
+
+    function calculateElectrical() {
+      const typeA = known1.value;
+      const typeB = known2.value;
+      const a = Number(value1.value);
+      const b = Number(value2.value);
+
+      electricalError.textContent = "";
+
+      if (typeA === typeB) {
+        electricalError.textContent = "Choose two different electrical values.";
+        return;
+      }
+
+      if (!Number.isFinite(a) || !Number.isFinite(b) || a < 0 || b < 0) {
+        electricalError.textContent = "Enter two valid non-negative numbers.";
+        return;
+      }
+
+      const q = { V: null, I: null, R: null, P: null };
+      q[typeA] = a;
+      q[typeB] = b;
+
+      if (q.V !== null && q.I !== null) {
+        q.P = q.V * q.I;
+        q.R = q.I === 0 ? 0 : q.V / q.I;
+      }
+      else if (q.V !== null && q.R !== null) {
+        if (q.R <= 0) {
+          electricalError.textContent = "Resistance must be above zero.";
+          return;
+        }
+        q.I = q.V / q.R;
+        q.P = q.V * q.I;
+      }
+      else if (q.V !== null && q.P !== null) {
+        if (q.V <= 0) {
+          electricalError.textContent = "Voltage must be above zero when power is known.";
+          return;
+        }
+        q.I = q.P / q.V;
+        q.R = q.I === 0 ? 0 : q.V / q.I;
+      }
+      else if (q.I !== null && q.R !== null) {
+        q.V = q.I * q.R;
+        q.P = q.V * q.I;
+      }
+      else if (q.I !== null && q.P !== null) {
+        if (q.I <= 0) {
+          electricalError.textContent = "Current must be above zero when power is known.";
+          return;
+        }
+        q.V = q.P / q.I;
+        q.R = q.V / q.I;
+      }
+      else if (q.R !== null && q.P !== null) {
+        if (q.R <= 0) {
+          electricalError.textContent = "Resistance must be above zero.";
+          return;
+        }
+        q.I = Math.sqrt(q.P / q.R);
+        q.V = q.I * q.R;
+      }
+
+      document.getElementById("outV").textContent = formatNumber(q.V) + " V";
+      document.getElementById("outI").textContent = formatNumber(q.I) + " A";
+      document.getElementById("outR").textContent = formatNumber(q.R) + " Ω";
+      document.getElementById("outP").textContent = formatNumber(q.P) + " W";
+
+      electricalExplain.textContent =
+        "Calculated result: " +
+        formatNumber(q.V) + " V, " +
+        formatNumber(q.I) + " A, " +
+        formatNumber(q.R) + " Ω, and " +
+        formatNumber(q.P) + " W.";
+    }
+
+    [known1, known2, value1, value2].forEach(el => {
+      el.addEventListener("input", calculateElectrical);
+      el.addEventListener("change", calculateElectrical);
+    });
+
+    const digitColors = [
+      { name:"Black", value:0, color:"#111111" },
+      { name:"Brown", value:1, color:"#7b3f00" },
+      { name:"Red", value:2, color:"#c62828" },
+      { name:"Orange", value:3, color:"#ef6c00" },
+      { name:"Yellow", value:4, color:"#f9a825" },
+      { name:"Green", value:5, color:"#2e7d32" },
+      { name:"Blue", value:6, color:"#1565c0" },
+      { name:"Violet", value:7, color:"#6a1b9a" },
+      { name:"Gray", value:8, color:"#777777" },
+      { name:"White", value:9, color:"#f5f5f5" }
+    ];
+
+    const toleranceColors = [
+      { name:"Brown", value:1, color:"#7b3f00" },
+      { name:"Red", value:2, color:"#c62828" },
+      { name:"Gold", value:5, color:"#c7a008" },
+      { name:"Silver", value:10, color:"#a9a9a9" }
+    ];
+
+    const band1 = document.getElementById("band1");
+    const band2 = document.getElementById("band2");
+    const multiplier = document.getElementById("multiplier");
+    const tolerance = document.getElementById("tolerance");
+
+    digitColors.forEach(item => {
+      band1.add(new Option(item.name, item.value));
+      band2.add(new Option(item.name, item.value));
+      multiplier.add(new Option(item.name, item.value));
+    });
+
+    toleranceColors.forEach(item => {
+      tolerance.add(new Option(item.name, item.value));
+    });
+
+    band1.value = "1";
+    band2.value = "0";
+    multiplier.value = "2";
+    tolerance.value = "5";
+
+    function digitColor(value) {
+      const found = digitColors.find(item => item.value === Number(value));
+      return found ? found.color : "#111111";
+    }
+
+    function toleranceColor(value) {
+      const found = toleranceColors.find(item => item.value === Number(value));
+      return found ? found.color : "#c7a008";
+    }
+
+    function formatResistance(value) {
+      if (value >= 1000000) return formatNumber(value / 1000000) + " MΩ";
+      if (value >= 1000) return formatNumber(value / 1000) + " kΩ";
+      return formatNumber(value) + " Ω";
+    }
+
+    function updateResistor() {
+      const first = Number(band1.value);
+      const second = Number(band2.value);
+      const exponent = Number(multiplier.value);
+      const tol = Number(tolerance.value);
+
+      const resistance = (first * 10 + second) * Math.pow(10, exponent);
+
+      document.getElementById("previewBand1").style.background = digitColor(first);
+      document.getElementById("previewBand2").style.background = digitColor(second);
+      document.getElementById("previewMultiplier").style.background = digitColor(exponent);
+      document.getElementById("previewTolerance").style.background = toleranceColor(tol);
+
+      document.getElementById("resistorValue").textContent =
+        formatResistance(resistance) + " ±" + tol + "%";
+    }
+
+    [band1, band2, multiplier, tolerance].forEach(el => {
+      el.addEventListener("change", updateResistor);
+    });
+
+    const panelCount = document.getElementById("panelCount");
+    const panelWatts = document.getElementById("panelWatts");
+    const sunHours = document.getElementById("sunHours");
+
+    function updateSolar() {
+      const count = Math.max(1, Number(panelCount.value) || 1);
+      const watts = Math.max(1, Number(panelWatts.value) || 1);
+      const hours = Math.max(0, Number(sunHours.value) || 0);
+
+      const totalWatts = count * watts;
+      const dailyKwh = totalWatts * hours / 1000;
+
+      document.getElementById("arraySize").textContent =
+        formatNumber(totalWatts, 0) + " W";
+
+      document.getElementById("dailyEnergy").textContent =
+        formatNumber(dailyKwh, 2) + " kWh";
+
+      document.getElementById("solarExplain").textContent =
+        formatNumber(count, 0) + " panels × " +
+        formatNumber(watts, 0) + " W = " +
+        formatNumber(totalWatts, 0) + " W. At " +
+        formatNumber(hours, 1) +
+        " peak sun hours, ideal production is about " +
+        formatNumber(dailyKwh, 2) + " kWh per day.";
+    }
+
+    [panelCount, panelWatts, sunHours].forEach(el => {
+      el.addEventListener("input", updateSolar);
+    });
+
+    calculateElectrical();
+    updateResistor();
+    updateSolar();
+  </script>
+</body>
+</html>
