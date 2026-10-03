@@ -208,6 +208,104 @@
       margin-top:8px;
     }
 
+    .formula-used{
+      margin-top:14px;
+      border:1px solid #9fc8ef;
+      border-radius:14px;
+      padding:14px;
+      background:#eef7ff;
+    }
+
+    .formula-used strong{
+      color:var(--navy);
+    }
+
+    .formula-used .steps{
+      margin-top:8px;
+      line-height:1.6;
+      color:#25394b;
+    }
+
+    .wheel-wrap{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:minmax(220px,320px) minmax(0,1fr);
+      gap:18px;
+      align-items:center;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:16px;
+      background:#fbfdff;
+    }
+
+    .ohm-wheel{
+      width:min(100%,300px);
+      aspect-ratio:1;
+      margin:auto;
+      border-radius:50%;
+      border:7px solid var(--navy);
+      background:
+        linear-gradient(90deg, transparent 49%, var(--navy) 49%, var(--navy) 51%, transparent 51%),
+        linear-gradient(0deg, transparent 49%, var(--navy) 49%, var(--navy) 51%, transparent 51%),
+        #e9f3ff;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      grid-template-rows:1fr 1fr;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .wheel-btn{
+      border:0;
+      background:transparent;
+      color:var(--navy);
+      font-weight:900;
+      font-size:clamp(28px,6vw,44px);
+      cursor:pointer;
+    }
+
+    .wheel-btn:hover,
+    .wheel-btn.active{
+      background:rgba(255,212,59,.72);
+    }
+
+    .wheel-label{
+      display:block;
+      font-size:12px;
+      font-weight:700;
+      color:#486071;
+      margin-top:2px;
+    }
+
+    .wheel-info{
+      min-width:0;
+    }
+
+    .wheel-info h3{
+      margin:0 0 8px;
+      color:var(--navy);
+    }
+
+    .wheel-formulas{
+      display:grid;
+      gap:8px;
+      font-size:17px;
+    }
+
+    .wheel-formulas div{
+      background:#fff7cc;
+      border:1px solid #e5c94a;
+      border-radius:10px;
+      padding:10px 12px;
+      font-weight:700;
+    }
+
+    .metric-note{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
     .resistor-preview{
       display:flex;
       align-items:center;
@@ -268,6 +366,7 @@
       .grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
       .results{grid-template-columns:1fr 1fr}
       .formula-grid{grid-template-columns:1fr}
+      .wheel-wrap{grid-template-columns:1fr}
     }
 
     @media (max-width:420px){
@@ -292,7 +391,7 @@
 
     <section id="electricalPanel" class="panel active">
       <h2>Volts • Amps • Ohms • Watts</h2>
-      <p class="lead">Choose any two values you know. The app calculates the other two automatically.</p>
+      <p class="lead">Choose any two values you know. The app calculates the other two automatically and displays convenient metric units.</p>
 
       <div class="grid two">
         <div>
@@ -354,8 +453,34 @@
         </div>
       </div>
 
+      <div class="metric-note">Small and large values automatically display as mV, mA, kΩ, MΩ, mW, kW, and similar convenient units.</div>
+
       <div id="electricalExplain" class="explain" aria-live="polite">
-        12 V ÷ 6 Ω = 2 A, and 12 V × 2 A = 24 W.
+        Calculated result: 12 V, 2 A, 6 Ω, and 24 W.
+      </div>
+
+      <div class="formula-used">
+        <strong>Formula used</strong>
+        <div id="formulaSteps" class="steps">I = V ÷ R = 12 ÷ 6 = 2 A<br>P = V × I = 12 × 2 = 24 W</div>
+      </div>
+
+      <div class="wheel-wrap">
+        <div class="ohm-wheel" aria-label="Interactive Ohm's Law and power wheel">
+          <button type="button" class="wheel-btn active" data-wheel="V">V<span class="wheel-label">Voltage</span></button>
+          <button type="button" class="wheel-btn" data-wheel="P">P<span class="wheel-label">Power</span></button>
+          <button type="button" class="wheel-btn" data-wheel="I">I<span class="wheel-label">Current</span></button>
+          <button type="button" class="wheel-btn" data-wheel="R">R<span class="wheel-label">Resistance</span></button>
+        </div>
+
+        <div class="wheel-info">
+          <h3 id="wheelTitle">Find Voltage (V)</h3>
+          <div id="wheelFormulas" class="wheel-formulas">
+            <div>V = I × R</div>
+            <div>V = P ÷ I</div>
+            <div>V = √(P × R)</div>
+          </div>
+          <p class="note">Tap V, P, I, or R on the wheel to see the formulas for that value.</p>
+        </div>
       </div>
 
       <div class="formula-box">
@@ -495,6 +620,42 @@
     const electricalError = document.getElementById("electricalError");
     const electricalExplain = document.getElementById("electricalExplain");
 
+    function formatMetric(value, type) {
+      if (!Number.isFinite(value)) return "—";
+      const abs = Math.abs(value);
+
+      if (type === "V") {
+        if (abs >= 1000) return formatNumber(value / 1000) + " kV";
+        if (abs > 0 && abs < 0.001) return formatNumber(value * 1000000) + " µV";
+        if (abs > 0 && abs < 1) return formatNumber(value * 1000) + " mV";
+        return formatNumber(value) + " V";
+      }
+
+      if (type === "I") {
+        if (abs >= 1000) return formatNumber(value / 1000) + " kA";
+        if (abs > 0 && abs < 0.001) return formatNumber(value * 1000000) + " µA";
+        if (abs > 0 && abs < 1) return formatNumber(value * 1000) + " mA";
+        return formatNumber(value) + " A";
+      }
+
+      if (type === "R") {
+        if (abs >= 1000000) return formatNumber(value / 1000000) + " MΩ";
+        if (abs >= 1000) return formatNumber(value / 1000) + " kΩ";
+        if (abs > 0 && abs < 1) return formatNumber(value * 1000) + " mΩ";
+        return formatNumber(value) + " Ω";
+      }
+
+      if (type === "P") {
+        if (abs >= 1000000) return formatNumber(value / 1000000) + " MW";
+        if (abs >= 1000) return formatNumber(value / 1000) + " kW";
+        if (abs > 0 && abs < 0.001) return formatNumber(value * 1000000) + " µW";
+        if (abs > 0 && abs < 1) return formatNumber(value * 1000) + " mW";
+        return formatNumber(value) + " W";
+      }
+
+      return formatNumber(value);
+    }
+
     function calculateElectrical() {
       const typeA = known1.value;
       const typeB = known2.value;
@@ -514,19 +675,18 @@
         return;
       }
 
-      const q = {
-        V: null,
-        I: null,
-        R: null,
-        P: null
-      };
-
+      const q = { V:null, I:null, R:null, P:null };
       q[typeA] = a;
       q[typeB] = b;
+
+      let steps = "";
 
       if (q.V !== null && q.I !== null) {
         q.P = q.V * q.I;
         q.R = q.I === 0 ? 0 : q.V / q.I;
+        steps =
+          "P = V × I = " + formatNumber(q.V) + " × " + formatNumber(q.I) + " = " + formatMetric(q.P, "P") +
+          "<br>R = V ÷ I = " + formatNumber(q.V) + " ÷ " + formatNumber(q.I) + " = " + formatMetric(q.R, "R");
       }
 
       else if (q.V !== null && q.R !== null) {
@@ -537,6 +697,9 @@
 
         q.I = q.V / q.R;
         q.P = q.V * q.I;
+        steps =
+          "I = V ÷ R = " + formatNumber(q.V) + " ÷ " + formatNumber(q.R) + " = " + formatMetric(q.I, "I") +
+          "<br>P = V × I = " + formatNumber(q.V) + " × " + formatNumber(q.I) + " = " + formatMetric(q.P, "P");
       }
 
       else if (q.V !== null && q.P !== null) {
@@ -547,11 +710,17 @@
 
         q.I = q.P / q.V;
         q.R = q.I === 0 ? 0 : q.V / q.I;
+        steps =
+          "I = P ÷ V = " + formatNumber(q.P) + " ÷ " + formatNumber(q.V) + " = " + formatMetric(q.I, "I") +
+          "<br>R = V ÷ I = " + formatNumber(q.V) + " ÷ " + formatNumber(q.I) + " = " + formatMetric(q.R, "R");
       }
 
       else if (q.I !== null && q.R !== null) {
         q.V = q.I * q.R;
         q.P = q.V * q.I;
+        steps =
+          "V = I × R = " + formatNumber(q.I) + " × " + formatNumber(q.R) + " = " + formatMetric(q.V, "V") +
+          "<br>P = V × I = " + formatNumber(q.V) + " × " + formatNumber(q.I) + " = " + formatMetric(q.P, "P");
       }
 
       else if (q.I !== null && q.P !== null) {
@@ -562,6 +731,9 @@
 
         q.V = q.P / q.I;
         q.R = q.V / q.I;
+        steps =
+          "V = P ÷ I = " + formatNumber(q.P) + " ÷ " + formatNumber(q.I) + " = " + formatMetric(q.V, "V") +
+          "<br>R = V ÷ I = " + formatNumber(q.V) + " ÷ " + formatNumber(q.I) + " = " + formatMetric(q.R, "R");
       }
 
       else if (q.R !== null && q.P !== null) {
@@ -572,31 +744,60 @@
 
         q.I = Math.sqrt(q.P / q.R);
         q.V = q.I * q.R;
+        steps =
+          "I = √(P ÷ R) = √(" + formatNumber(q.P) + " ÷ " + formatNumber(q.R) + ") = " + formatMetric(q.I, "I") +
+          "<br>V = I × R = " + formatNumber(q.I) + " × " + formatNumber(q.R) + " = " + formatMetric(q.V, "V");
       }
 
-      document.getElementById("outV").textContent =
-        formatNumber(q.V) + " V";
-
-      document.getElementById("outI").textContent =
-        formatNumber(q.I) + " A";
-
-      document.getElementById("outR").textContent =
-        formatNumber(q.R) + " Ω";
-
-      document.getElementById("outP").textContent =
-        formatNumber(q.P) + " W";
+      document.getElementById("outV").textContent = formatMetric(q.V, "V");
+      document.getElementById("outI").textContent = formatMetric(q.I, "I");
+      document.getElementById("outR").textContent = formatMetric(q.R, "R");
+      document.getElementById("outP").textContent = formatMetric(q.P, "P");
 
       electricalExplain.textContent =
         "Calculated result: " +
-        formatNumber(q.V) + " V, " +
-        formatNumber(q.I) + " A, " +
-        formatNumber(q.R) + " Ω, and " +
-        formatNumber(q.P) + " W.";
+        formatMetric(q.V, "V") + ", " +
+        formatMetric(q.I, "I") + ", " +
+        formatMetric(q.R, "R") + ", and " +
+        formatMetric(q.P, "P") + ".";
+
+      document.getElementById("formulaSteps").innerHTML = steps;
     }
 
     [known1, known2, value1, value2].forEach(el => {
       el.addEventListener("input", calculateElectrical);
       el.addEventListener("change", calculateElectrical);
+    });
+
+    const wheelData = {
+      V: {
+        title:"Find Voltage (V)",
+        formulas:["V = I × R","V = P ÷ I","V = √(P × R)"]
+      },
+      P: {
+        title:"Find Power (P)",
+        formulas:["P = V × I","P = I² × R","P = V² ÷ R"]
+      },
+      I: {
+        title:"Find Current (I)",
+        formulas:["I = V ÷ R","I = P ÷ V","I = √(P ÷ R)"]
+      },
+      R: {
+        title:"Find Resistance (R)",
+        formulas:["R = V ÷ I","R = V² ÷ P","R = P ÷ I²"]
+      }
+    };
+
+    document.querySelectorAll(".wheel-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".wheel-btn").forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        const data = wheelData[button.dataset.wheel];
+        document.getElementById("wheelTitle").textContent = data.title;
+        document.getElementById("wheelFormulas").innerHTML =
+          data.formulas.map(formula => "<div>" + formula + "</div>").join("");
+      });
     });
 
     const digitColors = [
