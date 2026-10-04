@@ -2,6 +2,7 @@
 const FAV_KEY="ateFavorites";
 const RECENT_KEY="ateRecent";
 const THEME_KEY="ateTheme";
+const DETAIL_LEVEL_KEY="ateDetailLevel";
 const MAX_RECENT=8;
 
 function safeParse(key,fallback){
@@ -256,6 +257,38 @@ if(savedTheme==="dark"||savedTheme==="light") document.documentElement.dataset.a
 else if(window.matchMedia?.("(prefers-color-scheme: dark)").matches) document.documentElement.dataset.ateTheme="dark";
 else document.documentElement.dataset.ateTheme="light";
 
+function getDetailLevel(){
+  const saved=localStorage.getItem(DETAIL_LEVEL_KEY);
+  return ["basic","technical","advanced"].includes(saved)?saved:"basic";
+}
+function setDetailLevel(level){
+  if(!["basic","technical","advanced"].includes(level)) level="basic";
+  document.documentElement.dataset.ateDetailLevel=level;
+  localStorage.setItem(DETAIL_LEVEL_KEY,level);
+  document.querySelectorAll("[data-ate-set-level]").forEach(btn=>{
+    const on=btn.dataset.ateSetLevel===level;
+    btn.classList.toggle("ate-level-active",on);
+    btn.setAttribute("aria-pressed",on?"true":"false");
+  });
+  document.querySelectorAll("[data-ate-level-status]").forEach(el=>{
+    const labels={
+      basic:"Basic — the essentials first",
+      technical:"Technical — adds real terminology, conductors, measurements, and circuit behavior",
+      advanced:"Advanced — adds deeper design, diagnostic, and professional notes"
+    };
+    el.textContent=labels[level];
+  });
+  window.dispatchEvent(new CustomEvent("ate-detail-level-change",{detail:{level}}));
+}
+function initDetailLevels(){
+  const chooser=document.querySelector("[data-ate-level-chooser]");
+  if(!chooser) return;
+  document.querySelectorAll("[data-ate-set-level]").forEach(btn=>{
+    btn.addEventListener("click",()=>setDetailLevel(btn.dataset.ateSetLevel));
+  });
+  setDetailLevel(getDetailLevel());
+}
+
 function applySharedPolish(){
   if(isHome()) return;
   document.body.classList.add("ate-polished-page");
@@ -279,6 +312,7 @@ function applySharedPolish(){
 document.addEventListener("DOMContentLoaded",()=>{
   normalizeHomeLinks();
   applySharedPolish();
+  initDetailLevels();
   recordRecent();
   makeToolbar();
   renderHomeTools();
