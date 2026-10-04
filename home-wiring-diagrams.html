@@ -25,6 +25,16 @@ h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-
 .warnbox{background:#fff3d6;border:1px solid #e5a84a;color:#6a4300;border-radius:12px;padding:13px;line-height:1.5}
 .principle-banner{margin:10px 0 14px;padding:11px 13px;border-radius:11px;background:#eef7ff;border:1px solid #9fc8ef;color:#153a5d;line-height:1.45}
 .principle-banner strong{color:#071a2e}
+.simple-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:stretch}
+.simple-step{position:relative;border:1px solid var(--border);border-radius:14px;padding:15px;background:#f8fbff;min-height:145px}
+.simple-step:not(:last-child):after{content:"→";position:absolute;right:-17px;top:48%;transform:translateY(-50%);font-size:25px;font-weight:900;color:#0b63ce;z-index:2}
+.simple-num{display:inline-flex;width:30px;height:30px;border-radius:50%;align-items:center;justify-content:center;background:#ffd43b;color:#071a2e;font-weight:900;margin-bottom:8px}
+.simple-step strong{display:block;color:#071a2e;margin-bottom:5px}.simple-step p{margin:0;color:#40566a;line-height:1.45;font-size:13px}
+.tech-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tech-item{border:1px solid var(--border);border-radius:12px;padding:12px;background:#f8fbff}.tech-item strong{display:block;color:#071a2e;margin-bottom:4px}.tech-item p{margin:0;color:#40566a;line-height:1.45}
+.advanced-list{margin:8px 0 0;padding-left:22px;line-height:1.6}
+@media(max-width:820px){.simple-flow{grid-template-columns:1fr 1fr}.simple-step:not(:last-child):after{display:none}.tech-grid{grid-template-columns:1fr}}
+@media(max-width:520px){.simple-flow{grid-template-columns:1fr}}
 .splice-cap{fill:#f0a327;stroke:#8b5c09;stroke-width:2}
 .splice-text{font:700 11px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#6a4300}
 .whole-wrap{overflow-x:auto}
@@ -67,8 +77,31 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <li>Actual conductor size, breaker rating, cable type, box fill, GFCI/AFCI requirements, device spacing, and approved connection methods must follow the equipment instructions and electrical code that applies to the real installation.</li>
 </ol></section>
 
+<section class="ate-level-chooser" data-ate-level-chooser>
+<h2>Choose Your Detail Level</h2>
+<p>Start simple, then reveal more technical depth without changing pages.</p>
+<div class="ate-level-buttons">
+<button type="button" data-ate-set-level="basic">Basic</button>
+<button type="button" data-ate-set-level="technical">Technical</button>
+<button type="button" data-ate-set-level="advanced">Advanced</button>
+</div>
+<div class="ate-level-status" data-ate-level-status></div>
+</section>
+
 <section class="panel">
-<h2>Whole-House Wiring Example</h2>
+<h2>Basic View — Four Ideas to Understand First</h2>
+<p class="lead">Before looking at individual conductors and devices, understand the structure of a residential branch circuit.</p>
+<div class="simple-flow">
+<div class="simple-step"><span class="simple-num">1</span><strong>Panel & Breaker</strong><p>The panel divides the electrical system into branch circuits. A breaker protects the circuit it serves.</p></div>
+<div class="simple-step"><span class="simple-num">2</span><strong>Branch Circuit</strong><p>A branch circuit carries power from the panel to one or more permitted loads.</p></div>
+<div class="simple-step"><span class="simple-num">3</span><strong>Devices in Parallel</strong><p>Receptacles and most loads connect across the branch conductors so each receives the intended voltage.</p></div>
+<div class="simple-step"><span class="simple-num">4</span><strong>Controls & Dedicated Loads</strong><p>Switches control selected loads. Larger appliances often use their own branch circuits.</p></div>
+</div>
+<div class="principle-banner"><strong>Core idea:</strong> a house is not one long electrical chain. It is a collection of branch circuits leaving the panel and serving different groups of loads.</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+<h2>Whole-House Wiring Example <span class="ate-level-badge">Technical</span></h2>
 <p class="lead">This is the poster-style overview you were describing: start at the panel on the left and follow each branch circuit to the equipment it serves. The colors identify <strong>different example circuits</strong>, not required conductor colors.</p>
 
 <div class="whole-wrap">
@@ -200,7 +233,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <div class="principle-banner"><strong>What this picture is teaching:</strong> the panel sends separate branch circuits to different groups of loads. General outlets, lighting, a dedicated appliance, and a 240 V load do not all have to share one breaker. The exact number, size, protection, and permitted loads for real circuits come from the applicable code and equipment instructions.</div>
 </section>
 
-<section class="panel"><h2>Choose a Diagram</h2><div class="tabs">
+<section class="panel" data-ate-level="technical"><h2>Choose a Diagram <span class="ate-level-badge">Technical</span></h2><div class="tabs">
 <button class="btn active" data-show="receptacle">Basic Receptacle</button>
 <button class="btn" data-show="switch">Light & Switch</button>
 <button class="btn" data-show="multi">Multiple Receptacles</button>
@@ -211,7 +244,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <button class="btn" data-show="240">240 V Load</button>
 </div></section>
 
-<section class="panel diagram-card active" id="receptacle"><h2>Basic 120 V Receptacle Circuit</h2>
+<section class="panel diagram-card active" id="receptacle" data-ate-level="technical"><h2>Basic 120 V Receptacle Circuit</h2>
 <p class="lead">This cutaway-style drawing is closer to what the parts look like in the field: a branch breaker inside the panel, a cable leaving the panel, conductors entering a device box, and a receptacle mounted in the box. Colors are illustrative only—never identify a conductor by color alone.</p>
 <div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
 <!-- panel enclosure -->
@@ -275,7 +308,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <div class="legend"><span><span class="swatch" style="background:#252a2e"></span>Illustrative ungrounded conductor</span><span><span class="swatch" style="background:#c9c9c2"></span>Illustrative neutral</span><span><span class="swatch" style="background:#b87333"></span>Illustrative equipment grounding conductor</span></div>
 </section>
 
-<section class="panel diagram-card" id="switch"><h2>Single-Pole Light Switch Circuit</h2>
+<section class="panel diagram-card" id="switch" data-ate-level="technical"><h2>Single-Pole Light Switch Circuit</h2>
 <p class="lead">This version shows separate wall/ceiling boxes and cable runs. The switch controls the ungrounded conductor going to the light; the neutral is shown continuing through the switch box rather than serving as the normal switch control conductor.</p>
 <div class="principle-banner"><strong>Key idea:</strong> the switch interrupts only the light's controlled hot path. The rest of the branch circuit is not wired in series through the switch.</div>
 <div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
@@ -322,7 +355,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </svg></div>
 </section>
 
-<section class="panel diagram-card" id="multi"><h2>Multiple Receptacles on One Branch Circuit</h2>
+<section class="panel diagram-card" id="multi" data-ate-level="technical"><h2>Multiple Receptacles on One Branch Circuit</h2>
 <p class="lead">Here the branch cable enters the first device box and continues to additional boxes. Each receptacle is supplied from the same branch conductors.</p>
 <div class="principle-banner"><strong>Parallel wiring:</strong> each receptacle is connected across hot and neutral. One appliance does not have to pass current through another appliance for the next receptacle to work.</div>
 <div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
@@ -341,7 +374,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <text class="small" x="350" y="395">Cable continues box-to-box. Each receptacle remains electrically parallel; approved splice and terminal methods vary by device and installation.</text>
 </svg></div></section>
 
-<section class="panel diagram-card" id="mixed"><h2>Light and Receptacle on the Same Branch — Concept</h2>
+<section class="panel diagram-card" id="mixed" data-ate-level="technical"><h2>Light and Receptacle on the Same Branch — Concept</h2>
 <p class="lead">This cutaway shows one branch feeding an unswitched receptacle and a separate switch box that controls a light. The purpose is to show how the load branches relate—not to prescribe a box-by-box installation method.</p>
 <div class="principle-banner"><strong>What changes when the switch is OFF?</strong> The light's switched-hot path opens, while the unswitched receptacle can remain energized because it is on its own parallel branch path.</div>
 <div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
@@ -364,7 +397,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <text class="small" x="320" y="395">Receptacle remains on the branch; switch controls only the light path.</text>
 </svg></div></section>
 
-<section class="panel diagram-card" id="kitchen"><h2>Kitchen Small-Appliance / GFCI Concept</h2>
+<section class="panel diagram-card" id="kitchen" data-ate-level="technical"><h2>Kitchen Small-Appliance / GFCI Concept</h2>
 <p class="lead">This version shows a panel branch feeding a GFCI device in a real-looking box, with a second receptacle box downstream conceptually. Kitchen branch-circuit requirements are more detailed than this picture and must follow the current code.</p>
 <div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
 <rect x="25" y="65" width="205" height="300" rx="12" class="enclosure"/><text class="label" x="72" y="92">Panel</text><rect x="55" y="110" width="70" height="200" rx="5" fill="#9eaab3" stroke="#52616b" stroke-width="3"/><rect x="145" y="110" width="60" height="46" rx="5" class="breaker"/><rect x="165" y="120" width="22" height="24" rx="3" class="breaker-handle"/>
@@ -382,7 +415,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <text class="small" x="300" y="395">Downstream protection arrangement depends on the device labeling and manufacturer instructions.</text>
 </svg></div></section>
 
-<section class="panel diagram-card" id="bath"><h2>Bathroom Receptacle / GFCI Concept</h2>
+<section class="panel diagram-card" id="bath" data-ate-level="technical"><h2>Bathroom Receptacle / GFCI Concept</h2>
 <p class="lead">The drawing now separates the GFCI receptacle box from a lighting/fan control box so it looks more like a real room circuit layout. Whether those loads may share a branch circuit depends on the actual design and code.</p>
 <div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
 <rect x="25" y="65" width="205" height="300" rx="12" class="enclosure"/><text class="label" x="72" y="92">Panel</text><rect x="55" y="110" width="70" height="200" rx="5" fill="#9eaab3" stroke="#52616b" stroke-width="3"/><rect x="145" y="110" width="60" height="46" rx="5" class="breaker"/><rect x="165" y="120" width="22" height="24" rx="3" class="breaker-handle"/>
@@ -397,7 +430,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <path class="cable-jacket" d="M830 250H860"/><path class="cond-black" d="M800 220H860"/><path class="cond-white" d="M830 251H860"/><path class="cond-ground" d="M775 312H840V267H860"/>
 </svg></div></section>
 
-<section class="panel diagram-card" id="laundry"><h2>Laundry Circuit Concept</h2>
+<section class="panel diagram-card" id="laundry" data-ate-level="technical"><h2>Laundry Circuit Concept</h2>
 <p class="lead">This version shows two separate breaker positions and two different cable runs: one conceptually for a washer branch and one for an electric dryer branch. It is meant to make the separation of circuits visually obvious.</p>
 <div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
 <rect x="25" y="55" width="230" height="320" rx="12" class="enclosure"/><text class="label" x="82" y="82">Panel / Load Center</text>
@@ -414,7 +447,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <rect x="690" y="75" width="190" height="250" rx="14" class="device"/><circle cx="785" cy="180" r="58" fill="#dce7ee" stroke="#6f7d87" stroke-width="4"/><text class="label" x="753" y="110">Dryer</text><text class="small" x="715" y="300">120/240 V appliance concept</text>
 </svg></div></section>
 
-<section class="panel diagram-card" id="240"><h2>240 V Appliance Circuit Concept</h2>
+<section class="panel diagram-card" id="240" data-ate-level="technical"><h2>240 V Appliance Circuit Concept</h2>
 <p class="lead">This cutaway uses a double-pole breaker inside a panel and a multi-conductor branch cable entering an appliance connection/disconnect concept. The two ungrounded conductors supply the 240 V load. Some equipment also needs a neutral for internal 120 V loads; other 240 V equipment does not.</p>
 <div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
 <rect x="30" y="50" width="265" height="330" rx="12" class="enclosure"/><text class="label" x="90" y="78">Panel / Load Center</text>
@@ -437,7 +470,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <p class="note">The neutral is drawn to teach the four-conductor case, but many 240 V loads do not require a neutral. The equipment instructions determine what conductors the actual load requires.</p>
 </section>
 
-<section class="panel"><h2>Avoiding Branch-Circuit Overloads</h2><p class="lead">The key idea is simple: the total load on a branch circuit matters. A breaker is not extra capacity—it is a protective device matched to the circuit design. Use this calculator only to visualize the relationship between watts, volts, and current.</p>
+<section class="panel" data-ate-level="technical"><h2>Avoiding Branch-Circuit Overloads <span class="ate-level-badge">Technical</span></h2><p class="lead">The key idea is simple: the total load on a branch circuit matters. A breaker is not extra capacity—it is a protective device matched to the circuit design. Use this calculator only to visualize the relationship between watts, volts, and current.</p>
 <div class="grid three">
 <div class="field"><label for="planV">Circuit Voltage</label><select id="planV"><option value="120">120 V</option><option value="240">240 V</option></select></div>
 <div class="field"><label for="breaker">Breaker Rating for Comparison (A)</label><select id="breaker"><option>15</option><option selected>20</option><option>30</option><option>40</option><option>50</option></select></div>
@@ -461,7 +494,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </div>
 <div id="loadExplain" class="feedback good"></div></section>
 
-<section class="panel"><h2>Overload Lessons to Remember</h2><div class="cards">
+<section class="panel"><h2>Basic Load & Overload Principles</h2><div class="cards">
 <div class="card"><strong>Loads Add Together</strong><p>On one branch circuit, simultaneous loads add. Several moderate loads can exceed the circuit's intended capacity even when each device is normal by itself.</p></div>
 <div class="card"><strong>Large Loads Often Need Dedicated Circuits</strong><p>Heating equipment, cooking appliances, laundry equipment, HVAC, and other large loads commonly have dedicated circuit requirements.</p></div>
 <div class="card"><strong>Never Upsize a Breaker Just to Stop Trips</strong><p>The breaker protects the circuit conductors and equipment. A larger breaker can create a fire hazard if the wiring and equipment were not designed for it.</p></div>
@@ -469,6 +502,35 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <div class="card"><strong>Motor / Compressor Starting Current</strong><p>Some equipment draws higher current while starting. Circuit design and protection account for this differently from simple steady resistive loads.</p></div>
 <div class="card"><strong>Use Dedicated Kitchen / Bath / Laundry Rules</strong><p>Residential electrical codes contain special branch-circuit and protection requirements for these areas. Do not treat them like unrestricted general-use outlets.</p></div>
 </div></section>
+
+<section class="panel" data-ate-level="advanced">
+<h2>Advanced / Professional View <span class="ate-level-badge advanced">Advanced</span></h2>
+<p class="lead">This layer keeps the same simple mental model, but adds the terminology and design questions a more experienced reader expects.</p>
+
+<div class="tech-grid">
+<div class="tech-item"><strong>Branch-circuit design</strong><p>Consider load characteristics, conductor ampacity, overcurrent protection, voltage drop, terminal ratings, installation method, ambient conditions, and required dedicated circuits as separate design constraints.</p></div>
+<div class="tech-item"><strong>Protection functions</strong><p>Overcurrent protection, GFCI protection, and AFCI protection address different hazards. A breaker trip is a symptom to diagnose—not automatically proof of a simple overload.</p></div>
+<div class="tech-item"><strong>Neutral loading</strong><p>The grounded conductor carries normal return current where the circuit design requires it. Neutral current depends on the connected loads and circuit arrangement; it is not interchangeable with the equipment grounding path.</p></div>
+<div class="tech-item"><strong>Equipment grounding & bonding</strong><p>Fault-current return paths, bonding connections, and grounding-electrode functions are related but distinct concepts. Their arrangement depends on where the service bonding point and downstream equipment are located.</p></div>
+<div class="tech-item"><strong>Terminations</strong><p>Conductor material, strand class, lug/device listing, strip length, terminal torque, and approved connector method all matter. A physically fitting connection is not automatically an acceptable connection.</p></div>
+<div class="tech-item"><strong>Load behavior</strong><p>Resistive loads, motors, compressors, electronic power supplies, heating loads, and continuous-duty loads can affect circuit planning differently even when nameplate wattage appears similar.</p></div>
+</div>
+
+<div class="ate-advanced-box">
+<strong>Diagnostic reasoning</strong>
+<ul class="advanced-list">
+<li><strong>Repeated overcurrent trip:</strong> distinguish sustained loading from a short circuit, ground fault, equipment fault, or conductor/termination problem.</li>
+<li><strong>Intermittent device:</strong> think about loose connections, damaged devices, upstream splices, control devices, and load behavior rather than replacing parts at random.</li>
+<li><strong>Voltage complaint:</strong> separate source problems, circuit voltage drop, high-resistance connections, shared-load effects, and equipment behavior conceptually before choosing a test.</li>
+<li><strong>Protection trip:</strong> identify which protection function operated—ordinary overcurrent, GFCI, AFCI, or combined protection—because each points toward different fault classes.</li>
+</ul>
+</div>
+
+<div class="ate-advanced-box">
+<strong>Professional reference mindset</strong>
+<p style="margin:6px 0 0">Use the current adopted electrical code, equipment listing/labeling, manufacturer instructions, approved calculation methods, and jurisdictional requirements for real design or installation decisions. This app explains the system; it does not replace those documents.</p>
+</div>
+</section>
 
 <section class="panel"><h2>Safety Boundary</h2><div class="warnbox"><strong>Educational diagrams only.</strong> They intentionally omit exact conductor sizes, breaker selections, cable types, terminal methods, box-fill calculations, required receptacle spacing, service calculations, and jurisdiction-specific rules. Fixed residential wiring can cause lethal shock, arc flash, and fire. Real work must follow the applicable electrical code, permits/inspection requirements, manufacturer instructions, and qualified-person practices. Conductor colors in these drawings are illustrative only—never identify or verify a real conductor by color alone.</div></section>
 </main>
