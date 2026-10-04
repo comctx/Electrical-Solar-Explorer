@@ -104,6 +104,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </section>
 
 <section class="panel" data-ate-level="technical">
+<div data-ate-exact-level="technical">
 <h2>Whole-House Wiring Example <span class="ate-level-badge">Technical</span></h2>
 <p class="lead">This is the poster-style overview you were describing: start at the panel on the left and follow each branch circuit to the equipment it serves. The colors identify <strong>different example circuits</strong>, not required conductor colors.</p>
 
@@ -234,6 +235,129 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </div>
 
 <div class="principle-banner"><strong>What this picture is teaching:</strong> the panel sends separate branch circuits to different groups of loads. General outlets, lighting, a dedicated appliance, and a 240 V load do not all have to share one breaker. The exact number, size, protection, and permitted loads for real circuits come from the applicable code and equipment instructions.</div>
+</div>
+
+<div data-ate-exact-level="advanced">
+<h2>Whole-House Wiring — Advanced View <span class="ate-level-badge advanced">Advanced</span></h2>
+<p class="lead">This view changes from circuit-group colors to conductor-level relationships. It shows how several example branch circuits leave the panel with their own hot, neutral, and equipment-grounding paths, while a 120/240 V branch uses two ungrounded conductors.</p>
+
+<div class="whole-wrap">
+<svg class="whole-diagram" viewBox="0 0 1180 720" aria-label="Advanced whole house conductor relationship overview">
+
+<!-- PANEL -->
+<rect x="35" y="65" width="290" height="585" rx="14" class="whole-panel"/>
+<text x="103" y="100" class="whole-label">Service / Distribution Panel</text>
+<text x="72" y="126" class="whole-small">Conceptual branch-circuit relationships</text>
+
+<!-- neutral and ground bars -->
+<rect x="65" y="165" width="78" height="360" rx="6" fill="#d7e0e6" stroke="#60717d" stroke-width="3"/>
+<rect x="165" y="165" width="78" height="360" rx="6" fill="#c7d1d8" stroke="#60717d" stroke-width="3"/>
+<text x="78" y="155" class="whole-small">Neutral bar</text>
+<text x="181" y="155" class="whole-small">Ground bar</text>
+
+<!-- breakers -->
+<rect x="255" y="175" width="52" height="48" rx="5" class="whole-breaker"/>
+<rect x="255" y="260" width="52" height="48" rx="5" class="whole-breaker"/>
+<rect x="255" y="345" width="52" height="72" rx="5" class="whole-breaker"/>
+<rect x="262" y="356" width="15" height="50" rx="3" class="breaker-handle"/>
+<rect x="285" y="356" width="15" height="50" rx="3" class="breaker-handle"/>
+<rect x="255" y="460" width="52" height="72" rx="5" class="whole-breaker"/>
+<rect x="262" y="471" width="15" height="50" rx="3" class="breaker-handle"/>
+<rect x="285" y="471" width="15" height="50" rx="3" class="breaker-handle"/>
+
+<text x="250" y="238" class="whole-small">120 V</text>
+<text x="250" y="323" class="whole-small">120 V</text>
+<text x="246" y="437" class="whole-small">120/240 V</text>
+<text x="246" y="552" class="whole-small">Subpanel</text>
+
+<!-- CIRCUIT 1: receptacles -->
+<text x="365" y="100" class="whole-label">120 V General Receptacle Branch</text>
+<path class="cond-black" d="M307 195H610"/>
+<path class="cond-white" d="M143 205H610"/>
+<path class="cond-ground" d="M243 215H610"/>
+<text class="wire-label" x="395" y="184">Black = Hot</text>
+<text class="wire-label" x="395" y="204">White = Neutral</text>
+<text class="wire-label" x="395" y="224">Green = Ground</text>
+
+<g transform="translate(610 140)">
+<rect width="120" height="150" rx="12" class="whole-device"/>
+<rect x="33" y="25" width="54" height="45" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/>
+<rect x="33" y="82" width="54" height="45" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/>
+</g>
+<text x="620" y="312" class="whole-small">Receptacle</text>
+
+<!-- CIRCUIT 2: lighting -->
+<text x="365" y="330" class="whole-label">120 V Lighting Branch</text>
+<path class="cond-black" d="M307 280H760"/>
+<path class="cond-white" d="M143 290H940"/>
+<path class="cond-ground" d="M243 300H940"/>
+
+<rect x="760" y="245" width="95" height="125" rx="10" class="whole-device"/>
+<text x="778" y="235" class="whole-small">Wall switch</text>
+<rect x="793" y="270" width="28" height="70" rx="4" fill="#fff" stroke="#79848b" stroke-width="2"/>
+<path d="M855 290H940" stroke="#f3a900" stroke-width="7" fill="none" stroke-linecap="round"/>
+<circle cx="1000" cy="290" r="48" fill="#fff5a8" stroke="#b58b00" stroke-width="4"/>
+<path d="M967 257l66 66M1033 257l-66 66" stroke="#b58b00" stroke-width="4"/>
+<text x="955" y="355" class="whole-small">Light load</text>
+
+<!-- CIRCUIT 3: dryer -->
+<text x="365" y="395" class="whole-label">120/240 V Electric Dryer Branch</text>
+<path class="cond-black" d="M307 365H650"/>
+<path d="M307 385H650" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round"/>
+<path class="cond-white" d="M143 405H650"/>
+<path class="cond-ground" d="M243 425H650"/>
+<text class="wire-label" x="405" y="355">L1 / Black</text>
+<text class="wire-label" x="405" y="377">L2 / Red</text>
+<text class="wire-label" x="405" y="399">Neutral / White</text>
+<text class="wire-label" x="405" y="421">Ground / Green</text>
+
+<rect x="650" y="350" width="155" height="150" rx="12" class="box-metal"/>
+<text x="675" y="340" class="whole-small">Dryer receptacle</text>
+<rect x="690" y="382" width="75" height="95" rx="12" class="faceplate"/>
+<path d="M805 425H865" stroke="#4f5960" stroke-width="10" fill="none" stroke-linecap="round"/>
+<rect x="865" y="335" width="220" height="180" rx="18" class="whole-appliance"/>
+<text x="930" y="370" class="whole-label">Electric Dryer</text>
+<circle cx="975" cy="430" r="55" fill="#dce7ee" stroke="#6f7d87" stroke-width="4"/>
+<text x="910" y="500" class="whole-small">L1 • L2 • N • G concept</text>
+
+<!-- SUBPANEL FEEDER -->
+<text x="365" y="585" class="whole-label">Subpanel Feeder Concept</text>
+<path class="cond-black" d="M307 480H690"/>
+<path d="M307 500H690" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round"/>
+<path class="cond-white" d="M143 520H690"/>
+<path class="cond-ground" d="M243 540H690"/>
+
+<rect x="690" y="535" width="285" height="130" rx="12" class="whole-subpanel"/>
+<text x="780" y="565" class="whole-label">Subpanel</text>
+<rect x="725" y="585" width="45" height="55" rx="4" class="whole-breaker"/>
+<rect x="790" y="585" width="45" height="55" rx="4" class="whole-breaker"/>
+<rect x="855" y="585" width="45" height="55" rx="4" class="whole-breaker"/>
+<rect x="920" y="585" width="25" height="55" rx="3" fill="#d7e0e6" stroke="#60717d" stroke-width="2"/>
+<text x="705" y="690" class="whole-small">Downstream neutral and grounding functions remain conceptually distinct.</text>
+
+<!-- callouts -->
+<rect x="995" y="565" width="155" height="105" rx="10" class="whole-callout"/>
+<text x="1010" y="590" class="whole-small">Advanced idea:</text>
+<text x="1010" y="612" class="whole-small">follow conductor roles,</text>
+<text x="1010" y="632" class="whole-small">not just circuit colors.</text>
+<text x="1010" y="652" class="whole-small">Neutral ≠ equipment</text>
+<text x="1010" y="670" class="whole-small">grounding path.</text>
+
+</svg>
+</div>
+
+<div class="tech-grid">
+<div class="tech-item"><strong>120 V branch</strong><p>One ungrounded conductor supplies the load, neutral carries normal return current, and the equipment-grounding conductor provides the intended fault-current path.</p></div>
+<div class="tech-item"><strong>120/240 V branch</strong><p>Two ungrounded conductors provide line-to-line voltage. A neutral is present where the load also requires line-to-neutral voltage.</p></div>
+<div class="tech-item"><strong>Switching</strong><p>The switch controls the intended hot path to the light. The neutral and equipment-grounding functions remain distinct from the switched conductor.</p></div>
+<div class="tech-item"><strong>Subpanel feeder</strong><p>The feeder concept shows two ungrounded conductors, neutral, and equipment grounding. Downstream bonding/neutral arrangements depend on the installation and applicable requirements.</p></div>
+</div>
+
+<div class="ate-advanced-box">
+<strong>Professional reading habit</strong>
+<p style="margin:6px 0 0">At this level, read the diagram by conductor function: source, overcurrent protection, ungrounded path, neutral return where required, equipment-grounding path, load, and control point. Real installations must be verified from equipment documentation and applicable code; never identify a real conductor by color alone.</p>
+</div>
+</div>
 </section>
 
 <section class="panel" data-ate-level="technical"><h2>Choose a Diagram <span class="ate-level-badge">Technical</span></h2><div class="tabs">
