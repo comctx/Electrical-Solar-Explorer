@@ -430,22 +430,114 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <path class="cable-jacket" d="M830 250H860"/><path class="cond-black" d="M800 220H860"/><path class="cond-white" d="M830 251H860"/><path class="cond-ground" d="M775 312H840V267H860"/>
 </svg></div></section>
 
-<section class="panel diagram-card" id="laundry" data-ate-level="technical"><h2>Laundry Circuit Concept</h2>
-<p class="lead">This version shows two separate breaker positions and two different cable runs: one conceptually for a washer branch and one for an electric dryer branch. It is meant to make the separation of circuits visually obvious.</p>
-<div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
-<rect x="25" y="55" width="230" height="320" rx="12" class="enclosure"/><text class="label" x="82" y="82">Panel / Load Center</text>
-<rect x="55" y="105" width="75" height="220" rx="5" fill="#9eaab3" stroke="#52616b" stroke-width="3"/>
-<rect x="150" y="105" width="70" height="45" rx="5" class="breaker"/><rect x="172" y="114" width="24" height="25" rx="3" class="breaker-handle"/><text class="small" x="151" y="165">washer breaker</text>
-<rect x="150" y="205" width="70" height="70" rx="5" class="breaker"/><rect x="167" y="215" width="15" height="48" rx="3" class="breaker-handle"/><rect x="190" y="215" width="15" height="48" rx="3" class="breaker-handle"/><text class="small" x="145" y="292">2-pole dryer concept</text>
+<section class="panel diagram-card" id="laundry" data-ate-level="technical"><h2>Laundry Circuits <span class="ate-level-badge">Technical</span></h2>
+<p class="lead">The washer and electric dryer are shown as two completely separate branch circuits. Each circuit leaves its own breaker, runs to its own receptacle, and then serves its own appliance.</p>
 
-<!-- washer run -->
-<path class="cable-jacket" d="M255 150H440"/><path class="cond-black" d="M220 127H240V135H440"/><path class="cond-white" d="M220 310H240V151H440"/><path class="cond-ground" d="M220 330H240V167H440"/>
-<rect x="440" y="75" width="160" height="250" rx="14" class="device"/><circle cx="520" cy="180" r="50" fill="#dce7ee" stroke="#6f7d87" stroke-width="4"/><text class="label" x="487" y="110">Washer</text><text class="small" x="470" y="300">separate branch concept</text>
+<div class="principle-banner"><strong>Key idea:</strong> these circuits do not run through each other. The washer branch and dryer branch are independent all the way back to the panel.</div>
 
-<!-- dryer run -->
-<path class="cable-jacket" d="M255 260H690"/><path class="cond-black" d="M205 225H240V244H690"/><path d="M205 255H240V260H690" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round"/><path class="cond-white" d="M205 310H240V276H690"/><path class="cond-ground" d="M205 330H240V292H690"/>
-<rect x="690" y="75" width="190" height="250" rx="14" class="device"/><circle cx="785" cy="180" r="58" fill="#dce7ee" stroke="#6f7d87" stroke-width="4"/><text class="label" x="753" y="110">Dryer</text><text class="small" x="715" y="300">120/240 V appliance concept</text>
-</svg></div></section>
+<div class="wrap"><svg class="diagram" viewBox="0 0 1100 620" style="height:620px" aria-label="Separate washer and dryer branch circuits">
+
+<!-- PANEL -->
+<rect x="35" y="70" width="255" height="485" rx="14" class="enclosure"/>
+<text class="label" x="95" y="105">Panel / Load Center</text>
+<rect x="65" y="135" width="78" height="345" rx="6" fill="#9eaab3" stroke="#52616b" stroke-width="3"/>
+
+<!-- washer breaker -->
+<rect x="165" y="145" width="88" height="58" rx="6" class="breaker"/>
+<rect x="195" y="158" width="26" height="30" rx="4" class="breaker-handle"/>
+<text class="small" x="165" y="222">Washer branch breaker</text>
+
+<!-- dryer breaker -->
+<rect x="165" y="365" width="88" height="88" rx="6" class="breaker"/>
+<rect x="181" y="379" width="22" height="58" rx="4" class="breaker-handle"/>
+<rect x="216" y="379" width="22" height="58" rx="4" class="breaker-handle"/>
+<text class="small" x="164" y="475">Dryer 2-pole breaker</text>
+
+<!-- SECTION DIVIDER -->
+<line x1="315" y1="310" x2="1060" y2="310" stroke="#d7e0e7" stroke-width="3" stroke-dasharray="10 8"/>
+
+<!-- WASHER ROW -->
+<text class="label" x="330" y="70">120 V Washer Branch</text>
+<text class="small" x="330" y="94">Single branch circuit → receptacle → washer</text>
+
+<!-- washer cable jacket -->
+<path class="cable-jacket" d="M290 175H560"/>
+<path class="cable-edge" d="M290 163H560M290 187H560"/>
+
+<!-- washer conductors -->
+<path class="cond-black" d="M253 174H560"/>
+<path class="cond-white" d="M253 190H560"/>
+<path class="cond-ground" d="M253 206H560"/>
+
+<text class="small" x="355" y="153">Hot</text>
+<text class="small" x="420" y="153">Neutral</text>
+<text class="small" x="495" y="153">Equipment ground</text>
+
+<!-- washer receptacle box -->
+<rect x="560" y="105" width="150" height="190" rx="12" class="box-metal"/>
+<text class="small" x="580" y="95">Washer receptacle box</text>
+<rect x="600" y="132" width="70" height="135" rx="9" class="faceplate"/>
+<rect x="616" y="150" width="38" height="43" rx="9" fill="#fff" stroke="#77838b" stroke-width="2"/>
+<rect x="616" y="208" width="38" height="43" rx="9" fill="#fff" stroke="#77838b" stroke-width="2"/>
+<circle cx="635" cy="278" r="6" fill="#67a55a" stroke="#285e21" stroke-width="2"/>
+
+<!-- washer appliance cord -->
+<path d="M710 190H785" stroke="#4f5960" stroke-width="8" fill="none" stroke-linecap="round"/>
+
+<!-- washer appliance -->
+<rect x="785" y="95" width="220" height="205" rx="18" class="device"/>
+<text class="label" x="865" y="128">Washer</text>
+<circle cx="895" cy="200" r="62" fill="#dce7ee" stroke="#6f7d87" stroke-width="4"/>
+<text class="small" x="835" y="285">120 V appliance concept</text>
+
+<!-- DRYER ROW -->
+<text class="label" x="330" y="350">120/240 V Electric Dryer Branch</text>
+<text class="small" x="330" y="374">Separate 2-pole branch circuit → dryer receptacle → dryer</text>
+
+<!-- dryer cable jacket -->
+<path class="cable-jacket" d="M290 430H560"/>
+<path class="cable-edge" d="M290 418H560M290 442H560"/>
+
+<!-- dryer conductors, four-conductor concept -->
+<path class="cond-black" d="M253 405H560"/>
+<path d="M253 423H560" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round"/>
+<path class="cond-white" d="M253 441H560"/>
+<path class="cond-ground" d="M253 459H560"/>
+
+<text class="small" x="330" y="398">Hot A</text>
+<text class="small" x="395" y="398">Hot B</text>
+<text class="small" x="460" y="398">Neutral</text>
+<text class="small" x="515" y="398">Ground</text>
+
+<!-- dryer receptacle box -->
+<rect x="560" y="360" width="150" height="200" rx="12" class="box-metal"/>
+<text class="small" x="585" y="350">Dryer receptacle box</text>
+<rect x="598" y="392" width="76" height="135" rx="12" class="faceplate"/>
+<circle cx="617" cy="432" r="8" class="slot"/>
+<circle cx="655" cy="432" r="8" class="slot"/>
+<rect x="630" y="458" width="10" height="25" rx="3" class="slot"/>
+<path d="M618 502q18-16 36 0" stroke="#1f2529" stroke-width="5" fill="none"/>
+
+<!-- dryer appliance cord -->
+<path d="M710 445H785" stroke="#4f5960" stroke-width="10" fill="none" stroke-linecap="round"/>
+
+<!-- dryer appliance -->
+<rect x="785" y="350" width="220" height="210" rx="18" class="device"/>
+<text class="label" x="872" y="385">Dryer</text>
+<circle cx="895" cy="462" r="68" fill="#dce7ee" stroke="#6f7d87" stroke-width="4"/>
+<text class="small" x="825" y="545">120/240 V appliance concept</text>
+
+<!-- bottom teaching note -->
+<rect x="330" y="575" width="675" height="30" rx="8" fill="#eef7ff" stroke="#9fc8ef" stroke-width="2"/>
+<text class="small" x="350" y="595">Separate breakers + separate branch conductors + separate receptacles = two independent circuits.</text>
+
+</svg></div>
+
+<div class="ate-technical-box">
+<strong>Why this layout is easier to read</strong>
+<p style="margin:6px 0 0">The upper row is only the washer circuit. The lower row is only the dryer circuit. Nothing crosses between them, so a beginner can follow either circuit from left to right without guessing which conductor belongs to which appliance.</p>
+</div>
+</section>
 
 <section class="panel diagram-card" id="240" data-ate-level="technical"><h2>240 V Appliance Circuit Concept</h2>
 <p class="lead">This cutaway uses a double-pole breaker inside a panel and a multi-conductor branch cable entering an appliance connection/disconnect concept. The two ungrounded conductors supply the 240 V load. Some equipment also needs a neutral for internal 120 V loads; other 240 V equipment does not.</p>
