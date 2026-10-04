@@ -539,6 +539,87 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <strong>Why this layout is easier to read</strong>
 <p style="margin:6px 0 0">The upper row is only the washer circuit. The lower row is only the dryer circuit. Nothing crosses between them, so a beginner can follow either circuit from left to right without guessing which conductor belongs to which appliance.</p>
 </div>
+
+
+<div class="ate-technical-box">
+<strong>Washer detail stays intentionally simple</strong>
+<p style="margin:6px 0 0">For the washer, the important lesson is the branch circuit, receptacle, cord, and appliance relationship. Internal washer terminals are not shown because they vary by appliance and are not needed to understand the residential branch circuit.</p>
+</div>
+
+<h3>Dryer Terminal Block Concept</h3>
+<p class="lead">A dryer is more useful as a teaching example because a 120/240 V appliance can use two ungrounded conductors, a neutral, and a separate equipment-grounding path. The terminal arrangement below is conceptual only; actual layouts and markings vary by manufacturer.</p>
+
+<div class="wrap">
+<svg class="diagram" viewBox="0 0 1050 470" style="height:470px" aria-label="Dryer receptacle cord and terminal block concept">
+
+<!-- RECEPTACLE -->
+<rect x="40" y="115" width="185" height="245" rx="14" class="box-metal"/>
+<text class="label" x="62" y="100">Dryer Receptacle</text>
+<rect x="88" y="150" width="90" height="165" rx="14" class="faceplate"/>
+<circle cx="110" cy="195" r="10" class="slot"/>
+<circle cx="156" cy="195" r="10" class="slot"/>
+<rect x="127" y="225" width="12" height="34" rx="3" class="slot"/>
+<path d="M108 286q25-21 50 0" stroke="#1f2529" stroke-width="6" fill="none"/>
+
+<!-- CORD -->
+<path d="M225 240H405" stroke="#4f5960" stroke-width="24" fill="none" stroke-linecap="round"/>
+<text class="small" x="280" y="215">Dryer cord</text>
+
+<!-- CONDUCTORS EMERGING FROM CORD -->
+<path class="cond-black" d="M405 210H535"/>
+<path d="M405 230H535" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round"/>
+<path class="cond-white" d="M405 250H535"/>
+<path class="cond-ground" d="M405 270H535"/>
+
+<text class="wire-label" x="420" y="195">Black = Hot A</text>
+<text class="wire-label" x="420" y="224">Red = Hot B</text>
+<text class="wire-label" x="420" y="253">White = Neutral</text>
+<text class="wire-label" x="420" y="282">Green = Ground</text>
+
+<!-- DRYER TERMINAL AREA -->
+<rect x="535" y="85" width="455" height="310" rx="18" class="device"/>
+<text class="label" x="655" y="115">Dryer Terminal Area — Concept</text>
+
+<!-- terminal strip -->
+<rect x="620" y="170" width="285" height="105" rx="12" fill="#eef3f6" stroke="#60717d" stroke-width="3"/>
+<circle cx="675" cy="220" r="17" class="screw"/>
+<circle cx="762" cy="220" r="17" class="screw"/>
+<circle cx="850" cy="220" r="17" class="screw"/>
+
+<text class="label" x="661" y="158">L1</text>
+<text class="label" x="752" y="158">N</text>
+<text class="label" x="836" y="158">L2</text>
+
+<!-- green chassis ground -->
+<circle cx="762" cy="330" r="17" class="green-screw"/>
+<text class="label" x="747" y="365">G</text>
+<text class="small" x="792" y="334">Chassis / equipment ground point</text>
+
+<!-- relationship lines -->
+<path class="cond-black" d="M535 210H658"/>
+<path class="cond-white" d="M535 250H745V220"/>
+<path d="M535 230H850V203" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="cond-ground" d="M535 270H600V330H745"/>
+
+<!-- explanations -->
+<text class="small" x="610" y="410">L1 and L2 = ungrounded conductors • N = neutral when the appliance requires it • G = equipment grounding point</text>
+<text class="small" x="610" y="435">Illustrative relationship only — actual terminal order, labeling, cord method, and bonding arrangement vary by appliance.</text>
+
+</svg>
+</div>
+
+<div class="tech-grid">
+<div class="tech-item"><strong>L1 and L2</strong><p>The two ungrounded conductors provide the line-to-line voltage used by the 240 V portions of the appliance.</p></div>
+<div class="tech-item"><strong>Neutral (N)</strong><p>Where the appliance design requires it, the neutral provides a normal return path for internal 120 V loads.</p></div>
+<div class="tech-item"><strong>Equipment ground (G)</strong><p>The equipment-grounding conductor bonds the metal chassis and is intended for fault-current return, not normal load current.</p></div>
+<div class="tech-item"><strong>Why four conductors?</strong><p>Keeping neutral and equipment grounding functions separate makes the electrical roles easier to understand and reflects the common modern 120/240 V appliance concept.</p></div>
+</div>
+
+<div class="ate-advanced-box" data-ate-level="advanced">
+<strong>Advanced: 3-wire vs 4-wire dryer concept</strong>
+<p style="margin:6px 0 0">Older installations may use a legacy 3-wire arrangement, while modern installations commonly use a 4-wire arrangement that separates neutral from the equipment-grounding conductor. A dryer may also include a manufacturer-specified bonding strap or bonding link whose permitted configuration depends on the appliance instructions and the installation. Do not infer its position from this drawing; use the exact appliance documentation and applicable code.</p>
+</div>
+
 </section>
 
 <section class="panel diagram-card" id="240" data-ate-level="technical"><h2>240 V Appliance Circuit Concept</h2>
