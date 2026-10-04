@@ -246,7 +246,10 @@ html[data-ate-theme="dark"] .ate-finder-card{background:#122235;border-color:#31
   margin-left:auto;
   margin-right:auto;
 }
-.ate-polished-page .ate-polished-nav{
+.ate-polished-page .ate-polished-nav,
+.ate-polished-page .nav,
+.ate-polished-page .page-nav,
+.ate-polished-page .tool-page-nav{
   display:none !important;
 }
 .ate-polished-page .ate-polished-nav a{
