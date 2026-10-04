@@ -431,195 +431,129 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <path class="cable-jacket" d="M830 250H860"/><path class="cond-black" d="M800 220H860"/><path class="cond-white" d="M830 251H860"/><path class="cond-ground" d="M775 312H840V267H860"/>
 </svg></div></section>
 
-<section class="panel diagram-card" id="laundry" data-ate-level="technical"><h2>Laundry Circuits <span class="ate-level-badge">Technical</span></h2>
-<p class="lead">The washer and electric dryer are shown as two completely separate branch circuits. Each circuit leaves its own breaker, runs to its own receptacle, and then serves its own appliance.</p>
+<section class="panel diagram-card" id="laundry" data-ate-level="technical">
+<h2>Laundry Circuits <span class="ate-level-badge">Technical</span></h2>
+<p class="lead">Laundry equipment can use different electrical arrangements. This page separates the three common teaching cases so they are easy to compare.</p>
 
-<div class="principle-banner"><strong>Key idea:</strong> these circuits do not run through each other. The washer branch and dryer branch are independent all the way back to the panel.</div>
-<div class="ate-technical-box"><strong>Drawing convention:</strong> Conductors are shown individually for clarity: black/red = ungrounded conductors, white = neutral, green = equipment grounding conductor. The outer cable sheath is intentionally omitted.</div>
+<div class="principle-banner"><strong>Three different cases:</strong> a washer is typically a 120 V load, a gas or compact dryer may be 120 V electrically, and a full-size electric dryer is commonly a 120/240 V load.</div>
 
-<div class="wrap"><svg class="diagram" viewBox="0 0 1100 620" style="height:620px" aria-label="Separate washer and dryer branch circuits">
+<div class="ate-technical-box"><strong>Drawing convention:</strong> conductors are shown individually for clarity: black/red = ungrounded conductors, white = neutral, green = equipment grounding conductor. The outer cable sheath is intentionally omitted.</div>
 
-<!-- PANEL -->
-<rect x="35" y="70" width="255" height="485" rx="14" class="enclosure"/>
-<text class="label" x="95" y="105">Panel / Load Center</text>
-<rect x="65" y="135" width="78" height="345" rx="6" fill="#9eaab3" stroke="#52616b" stroke-width="3"/>
+<h3>1. 120 V Washer</h3>
+<div class="wrap"><svg class="diagram" viewBox="0 0 1100 330" style="height:330px" aria-label="120 volt washer branch circuit">
+<rect x="35" y="60" width="220" height="220" rx="14" class="enclosure"/>
+<text class="label" x="90" y="95">Panel / Load Center</text>
+<rect x="160" y="115" width="70" height="50" rx="6" class="breaker"/>
+<rect x="185" y="126" width="22" height="26" rx="4" class="breaker-handle"/>
+<text class="small" x="160" y="185">Washer branch breaker</text>
 
-<!-- washer breaker -->
-<rect x="165" y="145" width="88" height="58" rx="6" class="breaker"/>
-<rect x="195" y="158" width="26" height="30" rx="4" class="breaker-handle"/>
-<text class="small" x="165" y="222">Washer branch breaker</text>
+<path class="cond-black" d="M230 140H540"/>
+<path class="cond-white" d="M230 160H540"/>
+<path class="cond-ground" d="M230 180H540"/>
+<text class="wire-label" x="330" y="128">Black = Hot</text>
+<text class="wire-label" x="330" y="150">White = Neutral</text>
+<text class="wire-label" x="330" y="172">Green = Ground</text>
 
-<!-- dryer breaker -->
-<rect x="165" y="365" width="88" height="88" rx="6" class="breaker"/>
-<rect x="181" y="379" width="22" height="58" rx="4" class="breaker-handle"/>
-<rect x="216" y="379" width="22" height="58" rx="4" class="breaker-handle"/>
-<text class="small" x="164" y="475">Dryer 2-pole breaker</text>
+<rect x="540" y="80" width="150" height="180" rx="12" class="box-metal"/>
+<text class="small" x="560" y="70">Washer receptacle</text>
+<rect x="580" y="108" width="70" height="125" rx="10" class="faceplate"/>
 
-<!-- SECTION DIVIDER -->
-<line x1="315" y1="310" x2="1060" y2="310" stroke="#d7e0e7" stroke-width="3" stroke-dasharray="10 8"/>
+<path d="M690 170H770" stroke="#4f5960" stroke-width="8" fill="none" stroke-linecap="round"/>
 
-<!-- WASHER ROW -->
-<text class="label" x="330" y="70">120 V Washer Branch</text>
-<text class="small" x="330" y="94">Single branch circuit → receptacle → washer</text>
-
-<!-- washer cable jacket -->
-<path class="cable-jacket" d="M290 175H560"/>
-<path class="cable-edge" d="M290 163H560M290 187H560"/>
-
-<!-- washer conductors -->
-<path class="cond-black" d="M253 174H560"/>
-<path class="cond-white" d="M253 190H560"/>
-<path class="cond-ground" d="M253 206H560"/>
-
-<text class="wire-label" x="330" y="166">Black = Hot</text>
-<text class="wire-label" x="330" y="187">White = Neutral</text>
-<text class="wire-label" x="330" y="208">Green = Ground</text>
-
-<!-- washer receptacle box -->
-<rect x="560" y="105" width="150" height="190" rx="12" class="box-metal"/>
-<text class="small" x="580" y="95">Washer receptacle box</text>
-<rect x="600" y="132" width="70" height="135" rx="9" class="faceplate"/>
-<rect x="616" y="150" width="38" height="43" rx="9" fill="#fff" stroke="#77838b" stroke-width="2"/>
-<rect x="616" y="208" width="38" height="43" rx="9" fill="#fff" stroke="#77838b" stroke-width="2"/>
-<circle cx="635" cy="278" r="6" fill="#67a55a" stroke="#285e21" stroke-width="2"/>
-
-<!-- washer appliance cord -->
-<path d="M710 190H785" stroke="#4f5960" stroke-width="8" fill="none" stroke-linecap="round"/>
-
-<!-- washer appliance -->
-<rect x="785" y="95" width="220" height="205" rx="18" class="device"/>
-<text class="label" x="865" y="128">Washer</text>
-<circle cx="895" cy="200" r="62" fill="#dce7ee" stroke="#6f7d87" stroke-width="4"/>
-<text class="small" x="835" y="285">120 V appliance concept</text>
-
-<!-- DRYER ROW -->
-<text class="label" x="330" y="350">120/240 V Electric Dryer Branch</text>
-<text class="small" x="330" y="374">Separate 2-pole branch circuit → dryer receptacle → dryer</text>
-
-<!-- dryer cable jacket -->
-<path class="cable-jacket" d="M290 430H560"/>
-<path class="cable-edge" d="M290 418H560M290 442H560"/>
-
-<!-- dryer conductors, four-conductor concept -->
-<path class="cond-black" d="M253 405H560"/>
-<path d="M253 423H560" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round"/>
-<path class="cond-white" d="M253 441H560"/>
-<path class="cond-ground" d="M253 459H560"/>
-
-<text class="wire-label" x="330" y="397">Black = Hot A</text>
-<text class="wire-label" x="330" y="419">Red = Hot B</text>
-<text class="wire-label" x="330" y="441">White = Neutral</text>
-<text class="wire-label" x="330" y="463">Green = Ground</text>
-
-<!-- dryer receptacle box -->
-<rect x="560" y="360" width="150" height="200" rx="12" class="box-metal"/>
-<text class="small" x="585" y="350">Dryer receptacle box</text>
-<rect x="598" y="392" width="76" height="135" rx="12" class="faceplate"/>
-<circle cx="617" cy="432" r="8" class="slot"/>
-<circle cx="655" cy="432" r="8" class="slot"/>
-<rect x="630" y="458" width="10" height="25" rx="3" class="slot"/>
-<path d="M618 502q18-16 36 0" stroke="#1f2529" stroke-width="5" fill="none"/>
-
-<!-- dryer appliance cord -->
-<path d="M710 445H785" stroke="#4f5960" stroke-width="10" fill="none" stroke-linecap="round"/>
-
-<!-- dryer appliance -->
-<rect x="785" y="350" width="220" height="210" rx="18" class="device"/>
-<text class="label" x="872" y="385">Dryer</text>
-<circle cx="895" cy="462" r="68" fill="#dce7ee" stroke="#6f7d87" stroke-width="4"/>
-<text class="small" x="825" y="545">120/240 V appliance concept</text>
-
-<!-- bottom teaching note -->
-<rect x="330" y="575" width="675" height="30" rx="8" fill="#eef7ff" stroke="#9fc8ef" stroke-width="2"/>
-<text class="small" x="350" y="595">Separate breakers + separate branch conductors + separate receptacles = two independent circuits.</text>
-
+<rect x="770" y="70" width="245" height="200" rx="18" class="device"/>
+<text class="label" x="855" y="105">Washer</text>
+<circle cx="892" cy="170" r="56" fill="#dce7ee" stroke="#6f7d87" stroke-width="4"/>
+<text class="small" x="830" y="252">120 V appliance concept</text>
 </svg></div>
 
-<div class="ate-technical-box">
-<strong>Why this layout is easier to read</strong>
-<p style="margin:6px 0 0">The upper row is only the washer circuit. The lower row is only the dryer circuit. Nothing crosses between them, so a beginner can follow either circuit from left to right without guessing which conductor belongs to which appliance.</p>
-</div>
+<h3>2. 120 V Gas / Compact Dryer</h3>
+<p class="lead">A gas dryer uses gas for heat and electricity for the motor, controls, ignition, and related functions. Some compact or ventless dryers are also designed for 120 V only.</p>
+<div class="wrap"><svg class="diagram" viewBox="0 0 1100 330" style="height:330px" aria-label="120 volt gas or compact dryer branch circuit">
+<rect x="35" y="60" width="220" height="220" rx="14" class="enclosure"/>
+<text class="label" x="90" y="95">Panel / Load Center</text>
+<rect x="160" y="115" width="70" height="50" rx="6" class="breaker"/>
+<rect x="185" y="126" width="22" height="26" rx="4" class="breaker-handle"/>
+<text class="small" x="160" y="185">120 V dryer branch</text>
 
+<path class="cond-black" d="M230 140H540"/>
+<path class="cond-white" d="M230 160H540"/>
+<path class="cond-ground" d="M230 180H540"/>
+<text class="wire-label" x="330" y="128">Black = Hot</text>
+<text class="wire-label" x="330" y="150">White = Neutral</text>
+<text class="wire-label" x="330" y="172">Green = Ground</text>
 
-<div class="ate-technical-box">
-<strong>Washer detail stays intentionally simple</strong>
-<p style="margin:6px 0 0">For the washer, the important lesson is the branch circuit, receptacle, cord, and appliance relationship. Internal washer terminals are not shown because they vary by appliance and are not needed to understand the residential branch circuit.</p>
-</div>
+<rect x="540" y="80" width="150" height="180" rx="12" class="box-metal"/>
+<text class="small" x="560" y="70">120 V dryer receptacle</text>
+<rect x="580" y="108" width="70" height="125" rx="10" class="faceplate"/>
 
-<h3>Dryer Terminal Block Concept</h3>
-<p class="lead">A dryer is more useful as a teaching example because a 120/240 V appliance can use two ungrounded conductors, a neutral, and a separate equipment-grounding path. The terminal arrangement below is conceptual only; actual layouts and markings vary by manufacturer.</p>
+<path d="M690 170H770" stroke="#4f5960" stroke-width="8" fill="none" stroke-linecap="round"/>
 
-<div class="wrap">
-<svg class="diagram" viewBox="0 0 1050 470" style="height:470px" aria-label="Dryer receptacle cord and terminal block concept">
+<rect x="770" y="70" width="245" height="200" rx="18" class="device"/>
+<text class="label" x="822" y="105">Gas / Compact Dryer</text>
+<circle cx="892" cy="170" r="58" fill="#dce7ee" stroke="#6f7d87" stroke-width="4"/>
+<text class="small" x="815" y="252">120 V electrical supply concept</text>
+</svg></div>
 
-<!-- RECEPTACLE -->
-<rect x="40" y="115" width="185" height="245" rx="14" class="box-metal"/>
-<text class="label" x="62" y="100">Dryer Receptacle</text>
-<rect x="88" y="150" width="90" height="165" rx="14" class="faceplate"/>
-<circle cx="110" cy="195" r="10" class="slot"/>
-<circle cx="156" cy="195" r="10" class="slot"/>
-<rect x="127" y="225" width="12" height="34" rx="3" class="slot"/>
-<path d="M108 286q25-21 50 0" stroke="#1f2529" stroke-width="6" fill="none"/>
+<h3>3. 120/240 V Full-Size Electric Dryer</h3>
+<div class="wrap"><svg class="diagram" viewBox="0 0 1100 355" style="height:355px" aria-label="120 240 volt electric dryer branch circuit">
+<rect x="35" y="60" width="220" height="235" rx="14" class="enclosure"/>
+<text class="label" x="90" y="95">Panel / Load Center</text>
+<rect x="160" y="115" width="76" height="86" rx="6" class="breaker"/>
+<rect x="176" y="128" width="20" height="55" rx="4" class="breaker-handle"/>
+<rect x="207" y="128" width="20" height="55" rx="4" class="breaker-handle"/>
+<text class="small" x="158" y="220">2-pole dryer breaker</text>
 
-<!-- CORD -->
-<path d="M225 240H405" stroke="#4f5960" stroke-width="24" fill="none" stroke-linecap="round"/>
-<text class="small" x="280" y="215">Dryer cord</text>
+<path class="cond-black" d="M236 130H555"/>
+<path d="M236 150H555" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round"/>
+<path class="cond-white" d="M236 170H555"/>
+<path class="cond-ground" d="M236 190H555"/>
+<text class="wire-label" x="335" y="118">Black = Hot A</text>
+<text class="wire-label" x="335" y="140">Red = Hot B</text>
+<text class="wire-label" x="335" y="162">White = Neutral</text>
+<text class="wire-label" x="335" y="184">Green = Ground</text>
 
-<!-- CONDUCTORS EMERGING FROM CORD -->
-<path class="cond-black" d="M405 210H535"/>
-<path d="M405 230H535" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round"/>
-<path class="cond-white" d="M405 250H535"/>
-<path class="cond-ground" d="M405 270H535"/>
+<rect x="555" y="75" width="160" height="210" rx="12" class="box-metal"/>
+<text class="small" x="580" y="65">Dryer receptacle</text>
+<rect x="597" y="112" width="76" height="135" rx="12" class="faceplate"/>
+<circle cx="616" cy="152" r="8" class="slot"/>
+<circle cx="654" cy="152" r="8" class="slot"/>
+<rect x="629" y="178" width="10" height="25" rx="3" class="slot"/>
+<path d="M617 222q18-16 36 0" stroke="#1f2529" stroke-width="5" fill="none"/>
 
-<text class="wire-label" x="420" y="195">Black = Hot A</text>
-<text class="wire-label" x="420" y="224">Red = Hot B</text>
-<text class="wire-label" x="420" y="253">White = Neutral</text>
-<text class="wire-label" x="420" y="282">Green = Ground</text>
+<path d="M715 175H790" stroke="#4f5960" stroke-width="10" fill="none" stroke-linecap="round"/>
 
-<!-- DRYER TERMINAL AREA -->
-<rect x="535" y="85" width="455" height="310" rx="18" class="device"/>
-<text class="label" x="655" y="115">Dryer Terminal Area — Concept</text>
+<rect x="790" y="65" width="250" height="225" rx="18" class="device"/>
+<text class="label" x="867" y="100">Electric Dryer</text>
+<circle cx="915" cy="175" r="66" fill="#dce7ee" stroke="#6f7d87" stroke-width="4"/>
 
-<!-- terminal strip -->
-<rect x="620" y="170" width="285" height="105" rx="12" fill="#eef3f6" stroke="#60717d" stroke-width="3"/>
-<circle cx="675" cy="220" r="17" class="screw"/>
-<circle cx="762" cy="220" r="17" class="screw"/>
-<circle cx="850" cy="220" r="17" class="screw"/>
-
-<text class="label" x="661" y="158">L1</text>
-<text class="label" x="752" y="158">N</text>
-<text class="label" x="836" y="158">L2</text>
-
-<!-- green chassis ground -->
-<circle cx="762" cy="330" r="17" class="green-screw"/>
-<text class="label" x="747" y="365">G</text>
-<text class="small" x="792" y="334">Chassis / equipment ground point</text>
-
-<!-- relationship lines -->
-<path class="cond-black" d="M535 210H658"/>
-<path class="cond-white" d="M535 250H745V220"/>
-<path d="M535 230H850V203" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-<path class="cond-ground" d="M535 270H600V330H745"/>
-
-<!-- explanations -->
-<text class="small" x="610" y="410">L1 and L2 = ungrounded conductors • N = neutral when the appliance requires it • G = equipment grounding point</text>
-<text class="small" x="610" y="435">Illustrative relationship only — actual terminal order, labeling, cord method, and bonding arrangement vary by appliance.</text>
-
-</svg>
-</div>
+<!-- terminal block next to dryer -->
+<rect x="825" y="245" width="180" height="72" rx="10" fill="#eef3f6" stroke="#60717d" stroke-width="3"/>
+<circle cx="858" cy="278" r="12" class="screw"/>
+<circle cx="915" cy="278" r="12" class="screw"/>
+<circle cx="972" cy="278" r="12" class="screw"/>
+<text class="small" x="850" y="258">L1</text>
+<text class="small" x="909" y="258">N</text>
+<text class="small" x="965" y="258">L2</text>
+<circle cx="1018" cy="278" r="12" class="green-screw"/>
+<text class="small" x="1014" y="258">G</text>
+</svg></div>
 
 <div class="tech-grid">
-<div class="tech-item"><strong>L1 and L2</strong><p>The two ungrounded conductors provide the line-to-line voltage used by the 240 V portions of the appliance.</p></div>
-<div class="tech-item"><strong>Neutral (N)</strong><p>Where the appliance design requires it, the neutral provides a normal return path for internal 120 V loads.</p></div>
-<div class="tech-item"><strong>Equipment ground (G)</strong><p>The equipment-grounding conductor bonds the metal chassis and is intended for fault-current return, not normal load current.</p></div>
-<div class="tech-item"><strong>Why four conductors?</strong><p>Keeping neutral and equipment grounding functions separate makes the electrical roles easier to understand and reflects the common modern 120/240 V appliance concept.</p></div>
+<div class="tech-item"><strong>L1 / L2</strong><p>The two ungrounded conductors supply the line-to-line voltage used by the 240 V portions of the dryer.</p></div>
+<div class="tech-item"><strong>Neutral</strong><p>Where the dryer design requires it, the neutral serves internal 120 V loads.</p></div>
+<div class="tech-item"><strong>Equipment ground</strong><p>The equipment-grounding conductor bonds the metal chassis and is not a normal load-current path.</p></div>
+<div class="tech-item"><strong>Why separate the three cases?</strong><p>A 120 V gas or compact dryer is electrically different from a standard full-size 120/240 V electric dryer.</p></div>
 </div>
 
 <div class="ate-advanced-box" data-ate-level="advanced">
-<strong>Advanced: 3-wire vs 4-wire dryer concept</strong>
-<p style="margin:6px 0 0">Older installations may use a legacy 3-wire arrangement, while modern installations commonly use a 4-wire arrangement that separates neutral from the equipment-grounding conductor. A dryer may also include a manufacturer-specified bonding strap or bonding link whose permitted configuration depends on the appliance instructions and the installation. Do not infer its position from this drawing; use the exact appliance documentation and applicable code.</p>
+<strong>Advanced: legacy 3-wire vs modern 4-wire concept</strong>
+<p style="margin:6px 0 0">Older installations may use a legacy 3-wire arrangement, while modern installations commonly separate neutral from the equipment-grounding conductor with a 4-wire connection. Bonding strap/link configuration is appliance-specific and must follow the manufacturer instructions and applicable code.</p>
 </div>
 
+<div class="ate-technical-box">
+<strong>Important</strong>
+<p style="margin:6px 0 0">These drawings explain the electrical relationships only. They are not terminal-by-terminal hookup instructions, and actual dryer receptacles, terminal order, branch-circuit requirements, and appliance ratings vary.</p>
+</div>
 </section>
 
 <section class="panel diagram-card" id="240" data-ate-level="technical"><h2>240 V Appliance Circuit Concept</h2>
