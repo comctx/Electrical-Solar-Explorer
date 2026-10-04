@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Home Wiring Diagrams</title>
+<link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script>
+<style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--hot:#d64b3c;--neutral:#596c7b;--ground:#1f7a4d;--switch:#f3a900}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}
+header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.94}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1160px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.start{background:#fffbed;border:1px solid #e5c94a;border-radius:16px;padding:16px;margin-bottom:16px}.start ol{margin:0;padding-left:22px;line-height:1.6}.start li{margin-bottom:5px}
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.btn{min-height:44px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}.btn.active{background:#ffd43b;border-color:#e4ba16}
+.diagram-card{display:none}.diagram-card.active{display:block}.wrap{overflow-x:auto}.diagram{width:100%;min-width:860px;height:390px;background:#fdfefe;border:1px solid var(--border);border-radius:14px}
+.wire{fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.hot{stroke:var(--hot)}.neutral{stroke:var(--neutral)}.ground{stroke:var(--ground);stroke-dasharray:10 8}.switched{stroke:var(--switch)}
+.box{fill:#eef7ff;stroke:#071a2e;stroke-width:3}.device{fill:#fff;stroke:#071a2e;stroke-width:3}.gfci{fill:#eaf7ef;stroke:#1f7a4d;stroke-width:3}.label{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}.small{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#526779}
+.legend{display:flex;gap:13px;flex-wrap:wrap;margin:10px 0 0;font-size:13px}.swatch{display:inline-block;width:18px;height:5px;border-radius:5px;vertical-align:middle;margin-right:5px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.card{border:1px solid var(--border);border-radius:13px;background:#f8fbff;padding:13px}.card strong{display:block;color:var(--navy);margin-bottom:5px}.card p{margin:0;color:#40566a;line-height:1.45}
+.grid{display:grid;gap:10px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px}input,select{width:100%;min-height:44px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}.loadlist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.loaditem{display:flex;gap:8px;align-items:center;border:1px solid var(--border);background:#f8fbff;border-radius:10px;padding:9px}.loaditem input{width:auto;min-height:auto}
+.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700}.result strong{display:block;color:var(--navy);font-size:22px;margin-top:3px}.feedback{margin-top:12px;background:#eef7ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.feedback.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}.feedback.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}.feedback.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+.warnbox{background:#fff3d6;border:1px solid #e5a84a;color:#6a4300;border-radius:12px;padding:13px;line-height:1.5}
+@media(max-width:820px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.cards,.loadlist,.two,.three{grid-template-columns:1fr}}
+@media(max-width:500px){main{padding:12px}.tabs{grid-template-columns:1fr}}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+</style>
+</head>
+<body>
+<header><h1>Home Wiring Diagrams</h1><p>See how common residential branch circuits relate to the panel, switches, receptacles, lights, and larger loads.</p></header>
+<main>
+<nav class="nav"><a href="index.html">← Home</a><a href="home-wiring-overview.html">How a House Is Wired</a><a href="wiring-installation.html">Wiring & Installation</a><a href="protection-devices.html">Protection Devices</a><a href="lugs-ferrules-splices.html">Lugs, Ferrules & Splices</a></nav>
+
+<section class="start"><h2>Beginner Start Here</h2><ol>
+<li>These diagrams show <strong>electrical relationships</strong>, not exact cable routing or installation instructions.</li>
+<li>Branch-circuit devices are normally connected in <strong>parallel</strong>, so each load receives the intended circuit voltage.</li>
+<li>A switch is placed in the control path to a load such as a light; the neutral generally continues to the load rather than being used as the normal switch control conductor.</li>
+<li>The equipment-grounding path is for fault conditions and is not the normal load-current path.</li>
+<li>Breaker rating, conductor size, box fill, receptacle count, required circuits, GFCI/AFCI rules, and cable type must follow the equipment instructions and electrical code that applies to the real installation.</li>
+</ol></section>
+
+<section class="panel"><h2>Choose a Diagram</h2><div class="tabs">
+<button class="btn active" data-show="receptacle">Basic Receptacle</button>
+<button class="btn" data-show="switch">Light & Switch</button>
+<button class="btn" data-show="multi">Multiple Receptacles</button>
+<button class="btn" data-show="mixed">Light + Receptacle</button>
+<button class="btn" data-show="kitchen">Kitchen / GFCI</button>
+<button class="btn" data-show="bath">Bathroom</button>
+<button class="btn" data-show="laundry">Laundry</button>
+<button class="btn" data-show="240">240 V Load</button>
+</div></section>
+
+<section class="panel diagram-card active" id="receptacle"><h2>Basic 120 V Receptacle Circuit</h2><p class="lead">The branch breaker supplies the ungrounded conductor. The neutral provides the normal return path. The equipment-grounding conductor bonds exposed metal and provides an intended fault-current path.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
+<rect x="45" y="85" width="180" height="210" rx="14" class="box"/><text class="label" x="100" y="120">Panel</text><text class="small" x="72" y="155">Branch breaker</text><text class="small" x="72" y="190">Neutral termination</text><text class="small" x="72" y="225">Grounding termination</text>
+<rect x="650" y="105" width="160" height="170" rx="14" class="device"/><text class="label" x="685" y="140">Receptacle</text><circle cx="705" cy="180" r="5" fill="#071a2e"/><circle cx="755" cy="180" r="5" fill="#071a2e"/><path d="M714 220h32" stroke="#071a2e" stroke-width="4"/>
+<path class="wire hot" d="M225 155H650"/><text class="small" x="365" y="145">Ungrounded / hot path</text>
+<path class="wire neutral" d="M225 195H650"/><text class="small" x="380" y="185">Neutral path</text>
+<path class="wire ground" d="M225 235H650"/><text class="small" x="350" y="260">Equipment grounding path</text>
+</svg></div></section>
+
+<section class="panel diagram-card" id="switch"><h2>Single-Pole Light Switch Circuit</h2><p class="lead">Conceptually, the switch controls the ungrounded path to the light. The neutral continues to the light. Actual box/cable arrangements vary.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
+<rect x="45" y="80" width="160" height="220" rx="14" class="box"/><text class="label" x="98" y="115">Panel</text>
+<rect x="390" y="130" width="110" height="120" rx="12" class="device"/><text class="label" x="410" y="165">Switch</text><circle cx="420" cy="205" r="5" fill="#071a2e"/><circle cx="470" cy="205" r="5" fill="#071a2e"/><path d="M425 205L466 180" stroke="#071a2e" stroke-width="4"/>
+<circle cx="720" cy="190" r="58" class="device"/><path d="M680 150l80 80M760 150l-80 80" stroke="#b58b00" stroke-width="4"/><text class="label" x="694" y="275">Light</text>
+<path class="wire hot" d="M205 150H390"/><text class="small" x="250" y="140">Hot feed</text>
+<path class="wire switched" d="M500 205H662"/><text class="small" x="535" y="195">Switched hot</text>
+<path class="wire neutral" d="M205 245H662"/><path class="wire neutral" d="M662 245V220"/><text class="small" x="350" y="270">Neutral continues to load</text>
+<path class="wire ground" d="M205 285H390M500 285H720"/><text class="small" x="435" y="310">Equipment grounding / bonding concept</text>
+</svg></div></section>
+
+<section class="panel diagram-card" id="multi"><h2>Multiple Receptacles on One Branch Circuit</h2><p class="lead">The receptacles are electrically in parallel. Each one is connected across the branch hot and neutral—not in series through the appliances.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
+<rect x="35" y="90" width="150" height="200" rx="14" class="box"/><text class="label" x="80" y="125">Panel</text>
+<path class="wire hot" d="M185 145H835"/><path class="wire neutral" d="M185 220H835"/><path class="wire ground" d="M185 275H835"/>
+<g transform="translate(300 0)"><rect x="0" y="115" width="90" height="135" rx="10" class="device"/><text class="small" x="17" y="145">Outlet 1</text><path class="wire hot" d="M45 30V0" transform="translate(0 115)"/><path class="wire neutral" d="M65 105V135"/><path d="M45 145V160" class="wire ground"/></g>
+<g transform="translate(500 0)"><rect x="0" y="115" width="90" height="135" rx="10" class="device"/><text class="small" x="17" y="145">Outlet 2</text><path class="wire hot" d="M45 30V0" transform="translate(0 115)"/><path class="wire neutral" d="M65 105V135"/><path d="M45 145V160" class="wire ground"/></g>
+<g transform="translate(700 0)"><rect x="0" y="115" width="90" height="135" rx="10" class="device"/><text class="small" x="17" y="145">Outlet 3</text><path class="wire hot" d="M45 30V0" transform="translate(0 115)"/><path class="wire neutral" d="M65 105V135"/><path d="M45 145V160" class="wire ground"/></g>
+<text class="small" x="365" y="335">Parallel branch concept: each receptacle is connected across the circuit conductors.</text>
+</svg></div></section>
+
+<section class="panel diagram-card" id="mixed"><h2>Light and Receptacle on the Same Branch — Concept</h2><p class="lead">A branch circuit can serve more than one type of load when permitted by the design and applicable rules. The receptacle remains unswitched while the light is controlled by its switch.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
+<rect x="40" y="90" width="150" height="200" rx="14" class="box"/><text class="label" x="82" y="125">Panel</text>
+<rect x="330" y="100" width="100" height="120" rx="10" class="device"/><text class="small" x="350" y="135">Outlet</text>
+<rect x="500" y="120" width="90" height="110" rx="10" class="device"/><text class="small" x="520" y="152">Switch</text>
+<circle cx="735" cy="180" r="55" class="device"/><path d="M698 143l74 74M772 143l-74 74" stroke="#b58b00" stroke-width="4"/><text class="small" x="718" y="255">Light</text>
+<path class="wire hot" d="M190 145H330M430 145H500"/><path class="wire switched" d="M590 175H680"/><path class="wire neutral" d="M190 245H330M430 245H680"/><path class="wire ground" d="M190 285H735"/>
+<text class="small" x="240" y="335">Receptacle is parallel with the lighting branch; the switch controls only the light path.</text>
+</svg></div></section>
+
+<section class="panel diagram-card" id="kitchen"><h2>Kitchen Small-Appliance / GFCI Concept</h2><p class="lead">Kitchen countertop receptacles often require dedicated small-appliance branch circuits and GFCI protection, with AFCI and other requirements depending on the current code and location. This drawing shows the protection relationship only.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
+<rect x="40" y="85" width="155" height="215" rx="14" class="box"/><text class="label" x="85" y="120">Panel</text>
+<rect x="325" y="105" width="120" height="150" rx="12" class="gfci"/><text class="label" x="348" y="140">GFCI</text><text class="small" x="344" y="168">Protection point</text>
+<rect x="565" y="105" width="100" height="150" rx="12" class="device"/><text class="small" x="580" y="140">Countertop</text><text class="small" x="582" y="160">receptacle</text>
+<rect x="735" y="105" width="100" height="150" rx="12" class="device"/><text class="small" x="750" y="140">Countertop</text><text class="small" x="752" y="160">receptacle</text>
+<path class="wire hot" d="M195 145H325M445 145H565M665 145H735"/><path class="wire neutral" d="M195 215H325M445 215H565M665 215H735"/><path class="wire ground" d="M195 275H835"/>
+<text class="small" x="305" y="325">Protection and downstream arrangement depend on the device and installation; follow manufacturer instructions.</text>
+</svg></div></section>
+
+<section class="panel diagram-card" id="bath"><h2>Bathroom Receptacle / GFCI Concept</h2><p class="lead">Bathroom receptacles have dedicated protection and branch-circuit requirements. This diagram shows the functional relationship, not the permitted circuit-sharing rules for any particular jurisdiction.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
+<rect x="40" y="90" width="155" height="205" rx="14" class="box"/><text class="label" x="85" y="125">Panel</text>
+<rect x="345" y="105" width="130" height="160" rx="12" class="gfci"/><text class="label" x="375" y="145">GFCI</text><text class="small" x="362" y="175">Bathroom receptacle</text>
+<circle cx="705" cy="165" r="52" class="device"/><path d="M670 130l70 70M740 130l-70 70" stroke="#b58b00" stroke-width="4"/><text class="small" x="673" y="245">Light / fan concept</text>
+<path class="wire hot" d="M195 145H345"/><path class="wire neutral" d="M195 215H345"/><path class="wire ground" d="M195 270H475M475 270H705"/>
+<path class="wire switched" d="M475 145H575V165H653"/>
+<text class="small" x="315" y="325">Whether lighting/fan share this circuit depends on the allowed design and code rules.</text>
+</svg></div></section>
+
+<section class="panel diagram-card" id="laundry"><h2>Laundry Circuit Concept</h2><p class="lead">A washer and dryer may involve separate branch circuits. A typical electric dryer is a 120/240 V load that may require two ungrounded conductors, neutral, and equipment ground depending on the appliance.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
+<rect x="35" y="80" width="170" height="235" rx="14" class="box"/><text class="label" x="82" y="115">Panel</text><text class="small" x="65" y="150">Laundry branch</text><text class="small" x="65" y="185">2-pole dryer branch</text>
+<rect x="380" y="90" width="145" height="190" rx="14" class="device"/><text class="label" x="420" y="125">Washer</text><text class="small" x="395" y="158">120 V concept</text>
+<rect x="650" y="90" width="145" height="190" rx="14" class="device"/><text class="label" x="700" y="125">Dryer</text><text class="small" x="670" y="158">120/240 V concept</text>
+<path class="wire hot" d="M205 145H380"/><path class="wire neutral" d="M205 205H380"/><path class="wire ground" d="M205 260H525"/>
+<path class="wire hot" d="M205 165H650"/><path class="wire switched" d="M205 190H650"/><path class="wire neutral" d="M525 205H650"/><path class="wire ground" d="M525 260H795"/>
+<text class="small" x="275" y="335">The dryer branch is separate from the washer branch in this concept.</text>
+</svg></div></section>
+
+<section class="panel diagram-card" id="240"><h2>240 V Appliance Circuit Concept</h2><p class="lead">A 240 V load uses two ungrounded conductors from opposite legs. Some appliances also require a neutral for 120 V internal loads; some do not. Equipment grounding remains separate from normal load current.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
+<rect x="45" y="80" width="190" height="230" rx="14" class="box"/><text class="label" x="91" y="115">Panel / 2-pole</text><text class="label" x="107" y="138">breaker</text>
+<rect x="650" y="100" width="170" height="180" rx="14" class="device"/><text class="label" x="692" y="138">240 V Load</text><text class="small" x="675" y="175">Range / dryer /</text><text class="small" x="675" y="195">water heater / HVAC</text>
+<path class="wire hot" d="M235 140H650"/><text class="small" x="340" y="130">Ungrounded conductor A</text>
+<path class="wire switched" d="M235 185H650"/><text class="small" x="340" y="175">Ungrounded conductor B</text>
+<path class="wire neutral" d="M235 230H650"/><text class="small" x="350" y="220">Neutral only when required by load</text>
+<path class="wire ground" d="M235 275H650"/><text class="small" x="350" y="300">Equipment grounding path</text>
+</svg></div></section>
+
+<section class="panel"><h2>Avoiding Branch-Circuit Overloads</h2><p class="lead">The key idea is simple: the total load on a branch circuit matters. A breaker is not extra capacity—it is a protective device matched to the circuit design. Use this calculator only to visualize the relationship between watts, volts, and current.</p>
+<div class="grid three">
+<div class="field"><label for="planV">Circuit Voltage</label><select id="planV"><option value="120">120 V</option><option value="240">240 V</option></select></div>
+<div class="field"><label for="breaker">Breaker Rating for Comparison (A)</label><select id="breaker"><option>15</option><option selected>20</option><option>30</option><option>40</option><option>50</option></select></div>
+<div class="result"><small>Selected Load</small><strong id="loadTotal">0 W</strong></div>
+</div>
+<h3>Example Loads</h3><div class="loadlist">
+<label class="loaditem"><input type="checkbox" data-w="12"> LED lamp — 12 W</label>
+<label class="loaditem"><input type="checkbox" data-w="80"> Television — 80 W</label>
+<label class="loaditem"><input type="checkbox" data-w="150"> Refrigerator example — 150 W</label>
+<label class="loaditem"><input type="checkbox" data-w="1200"> Microwave example — 1200 W</label>
+<label class="loaditem"><input type="checkbox" data-w="1500"> Portable heater — 1500 W</label>
+<label class="loaditem"><input type="checkbox" data-w="1500"> Hair dryer — 1500 W</label>
+<label class="loaditem"><input type="checkbox" data-w="500"> Computer / office — 500 W</label>
+<label class="loaditem"><input type="checkbox" data-w="1000"> Coffee maker example — 1000 W</label>
+<label class="loaditem"><input type="checkbox" data-w="1800"> Appliance example — 1800 W</label>
+</div>
+<div class="grid three" style="margin-top:12px">
+<div class="result"><small>Approximate Current</small><strong id="loadAmps">0 A</strong></div>
+<div class="result"><small>% of Selected Breaker Rating</small><strong id="loadPct">0%</strong></div>
+<div class="result"><small>Teaching Status</small><strong id="loadStatus">Light</strong></div>
+</div>
+<div id="loadExplain" class="feedback good"></div></section>
+
+<section class="panel"><h2>Overload Lessons to Remember</h2><div class="cards">
+<div class="card"><strong>Loads Add Together</strong><p>On one branch circuit, simultaneous loads add. Several moderate loads can exceed the circuit's intended capacity even when each device is normal by itself.</p></div>
+<div class="card"><strong>Large Loads Often Need Dedicated Circuits</strong><p>Heating equipment, cooking appliances, laundry equipment, HVAC, and other large loads commonly have dedicated circuit requirements.</p></div>
+<div class="card"><strong>Never Upsize a Breaker Just to Stop Trips</strong><p>The breaker protects the circuit conductors and equipment. A larger breaker can create a fire hazard if the wiring and equipment were not designed for it.</p></div>
+<div class="card"><strong>Continuous Loads Have Extra Rules</strong><p>Some loads that operate for long periods are subject to additional code loading rules. The exact requirement depends on the application and code.</p></div>
+<div class="card"><strong>Motor / Compressor Starting Current</strong><p>Some equipment draws higher current while starting. Circuit design and protection account for this differently from simple steady resistive loads.</p></div>
+<div class="card"><strong>Use Dedicated Kitchen / Bath / Laundry Rules</strong><p>Residential electrical codes contain special branch-circuit and protection requirements for these areas. Do not treat them like unrestricted general-use outlets.</p></div>
+</div></section>
+
+<section class="panel"><h2>Safety Boundary</h2><div class="warnbox"><strong>Educational diagrams only.</strong> They intentionally omit exact conductor sizes, breaker selections, cable types, terminal methods, box-fill calculations, required receptacle spacing, service calculations, and jurisdiction-specific rules. Fixed residential wiring can cause lethal shock, arc flash, and fire. Real work must follow the applicable electrical code, permits/inspection requirements, manufacturer instructions, and qualified-person practices. Never rely on conductor color alone.</div></section>
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+<script>
+const tabButtons=[...document.querySelectorAll("[data-show]")];
+tabButtons.forEach(b=>b.onclick=()=>{
+ tabButtons.forEach(x=>x.classList.toggle("active",x===b));
+ document.querySelectorAll(".diagram-card").forEach(s=>s.classList.toggle("active",s.id===b.dataset.show));
+ document.getElementById(b.dataset.show).scrollIntoView({behavior:"smooth",block:"start"});
+});
+function updateLoad(){
+ const watts=[...document.querySelectorAll("[data-w]:checked")].reduce((s,x)=>s+(+x.dataset.w||0),0);
+ const volts=+planV.value,br=+breaker.value,amps=watts/volts,pct=br?amps/br*100:0;
+ loadTotal.textContent=Math.round(watts)+" W";loadAmps.textContent=amps.toFixed(1)+" A";loadPct.textContent=pct.toFixed(0)+"%";
+ loadExplain.className="feedback";
+ if(pct<60){loadStatus.textContent="Light";loadExplain.classList.add("good");loadExplain.textContent="This example is well below the selected breaker rating. That does not by itself prove the real circuit is code-compliant or correctly sized."}
+ else if(pct<80){loadStatus.textContent="Moderate";loadExplain.textContent="The example load is becoming substantial. Real circuit planning must consider simultaneous use, continuous-load rules, equipment instructions, and required dedicated circuits."}
+ else if(pct<=100){loadStatus.textContent="High";loadExplain.classList.add("warn");loadExplain.textContent="This example is using a large portion of the selected breaker rating. Do not treat the remaining percentage as guaranteed usable capacity; code rules and load type matter."}
+ else{loadStatus.textContent="Over rating";loadExplain.classList.add("bad");loadExplain.textContent="The simplified calculated current exceeds the selected breaker rating. In real life, do not solve repeated trips by installing a larger breaker unless the entire circuit is designed and approved for it."}
+}
+document.querySelectorAll("[data-w],#planV,#breaker").forEach(x=>x.addEventListener("change",updateLoad));updateLoad();
+</script>
+</body></html>
