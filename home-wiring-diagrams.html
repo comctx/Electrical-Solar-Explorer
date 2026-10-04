@@ -17,6 +17,7 @@ h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-
 .diagram-card{display:none}.diagram-card.active{display:block}.wrap{overflow-x:auto}.diagram{width:100%;min-width:860px;height:390px;background:#fdfefe;border:1px solid var(--border);border-radius:14px}
 .wire{fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.hot{stroke:var(--hot)}.neutral{stroke:var(--neutral)}.ground{stroke:var(--ground);stroke-dasharray:10 8}.switched{stroke:var(--switch)}
 .box{fill:#eef7ff;stroke:#071a2e;stroke-width:3}.device{fill:#fff;stroke:#071a2e;stroke-width:3}.gfci{fill:#eaf7ef;stroke:#1f7a4d;stroke-width:3}.label{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}.small{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#526779}
+.enclosure{fill:#dfe7ed;stroke:#526779;stroke-width:4}.breaker{fill:#202a32;stroke:#071a2e;stroke-width:2}.breaker-handle{fill:#c7d1d8;stroke:#071a2e;stroke-width:2}.bus{fill:#bcc7ce;stroke:#65747f;stroke-width:2}.bar{fill:#d3dde4;stroke:#71808b;stroke-width:2}.cable-jacket{fill:none;stroke:#e8d9b6;stroke-width:24;stroke-linecap:round}.cable-edge{fill:none;stroke:#8f8267;stroke-width:2;stroke-linecap:round}.cond-black{fill:none;stroke:#252a2e;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}.cond-white{fill:none;stroke:#f7f7f3;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #6d7479)}.cond-ground{fill:none;stroke:#b87333;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.box-metal{fill:#bfc9d0;stroke:#667580;stroke-width:4}.faceplate{fill:#fafafa;stroke:#949da4;stroke-width:3}.slot{fill:#1f2529}.screw{fill:#d7b05a;stroke:#72561d;stroke-width:1.5}.splice{fill:#f0a327;stroke:#8b5c09;stroke-width:2}.caption{font:600 12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#334b5f}
 .legend{display:flex;gap:13px;flex-wrap:wrap;margin:10px 0 0;font-size:13px}.swatch{display:inline-block;width:18px;height:5px;border-radius:5px;vertical-align:middle;margin-right:5px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.card{border:1px solid var(--border);border-radius:13px;background:#f8fbff;padding:13px}.card strong{display:block;color:var(--navy);margin-bottom:5px}.card p{margin:0;color:#40566a;line-height:1.45}
 .grid{display:grid;gap:10px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px}input,select{width:100%;min-height:44px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}.loadlist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.loaditem{display:flex;gap:8px;align-items:center;border:1px solid var(--border);background:#f8fbff;border-radius:10px;padding:9px}.loaditem input{width:auto;min-height:auto}
@@ -51,23 +52,110 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <button class="btn" data-show="240">240 V Load</button>
 </div></section>
 
-<section class="panel diagram-card active" id="receptacle"><h2>Basic 120 V Receptacle Circuit</h2><p class="lead">The branch breaker supplies the ungrounded conductor. The neutral provides the normal return path. The equipment-grounding conductor bonds exposed metal and provides an intended fault-current path.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
-<rect x="45" y="85" width="180" height="210" rx="14" class="box"/><text class="label" x="100" y="120">Panel</text><text class="small" x="72" y="155">Branch breaker</text><text class="small" x="72" y="190">Neutral termination</text><text class="small" x="72" y="225">Grounding termination</text>
-<rect x="650" y="105" width="160" height="170" rx="14" class="device"/><text class="label" x="685" y="140">Receptacle</text><circle cx="705" cy="180" r="5" fill="#071a2e"/><circle cx="755" cy="180" r="5" fill="#071a2e"/><path d="M714 220h32" stroke="#071a2e" stroke-width="4"/>
-<path class="wire hot" d="M225 155H650"/><text class="small" x="365" y="145">Ungrounded / hot path</text>
-<path class="wire neutral" d="M225 195H650"/><text class="small" x="380" y="185">Neutral path</text>
-<path class="wire ground" d="M225 235H650"/><text class="small" x="350" y="260">Equipment grounding path</text>
-</svg></div></section>
+<section class="panel diagram-card active" id="receptacle"><h2>Basic 120 V Receptacle Circuit</h2>
+<p class="lead">This cutaway-style drawing is closer to what the parts look like in the field: a branch breaker inside the panel, a cable leaving the panel, conductors entering a device box, and a receptacle mounted in the box. Colors are illustrative only—never identify a conductor by color alone.</p>
+<div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
+<!-- panel enclosure -->
+<rect x="35" y="35" width="285" height="355" rx="12" class="enclosure"/>
+<text class="label" x="105" y="62">Panel / Load Center</text>
+<rect x="65" y="85" width="105" height="245" rx="6" fill="#9eaab3" stroke="#52616b" stroke-width="3"/>
+<rect x="185" y="90" width="100" height="52" rx="5" class="breaker"/>
+<rect x="224" y="101" width="30" height="30" rx="4" class="breaker-handle"/>
+<text x="196" y="122" font-size="11" font-weight="700" fill="#fff">BRANCH</text>
+<text class="small" x="195" y="157">breaker concept</text>
+<rect x="185" y="200" width="100" height="24" rx="3" class="bar"/>
+<circle cx="200" cy="212" r="4" fill="#65747f"/><circle cx="220" cy="212" r="4" fill="#65747f"/><circle cx="240" cy="212" r="4" fill="#65747f"/><circle cx="260" cy="212" r="4" fill="#65747f"/>
+<text class="small" x="188" y="193">Neutral bar concept</text>
+<rect x="185" y="275" width="100" height="24" rx="3" class="bar"/>
+<circle cx="200" cy="287" r="4" fill="#65747f"/><circle cx="220" cy="287" r="4" fill="#65747f"/><circle cx="240" cy="287" r="4" fill="#65747f"/><circle cx="260" cy="287" r="4" fill="#65747f"/>
+<text class="small" x="188" y="268">Ground bar concept</text>
 
-<section class="panel diagram-card" id="switch"><h2>Single-Pole Light Switch Circuit</h2><p class="lead">Conceptually, the switch controls the ungrounded path to the light. The neutral continues to the light. Actual box/cable arrangements vary.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
-<rect x="45" y="80" width="160" height="220" rx="14" class="box"/><text class="label" x="98" y="115">Panel</text>
-<rect x="390" y="130" width="110" height="120" rx="12" class="device"/><text class="label" x="410" y="165">Switch</text><circle cx="420" cy="205" r="5" fill="#071a2e"/><circle cx="470" cy="205" r="5" fill="#071a2e"/><path d="M425 205L466 180" stroke="#071a2e" stroke-width="4"/>
-<circle cx="720" cy="190" r="58" class="device"/><path d="M680 150l80 80M760 150l-80 80" stroke="#b58b00" stroke-width="4"/><text class="label" x="694" y="275">Light</text>
-<path class="wire hot" d="M205 150H390"/><text class="small" x="250" y="140">Hot feed</text>
-<path class="wire switched" d="M500 205H662"/><text class="small" x="535" y="195">Switched hot</text>
-<path class="wire neutral" d="M205 245H662"/><path class="wire neutral" d="M662 245V220"/><text class="small" x="350" y="270">Neutral continues to load</text>
-<path class="wire ground" d="M205 285H390M500 285H720"/><text class="small" x="435" y="310">Equipment grounding / bonding concept</text>
-</svg></div></section>
+<!-- cable -->
+<path class="cable-jacket" d="M320 238C440 238 500 238 585 238"/>
+<path class="cable-edge" d="M320 226C440 226 500 226 585 226M320 250C440 250 500 250 585 250"/>
+<text class="caption" x="380" y="215">Cable jacket / branch cable concept</text>
+
+<!-- conductors emerging -->
+<path class="cond-black" d="M254 116H305V223C390 223 475 223 585 223"/>
+<path class="cond-white" d="M270 212H300V239C390 239 475 239 585 239"/>
+<path class="cond-ground" d="M270 287H300V255C390 255 475 255 585 255"/>
+
+<!-- device box -->
+<rect x="585" y="110" width="185" height="245" rx="10" class="box-metal"/>
+<rect x="606" y="128" width="143" height="210" rx="8" fill="#f4f6f7" stroke="#6e7d87" stroke-width="3"/>
+<text class="small" x="615" y="102">Device box</text>
+
+<!-- receptacle body -->
+<rect x="635" y="145" width="85" height="175" rx="11" class="faceplate"/>
+<rect x="655" y="167" width="45" height="55" rx="12" fill="#fff" stroke="#77838b" stroke-width="2"/>
+<rect x="655" y="242" width="45" height="55" rx="12" fill="#fff" stroke="#77838b" stroke-width="2"/>
+<rect x="665" y="180" width="7" height="17" rx="2" class="slot"/><rect x="683" y="180" width="7" height="17" rx="2" class="slot"/><path d="M672 205q5-7 10 0" stroke="#1f2529" stroke-width="2" fill="none"/>
+<rect x="665" y="255" width="7" height="17" rx="2" class="slot"/><rect x="683" y="255" width="7" height="17" rx="2" class="slot"/><path d="M672 280q5-7 10 0" stroke="#1f2529" stroke-width="2" fill="none"/>
+<circle cx="723" cy="190" r="6" class="screw"/><circle cx="723" cy="270" r="6" class="screw"/>
+<circle cx="628" cy="190" r="6" fill="#c3c9cd" stroke="#5e676d" stroke-width="2"/><circle cx="628" cy="270" r="6" fill="#c3c9cd" stroke="#5e676d" stroke-width="2"/>
+<circle cx="678" cy="326" r="6" fill="#67a55a" stroke="#285e21" stroke-width="2"/>
+
+<!-- conductor routing inside box, conceptual not terminal-by-terminal -->
+<path class="cond-black" d="M585 223H610V190H628"/>
+<path class="cond-white" d="M585 239H600V270H628"/>
+<path class="cond-ground" d="M585 255H610V326H672"/>
+<path class="cond-ground" d="M610 326H594V340"/>
+
+<text class="label" x="804" y="155">What you are seeing</text>
+<text class="small" x="805" y="185">• breaker feeds branch circuit</text>
+<text class="small" x="805" y="210">• cable carries insulated conductors</text>
+<text class="small" x="805" y="235">• conductors enter a device box</text>
+<text class="small" x="805" y="260">• receptacle is mounted in the box</text>
+<text class="small" x="805" y="285">• equipment ground bonds metal parts</text>
+<text class="small" x="805" y="325">Illustrative only — not a terminal</text>
+<text class="small" x="805" y="345">connection or installation guide.</text>
+</svg></div>
+<div class="legend"><span><span class="swatch" style="background:#252a2e"></span>Illustrative ungrounded conductor</span><span><span class="swatch" style="background:#c9c9c2"></span>Illustrative neutral</span><span><span class="swatch" style="background:#b87333"></span>Illustrative equipment grounding conductor</span></div>
+</section>
+
+<section class="panel diagram-card" id="switch"><h2>Single-Pole Light Switch Circuit</h2>
+<p class="lead">This version shows separate wall/ceiling boxes and cable runs. The switch controls the ungrounded conductor going to the light; the neutral is shown spliced through the switch box rather than used as the normal switching conductor.</p>
+<div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
+<!-- panel -->
+<rect x="25" y="45" width="230" height="330" rx="12" class="enclosure"/><text class="label" x="75" y="72">Panel / Load Center</text>
+<rect x="55" y="100" width="80" height="230" rx="5" fill="#9eaab3" stroke="#52616b" stroke-width="3"/>
+<rect x="150" y="100" width="75" height="52" rx="5" class="breaker"/><rect x="176" y="110" width="26" height="28" rx="4" class="breaker-handle"/><text x="157" y="168" class="small">branch breaker</text>
+<rect x="150" y="230" width="75" height="22" rx="3" class="bar"/><rect x="150" y="285" width="75" height="22" rx="3" class="bar"/>
+
+<!-- first cable panel to switch box -->
+<path class="cable-jacket" d="M255 230H445"/><path class="cable-edge" d="M255 218H445M255 242H445"/>
+<path class="cond-black" d="M202 126H240V216H445"/>
+<path class="cond-white" d="M210 241H240V232H445"/>
+<path class="cond-ground" d="M210 296H240V248H445"/>
+
+<!-- switch box -->
+<rect x="445" y="105" width="180" height="245" rx="10" class="box-metal"/><text class="small" x="455" y="95">Switch box</text>
+<rect x="500" y="145" width="65" height="160" rx="8" class="faceplate"/>
+<rect x="520" y="175" width="25" height="85" rx="4" fill="#fff" stroke="#79848b" stroke-width="2"/>
+<rect x="524" y="183" width="17" height="35" rx="3" fill="#e5e5e5" stroke="#818a90" stroke-width="2"/>
+<circle cx="575" cy="190" r="6" class="screw"/><circle cx="575" cy="260" r="6" class="screw"/>
+<circle cx="533" cy="315" r="6" fill="#67a55a" stroke="#285e21" stroke-width="2"/>
+
+<!-- neutral splice in switch box -->
+<path class="cond-white" d="M445 232H475V330H605V236H625"/><path class="cond-ground" d="M445 248H488V315H527"/>
+<path class="cond-black" d="M445 216H475V190H569"/>
+
+<!-- second cable switch to light -->
+<path class="cable-jacket" d="M625 230H790"/><path class="cable-edge" d="M625 218H790M625 242H790"/>
+<path class="cond-black" d="M581 260H605V216H790"/>
+<path class="cond-white" d="M625 236H790"/>
+<path class="cond-ground" d="M533 315H605V252H790"/>
+
+<!-- ceiling box and light -->
+<ellipse cx="842" cy="220" rx="55" ry="28" class="box-metal"/>
+<circle cx="842" cy="220" r="72" fill="#fffbed" stroke="#b58b00" stroke-width="4"/>
+<path d="M800 178l84 84M884 178l-84 84" stroke="#b58b00" stroke-width="4"/>
+<path class="cond-black" d="M790 216H805"/><path class="cond-white" d="M790 236H805"/><path class="cond-ground" d="M790 252H805"/>
+
+<text class="caption" x="302" y="205">branch cable</text><text class="caption" x="655" y="205">cable to light</text>
+<text class="small" x="410" y="390">Neutral splice is shown conceptually. Box fill, conductor preparation, device grounding, cable type, and terminal details are intentionally omitted.</text>
+</svg></div>
+</section>
 
 <section class="panel diagram-card" id="multi"><h2>Multiple Receptacles on One Branch Circuit</h2><p class="lead">The receptacles are electrically in parallel. Each one is connected across the branch hot and neutral—not in series through the appliances.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
 <rect x="35" y="90" width="150" height="200" rx="14" class="box"/><text class="label" x="80" y="125">Panel</text>
