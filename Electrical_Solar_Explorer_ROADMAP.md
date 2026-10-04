@@ -858,3 +858,56 @@ A DONCO-BAYCITY™ App
 - Clearly labeled educational diagrams, not installation instructions
 - Added to Home/search and cross-linked from house overview, Wiring & Installation, Protection Devices, and Lugs/Ferrules/Splices
 - Appended as Electricity 101 step 13 so existing saved progress positions remain unchanged
+
+
+## Core Design Philosophy — Simple First, Technical Underneath
+This is the standing design rule for All Things Electrical.
+
+### Goal
+- Simple enough to understand immediately.
+- Technical enough to remain useful as the learner becomes more experienced.
+- Never dumbed down.
+- Never unnecessarily complicated.
+
+### Standard Learning Layers
+1. Start Here
+2. Basic view / simple diagram
+3. How it works
+4. Technical detail
+5. Advanced / professional detail
+6. Lab or simulator when useful
+7. Troubleshooting when useful
+8. Safety / references when relevant
+
+### Detail Levels
+- Basic
+  - essential concept
+  - clean visual
+  - plain language
+  - minimal terminology
+- Technical
+  - real terminology
+  - conductor / signal / power paths
+  - measurements and formulas
+  - component and circuit behavior
+- Advanced
+  - diagnostic reasoning
+  - design considerations
+  - common variations
+  - deeper theory
+  - professional reference mindset
+
+### App-Wide Rules
+- Use progressive disclosure instead of putting every detail on the first screen.
+- Preserve depth; reorganize it rather than deleting it.
+- One diagram should answer one main question.
+- Prefer clean technical illustrations over decorative clutter.
+- Keep navigation and interaction patterns consistent across subjects.
+- Shared CSS/JS components should be reused rather than reinvented page by page.
+- Existing URLs, saved progress, search links, and working labs should be preserved during upgrades.
+- Safety and code limitations should be clear without overwhelming the primary lesson.
+
+### First Pilot
+- Shared Basic / Technical / Advanced control added to app-enhancements.js / app-enhancements.css.
+- Home Wiring Diagrams converted to the first layered-learning pilot.
+- User-selected detail level is remembered locally on the device/browser.
