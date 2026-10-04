@@ -18,6 +18,7 @@ h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-
 .wire{fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.hot{stroke:var(--hot)}.neutral{stroke:var(--neutral)}.ground{stroke:var(--ground);stroke-dasharray:10 8}.switched{stroke:var(--switch)}
 .box{fill:#eef7ff;stroke:#071a2e;stroke-width:3}.device{fill:#fff;stroke:#071a2e;stroke-width:3}.gfci{fill:#eaf7ef;stroke:#1f7a4d;stroke-width:3}.label{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}.small{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#526779}
 .enclosure{fill:#dfe7ed;stroke:#526779;stroke-width:4}.breaker{fill:#202a32;stroke:#071a2e;stroke-width:2}.breaker-handle{fill:#c7d1d8;stroke:#071a2e;stroke-width:2}.bus{fill:#bcc7ce;stroke:#65747f;stroke-width:2}.bar{fill:#d3dde4;stroke:#71808b;stroke-width:2}.cable-jacket,.cable-edge{display:none}.cond-black{fill:none;stroke:#111820;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}.cond-white{fill:none;stroke:#ffffff;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #46545f) drop-shadow(0 0 1px #46545f)}.cond-ground{fill:none;stroke:#1f8a4c;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}.box-metal{fill:#bfc9d0;stroke:#667580;stroke-width:4}.faceplate{fill:#fafafa;stroke:#949da4;stroke-width:3}.slot{fill:#1f2529}.screw{fill:#d7b05a;stroke:#72561d;stroke-width:1.5}.splice{fill:#f0a327;stroke:#8b5c09;stroke-width:2}.caption{font:600 12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#334b5f}
+.wire-label{font:700 12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#243746;paint-order:stroke fill;stroke:#d9e0e5;stroke-width:5px;stroke-linejoin:round}
 .legend{display:flex;gap:13px;flex-wrap:wrap;margin:10px 0 0;font-size:13px}.swatch{display:inline-block;width:18px;height:5px;border-radius:5px;vertical-align:middle;margin-right:5px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.card{border:1px solid var(--border);border-radius:13px;background:#f8fbff;padding:13px}.card strong{display:block;color:var(--navy);margin-bottom:5px}.card p{margin:0;color:#40566a;line-height:1.45}
 .grid{display:grid;gap:10px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px}input,select{width:100%;min-height:44px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}.loadlist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.loaditem{display:flex;gap:8px;align-items:center;border:1px solid var(--border);background:#f8fbff;border-radius:10px;padding:9px}.loaditem input{width:auto;min-height:auto}
@@ -266,9 +267,9 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <path class="cable-jacket" d="M320 238C440 238 500 238 585 238"/>
 <path class="cable-edge" d="M320 226C440 226 500 226 585 226M320 250C440 250 500 250 585 250"/>
 <text class="caption" x="380" y="205">Branch conductors</text>
-<text class="small" x="365" y="225">Illustrative hot conductor</text>
-<text class="small" x="365" y="244">Illustrative neutral</text>
-<text class="small" x="365" y="263">Illustrative equipment ground</text>
+<text class="small" x="365" y="225">Black = Hot</text>
+<text class="small" x="365" y="244">White = Neutral</text>
+<text class="small" x="365" y="263">Green = Ground</text>
 
 <!-- conductors emerging -->
 <path class="cond-black" d="M254 116H305V223C390 223 475 223 585 223"/>
@@ -305,7 +306,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <text class="small" x="805" y="325">Illustrative only — not a terminal</text>
 <text class="small" x="805" y="345">connection or installation guide.</text>
 </svg></div>
-<div class="legend"><span><span class="swatch" style="background:#252a2e"></span>Illustrative ungrounded conductor</span><span><span class="swatch" style="background:#c9c9c2"></span>Illustrative neutral</span><span><span class="swatch" style="background:#1f8a4c"></span>Illustrative equipment grounding conductor</span></div>
+<div class="legend"><span><span class="swatch" style="background:#252a2e"></span>Illustrative ungrounded conductor</span><span><span class="swatch" style="background:#c9c9c2"></span>White = Neutral</span><span><span class="swatch" style="background:#1f8a4c"></span>Green = Grounding conductor</span></div>
 </section>
 
 <section class="panel diagram-card" id="switch" data-ate-level="technical"><h2>Single-Pole Light Switch Circuit</h2>
@@ -470,9 +471,9 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <path class="cond-white" d="M253 190H560"/>
 <path class="cond-ground" d="M253 206H560"/>
 
-<text class="small" x="345" y="153">Black — Hot</text>
-<text class="small" x="430" y="153">White — Neutral</text>
-<text class="small" x="520" y="153">Green — Ground</text>
+<text class="wire-label" x="330" y="166">Black = Hot</text>
+<text class="wire-label" x="330" y="187">White = Neutral</text>
+<text class="wire-label" x="330" y="208">Green = Ground</text>
 
 <!-- washer receptacle box -->
 <rect x="560" y="105" width="150" height="190" rx="12" class="box-metal"/>
@@ -505,10 +506,10 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <path class="cond-white" d="M253 441H560"/>
 <path class="cond-ground" d="M253 459H560"/>
 
-<text class="small" x="315" y="398">Black — Hot A</text>
-<text class="small" x="410" y="398">Red — Hot B</text>
-<text class="small" x="495" y="398">White — Neutral</text>
-<text class="small" x="590" y="398">Green — Ground</text>
+<text class="wire-label" x="330" y="397">Black = Hot A</text>
+<text class="wire-label" x="330" y="419">Red = Hot B</text>
+<text class="wire-label" x="330" y="441">White = Neutral</text>
+<text class="wire-label" x="330" y="463">Green = Ground</text>
 
 <!-- dryer receptacle box -->
 <rect x="560" y="360" width="150" height="200" rx="12" class="box-metal"/>
