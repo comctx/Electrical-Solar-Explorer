@@ -60,6 +60,8 @@ h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-
 @media(max-width:900px){.whole-key{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.whole-key{grid-template-columns:1fr}}
 
+html[data-ate-detail-level="advanced"] [data-ate-exact-level="technical"]{display:none!important}
+html:not([data-ate-detail-level="advanced"]) [data-ate-exact-level="advanced"]{display:none!important}
 @media(max-width:820px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.cards,.loadlist,.two,.three{grid-template-columns:1fr}}
 @media(max-width:500px){main{padding:12px}.tabs{grid-template-columns:1fr}}
 footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
@@ -439,6 +441,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 
 <div class="ate-technical-box"><strong>Drawing convention:</strong> conductors are shown individually for clarity: black/red = ungrounded conductors, white = neutral, green = equipment grounding conductor. The outer cable sheath is intentionally omitted.</div>
 
+<div data-ate-exact-level="technical">
 <h3>1. 120 V Washer</h3>
 <div class="wrap"><svg class="diagram" viewBox="0 0 1100 330" style="height:330px" aria-label="120 volt washer branch circuit">
 <rect x="35" y="60" width="220" height="220" rx="14" class="enclosure"/>
@@ -544,9 +547,100 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <div class="tech-item"><strong>Equipment ground</strong><p>The equipment-grounding conductor bonds the metal chassis and is not a normal load-current path.</p></div>
 <div class="tech-item"><strong>Why separate the three cases?</strong><p>A 120 V gas or compact dryer is electrically different from a standard full-size 120/240 V electric dryer.</p></div>
 </div>
+</div>
+
+<div data-ate-exact-level="advanced">
+<h3>Advanced View — Inside a 120/240 V Electric Dryer</h3>
+<p class="lead">This view goes one level deeper. It shows how a typical 120/240 V dryer can use 240 V between L1 and L2 for the heating section while also using 120 V from a line conductor to neutral for controls, motor, light, or other internal loads. The exact internal design varies by appliance.</p>
+
+<div class="wrap">
+<svg class="diagram" viewBox="0 0 1120 560" style="height:560px" aria-label="Advanced dryer electrical relationship diagram">
+
+<!-- PANEL -->
+<rect x="30" y="90" width="220" height="360" rx="14" class="enclosure"/>
+<text class="label" x="88" y="122">Panel / Load Center</text>
+<rect x="150" y="150" width="76" height="95" rx="6" class="breaker"/>
+<rect x="165" y="164" width="20" height="60" rx="4" class="breaker-handle"/>
+<rect x="197" y="164" width="20" height="60" rx="4" class="breaker-handle"/>
+<text class="small" x="150" y="268">2-pole breaker</text>
+<rect x="150" y="310" width="76" height="18" rx="3" class="bar"/>
+<rect x="150" y="360" width="76" height="18" rx="3" class="bar"/>
+<text class="small" x="152" y="303">Neutral</text>
+<text class="small" x="152" y="352">Ground</text>
+
+<!-- BRANCH CONDUCTORS -->
+<path class="cond-black" d="M226 175H470"/>
+<path d="M226 205H470" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round"/>
+<path class="cond-white" d="M226 320H470"/>
+<path class="cond-ground" d="M226 370H470"/>
+
+<text class="wire-label" x="300" y="162">L1 / Black</text>
+<text class="wire-label" x="300" y="194">L2 / Red</text>
+<text class="wire-label" x="300" y="309">Neutral / White</text>
+<text class="wire-label" x="300" y="359">Ground / Green</text>
+
+<!-- RECEPTACLE / CORD -->
+<rect x="470" y="120" width="150" height="300" rx="14" class="box-metal"/>
+<text class="label" x="492" y="108">Dryer Receptacle</text>
+<rect x="508" y="172" width="75" height="150" rx="12" class="faceplate"/>
+<circle cx="527" cy="212" r="8" class="slot"/>
+<circle cx="565" cy="212" r="8" class="slot"/>
+<rect x="540" y="240" width="10" height="25" rx="3" class="slot"/>
+<path d="M527 290q18-16 36 0" stroke="#1f2529" stroke-width="5" fill="none"/>
+<path d="M620 270H700" stroke="#4f5960" stroke-width="18" fill="none" stroke-linecap="round"/>
+<text class="small" x="642" y="248">Cord</text>
+
+<!-- TERMINAL AREA -->
+<rect x="700" y="80" width="380" height="400" rx="18" class="device"/>
+<text class="label" x="805" y="110">Dryer Electrical Relationship</text>
+
+<rect x="755" y="155" width="270" height="90" rx="12" fill="#eef3f6" stroke="#60717d" stroke-width="3"/>
+<circle cx="800" cy="200" r="15" class="screw"/>
+<circle cx="890" cy="200" r="15" class="screw"/>
+<circle cx="980" cy="200" r="15" class="screw"/>
+<text class="label" x="787" y="175">L1</text>
+<text class="label" x="882" y="175">N</text>
+<text class="label" x="967" y="175">L2</text>
+
+<circle cx="890" cy="420" r="15" class="green-screw"/>
+<text class="label" x="879" y="452">G</text>
+
+<!-- 240 V LOAD -->
+<rect x="765" y="285" width="245" height="70" rx="12" fill="#fff3d6" stroke="#e5a84a" stroke-width="3"/>
+<text class="label" x="823" y="315">240 V Heating Section</text>
+<text class="small" x="802" y="339">connected between L1 and L2</text>
+<path class="cond-black" d="M800 215V285"/>
+<path d="M980 215V285" stroke="#d64b3c" stroke-width="7" fill="none"/>
+
+<!-- 120 V LOAD -->
+<rect x="765" y="375" width="245" height="70" rx="12" fill="#eef7ff" stroke="#9fc8ef" stroke-width="3"/>
+<text class="label" x="820" y="405">120 V Internal Loads</text>
+<text class="small" x="795" y="429">motor / controls / light concept</text>
+<path class="cond-black" d="M800 215V375"/>
+<path class="cond-white" d="M890 215V375"/>
+
+<!-- CHASSIS -->
+<path class="cond-ground" d="M890 405V420"/>
+<text class="small" x="930" y="421">Chassis bond point</text>
+
+<!-- VOLTAGE CALLOUTS -->
+<rect x="725" y="500" width="330" height="42" rx="10" fill="#eef7ff" stroke="#9fc8ef" stroke-width="2"/>
+<text class="small" x="745" y="519">L1 ↔ L2 ≈ 240 V   •   L1 ↔ N ≈ 120 V   •   L2 ↔ N ≈ 120 V</text>
+<text class="small" x="745" y="536">Conceptual values for a typical North American split-phase system.</text>
+
+</svg>
+</div>
+
+<div class="tech-grid">
+<div class="tech-item"><strong>240 V path</strong><p>The heating section can operate across L1 and L2, using the line-to-line voltage.</p></div>
+<div class="tech-item"><strong>120 V path</strong><p>Internal 120 V loads can operate from one line conductor to neutral, depending on the dryer design.</p></div>
+<div class="tech-item"><strong>Neutral vs ground</strong><p>Neutral carries normal return current for loads that require it. Equipment ground is for bonding and fault-current return.</p></div>
+<div class="tech-item"><strong>Design varies</strong><p>Motor, control-board, heater, and terminal arrangements vary by manufacturer, so this diagram teaches relationships rather than a specific appliance hookup.</p></div>
+</div>
+</div>
 
 <div class="ate-advanced-box" data-ate-level="advanced">
-<strong>Advanced: legacy 3-wire vs modern 4-wire concept</strong>
+<strong>Legacy 3-wire vs modern 4-wire concept</strong>
 <p style="margin:6px 0 0">Older installations may use a legacy 3-wire arrangement, while modern installations commonly separate neutral from the equipment-grounding conductor with a 4-wire connection. Bonding strap/link configuration is appliance-specific and must follow the manufacturer instructions and applicable code.</p>
 </div>
 
