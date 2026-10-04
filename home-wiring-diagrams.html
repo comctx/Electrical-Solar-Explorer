@@ -23,22 +23,26 @@ h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-
 .field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px}input,select{width:100%;min-height:44px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit}.loadlist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.loaditem{display:flex;gap:8px;align-items:center;border:1px solid var(--border);background:#f8fbff;border-radius:10px;padding:9px}.loaditem input{width:auto;min-height:auto}
 .result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700}.result strong{display:block;color:var(--navy);font-size:22px;margin-top:3px}.feedback{margin-top:12px;background:#eef7ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.feedback.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}.feedback.bad{background:#fdecea;border-color:#e4aaa5;color:#8a1c13}.feedback.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
 .warnbox{background:#fff3d6;border:1px solid #e5a84a;color:#6a4300;border-radius:12px;padding:13px;line-height:1.5}
+.principle-banner{margin:10px 0 14px;padding:11px 13px;border-radius:11px;background:#eef7ff;border:1px solid #9fc8ef;color:#153a5d;line-height:1.45}
+.principle-banner strong{color:#071a2e}
+.splice-cap{fill:#f0a327;stroke:#8b5c09;stroke-width:2}
+.splice-text{font:700 11px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#6a4300}
 @media(max-width:820px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.cards,.loadlist,.two,.three{grid-template-columns:1fr}}
 @media(max-width:500px){main{padding:12px}.tabs{grid-template-columns:1fr}}
 footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
 </style>
 </head>
 <body>
-<header><h1>Home Wiring Diagrams</h1><p>See how common residential branch circuits relate to the panel, switches, receptacles, lights, and larger loads.</p></header>
+<header><h1>Home Wiring Diagrams</h1><p>More realistic residential branch-circuit illustrations for receptacles, switches, lights, kitchens, bathrooms, laundry, and 240 V loads.</p></header>
 <main>
 <nav class="nav"><a href="index.html">← Home</a><a href="home-wiring-overview.html">How a House Is Wired</a><a href="wiring-installation.html">Wiring & Installation</a><a href="protection-devices.html">Protection Devices</a><a href="lugs-ferrules-splices.html">Lugs, Ferrules & Splices</a></nav>
 
 <section class="start"><h2>Beginner Start Here</h2><ol>
-<li>These diagrams show <strong>electrical relationships</strong>, not exact cable routing or installation instructions.</li>
-<li>Branch-circuit devices are normally connected in <strong>parallel</strong>, so each load receives the intended circuit voltage.</li>
-<li>A switch is placed in the control path to a load such as a light; the neutral generally continues to the load rather than being used as the normal switch control conductor.</li>
-<li>The equipment-grounding path is for fault conditions and is not the normal load-current path.</li>
-<li>Breaker rating, conductor size, box fill, receptacle count, required circuits, GFCI/AFCI rules, and cable type must follow the equipment instructions and electrical code that applies to the real installation.</li>
+<li>These are <strong>illustrated teaching diagrams</strong>. They show how the parts relate, not a field-approved installation procedure.</li>
+<li>Notice that <strong>receptacles and most branch-circuit loads are supplied in parallel</strong>. Each load is connected across the branch conductors rather than having current pass through one appliance to reach the next.</li>
+<li>A <strong>switch controls the hot path to its intended load</strong>. That does not mean the whole branch circuit is wired in series.</li>
+<li>The <strong>equipment grounding conductor</strong> bonds equipment and provides an intended fault-current path; it is not the normal load-current return path.</li>
+<li>Actual conductor size, breaker rating, cable type, box fill, GFCI/AFCI requirements, device spacing, and approved connection methods must follow the equipment instructions and electrical code that applies to the real installation.</li>
 </ol></section>
 
 <section class="panel"><h2>Choose a Diagram</h2><div class="tabs">
@@ -73,7 +77,10 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <!-- cable -->
 <path class="cable-jacket" d="M320 238C440 238 500 238 585 238"/>
 <path class="cable-edge" d="M320 226C440 226 500 226 585 226M320 250C440 250 500 250 585 250"/>
-<text class="caption" x="380" y="215">Cable jacket / branch cable concept</text>
+<text class="caption" x="380" y="205">Cable jacket / branch cable concept</text>
+<text class="small" x="365" y="225">Illustrative hot conductor</text>
+<text class="small" x="365" y="244">Illustrative neutral</text>
+<text class="small" x="365" y="263">Illustrative equipment ground</text>
 
 <!-- conductors emerging -->
 <path class="cond-black" d="M254 116H305V223C390 223 475 223 585 223"/>
@@ -114,7 +121,8 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </section>
 
 <section class="panel diagram-card" id="switch"><h2>Single-Pole Light Switch Circuit</h2>
-<p class="lead">This version shows separate wall/ceiling boxes and cable runs. The switch controls the ungrounded conductor going to the light; the neutral is shown spliced through the switch box rather than used as the normal switching conductor.</p>
+<p class="lead">This version shows separate wall/ceiling boxes and cable runs. The switch controls the ungrounded conductor going to the light; the neutral is shown continuing through the switch box rather than serving as the normal switch control conductor.</p>
+<div class="principle-banner"><strong>Key idea:</strong> the switch interrupts only the light's controlled hot path. The rest of the branch circuit is not wired in series through the switch.</div>
 <div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
 <!-- panel -->
 <rect x="25" y="45" width="230" height="330" rx="12" class="enclosure"/><text class="label" x="75" y="72">Panel / Load Center</text>
@@ -136,9 +144,11 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <circle cx="575" cy="190" r="6" class="screw"/><circle cx="575" cy="260" r="6" class="screw"/>
 <circle cx="533" cy="315" r="6" fill="#67a55a" stroke="#285e21" stroke-width="2"/>
 
-<!-- neutral splice in switch box -->
+<!-- conceptual splices in switch box -->
 <path class="cond-white" d="M445 232H475V330H605V236H625"/><path class="cond-ground" d="M445 248H488V315H527"/>
 <path class="cond-black" d="M445 216H475V190H569"/>
+<circle cx="487" cy="330" r="9" class="splice-cap"/><text x="500" y="334" class="splice-text">Neutral splice concept</text>
+<circle cx="488" cy="315" r="8" class="splice-cap"/><text x="500" y="309" class="splice-text">Ground bonding/splice concept</text>
 
 <!-- second cable switch to light -->
 <path class="cable-jacket" d="M625 230H790"/><path class="cable-edge" d="M625 218H790M625 242H790"/>
@@ -158,7 +168,8 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </section>
 
 <section class="panel diagram-card" id="multi"><h2>Multiple Receptacles on One Branch Circuit</h2>
-<p class="lead">Here the branch cable enters the first device box and continues to additional boxes. The receptacles are still electrically in parallel; each device connects across the branch conductors. The drawing intentionally does not show a specific approved splicing or terminal method.</p>
+<p class="lead">Here the branch cable enters the first device box and continues to additional boxes. Each receptacle is supplied from the same branch conductors.</p>
+<div class="principle-banner"><strong>Parallel wiring:</strong> each receptacle is connected across hot and neutral. One appliance does not have to pass current through another appliance for the next receptacle to work.</div>
 <div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
 <rect x="25" y="65" width="210" height="300" rx="12" class="enclosure"/><text class="label" x="72" y="92">Panel / Load Center</text>
 <rect x="55" y="110" width="75" height="205" rx="5" fill="#9eaab3" stroke="#52616b" stroke-width="3"/><rect x="145" y="110" width="65" height="48" rx="5" class="breaker"/><rect x="166" y="120" width="24" height="25" rx="3" class="breaker-handle"/>
@@ -172,11 +183,12 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <g transform="translate(315 95)"><rect width="100" height="255" rx="10" class="box-metal"/><rect x="17" y="25" width="66" height="195" rx="8" class="faceplate"/><rect x="31" y="48" width="38" height="58" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="31" y="128" width="38" height="58" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="38" y="61" width="6" height="16" class="slot"/><rect x="56" y="61" width="6" height="16" class="slot"/><rect x="38" y="141" width="6" height="16" class="slot"/><rect x="56" y="141" width="6" height="16" class="slot"/><text class="small" x="25" y="242">Outlet box 1</text></g>
 <g transform="translate(515 95)"><rect width="100" height="255" rx="10" class="box-metal"/><rect x="17" y="25" width="66" height="195" rx="8" class="faceplate"/><rect x="31" y="48" width="38" height="58" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="31" y="128" width="38" height="58" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="38" y="61" width="6" height="16" class="slot"/><rect x="56" y="61" width="6" height="16" class="slot"/><rect x="38" y="141" width="6" height="16" class="slot"/><rect x="56" y="141" width="6" height="16" class="slot"/><text class="small" x="25" y="242">Outlet box 2</text></g>
 <g transform="translate(715 95)"><rect width="100" height="255" rx="10" class="box-metal"/><rect x="17" y="25" width="66" height="195" rx="8" class="faceplate"/><rect x="31" y="48" width="38" height="58" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="31" y="128" width="38" height="58" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="38" y="61" width="6" height="16" class="slot"/><rect x="56" y="61" width="6" height="16" class="slot"/><rect x="38" y="141" width="6" height="16" class="slot"/><rect x="56" y="141" width="6" height="16" class="slot"/><text class="small" x="25" y="242">Outlet box 3</text></g>
-<text class="small" x="350" y="395">Cable continues box-to-box. Devices are electrically parallel; approved splicing/terminal details vary.</text>
+<text class="small" x="350" y="395">Cable continues box-to-box. Each receptacle remains electrically parallel; approved splice and terminal methods vary by device and installation.</text>
 </svg></div></section>
 
 <section class="panel diagram-card" id="mixed"><h2>Light and Receptacle on the Same Branch — Concept</h2>
 <p class="lead">This cutaway shows one branch feeding an unswitched receptacle and a separate switch box that controls a light. The purpose is to show how the load branches relate—not to prescribe a box-by-box installation method.</p>
+<div class="principle-banner"><strong>What changes when the switch is OFF?</strong> The light's switched-hot path opens, while the unswitched receptacle can remain energized because it is on its own parallel branch path.</div>
 <div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
 <rect x="25" y="65" width="205" height="300" rx="12" class="enclosure"/><text class="label" x="72" y="92">Panel</text><rect x="55" y="110" width="70" height="200" rx="5" fill="#9eaab3" stroke="#52616b" stroke-width="3"/><rect x="145" y="110" width="60" height="46" rx="5" class="breaker"/><rect x="165" y="120" width="22" height="24" rx="3" class="breaker-handle"/>
 <path class="cable-jacket" d="M230 235H360"/><path class="cond-black" d="M185 133H215V220H360"/><path class="cond-white" d="M190 230H215V236H360"/><path class="cond-ground" d="M190 285H215V252H360"/>
@@ -248,7 +260,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </svg></div></section>
 
 <section class="panel diagram-card" id="240"><h2>240 V Appliance Circuit Concept</h2>
-<p class="lead">This cutaway uses a double-pole breaker inside a panel and a multi-conductor cable entering an appliance disconnect/connection enclosure. Some 240 V equipment needs no neutral; other equipment uses a neutral for internal 120 V loads.</p>
+<p class="lead">This cutaway uses a double-pole breaker inside a panel and a multi-conductor branch cable entering an appliance connection/disconnect concept. The two ungrounded conductors supply the 240 V load. Some equipment also needs a neutral for internal 120 V loads; other 240 V equipment does not.</p>
 <div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
 <rect x="30" y="50" width="265" height="330" rx="12" class="enclosure"/><text class="label" x="90" y="78">Panel / Load Center</text>
 <rect x="60" y="100" width="90" height="230" rx="5" fill="#9eaab3" stroke="#52616b" stroke-width="3"/>
@@ -303,7 +315,7 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <div class="card"><strong>Use Dedicated Kitchen / Bath / Laundry Rules</strong><p>Residential electrical codes contain special branch-circuit and protection requirements for these areas. Do not treat them like unrestricted general-use outlets.</p></div>
 </div></section>
 
-<section class="panel"><h2>Safety Boundary</h2><div class="warnbox"><strong>Educational diagrams only.</strong> They intentionally omit exact conductor sizes, breaker selections, cable types, terminal methods, box-fill calculations, required receptacle spacing, service calculations, and jurisdiction-specific rules. Fixed residential wiring can cause lethal shock, arc flash, and fire. Real work must follow the applicable electrical code, permits/inspection requirements, manufacturer instructions, and qualified-person practices. Never rely on conductor color alone.</div></section>
+<section class="panel"><h2>Safety Boundary</h2><div class="warnbox"><strong>Educational diagrams only.</strong> They intentionally omit exact conductor sizes, breaker selections, cable types, terminal methods, box-fill calculations, required receptacle spacing, service calculations, and jurisdiction-specific rules. Fixed residential wiring can cause lethal shock, arc flash, and fire. Real work must follow the applicable electrical code, permits/inspection requirements, manufacturer instructions, and qualified-person practices. Conductor colors in these drawings are illustrative only—never identify or verify a real conductor by color alone.</div></section>
 </main>
 <footer>A DONCO-BAYCITY™ App</footer>
 <script>
