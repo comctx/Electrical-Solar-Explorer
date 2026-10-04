@@ -371,68 +371,187 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <button class="btn" data-show="240">240 V Load</button>
 </div></section>
 
-<section class="panel diagram-card active" id="receptacle" data-ate-level="technical"><h2>Basic 120 V Receptacle Circuit</h2>
-<p class="lead">This cutaway-style drawing is closer to what the parts look like in the field: a branch breaker inside the panel, a cable leaving the panel, conductors entering a device box, and a receptacle mounted in the box. Colors are illustrative only—never identify a conductor by color alone.</p>
-<div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
-<!-- panel enclosure -->
-<rect x="35" y="35" width="285" height="355" rx="12" class="enclosure"/>
-<text class="label" x="105" y="62">Panel / Load Center</text>
-<rect x="65" y="85" width="105" height="245" rx="6" fill="#9eaab3" stroke="#52616b" stroke-width="3"/>
-<rect x="185" y="90" width="100" height="52" rx="5" class="breaker"/>
-<rect x="224" y="101" width="30" height="30" rx="4" class="breaker-handle"/>
-<text x="196" y="122" font-size="11" font-weight="700" fill="#fff">BRANCH</text>
-<text class="small" x="195" y="157">breaker concept</text>
-<rect x="185" y="200" width="100" height="24" rx="3" class="bar"/>
-<circle cx="200" cy="212" r="4" fill="#65747f"/><circle cx="220" cy="212" r="4" fill="#65747f"/><circle cx="240" cy="212" r="4" fill="#65747f"/><circle cx="260" cy="212" r="4" fill="#65747f"/>
-<text class="small" x="188" y="193">Neutral bar concept</text>
-<rect x="185" y="275" width="100" height="24" rx="3" class="bar"/>
-<circle cx="200" cy="287" r="4" fill="#65747f"/><circle cx="220" cy="287" r="4" fill="#65747f"/><circle cx="240" cy="287" r="4" fill="#65747f"/><circle cx="260" cy="287" r="4" fill="#65747f"/>
-<text class="small" x="188" y="268">Ground bar concept</text>
+<section class="panel diagram-card active" id="receptacle" data-ate-level="technical">
+<h2>120 V Receptacle Circuit</h2>
 
-<!-- cable -->
-<path class="cable-jacket" d="M320 238C440 238 500 238 585 238"/>
-<path class="cable-edge" d="M320 226C440 226 500 226 585 226M320 250C440 250 500 250 585 250"/>
-<text class="caption" x="380" y="205">Branch conductors</text>
-<text class="small" x="365" y="225">Black = Hot</text>
-<text class="small" x="365" y="244">White = Neutral</text>
-<text class="small" x="365" y="263">Green = Ground</text>
+<div data-ate-exact-level="technical">
+<p class="lead">This view shows the electrical relationship all the way to the receptacle terminals: the ungrounded conductor goes to the brass-colored terminal side, the neutral goes to the silver-colored terminal side, and the equipment-grounding conductor goes to the green grounding terminal.</p>
 
-<!-- conductors emerging -->
-<path class="cond-black" d="M254 116H305V223C390 223 475 223 585 223"/>
-<path class="cond-white" d="M270 212H300V239C390 239 475 239 585 239"/>
-<path class="cond-ground" d="M270 287H300V255C390 255 475 255 585 255"/>
+<div class="principle-banner"><strong>Terminal relationship:</strong> Black → Brass • White → Silver • Green → Grounding screw. Colors in the drawing are for teaching only; never identify a real conductor by color alone.</div>
 
-<!-- device box -->
-<rect x="585" y="110" width="185" height="245" rx="10" class="box-metal"/>
-<rect x="606" y="128" width="143" height="210" rx="8" fill="#f4f6f7" stroke="#6e7d87" stroke-width="3"/>
-<text class="small" x="615" y="102">Device box</text>
+<div class="wrap">
+<svg class="diagram" viewBox="0 0 1100 500" style="height:500px" aria-label="120 volt receptacle circuit with terminal connections">
 
-<!-- receptacle body -->
-<rect x="635" y="145" width="85" height="175" rx="11" class="faceplate"/>
-<rect x="655" y="167" width="45" height="55" rx="12" fill="#fff" stroke="#77838b" stroke-width="2"/>
-<rect x="655" y="242" width="45" height="55" rx="12" fill="#fff" stroke="#77838b" stroke-width="2"/>
-<rect x="665" y="180" width="7" height="17" rx="2" class="slot"/><rect x="683" y="180" width="7" height="17" rx="2" class="slot"/><path d="M672 205q5-7 10 0" stroke="#1f2529" stroke-width="2" fill="none"/>
-<rect x="665" y="255" width="7" height="17" rx="2" class="slot"/><rect x="683" y="255" width="7" height="17" rx="2" class="slot"/><path d="M672 280q5-7 10 0" stroke="#1f2529" stroke-width="2" fill="none"/>
-<circle cx="723" cy="190" r="6" class="screw"/><circle cx="723" cy="270" r="6" class="screw"/>
-<circle cx="628" cy="190" r="6" fill="#c3c9cd" stroke="#5e676d" stroke-width="2"/><circle cx="628" cy="270" r="6" fill="#c3c9cd" stroke="#5e676d" stroke-width="2"/>
-<circle cx="678" cy="326" r="6" fill="#67a55a" stroke="#285e21" stroke-width="2"/>
+<!-- PANEL -->
+<rect x="30" y="55" width="280" height="390" rx="14" class="enclosure"/>
+<text class="label" x="95" y="88">Panel / Load Center</text>
 
-<!-- conductor routing inside box, conceptual not terminal-by-terminal -->
-<path class="cond-black" d="M585 223H610V190H628"/>
-<path class="cond-white" d="M585 239H600V270H628"/>
-<path class="cond-ground" d="M585 255H610V326H672"/>
-<path class="cond-ground" d="M610 326H594V340"/>
+<rect x="60" y="110" width="100" height="270" rx="6" fill="#9eaab3" stroke="#52616b" stroke-width="3"/>
 
-<text class="label" x="804" y="155">What you are seeing</text>
-<text class="small" x="805" y="185">• breaker feeds branch circuit</text>
-<text class="small" x="805" y="210">• branch conductors run to the device box</text>
-<text class="small" x="805" y="235">• conductors enter a device box</text>
-<text class="small" x="805" y="260">• receptacle is mounted in the box</text>
-<text class="small" x="805" y="285">• equipment ground bonds metal parts</text>
-<text class="small" x="805" y="325">Illustrative only — not a terminal</text>
-<text class="small" x="805" y="345">connection or installation guide.</text>
-</svg></div>
-<div class="legend"><span><span class="swatch" style="background:#252a2e"></span>Illustrative ungrounded conductor</span><span><span class="swatch" style="background:#c9c9c2"></span>White = Neutral</span><span><span class="swatch" style="background:#1f8a4c"></span>Green = Grounding conductor</span></div>
+<rect x="185" y="115" width="92" height="55" rx="6" class="breaker"/>
+<rect x="220" y="128" width="28" height="28" rx="4" class="breaker-handle"/>
+<text class="small" x="188" y="188">Branch breaker</text>
+
+<rect x="185" y="250" width="92" height="22" rx="3" class="bar"/>
+<text class="small" x="188" y="242">Neutral bar</text>
+
+<rect x="185" y="330" width="92" height="22" rx="3" class="bar"/>
+<text class="small" x="188" y="322">Ground bar</text>
+
+<!-- CONDUCTORS -->
+<path class="cond-black" d="M248 142H365V205H625"/>
+<path class="cond-white" d="M245 261H345V245H625"/>
+<path class="cond-ground" d="M245 341H325V285H625"/>
+
+<text class="wire-label" x="385" y="193">Black = Hot</text>
+<text class="wire-label" x="385" y="235">White = Neutral</text>
+<text class="wire-label" x="385" y="277">Green = Ground</text>
+
+<!-- DEVICE BOX -->
+<rect x="625" y="85" width="210" height="340" rx="14" class="box-metal"/>
+<text class="label" x="674" y="72">Device Box</text>
+
+<!-- RECEPTACLE BODY -->
+<rect x="675" y="115" width="110" height="260" rx="14" class="faceplate"/>
+
+<rect x="700" y="145" width="60" height="72" rx="13" fill="#fff" stroke="#77838b" stroke-width="2"/>
+<rect x="700" y="252" width="60" height="72" rx="13" fill="#fff" stroke="#77838b" stroke-width="2"/>
+
+<rect x="713" y="164" width="8" height="22" rx="2" class="slot"/>
+<rect x="739" y="164" width="8" height="22" rx="2" class="slot"/>
+<path d="M722 199q8-10 16 0" stroke="#1f2529" stroke-width="2.5" fill="none"/>
+
+<rect x="713" y="271" width="8" height="22" rx="2" class="slot"/>
+<rect x="739" y="271" width="8" height="22" rx="2" class="slot"/>
+<path d="M722 306q8-10 16 0" stroke="#1f2529" stroke-width="2.5" fill="none"/>
+
+<!-- SILVER TERMINALS LEFT -->
+<circle cx="660" cy="175" r="9" fill="#d8dde0" stroke="#5e676d" stroke-width="2"/>
+<circle cx="660" cy="300" r="9" fill="#d8dde0" stroke="#5e676d" stroke-width="2"/>
+<text class="small" x="615" y="154">Silver</text>
+<text class="small" x="603" y="170">Neutral side</text>
+
+<!-- BRASS TERMINALS RIGHT -->
+<circle cx="800" cy="175" r="9" fill="#d7b05a" stroke="#72561d" stroke-width="2"/>
+<circle cx="800" cy="300" r="9" fill="#d7b05a" stroke="#72561d" stroke-width="2"/>
+<text class="small" x="812" y="154">Brass</text>
+<text class="small" x="812" y="170">Hot side</text>
+
+<!-- GREEN GROUND TERMINAL -->
+<circle cx="730" cy="395" r="9" fill="#2f9e58" stroke="#185c3b" stroke-width="2"/>
+<text class="small" x="750" y="400">Green grounding screw</text>
+
+<!-- ACTUAL TERMINAL RELATIONSHIPS -->
+<path class="cond-black" d="M625 205H790V175H800"/>
+<path class="cond-white" d="M625 245H645V175H660"/>
+<path class="cond-ground" d="M625 285H640V395H721"/>
+
+<!-- callout leader labels -->
+<path d="M800 175H875" stroke="#d7b05a" stroke-width="3" fill="none"/>
+<path d="M660 175H575" stroke="#b9c0c5" stroke-width="3" fill="none"/>
+<path d="M730 395H875" stroke="#2f9e58" stroke-width="3" fill="none"/>
+
+<!-- EXPLANATION -->
+<text class="label" x="865" y="105">Where the conductors land</text>
+<text class="small" x="865" y="145">Black / hot</text>
+<text class="small" x="865" y="166">→ brass-colored terminal side</text>
+
+<text class="small" x="865" y="220">White / neutral</text>
+<text class="small" x="865" y="241">→ silver-colored terminal side</text>
+
+<text class="small" x="865" y="295">Green / equipment ground</text>
+<text class="small" x="865" y="316">→ green grounding terminal</text>
+
+<text class="small" x="865" y="375">The receptacle has two outlet faces,</text>
+<text class="small" x="865" y="396">but with its connecting tabs intact</text>
+<text class="small" x="865" y="417">both halves share the terminal sides.</text>
+
+</svg>
+</div>
+
+<div class="tech-grid">
+<div class="tech-item"><strong>Brass side</strong><p>The ungrounded branch conductor is associated with the receptacle's brass-colored terminal side.</p></div>
+<div class="tech-item"><strong>Silver side</strong><p>The grounded circuit conductor (neutral) is associated with the silver-colored terminal side.</p></div>
+<div class="tech-item"><strong>Green terminal</strong><p>The equipment-grounding conductor connects to the receptacle grounding terminal and participates in the equipment-bonding path.</p></div>
+<div class="tech-item"><strong>Device instructions still matter</strong><p>Actual conductor size, terminal type, strip length, torque, and permitted connection method must match the device listing and manufacturer instructions.</p></div>
+</div>
+</div>
+
+<div data-ate-exact-level="advanced">
+<h3>Advanced View — Duplex Receptacle Terminals & Connecting Tabs</h3>
+<p class="lead">A duplex receptacle normally has two terminal screws on the hot side and two on the neutral side. Metal connecting tabs electrically join the two halves when the tabs are intact.</p>
+
+<div class="wrap">
+<svg class="diagram" viewBox="0 0 1100 520" style="height:520px" aria-label="Advanced duplex receptacle terminal and tab concept">
+
+<!-- DEVICE -->
+<rect x="360" y="60" width="380" height="405" rx="20" class="box-metal"/>
+<rect x="465" y="90" width="170" height="330" rx="18" class="faceplate"/>
+
+<!-- outlets -->
+<rect x="505" y="125" width="90" height="95" rx="15" fill="#fff" stroke="#77838b" stroke-width="3"/>
+<rect x="505" y="285" width="90" height="95" rx="15" fill="#fff" stroke="#77838b" stroke-width="3"/>
+
+<rect x="525" y="150" width="10" height="28" rx="2" class="slot"/>
+<rect x="564" y="150" width="10" height="28" rx="2" class="slot"/>
+<path d="M538 195q12-14 24 0" stroke="#1f2529" stroke-width="3" fill="none"/>
+
+<rect x="525" y="310" width="10" height="28" rx="2" class="slot"/>
+<rect x="564" y="310" width="10" height="28" rx="2" class="slot"/>
+<path d="M538 355q12-14 24 0" stroke="#1f2529" stroke-width="3" fill="none"/>
+
+<!-- neutral terminals -->
+<circle cx="420" cy="160" r="13" fill="#d8dde0" stroke="#5e676d" stroke-width="2"/>
+<circle cx="420" cy="325" r="13" fill="#d8dde0" stroke="#5e676d" stroke-width="2"/>
+<text class="label" x="195" y="115">Neutral Side</text>
+<text class="small" x="195" y="140">Silver-colored terminals</text>
+
+<!-- hot terminals -->
+<circle cx="680" cy="160" r="13" fill="#d7b05a" stroke="#72561d" stroke-width="2"/>
+<circle cx="680" cy="325" r="13" fill="#d7b05a" stroke="#72561d" stroke-width="2"/>
+<text class="label" x="785" y="115">Hot Side</text>
+<text class="small" x="785" y="140">Brass-colored terminals</text>
+
+<!-- intact tabs -->
+<rect x="410" y="190" width="20" height="105" rx="4" fill="#bfc7cc" stroke="#687680" stroke-width="2"/>
+<rect x="670" y="190" width="20" height="105" rx="4" fill="#c7a455" stroke="#72561d" stroke-width="2"/>
+<text class="small" x="305" y="245">Neutral-side tab</text>
+<text class="small" x="705" y="245">Hot-side tab</text>
+
+<!-- conductors -->
+<path class="cond-white" d="M120 160H407"/>
+<path class="cond-black" d="M693 160H980"/>
+<path class="cond-ground" d="M550 445V485H250"/>
+<circle cx="550" cy="445" r="12" fill="#2f9e58" stroke="#185c3b" stroke-width="2"/>
+
+<text class="wire-label" x="140" y="148">White = Neutral</text>
+<text class="wire-label" x="805" y="148">Black = Hot</text>
+<text class="wire-label" x="255" y="478">Green = Equipment Ground</text>
+
+<!-- intact-tab callout -->
+<rect x="765" y="285" width="280" height="150" rx="14" fill="#eef7ff" stroke="#9fc8ef" stroke-width="2"/>
+<text class="label" x="790" y="315">Tabs Intact</text>
+<text class="small" x="790" y="345">Both receptacle halves remain</text>
+<text class="small" x="790" y="366">electrically common on that side.</text>
+<text class="small" x="790" y="397">Some special arrangements intentionally</text>
+<text class="small" x="790" y="418">remove a tab, but that changes the circuit</text>
+<text class="small" x="790" y="439">relationship and is not the default case.</text>
+
+</svg>
+</div>
+
+<div class="tech-grid">
+<div class="tech-item"><strong>Intact hot-side tab</strong><p>The two brass terminals are electrically linked, so both receptacle halves share that hot-side connection.</p></div>
+<div class="tech-item"><strong>Intact neutral-side tab</strong><p>The two silver terminals are electrically linked, so both receptacle halves share that neutral-side connection.</p></div>
+<div class="tech-item"><strong>Split / switched receptacle concept</strong><p>In some approved designs a connecting tab may be intentionally removed so the two halves can be supplied or controlled differently. The circuit design, conductor identification, protection, and device instructions then matter.</p></div>
+<div class="tech-item"><strong>Professional check</strong><p>Do not assume every receptacle permits every back-wire, side-wire, feed-through, or conductor arrangement. Confirm the device listing, terminal markings, conductor compatibility, and manufacturer instructions.</p></div>
+</div>
+
+<div class="ate-advanced-box">
+<strong>Important distinction</strong>
+<p style="margin:6px 0 0">The terminal colors help teach device function, but they are not a substitute for testing and documentation. In an actual installation, conductor identity must be established safely rather than assumed from insulation color.</p>
+</div>
+</div>
 </section>
 
 <section class="panel diagram-card" id="switch" data-ate-level="technical"><h2>Single-Pole Light Switch Circuit</h2>
