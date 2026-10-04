@@ -19,13 +19,33 @@ table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{b
 .starter{display:grid;grid-template-columns:repeat(4,minmax(100px,1fr));gap:10px;align-items:center}.block{padding:14px;border:2px solid #9fc8ef;background:#f8fbff;border-radius:13px;text-align:center;font-weight:800;color:var(--navy)}.block.on{background:#eaf7ef;border-color:#70b88f}.arrow{text-align:center;font-size:26px;color:var(--blue);font-weight:900}.lamp{width:22px;height:22px;border-radius:50%;display:inline-block;background:#687783;vertical-align:middle;margin-right:7px}.lamp.on{background:#36b37e;box-shadow:0 0 14px rgba(54,179,126,.8)}
 .parts-list{columns:2;column-gap:28px}.parts-list li{break-inside:avoid;margin-bottom:8px;line-height:1.45}
 footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+html[data-ate-detail-level="advanced"] [data-ate-exact-level="technical"]{display:none!important}
+html:not([data-ate-detail-level="advanced"]) [data-ate-exact-level="advanced"]{display:none!important}
+.control-diagram-wrap{overflow-x:auto;margin-top:12px}
+.control-diagram{width:100%;min-width:980px;height:560px;background:#d9e0e5;border:1px solid var(--border);border-radius:14px}
+.term-box{fill:#f7fafc;stroke:#52616b;stroke-width:3}
+.term-dark{fill:#202a32;stroke:#071a2e;stroke-width:3}
+.term-contact{fill:#d7b05a;stroke:#72561d;stroke-width:2}
+.term-coil{fill:#eef7ff;stroke:#0b63ce;stroke-width:3}
+.term-overload{fill:#fff3d6;stroke:#c58a21;stroke-width:3}
+.term-motor{fill:#eef3f6;stroke:#53616e;stroke-width:4}
+.term-label{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}
+.term-small{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#40566a}
+.term-wire-a{fill:none;stroke:#111820;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.term-wire-b{fill:none;stroke:#d64b3c;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.term-wire-c{fill:none;stroke:#1594ff;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.term-control{fill:none;stroke:#7a3db8;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.term-ground{fill:none;stroke:#1f8a4c;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.term-neutral{fill:none;stroke:#fff;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #46545f)}
+.level-intro{background:#fffbed;border:1px solid #e5c94a;border-radius:14px;padding:14px;margin-bottom:16px}
+.level-intro p{margin:0;color:#40566a;line-height:1.5}
 @media(max-width:760px){main{padding:12px}.two,.three,.four,.results,.motor-stage,.starter{grid-template-columns:1fr}.parts-list{columns:1}.arrow{transform:rotate(90deg)}}
 </style>
   <link rel="stylesheet" href="app-enhancements.css">
   <script src="app-enhancements.js" defer></script>
 </head>
 <body>
-<header><h1>Motors & Controls Explorer</h1><p>Motor types, internal parts, starting methods, controls, protection, speed, slip, and the equipment commonly used around electric motors.</p></header>
+<header><h1>Motors & Controls Explorer</h1><p>Start with the motor, then move into real terminal names, starters, overloads, control coils, reversing, speed, slip, and diagnostic concepts.</p></header>
 <main>
 <nav class="nav">
 <a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="vacuum-tubes.html">Vacuum Tubes</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a class="active" href="motors-controls.html">Motors & Controls</a><a href="generators-alternators.html">Generators & Alternators</a>
@@ -41,8 +61,19 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
   <a href="processors.html">Processors</a>
 <a href="motor-starter-trainer.html">Motor Starter Trainer</a><a href="three-phase-power-lab.html">Three-Phase Power Lab</a><a href="vfd-motor-speed-lab.html">VFD & Motor Speed Lab</a></nav>
 
+<section class="ate-level-chooser" data-ate-level-chooser>
+<h2>Choose Your Detail Level</h2>
+<p>Start with the motor itself, then reveal real control-terminal names and deeper industrial-control concepts.</p>
+<div class="ate-level-buttons">
+<button type="button" data-ate-set-level="basic">Basic</button>
+<button type="button" data-ate-set-level="technical">Technical</button>
+<button type="button" data-ate-set-level="advanced">Advanced</button>
+</div>
+<div class="ate-level-status" data-ate-level-status></div>
+</section>
+
 <section class="panel">
-<h2>Beginner Start Here</h2><p class="lead">An electric motor converts electrical energy into mechanical rotation. The motor is only part of the system: starting, switching, protection, speed control, sensing, and the mechanical load all matter.</p>
+<h2>Basic — Start Here</h2><p class="lead">An electric motor converts electrical energy into mechanical rotation. First learn the motor itself. Then Technical and Advanced levels add the control equipment, terminal names, and diagnostic concepts around it.</p>
 <div class="grid three">
 <div class="card"><strong>Stator</strong><p>The stationary magnetic part of the motor. In many AC motors, windings in the stator create a rotating magnetic field.</p><span class="badge">Stationary</span></div>
 <div class="card"><strong>Rotor</strong><p>The rotating part inside the stator. Electromagnetic forces produce torque on the rotor.</p><span class="badge">Rotating</span></div>
@@ -65,8 +96,8 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </div>
 </section>
 
-<section class="panel">
-<h2>Associated Motor Parts & Controls</h2>
+<section class="panel" data-ate-level="technical">
+<h2>Associated Motor Parts & Controls <span class="ate-level-badge">Technical</span></h2>
 <ul class="parts-list">
 <li><strong>Start capacitor:</strong> provides phase shift and extra starting torque for certain single-phase motors.</li>
 <li><strong>Run capacitor:</strong> remains in the circuit while running on capacitor-run designs to improve operating characteristics.</li>
@@ -96,8 +127,8 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </div>
 </section>
 
-<section class="panel">
-<h2>AC Motor Synchronous Speed Calculator</h2><p class="lead">For an AC rotating magnetic field, synchronous speed depends on line frequency and the number of motor poles.</p>
+<section class="panel" data-ate-level="technical">
+<h2>AC Motor Synchronous Speed Calculator <span class="ate-level-badge">Technical</span></h2><p class="lead">For an AC rotating magnetic field, synchronous speed depends on line frequency and the number of motor poles.</p>
 <div class="grid two">
 <div class="field"><label>Frequency</label><select id="freq"><option value="50">50 Hz</option><option value="60" selected>60 Hz</option></select></div>
 <div class="field"><label>Number of poles</label><select id="poles"><option>2</option><option selected>4</option><option>6</option><option>8</option><option>10</option><option>12</option></select></div>
@@ -106,8 +137,8 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <div class="formula">Synchronous RPM = 120 × frequency ÷ poles</div>
 </section>
 
-<section class="panel">
-<h2>Induction Motor Slip Calculator</h2><p class="lead">An induction motor normally runs slightly below synchronous speed. That difference is called slip.</p>
+<section class="panel" data-ate-level="technical">
+<h2>Induction Motor Slip Calculator <span class="ate-level-badge">Technical</span></h2><p class="lead">An induction motor normally runs slightly below synchronous speed. That difference is called slip.</p>
 <div class="grid two">
 <div class="field"><label>Synchronous speed (RPM)</label><input id="syncRpm" type="number" value="1800" min="1"></div>
 <div class="field"><label>Measured running speed (RPM)</label><input id="actualRpm" type="number" value="1740" min="0"></div>
@@ -116,8 +147,8 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <div class="formula">Slip % = (synchronous RPM − actual RPM) ÷ synchronous RPM × 100</div>
 </section>
 
-<section class="panel">
-<h2>Horsepower & Kilowatt Converter</h2>
+<section class="panel" data-ate-level="technical">
+<h2>Horsepower & Kilowatt Converter <span class="ate-level-badge">Technical</span></h2>
 <div class="grid two">
 <div class="field"><label>Horsepower</label><input id="hp" type="number" value="1" min="0" step="any"></div>
 <div class="field"><label>Kilowatts</label><input id="kw" type="number" value="0.746" min="0" step="any"></div>
@@ -125,8 +156,210 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <p class="note">This is a unit conversion only: 1 mechanical horsepower ≈ 0.746 kW. It does not account for motor efficiency.</p>
 </section>
 
-<section class="panel">
-<h2>Starter / Control Concept Simulator</h2><p class="lead">This shows the idea of a control command energizing a contactor so power can reach a motor. It is not a field-wiring diagram.</p>
+<section class="panel" data-ate-level="technical">
+<h2>Motor Starter Terminal Connections <span class="ate-level-badge">Technical</span></h2>
+<p class="lead">This section shows where the major conductors terminate in a typical three-phase motor-starter concept. Terminal names vary by manufacturer, so treat this as a relationship diagram rather than a field-wiring instruction.</p>
+
+<div data-ate-exact-level="technical">
+<div class="level-intro"><p><strong>Technical view:</strong> follow the three power conductors through the contactor and overload relay to the motor. The contactor coil is a separate control circuit using terminals commonly labeled <strong>A1</strong> and <strong>A2</strong>.</p></div>
+
+<div class="control-diagram-wrap">
+<svg class="control-diagram" viewBox="0 0 1100 560" aria-label="Three phase contactor overload and motor terminal concept">
+
+<!-- SOURCE -->
+<rect x="35" y="70" width="175" height="340" rx="14" class="term-box"/>
+<text x="75" y="103" class="term-label">3-Phase Source</text>
+<circle cx="165" cy="155" r="13" class="term-contact"/><text x="78" y="160" class="term-label">L1</text>
+<circle cx="165" cy="220" r="13" class="term-contact"/><text x="78" y="225" class="term-label">L2</text>
+<circle cx="165" cy="285" r="13" class="term-contact"/><text x="78" y="290" class="term-label">L3</text>
+<circle cx="165" cy="350" r="13" fill="#2f9e58" stroke="#185c3b" stroke-width="2"/><text x="78" y="355" class="term-label">PE</text>
+
+<!-- CONTACTOR -->
+<rect x="310" y="65" width="235" height="355" rx="16" class="term-dark"/>
+<text x="375" y="98" font-size="18" font-weight="800" fill="#fff">Contactor</text>
+<text x="330" y="127" font-size="12" fill="#dbe8f5">Line side</text>
+<circle cx="355" cy="155" r="14" class="term-contact"/><text x="338" y="184" font-size="12" fill="#fff">L1</text>
+<circle cx="425" cy="155" r="14" class="term-contact"/><text x="408" y="184" font-size="12" fill="#fff">L2</text>
+<circle cx="495" cy="155" r="14" class="term-contact"/><text x="478" y="184" font-size="12" fill="#fff">L3</text>
+
+<line x1="355" y1="170" x2="355" y2="255" stroke="#c7d1d8" stroke-width="5"/>
+<line x1="425" y1="170" x2="425" y2="255" stroke="#c7d1d8" stroke-width="5"/>
+<line x1="495" y1="170" x2="495" y2="255" stroke="#c7d1d8" stroke-width="5"/>
+
+<circle cx="355" cy="270" r="14" class="term-contact"/><text x="337" y="302" font-size="12" fill="#fff">T1</text>
+<circle cx="425" cy="270" r="14" class="term-contact"/><text x="407" y="302" font-size="12" fill="#fff">T2</text>
+<circle cx="495" cy="270" r="14" class="term-contact"/><text x="477" y="302" font-size="12" fill="#fff">T3</text>
+<text x="330" y="330" font-size="12" fill="#dbe8f5">Load side</text>
+
+<!-- COIL -->
+<rect x="345" y="345" width="165" height="55" rx="12" class="term-coil"/>
+<text x="400" y="378" class="term-label">Coil</text>
+<circle cx="330" cy="372" r="10" fill="#eef7ff" stroke="#0b63ce" stroke-width="3"/>
+<circle cx="525" cy="372" r="10" fill="#eef7ff" stroke="#0b63ce" stroke-width="3"/>
+<text x="310" y="402" class="term-small">A1</text>
+<text x="515" y="402" class="term-small">A2</text>
+
+<!-- OVERLOAD -->
+<rect x="610" y="95" width="175" height="285" rx="16" class="term-overload"/>
+<text x="650" y="127" class="term-label">Overload Relay</text>
+<circle cx="645" cy="170" r="12" class="term-contact"/>
+<circle cx="695" cy="170" r="12" class="term-contact"/>
+<circle cx="745" cy="170" r="12" class="term-contact"/>
+<text x="628" y="197" class="term-small">in 1</text><text x="680" y="197" class="term-small">in 2</text><text x="730" y="197" class="term-small">in 3</text>
+
+<circle cx="645" cy="285" r="12" class="term-contact"/>
+<circle cx="695" cy="285" r="12" class="term-contact"/>
+<circle cx="745" cy="285" r="12" class="term-contact"/>
+<text x="625" y="315" class="term-small">out 1</text><text x="675" y="315" class="term-small">out 2</text><text x="725" y="315" class="term-small">out 3</text>
+
+<circle cx="642" cy="350" r="9" fill="#fff" stroke="#c58a21" stroke-width="2"/>
+<circle cx="700" cy="350" r="9" fill="#fff" stroke="#c58a21" stroke-width="2"/>
+<text x="622" y="373" class="term-small">95</text><text x="684" y="373" class="term-small">96</text>
+<text x="716" y="354" class="term-small">NC trip contact concept</text>
+
+<!-- MOTOR -->
+<rect x="860" y="95" width="195" height="300" rx="28" class="term-motor"/>
+<text x="925" y="128" class="term-label">Motor</text>
+<circle cx="955" cy="245" r="72" fill="#9aa8b6" stroke="#53616e" stroke-width="5"/>
+<circle cx="955" cy="245" r="40" fill="#283848" stroke="#d8a126" stroke-width="12"/>
+<circle cx="885" cy="170" r="11" class="term-contact"/><text x="905" y="175" class="term-small">U / T1</text>
+<circle cx="885" cy="230" r="11" class="term-contact"/><text x="905" y="235" class="term-small">V / T2</text>
+<circle cx="885" cy="290" r="11" class="term-contact"/><text x="905" y="295" class="term-small">W / T3</text>
+<circle cx="885" cy="350" r="11" fill="#2f9e58" stroke="#185c3b" stroke-width="2"/><text x="905" y="355" class="term-small">Frame / PE</text>
+
+<!-- POWER WIRING -->
+<path class="term-wire-a" d="M178 155H355"/>
+<path class="term-wire-b" d="M178 220H285V155H425"/>
+<path class="term-wire-c" d="M178 285H270V155H495"/>
+
+<path class="term-wire-a" d="M355 284H590V170H633"/>
+<path class="term-wire-b" d="M425 284H580V170H683"/>
+<path class="term-wire-c" d="M495 284H570V170H733"/>
+
+<path class="term-wire-a" d="M645 297V410H825V170H874"/>
+<path class="term-wire-b" d="M695 297V425H810V230H874"/>
+<path class="term-wire-c" d="M745 297V440H795V290H874"/>
+<path class="term-ground" d="M178 350H835V350H874"/>
+
+<!-- CONTROL LOOP -->
+<rect x="40" y="455" width="740" height="70" rx="12" fill="#f7efff" stroke="#b58adb" stroke-width="2"/>
+<text x="60" y="480" class="term-label">Control circuit concept</text>
+<text x="60" y="505" class="term-small">STOP (NC) → overload 95/96 (NC) → START (NO) → contactor coil A1/A2. Coil voltage and exact terminals depend on the control system.</text>
+<path class="term-control" d="M170 517H330V385"/>
+<path class="term-control" d="M525 385V517H730"/>
+
+</svg>
+</div>
+
+<div class="grid three" style="margin-top:12px">
+<div class="card"><strong>L1 / L2 / L3</strong><p>Common labels for the contactor's incoming line-side power terminals.</p></div>
+<div class="card"><strong>T1 / T2 / T3</strong><p>Common labels for the contactor's outgoing load-side power terminals toward the overload relay and motor.</p></div>
+<div class="card"><strong>A1 / A2</strong><p>Common coil-terminal labels. Applying the correct control voltage across the coil causes the contactor to change state.</p></div>
+<div class="card"><strong>95 / 96</strong><p>A common overload-relay normally closed auxiliary contact designation used in a control circuit so an overload trip can release the contactor.</p></div>
+<div class="card"><strong>Motor U / V / W or T1 / T2 / T3</strong><p>Motor terminal markings vary. Use the motor nameplate and connection diagram for the actual lead arrangement.</p></div>
+<div class="card"><strong>PE / Frame</strong><p>The protective equipment-grounding connection bonds exposed metal. It is separate from the normal phase-current paths.</p></div>
+</div>
+</div>
+
+<div data-ate-exact-level="advanced">
+<div class="level-intro"><p><strong>Advanced view:</strong> a reversing starter uses two contactors. Reversing the order of two phases changes the rotating-field sequence and reverses a compatible three-phase motor. Electrical and mechanical interlocking are used so the forward and reverse contactors cannot close together.</p></div>
+
+<div class="control-diagram-wrap">
+<svg class="control-diagram" viewBox="0 0 1100 560" aria-label="Forward reverse motor starter terminal relationship concept">
+
+<text x="40" y="42" class="term-label">Three-phase reversing starter relationship</text>
+
+<!-- SOURCE -->
+<rect x="35" y="75" width="160" height="300" rx="14" class="term-box"/>
+<text x="74" y="105" class="term-label">3-Phase Source</text>
+<circle cx="155" cy="155" r="12" class="term-contact"/><text x="72" y="160" class="term-label">L1</text>
+<circle cx="155" cy="220" r="12" class="term-contact"/><text x="72" y="225" class="term-label">L2</text>
+<circle cx="155" cy="285" r="12" class="term-contact"/><text x="72" y="290" class="term-label">L3</text>
+
+<!-- FWD CONTACTOR -->
+<rect x="280" y="70" width="215" height="210" rx="15" class="term-dark"/>
+<text x="330" y="102" font-size="17" font-weight="800" fill="#fff">Forward Contactor</text>
+<circle cx="330" cy="145" r="12" class="term-contact"/><text x="315" y="172" font-size="11" fill="#fff">L1</text>
+<circle cx="388" cy="145" r="12" class="term-contact"/><text x="373" y="172" font-size="11" fill="#fff">L2</text>
+<circle cx="446" cy="145" r="12" class="term-contact"/><text x="431" y="172" font-size="11" fill="#fff">L3</text>
+<circle cx="330" cy="230" r="12" class="term-contact"/><text x="315" y="257" font-size="11" fill="#fff">T1</text>
+<circle cx="388" cy="230" r="12" class="term-contact"/><text x="373" y="257" font-size="11" fill="#fff">T2</text>
+<circle cx="446" cy="230" r="12" class="term-contact"/><text x="431" y="257" font-size="11" fill="#fff">T3</text>
+
+<!-- REV CONTACTOR -->
+<rect x="280" y="320" width="215" height="210" rx="15" class="term-dark"/>
+<text x="330" y="352" font-size="17" font-weight="800" fill="#fff">Reverse Contactor</text>
+<circle cx="330" cy="395" r="12" class="term-contact"/><text x="315" y="422" font-size="11" fill="#fff">L1</text>
+<circle cx="388" cy="395" r="12" class="term-contact"/><text x="373" y="422" font-size="11" fill="#fff">L2</text>
+<circle cx="446" cy="395" r="12" class="term-contact"/><text x="431" y="422" font-size="11" fill="#fff">L3</text>
+<circle cx="330" cy="480" r="12" class="term-contact"/><text x="315" y="507" font-size="11" fill="#fff">T1</text>
+<circle cx="388" cy="480" r="12" class="term-contact"/><text x="373" y="507" font-size="11" fill="#fff">T2</text>
+<circle cx="446" cy="480" r="12" class="term-contact"/><text x="431" y="507" font-size="11" fill="#fff">T3</text>
+
+<!-- SOURCE SPLITS -->
+<path class="term-wire-a" d="M167 155H330"/>
+<path class="term-wire-b" d="M167 220H245V145H388"/>
+<path class="term-wire-c" d="M167 285H230V145H446"/>
+<path class="term-wire-a" d="M167 155H215V395H330"/>
+<path class="term-wire-b" d="M167 220H205V395H388"/>
+<path class="term-wire-c" d="M167 285H195V395H446"/>
+
+<!-- OVERLOAD -->
+<rect x="605" y="180" width="165" height="210" rx="15" class="term-overload"/>
+<text x="645" y="212" class="term-label">Overload</text>
+<circle cx="635" cy="255" r="11" class="term-contact"/>
+<circle cx="685" cy="255" r="11" class="term-contact"/>
+<circle cx="735" cy="255" r="11" class="term-contact"/>
+<circle cx="635" cy="335" r="11" class="term-contact"/>
+<circle cx="685" cy="335" r="11" class="term-contact"/>
+<circle cx="735" cy="335" r="11" class="term-contact"/>
+
+<!-- FWD straight -->
+<path class="term-wire-a" d="M342 230H560V255H624"/>
+<path class="term-wire-b" d="M400 230H545V255H674"/>
+<path class="term-wire-c" d="M458 230H530V255H724"/>
+
+<!-- REV cross two phases concept -->
+<path class="term-wire-a" d="M342 480H520V255H724"/>
+<path class="term-wire-b" d="M400 480H505V255H674"/>
+<path class="term-wire-c" d="M458 480H490V255H624"/>
+
+<!-- MOTOR -->
+<rect x="855" y="165" width="205" height="250" rx="26" class="term-motor"/>
+<text x="920" y="200" class="term-label">3-Phase Motor</text>
+<circle cx="955" cy="292" r="68" fill="#9aa8b6" stroke="#53616e" stroke-width="5"/>
+<circle cx="955" cy="292" r="38" fill="#283848" stroke="#d8a126" stroke-width="12"/>
+<circle cx="875" cy="245" r="10" class="term-contact"/><text x="894" y="250" class="term-small">U</text>
+<circle cx="875" cy="292" r="10" class="term-contact"/><text x="894" y="297" class="term-small">V</text>
+<circle cx="875" cy="339" r="10" class="term-contact"/><text x="894" y="344" class="term-small">W</text>
+
+<path class="term-wire-a" d="M635 346V430H820V245H865"/>
+<path class="term-wire-b" d="M685 346V445H805V292H865"/>
+<path class="term-wire-c" d="M735 346V460H790V339H865"/>
+
+<!-- INTERLOCK CALLOUT -->
+<rect x="535" y="35" width="500" height="105" rx="12" fill="#fffbed" stroke="#e5c94a" stroke-width="2"/>
+<text x="560" y="63" class="term-label">Interlocking concept</text>
+<text x="560" y="87" class="term-small">Forward and reverse contactors must not energize at the same time.</text>
+<text x="560" y="108" class="term-small">Mechanical and/or electrical interlocks prevent a simultaneous close condition.</text>
+<text x="560" y="129" class="term-small">Exact control terminals and wiring vary by starter design.</text>
+
+</svg>
+</div>
+
+<div class="grid two" style="margin-top:12px">
+<div class="card"><strong>Phase sequence</strong><p>Changing the order of two phase conductors reverses the rotating magnetic field and therefore reverses a compatible three-phase motor.</p></div>
+<div class="card"><strong>Interlocking</strong><p>Forward and reverse contactors are prevented from closing together because that could create a severe fault condition.</p></div>
+<div class="card"><strong>Diagnostic thinking</strong><p>If a motor will not start, separate the problem into source power, control power, coil command, contactor state, overload state, motor leads, and mechanical load.</p></div>
+<div class="card"><strong>Measurement points</strong><p>Professionals distinguish line-side voltage, load-side voltage, coil voltage, phase current, insulation condition, and mechanical symptoms rather than replacing components at random.</p></div>
+</div>
+
+<div class="warning"><strong>Safety boundary:</strong> industrial motor circuits can involve hazardous mains voltage, high fault current, stored energy, rotating machinery, and automatic restart. This diagram is educational only. Real installation and troubleshooting require the correct drawings, equipment instructions, lockout/tagout practices, applicable code, and qualified-person procedures.</div>
+</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+<h2>Starter / Control Concept Simulator <span class="ate-level-badge">Technical</span></h2><p class="lead">Use this simulator after the terminal diagram above. It shows what happens logically when a START command energizes the contactor coil and when an overload trip opens the control path.</p>
 <div class="starter">
 <div id="controlBlock" class="block"><span id="controlLamp" class="lamp"></span>Control command</div>
 <div class="arrow">→</div>
@@ -137,8 +370,8 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <div id="starterStatus" class="formula">Motor stopped. Overload reset.</div>
 </section>
 
-<section class="panel">
-<h2>VFD vs. Soft Starter</h2>
+<section class="panel" data-ate-level="technical">
+<h2>VFD vs. Soft Starter <span class="ate-level-badge">Technical</span></h2>
 <table><thead><tr><th>Feature</th><th>VFD</th><th>Soft starter</th></tr></thead><tbody>
 <tr><td>Controls starting current</td><td>Yes</td><td>Yes</td></tr>
 <tr><td>Controls running speed</td><td>Yes, over an appropriate range</td><td>Generally no</td></tr>
@@ -147,8 +380,8 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </tbody></table>
 </section>
 
-<section class="panel">
-<h2>Motor Nameplate Basics</h2>
+<section class="panel" data-ate-level="technical">
+<h2>Motor Nameplate Basics <span class="ate-level-badge">Technical</span></h2>
 <table><thead><tr><th>Item</th><th>What it tells you</th></tr></thead><tbody>
 <tr><td>Voltage</td><td>Rated supply voltage or allowable connection voltage range/configuration.</td></tr>
 <tr><td>FLA / rated current</td><td>Current at rated load under specified conditions.</td></tr>
@@ -162,6 +395,19 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 <tr><td>Enclosure</td><td>Construction suited to the specified environment, such as open or totally enclosed designs.</td></tr>
 </tbody></table>
 <div class="warning">For real motor installation or mains-voltage wiring, use the motor/drive manufacturer instructions and applicable electrical code. Disconnect and verify power before servicing, and do not rely on wire color alone.</div>
+</section>
+<section class="panel" data-ate-level="advanced">
+<h2>Advanced Motor-Control Troubleshooting <span class="ate-level-badge advanced">Advanced</span></h2>
+<p class="lead">A good diagnostic sequence follows the energy and control paths rather than guessing at parts.</p>
+<div class="grid two">
+<div class="card"><strong>Motor dead, contactor not pulled in</strong><p>Think first about control power, STOP/START logic, overload auxiliary state, permissives/interlocks, coil voltage, and coil condition.</p></div>
+<div class="card"><strong>Contactor pulled in, motor dead</strong><p>Separate line-side power from load-side power. Consider open protection, failed contacts, overload power path, open motor leads, and internal motor condition.</p></div>
+<div class="card"><strong>Motor runs backward</strong><p>On a compatible three-phase motor, rotation relates to phase sequence. Verify the intended machine direction and documentation before any corrective work.</p></div>
+<div class="card"><strong>Overload trips repeatedly</strong><p>Consider actual mechanical load, phase-current imbalance, supply condition, acceleration time, motor connection, cooling, ambient conditions, and overload settings rather than simply resetting it repeatedly.</p></div>
+<div class="card"><strong>One phase missing</strong><p>Single-phasing can cause abnormal current, poor torque, overheating, and failure. Compare all phases rather than assuming that seeing voltage at one point proves the whole power path is healthy.</p></div>
+<div class="card"><strong>VFD-driven motor</strong><p>Separate incoming supply issues from drive faults, parameter/configuration issues, output-side problems, motor problems, and mechanical-load problems.</p></div>
+</div>
+<div class="warning">Do not perform live industrial power measurements unless the work is within your training, authorization, PPE, equipment ratings, and safe-work procedures.</div>
 </section>
 </main>
 <footer>A DONCO-BAYCITY™ App</footer>
