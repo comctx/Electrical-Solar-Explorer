@@ -157,59 +157,118 @@ footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;
 </svg></div>
 </section>
 
-<section class="panel diagram-card" id="multi"><h2>Multiple Receptacles on One Branch Circuit</h2><p class="lead">The receptacles are electrically in parallel. Each one is connected across the branch hot and neutral—not in series through the appliances.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
-<rect x="35" y="90" width="150" height="200" rx="14" class="box"/><text class="label" x="80" y="125">Panel</text>
-<path class="wire hot" d="M185 145H835"/><path class="wire neutral" d="M185 220H835"/><path class="wire ground" d="M185 275H835"/>
-<g transform="translate(300 0)"><rect x="0" y="115" width="90" height="135" rx="10" class="device"/><text class="small" x="17" y="145">Outlet 1</text><path class="wire hot" d="M45 30V0" transform="translate(0 115)"/><path class="wire neutral" d="M65 105V135"/><path d="M45 145V160" class="wire ground"/></g>
-<g transform="translate(500 0)"><rect x="0" y="115" width="90" height="135" rx="10" class="device"/><text class="small" x="17" y="145">Outlet 2</text><path class="wire hot" d="M45 30V0" transform="translate(0 115)"/><path class="wire neutral" d="M65 105V135"/><path d="M45 145V160" class="wire ground"/></g>
-<g transform="translate(700 0)"><rect x="0" y="115" width="90" height="135" rx="10" class="device"/><text class="small" x="17" y="145">Outlet 3</text><path class="wire hot" d="M45 30V0" transform="translate(0 115)"/><path class="wire neutral" d="M65 105V135"/><path d="M45 145V160" class="wire ground"/></g>
-<text class="small" x="365" y="335">Parallel branch concept: each receptacle is connected across the circuit conductors.</text>
+<section class="panel diagram-card" id="multi"><h2>Multiple Receptacles on One Branch Circuit</h2>
+<p class="lead">Here the branch cable enters the first device box and continues to additional boxes. The receptacles are still electrically in parallel; each device connects across the branch conductors. The drawing intentionally does not show a specific approved splicing or terminal method.</p>
+<div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
+<rect x="25" y="65" width="210" height="300" rx="12" class="enclosure"/><text class="label" x="72" y="92">Panel / Load Center</text>
+<rect x="55" y="110" width="75" height="205" rx="5" fill="#9eaab3" stroke="#52616b" stroke-width="3"/><rect x="145" y="110" width="65" height="48" rx="5" class="breaker"/><rect x="166" y="120" width="24" height="25" rx="3" class="breaker-handle"/>
+<rect x="145" y="220" width="65" height="20" rx="3" class="bar"/><rect x="145" y="275" width="65" height="20" rx="3" class="bar"/>
+
+<path class="cable-jacket" d="M235 235H315M415 235H515M615 235H715"/><path class="cable-edge" d="M235 223H315M415 223H515M615 223H715"/>
+<path class="cond-black" d="M190 134H225V220H315M415 220H515M615 220H715"/>
+<path class="cond-white" d="M195 230H225V236H315M415 236H515M615 236H715"/>
+<path class="cond-ground" d="M195 285H225V252H315M415 252H515M615 252H715"/>
+
+<g transform="translate(315 95)"><rect width="100" height="255" rx="10" class="box-metal"/><rect x="17" y="25" width="66" height="195" rx="8" class="faceplate"/><rect x="31" y="48" width="38" height="58" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="31" y="128" width="38" height="58" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="38" y="61" width="6" height="16" class="slot"/><rect x="56" y="61" width="6" height="16" class="slot"/><rect x="38" y="141" width="6" height="16" class="slot"/><rect x="56" y="141" width="6" height="16" class="slot"/><text class="small" x="25" y="242">Outlet box 1</text></g>
+<g transform="translate(515 95)"><rect width="100" height="255" rx="10" class="box-metal"/><rect x="17" y="25" width="66" height="195" rx="8" class="faceplate"/><rect x="31" y="48" width="38" height="58" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="31" y="128" width="38" height="58" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="38" y="61" width="6" height="16" class="slot"/><rect x="56" y="61" width="6" height="16" class="slot"/><rect x="38" y="141" width="6" height="16" class="slot"/><rect x="56" y="141" width="6" height="16" class="slot"/><text class="small" x="25" y="242">Outlet box 2</text></g>
+<g transform="translate(715 95)"><rect width="100" height="255" rx="10" class="box-metal"/><rect x="17" y="25" width="66" height="195" rx="8" class="faceplate"/><rect x="31" y="48" width="38" height="58" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="31" y="128" width="38" height="58" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="38" y="61" width="6" height="16" class="slot"/><rect x="56" y="61" width="6" height="16" class="slot"/><rect x="38" y="141" width="6" height="16" class="slot"/><rect x="56" y="141" width="6" height="16" class="slot"/><text class="small" x="25" y="242">Outlet box 3</text></g>
+<text class="small" x="350" y="395">Cable continues box-to-box. Devices are electrically parallel; approved splicing/terminal details vary.</text>
 </svg></div></section>
 
-<section class="panel diagram-card" id="mixed"><h2>Light and Receptacle on the Same Branch — Concept</h2><p class="lead">A branch circuit can serve more than one type of load when permitted by the design and applicable rules. The receptacle remains unswitched while the light is controlled by its switch.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
-<rect x="40" y="90" width="150" height="200" rx="14" class="box"/><text class="label" x="82" y="125">Panel</text>
-<rect x="330" y="100" width="100" height="120" rx="10" class="device"/><text class="small" x="350" y="135">Outlet</text>
-<rect x="500" y="120" width="90" height="110" rx="10" class="device"/><text class="small" x="520" y="152">Switch</text>
-<circle cx="735" cy="180" r="55" class="device"/><path d="M698 143l74 74M772 143l-74 74" stroke="#b58b00" stroke-width="4"/><text class="small" x="718" y="255">Light</text>
-<path class="wire hot" d="M190 145H330M430 145H500"/><path class="wire switched" d="M590 175H680"/><path class="wire neutral" d="M190 245H330M430 245H680"/><path class="wire ground" d="M190 285H735"/>
-<text class="small" x="240" y="335">Receptacle is parallel with the lighting branch; the switch controls only the light path.</text>
+<section class="panel diagram-card" id="mixed"><h2>Light and Receptacle on the Same Branch — Concept</h2>
+<p class="lead">This cutaway shows one branch feeding an unswitched receptacle and a separate switch box that controls a light. The purpose is to show how the load branches relate—not to prescribe a box-by-box installation method.</p>
+<div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
+<rect x="25" y="65" width="205" height="300" rx="12" class="enclosure"/><text class="label" x="72" y="92">Panel</text><rect x="55" y="110" width="70" height="200" rx="5" fill="#9eaab3" stroke="#52616b" stroke-width="3"/><rect x="145" y="110" width="60" height="46" rx="5" class="breaker"/><rect x="165" y="120" width="22" height="24" rx="3" class="breaker-handle"/>
+<path class="cable-jacket" d="M230 235H360"/><path class="cond-black" d="M185 133H215V220H360"/><path class="cond-white" d="M190 230H215V236H360"/><path class="cond-ground" d="M190 285H215V252H360"/>
+
+<!-- junction / first device box -->
+<rect x="360" y="105" width="165" height="245" rx="10" class="box-metal"/><text class="small" x="375" y="95">Receptacle box</text>
+<rect x="405" y="145" width="75" height="160" rx="8" class="faceplate"/><rect x="422" y="170" width="40" height="50" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="422" y="235" width="40" height="50" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/>
+<circle cx="442" cy="318" r="6" fill="#67a55a" stroke="#285e21" stroke-width="2"/>
+
+<!-- branch onward to switch -->
+<path class="cable-jacket" d="M525 235H660"/><path class="cond-black" d="M525 220H660"/><path class="cond-white" d="M525 236H660"/><path class="cond-ground" d="M525 252H660"/>
+<rect x="660" y="115" width="135" height="225" rx="10" class="box-metal"/><text class="small" x="672" y="105">Switch box</text>
+<rect x="700" y="150" width="55" height="145" rx="8" class="faceplate"/><rect x="716" y="175" width="22" height="70" rx="4" fill="#fff" stroke="#79848b" stroke-width="2"/><rect x="719" y="182" width="16" height="30" rx="3" fill="#e5e5e5" stroke="#818a90" stroke-width="2"/>
+
+<!-- ceiling cable -->
+<path class="cable-jacket" d="M795 235H865"/><path class="cond-black" d="M755 215H790V220H865"/><path class="cond-white" d="M795 236H865"/><path class="cond-ground" d="M727 302H790V252H865"/>
+<circle cx="910" cy="225" r="62" fill="#fffbed" stroke="#b58b00" stroke-width="4"/><path d="M875 190l70 70M945 190l-70 70" stroke="#b58b00" stroke-width="4"/>
+<text class="small" x="320" y="395">Receptacle remains on the branch; switch controls only the light path.</text>
 </svg></div></section>
 
-<section class="panel diagram-card" id="kitchen"><h2>Kitchen Small-Appliance / GFCI Concept</h2><p class="lead">Kitchen countertop receptacles often require dedicated small-appliance branch circuits and GFCI protection, with AFCI and other requirements depending on the current code and location. This drawing shows the protection relationship only.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
-<rect x="40" y="85" width="155" height="215" rx="14" class="box"/><text class="label" x="85" y="120">Panel</text>
-<rect x="325" y="105" width="120" height="150" rx="12" class="gfci"/><text class="label" x="348" y="140">GFCI</text><text class="small" x="344" y="168">Protection point</text>
-<rect x="565" y="105" width="100" height="150" rx="12" class="device"/><text class="small" x="580" y="140">Countertop</text><text class="small" x="582" y="160">receptacle</text>
-<rect x="735" y="105" width="100" height="150" rx="12" class="device"/><text class="small" x="750" y="140">Countertop</text><text class="small" x="752" y="160">receptacle</text>
-<path class="wire hot" d="M195 145H325M445 145H565M665 145H735"/><path class="wire neutral" d="M195 215H325M445 215H565M665 215H735"/><path class="wire ground" d="M195 275H835"/>
-<text class="small" x="305" y="325">Protection and downstream arrangement depend on the device and installation; follow manufacturer instructions.</text>
+<section class="panel diagram-card" id="kitchen"><h2>Kitchen Small-Appliance / GFCI Concept</h2>
+<p class="lead">This version shows a panel branch feeding a GFCI device in a real-looking box, with a second receptacle box downstream conceptually. Kitchen branch-circuit requirements are more detailed than this picture and must follow the current code.</p>
+<div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
+<rect x="25" y="65" width="205" height="300" rx="12" class="enclosure"/><text class="label" x="72" y="92">Panel</text><rect x="55" y="110" width="70" height="200" rx="5" fill="#9eaab3" stroke="#52616b" stroke-width="3"/><rect x="145" y="110" width="60" height="46" rx="5" class="breaker"/><rect x="165" y="120" width="22" height="24" rx="3" class="breaker-handle"/>
+<path class="cable-jacket" d="M230 235H410"/><path class="cond-black" d="M185 133H215V220H410"/><path class="cond-white" d="M190 230H215V236H410"/><path class="cond-ground" d="M190 285H215V252H410"/>
+
+<!-- GFCI box -->
+<rect x="410" y="95" width="175" height="270" rx="10" class="box-metal"/><text class="small" x="430" y="85">Countertop GFCI box</text>
+<rect x="455" y="128" width="85" height="205" rx="10" class="faceplate"/>
+<rect x="470" y="150" width="55" height="65" rx="10" fill="#fff" stroke="#5b8e70" stroke-width="2"/><rect x="470" y="245" width="55" height="65" rx="10" fill="#fff" stroke="#5b8e70" stroke-width="2"/>
+<circle cx="483" cy="229" r="6" fill="#d65b52"/><circle cx="512" cy="229" r="6" fill="#7bbf72"/><text class="small" x="472" y="344">TEST / RESET concept</text>
+
+<!-- downstream box -->
+<path class="cable-jacket" d="M585 235H720"/><path class="cond-black" d="M585 220H720"/><path class="cond-white" d="M585 236H720"/><path class="cond-ground" d="M585 252H720"/>
+<rect x="720" y="105" width="150" height="250" rx="10" class="box-metal"/><rect x="755" y="145" width="80" height="170" rx="9" class="faceplate"/><rect x="775" y="170" width="40" height="50" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><rect x="775" y="240" width="40" height="50" rx="10" fill="#fff" stroke="#77838b" stroke-width="2"/><text class="small" x="735" y="95">Additional receptacle box</text>
+<text class="small" x="300" y="395">Downstream protection arrangement depends on the device labeling and manufacturer instructions.</text>
 </svg></div></section>
 
-<section class="panel diagram-card" id="bath"><h2>Bathroom Receptacle / GFCI Concept</h2><p class="lead">Bathroom receptacles have dedicated protection and branch-circuit requirements. This diagram shows the functional relationship, not the permitted circuit-sharing rules for any particular jurisdiction.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
-<rect x="40" y="90" width="155" height="205" rx="14" class="box"/><text class="label" x="85" y="125">Panel</text>
-<rect x="345" y="105" width="130" height="160" rx="12" class="gfci"/><text class="label" x="375" y="145">GFCI</text><text class="small" x="362" y="175">Bathroom receptacle</text>
-<circle cx="705" cy="165" r="52" class="device"/><path d="M670 130l70 70M740 130l-70 70" stroke="#b58b00" stroke-width="4"/><text class="small" x="673" y="245">Light / fan concept</text>
-<path class="wire hot" d="M195 145H345"/><path class="wire neutral" d="M195 215H345"/><path class="wire ground" d="M195 270H475M475 270H705"/>
-<path class="wire switched" d="M475 145H575V165H653"/>
-<text class="small" x="315" y="325">Whether lighting/fan share this circuit depends on the allowed design and code rules.</text>
+<section class="panel diagram-card" id="bath"><h2>Bathroom Receptacle / GFCI Concept</h2>
+<p class="lead">The drawing now separates the GFCI receptacle box from a lighting/fan control box so it looks more like a real room circuit layout. Whether those loads may share a branch circuit depends on the actual design and code.</p>
+<div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
+<rect x="25" y="65" width="205" height="300" rx="12" class="enclosure"/><text class="label" x="72" y="92">Panel</text><rect x="55" y="110" width="70" height="200" rx="5" fill="#9eaab3" stroke="#52616b" stroke-width="3"/><rect x="145" y="110" width="60" height="46" rx="5" class="breaker"/><rect x="165" y="120" width="22" height="24" rx="3" class="breaker-handle"/>
+
+<path class="cable-jacket" d="M230 220H405"/><path class="cond-black" d="M185 133H215V205H405"/><path class="cond-white" d="M190 230H215V221H405"/><path class="cond-ground" d="M190 285H215V237H405"/>
+<rect x="405" y="90" width="170" height="270" rx="10" class="box-metal"/><text class="small" x="430" y="80">Bathroom GFCI box</text><rect x="450" y="125" width="80" height="205" rx="10" class="faceplate"/><rect x="466" y="150" width="48" height="58" rx="10" fill="#fff" stroke="#5b8e70" stroke-width="2"/><rect x="466" y="245" width="48" height="58" rx="10" fill="#fff" stroke="#5b8e70" stroke-width="2"/><circle cx="476" cy="225" r="5" fill="#d65b52"/><circle cx="503" cy="225" r="5" fill="#7bbf72"/>
+
+<!-- separate switch and light/fan concept -->
+<path class="cable-jacket" d="M575 250H715"/><path class="cond-black" d="M575 235H715"/><path class="cond-white" d="M575 251H715"/><path class="cond-ground" d="M575 267H715"/>
+<rect x="715" y="130" width="115" height="210" rx="10" class="box-metal"/><rect x="750" y="165" width="50" height="135" rx="8" class="faceplate"/><rect x="765" y="188" width="20" height="62" rx="4" fill="#fff" stroke="#79848b" stroke-width="2"/>
+<circle cx="910" cy="220" r="58" fill="#fffbed" stroke="#b58b00" stroke-width="4"/><path d="M875 185l70 70M945 185l-70 70" stroke="#b58b00" stroke-width="4"/>
+<path class="cable-jacket" d="M830 250H860"/><path class="cond-black" d="M800 220H860"/><path class="cond-white" d="M830 251H860"/><path class="cond-ground" d="M775 312H840V267H860"/>
 </svg></div></section>
 
-<section class="panel diagram-card" id="laundry"><h2>Laundry Circuit Concept</h2><p class="lead">A washer and dryer may involve separate branch circuits. A typical electric dryer is a 120/240 V load that may require two ungrounded conductors, neutral, and equipment ground depending on the appliance.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
-<rect x="35" y="80" width="170" height="235" rx="14" class="box"/><text class="label" x="82" y="115">Panel</text><text class="small" x="65" y="150">Laundry branch</text><text class="small" x="65" y="185">2-pole dryer branch</text>
-<rect x="380" y="90" width="145" height="190" rx="14" class="device"/><text class="label" x="420" y="125">Washer</text><text class="small" x="395" y="158">120 V concept</text>
-<rect x="650" y="90" width="145" height="190" rx="14" class="device"/><text class="label" x="700" y="125">Dryer</text><text class="small" x="670" y="158">120/240 V concept</text>
-<path class="wire hot" d="M205 145H380"/><path class="wire neutral" d="M205 205H380"/><path class="wire ground" d="M205 260H525"/>
-<path class="wire hot" d="M205 165H650"/><path class="wire switched" d="M205 190H650"/><path class="wire neutral" d="M525 205H650"/><path class="wire ground" d="M525 260H795"/>
-<text class="small" x="275" y="335">The dryer branch is separate from the washer branch in this concept.</text>
+<section class="panel diagram-card" id="laundry"><h2>Laundry Circuit Concept</h2>
+<p class="lead">This version shows two separate breaker positions and two different cable runs: one conceptually for a washer branch and one for an electric dryer branch. It is meant to make the separation of circuits visually obvious.</p>
+<div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
+<rect x="25" y="55" width="230" height="320" rx="12" class="enclosure"/><text class="label" x="82" y="82">Panel / Load Center</text>
+<rect x="55" y="105" width="75" height="220" rx="5" fill="#9eaab3" stroke="#52616b" stroke-width="3"/>
+<rect x="150" y="105" width="70" height="45" rx="5" class="breaker"/><rect x="172" y="114" width="24" height="25" rx="3" class="breaker-handle"/><text class="small" x="151" y="165">washer breaker</text>
+<rect x="150" y="205" width="70" height="70" rx="5" class="breaker"/><rect x="167" y="215" width="15" height="48" rx="3" class="breaker-handle"/><rect x="190" y="215" width="15" height="48" rx="3" class="breaker-handle"/><text class="small" x="145" y="292">2-pole dryer concept</text>
+
+<!-- washer run -->
+<path class="cable-jacket" d="M255 150H440"/><path class="cond-black" d="M220 127H240V135H440"/><path class="cond-white" d="M220 310H240V151H440"/><path class="cond-ground" d="M220 330H240V167H440"/>
+<rect x="440" y="75" width="160" height="250" rx="14" class="device"/><circle cx="520" cy="180" r="50" fill="#dce7ee" stroke="#6f7d87" stroke-width="4"/><text class="label" x="487" y="110">Washer</text><text class="small" x="470" y="300">separate branch concept</text>
+
+<!-- dryer run -->
+<path class="cable-jacket" d="M255 260H690"/><path class="cond-black" d="M205 225H240V244H690"/><path d="M205 255H240V260H690" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round"/><path class="cond-white" d="M205 310H240V276H690"/><path class="cond-ground" d="M205 330H240V292H690"/>
+<rect x="690" y="75" width="190" height="250" rx="14" class="device"/><circle cx="785" cy="180" r="58" fill="#dce7ee" stroke="#6f7d87" stroke-width="4"/><text class="label" x="753" y="110">Dryer</text><text class="small" x="715" y="300">120/240 V appliance concept</text>
 </svg></div></section>
 
-<section class="panel diagram-card" id="240"><h2>240 V Appliance Circuit Concept</h2><p class="lead">A 240 V load uses two ungrounded conductors from opposite legs. Some appliances also require a neutral for 120 V internal loads; some do not. Equipment grounding remains separate from normal load current.</p><div class="wrap"><svg class="diagram" viewBox="0 0 900 390">
-<rect x="45" y="80" width="190" height="230" rx="14" class="box"/><text class="label" x="91" y="115">Panel / 2-pole</text><text class="label" x="107" y="138">breaker</text>
-<rect x="650" y="100" width="170" height="180" rx="14" class="device"/><text class="label" x="692" y="138">240 V Load</text><text class="small" x="675" y="175">Range / dryer /</text><text class="small" x="675" y="195">water heater / HVAC</text>
-<path class="wire hot" d="M235 140H650"/><text class="small" x="340" y="130">Ungrounded conductor A</text>
-<path class="wire switched" d="M235 185H650"/><text class="small" x="340" y="175">Ungrounded conductor B</text>
-<path class="wire neutral" d="M235 230H650"/><text class="small" x="350" y="220">Neutral only when required by load</text>
-<path class="wire ground" d="M235 275H650"/><text class="small" x="350" y="300">Equipment grounding path</text>
-</svg></div></section>
+<section class="panel diagram-card" id="240"><h2>240 V Appliance Circuit Concept</h2>
+<p class="lead">This cutaway uses a double-pole breaker inside a panel and a multi-conductor cable entering an appliance disconnect/connection enclosure. Some 240 V equipment needs no neutral; other equipment uses a neutral for internal 120 V loads.</p>
+<div class="wrap"><svg class="diagram" viewBox="0 0 1000 430">
+<rect x="30" y="50" width="265" height="330" rx="12" class="enclosure"/><text class="label" x="90" y="78">Panel / Load Center</text>
+<rect x="60" y="100" width="90" height="230" rx="5" fill="#9eaab3" stroke="#52616b" stroke-width="3"/>
+<rect x="170" y="105" width="85" height="95" rx="5" class="breaker"/><rect x="185" y="118" width="22" height="62" rx="3" class="breaker-handle"/><rect x="218" y="118" width="22" height="62" rx="3" class="breaker-handle"/><text class="small" x="175" y="220">2-pole breaker</text>
+<rect x="170" y="260" width="85" height="22" rx="3" class="bar"/><rect x="170" y="310" width="85" height="22" rx="3" class="bar"/>
+
+<path class="cable-jacket" d="M295 235H610"/><path class="cable-edge" d="M295 223H610M295 247H610"/>
+<path class="cond-black" d="M207 135H275V210H610"/>
+<path d="M235 165H275V226H610" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round"/>
+<path class="cond-white" d="M240 270H275V242H610"/>
+<path class="cond-ground" d="M240 320H275V258H610"/>
+
+<rect x="610" y="105" width="180" height="255" rx="10" class="box-metal"/><text class="small" x="630" y="95">Appliance connection / disconnect concept</text>
+<circle cx="660" cy="170" r="7" class="screw"/><circle cx="660" cy="220" r="7" class="screw"/><circle cx="660" cy="270" r="7" fill="#c3c9cd" stroke="#5e676d" stroke-width="2"/><circle cx="660" cy="315" r="7" fill="#67a55a" stroke="#285e21" stroke-width="2"/>
+<path class="cond-black" d="M610 210H653"/><path d="M610 226H640V220H653" stroke="#d64b3c" stroke-width="7" fill="none" stroke-linecap="round"/><path class="cond-white" d="M610 242H640V270H653"/><path class="cond-ground" d="M610 258H640V315H653"/>
+<rect x="830" y="115" width="130" height="225" rx="18" class="device"/><text class="label" x="860" y="150">240 V Load</text><text class="small" x="842" y="190">range / dryer /</text><text class="small" x="842" y="212">water heater /</text><text class="small" x="842" y="234">HVAC concept</text>
+<path class="cable-jacket" d="M790 235H830"/>
+</svg></div>
+<p class="note">The neutral is drawn to teach the four-conductor case, but many 240 V loads do not require a neutral. The equipment instructions determine what conductors the actual load requires.</p>
+</section>
 
 <section class="panel"><h2>Avoiding Branch-Circuit Overloads</h2><p class="lead">The key idea is simple: the total load on a branch circuit matters. A breaker is not extra capacity—it is a protective device matched to the circuit design. Use this calculator only to visualize the relationship between watts, volts, and current.</p>
 <div class="grid three">
