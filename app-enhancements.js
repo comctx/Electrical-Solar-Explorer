@@ -272,7 +272,7 @@ function setDetailLevel(level){
   });
   document.querySelectorAll("[data-ate-level-status]").forEach(el=>{
     const labels={
-      basic:"Basic — the essentials first",
+      basic:"Beginner — the essentials first",
       technical:"Technical — adds real terminology, conductors, measurements, and circuit behavior",
       advanced:"Advanced — adds deeper design, diagnostic, and professional notes"
     };
@@ -283,6 +283,15 @@ function setDetailLevel(level){
 function initDetailLevels(){
   const chooser=document.querySelector("[data-ate-level-chooser]");
   if(!chooser) return;
+
+  document.querySelectorAll('[data-ate-set-level="basic"]').forEach(btn=>{
+    btn.textContent="Beginner";
+  });
+  document.querySelectorAll("h2,h3").forEach(h=>{
+    const t=(h.textContent||"").trim();
+    if(/^Basic\s+[—-]/i.test(t)) h.textContent=t.replace(/^Basic/i,"Beginner");
+  });
+
   document.querySelectorAll("[data-ate-set-level]").forEach(btn=>{
     btn.addEventListener("click",()=>setDetailLevel(btn.dataset.ateSetLevel));
   });
