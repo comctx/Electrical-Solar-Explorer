@@ -247,12 +247,7 @@ html[data-ate-theme="dark"] .ate-finder-card{background:#122235;border-color:#31
   margin-right:auto;
 }
 .ate-polished-page .ate-polished-nav{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  align-items:center;
-  margin-top:0;
-  margin-bottom:16px;
+  display:none !important;
 }
 .ate-polished-page .ate-polished-nav a{
   min-height:42px;
