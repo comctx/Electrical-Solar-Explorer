@@ -91,6 +91,24 @@
       .result-grid,.concept-grid,.type-grid,.bank-stage{grid-template-columns:1fr}
     }
     footer{text-align:center;color:#dbe8f5;background:var(--navy);font-size:13px;font-weight:700;padding:24px 16px;margin-top:20px}
+html[data-ate-detail-level="advanced"] [data-ate-exact-level="technical"]{display:none!important}
+html:not([data-ate-detail-level="advanced"]) [data-ate-exact-level="advanced"]{display:none!important}
+.battery-diagram-wrap{overflow-x:auto;margin-top:12px}
+.battery-diagram{width:100%;min-width:980px;height:560px;background:#d9e0e5;border:1px solid var(--border);border-radius:14px}
+.batt-body{fill:#f8fbff;stroke:#53616e;stroke-width:4}
+.batt-pos{fill:#d64b3c;stroke:#7f2018;stroke-width:2}
+.batt-neg{fill:#1f2529;stroke:#000;stroke-width:2}
+.batt-red{fill:none;stroke:#d64b3c;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+.batt-black{fill:none;stroke:#111820;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+.batt-green{fill:none;stroke:#1f8a4c;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.batt-sense{fill:none;stroke:#7a3db8;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:9 6}
+.batt-device{fill:#fff;stroke:#52616b;stroke-width:3}
+.batt-fuse{fill:#fff3d6;stroke:#c58a21;stroke-width:3}
+.batt-label{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}
+.batt-small{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#40566a}
+.batt-wire-label{font:700 12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#243746;paint-order:stroke fill;stroke:#d9e0e5;stroke-width:5px;stroke-linejoin:round}
+.level-intro{background:#fffbed;border:1px solid #e5c94a;border-radius:14px;padding:14px;margin-bottom:16px}
+.level-intro p{margin:0;color:#40566a;line-height:1.5}
   </style>
   <link rel="stylesheet" href="app-enhancements.css">
   <script src="app-enhancements.js" defer></script>
@@ -98,7 +116,7 @@
 <body>
 <header>
   <h1>Batteries & Energy Storage Explorer</h1>
-  <p>Voltage, amp-hours, watt-hours, series/parallel banks, runtime, charging, voltage sag, state of charge, and battery types.</p>
+  <p>Start with battery basics, then follow real terminal relationships through series, parallel, charging, protection, battery banks, and monitoring concepts.</p>
 </header>
 
 <main>
@@ -126,9 +144,20 @@
   <a href="processors.html">Processors</a>
   </nav>
 
+  <section class="ate-level-chooser" data-ate-level-chooser>
+    <h2>Choose Your Detail Level</h2>
+    <p>Start with battery basics, then reveal terminal connections, bank wiring relationships, and deeper monitoring/protection concepts.</p>
+    <div class="ate-level-buttons">
+      <button type="button" data-ate-set-level="basic">Basic</button>
+      <button type="button" data-ate-set-level="technical">Technical</button>
+      <button type="button" data-ate-set-level="advanced">Advanced</button>
+    </div>
+    <div class="ate-level-status" data-ate-level-status></div>
+  </section>
+
   <section class="panel beginner-panel">
-    <h2>Beginner Start Here</h2>
-    <p class="lead">These are the basic ideas behind batteries and energy storage.</p>
+    <h2>Basic — Start Here</h2>
+    <p class="lead">Start with voltage, capacity, energy, state of charge, and the difference between series and parallel. Technical and Advanced levels then show the actual terminal relationships.</p>
     <div class="concept-grid">
       <div class="concept-card"><strong>Voltage (V)</strong><p>The electrical potential difference of the battery or battery bank.</p><span class="badge">Electrical pressure</span></div>
       <div class="concept-card"><strong>Amp-hours (Ah)</strong><p>A capacity rating that describes how much charge a battery can deliver over time under specified test conditions.</p><span class="badge">Charge capacity</span></div>
@@ -139,8 +168,237 @@
     </div>
   </section>
 
-  <section class="panel">
-    <h2>Series / Parallel Battery Bank Calculator</h2>
+  <section class="panel" data-ate-level="technical">
+    <h2>Battery Terminal Connections <span class="ate-level-badge">Technical</span></h2>
+    <p class="lead">These diagrams show the electrical relationships at the battery terminals. Red represents positive and black represents negative for teaching clarity. Actual cable color alone must never be used to verify polarity.</p>
+
+    <div data-ate-exact-level="technical">
+      <div class="level-intro"><p><strong>Technical view:</strong> learn four basic relationships — battery to load, charger to battery, batteries in series, and batteries in parallel.</p></div>
+
+      <div class="battery-diagram-wrap">
+        <svg class="battery-diagram" viewBox="0 0 1120 650" style="height:650px" aria-label="Battery terminal connection concepts">
+
+          <!-- 1 LOAD CONNECTION -->
+          <text x="45" y="38" class="batt-label">1. Battery → Fuse/Disconnect → Load</text>
+          <rect x="45" y="65" width="190" height="150" rx="16" class="batt-body"/>
+          <text x="93" y="100" class="batt-label">12 V Battery</text>
+          <circle cx="85" cy="145" r="14" class="batt-neg"/>
+          <circle cx="195" cy="145" r="14" class="batt-pos"/>
+          <text x="77" y="175" class="batt-label">−</text>
+          <text x="188" y="175" class="batt-label">+</text>
+
+          <rect x="330" y="105" width="135" height="75" rx="12" class="batt-fuse"/>
+          <text x="354" y="135" class="batt-label">Fuse /</text>
+          <text x="345" y="158" class="batt-label">Disconnect</text>
+
+          <rect x="575" y="80" width="180" height="125" rx="15" class="batt-device"/>
+          <text x="635" y="115" class="batt-label">DC Load</text>
+          <text x="603" y="143" class="batt-small">inverter / light /</text>
+          <text x="615" y="163" class="batt-small">controller concept</text>
+
+          <path class="batt-red" d="M209 145H330"/>
+          <path class="batt-red" d="M465 145H575"/>
+          <path class="batt-black" d="M85 159V235H665V205"/>
+          <text x="250" y="128" class="batt-wire-label">Positive (+)</text>
+          <text x="300" y="230" class="batt-wire-label">Negative (−) return</text>
+
+          <!-- 2 CHARGER -->
+          <text x="820" y="38" class="batt-label">2. Charger → Battery</text>
+          <rect x="825" y="70" width="210" height="120" rx="14" class="batt-device"/>
+          <text x="892" y="105" class="batt-label">Charger</text>
+          <circle cx="865" cy="155" r="12" class="batt-neg"/>
+          <circle cx="995" cy="155" r="12" class="batt-pos"/>
+          <text x="852" y="180" class="batt-small">−</text>
+          <text x="990" y="180" class="batt-small">+</text>
+
+          <rect x="825" y="245" width="210" height="130" rx="14" class="batt-body"/>
+          <text x="880" y="280" class="batt-label">Battery</text>
+          <circle cx="865" cy="330" r="12" class="batt-neg"/>
+          <circle cx="995" cy="330" r="12" class="batt-pos"/>
+          <text x="852" y="357" class="batt-small">−</text>
+          <text x="990" y="357" class="batt-small">+</text>
+
+          <path class="batt-black" d="M865 167V318"/>
+          <path class="batt-red" d="M995 167V318"/>
+          <text x="770" y="220" class="batt-wire-label">− to −</text>
+          <text x="1008" y="220" class="batt-wire-label">+ to +</text>
+
+          <!-- 3 SERIES -->
+          <text x="45" y="310" class="batt-label">3. Series: connect + of one battery to − of the next</text>
+
+          <rect x="45" y="345" width="180" height="125" rx="14" class="batt-body"/>
+          <text x="98" y="378" class="batt-label">Battery A</text>
+          <circle cx="78" cy="425" r="12" class="batt-neg"/>
+          <circle cx="193" cy="425" r="12" class="batt-pos"/>
+          <text x="70" y="450" class="batt-small">−</text><text x="188" y="450" class="batt-small">+</text>
+
+          <rect x="350" y="345" width="180" height="125" rx="14" class="batt-body"/>
+          <text x="403" y="378" class="batt-label">Battery B</text>
+          <circle cx="383" cy="425" r="12" class="batt-neg"/>
+          <circle cx="498" cy="425" r="12" class="batt-pos"/>
+          <text x="375" y="450" class="batt-small">−</text><text x="493" y="450" class="batt-small">+</text>
+
+          <path class="batt-red" d="M205 425H300"/>
+          <path class="batt-black" d="M300 425H371"/>
+          <text x="230" y="405" class="batt-wire-label">Series link: + → −</text>
+
+          <path class="batt-black" d="M78 437V505H45"/>
+          <path class="batt-red" d="M498 437V505H530"/>
+          <text x="45" y="530" class="batt-small">Free − terminal = bank negative</text>
+          <text x="340" y="530" class="batt-small">Free + terminal = bank positive</text>
+          <text x="125" y="555" class="batt-label">Two matched 12 V batteries in series ≈ 24 V nominal</text>
+
+          <!-- 4 PARALLEL -->
+          <text x="610" y="310" class="batt-label">4. Parallel: connect + to + and − to −</text>
+
+          <rect x="610" y="345" width="180" height="125" rx="14" class="batt-body"/>
+          <text x="663" y="378" class="batt-label">Battery A</text>
+          <circle cx="643" cy="425" r="12" class="batt-neg"/>
+          <circle cx="758" cy="425" r="12" class="batt-pos"/>
+          <text x="635" y="450" class="batt-small">−</text><text x="753" y="450" class="batt-small">+</text>
+
+          <rect x="900" y="345" width="180" height="125" rx="14" class="batt-body"/>
+          <text x="953" y="378" class="batt-label">Battery B</text>
+          <circle cx="933" cy="425" r="12" class="batt-neg"/>
+          <circle cx="1048" cy="425" r="12" class="batt-pos"/>
+          <text x="925" y="450" class="batt-small">−</text><text x="1043" y="450" class="batt-small">+</text>
+
+          <path class="batt-black" d="M643 437V505H933V437"/>
+          <path class="batt-red" d="M758 437V535H1048V437"/>
+          <text x="705" y="495" class="batt-wire-label">− tied to −</text>
+          <text x="850" y="553" class="batt-wire-label">+ tied to +</text>
+          <text x="675" y="585" class="batt-label">Voltage stays ≈ 12 V; matched-bank Ah capacity increases</text>
+
+          <!-- SAFETY NOTE -->
+          <rect x="45" y="600" width="1035" height="32" rx="8" fill="#fff3d6" stroke="#e5a84a" stroke-width="2"/>
+          <text x="65" y="621" class="batt-small">Concept only: conductor size, protection, disconnects, charger settings, battery matching, enclosure, and terminal torque depend on the actual battery system.</text>
+        </svg>
+      </div>
+
+      <div class="concept-grid" style="margin-top:12px">
+        <div class="concept-card"><strong>Battery to load</strong><p>The load is connected across the battery or bank positive and negative. Overcurrent protection is commonly placed in the ungrounded/positive path near the energy source as required by the system design.</p></div>
+        <div class="concept-card"><strong>Charging</strong><p>The charger polarity must match the battery: positive to positive and negative to negative, with the charger profile appropriate for the battery chemistry.</p></div>
+        <div class="concept-card"><strong>Series</strong><p>Connect the positive terminal of one matched battery to the negative terminal of the next. Bank voltage adds while Ah remains approximately that of one series string.</p></div>
+        <div class="concept-card"><strong>Parallel</strong><p>Connect matched positives together and matched negatives together. Nominal voltage stays the same while available Ah capacity increases.</p></div>
+      </div>
+    </div>
+
+    <div data-ate-exact-level="advanced">
+      <div class="level-intro"><p><strong>Advanced view:</strong> follow a larger bank from individual battery terminals to the bank outputs, protective device, load, and monitoring/BMS sense points. This is intentionally a system relationship diagram, not a pack-construction instruction.</p></div>
+
+      <div class="battery-diagram-wrap">
+        <svg class="battery-diagram" viewBox="0 0 1120 690" style="height:690px" aria-label="Advanced battery bank monitoring and protection concept">
+
+          <text x="40" y="38" class="batt-label">12 V / 24 V / 48 V Bank Relationships</text>
+
+          <!-- voltage examples -->
+          <rect x="40" y="60" width="310" height="105" rx="14" class="batt-device"/>
+          <text x="60" y="88" class="batt-label">Matched 12 V battery examples</text>
+          <text x="60" y="115" class="batt-small">1 in series → ≈ 12 V nominal</text>
+          <text x="60" y="137" class="batt-small">2 in series → ≈ 24 V nominal</text>
+          <text x="60" y="159" class="batt-small">4 in series → ≈ 48 V nominal</text>
+
+          <!-- 4 battery series string -->
+          <text x="40" y="210" class="batt-label">Example: four matched 12 V batteries in series → ≈ 48 V nominal</text>
+
+          <!-- B1 -->
+          <rect x="40" y="240" width="190" height="120" rx="14" class="batt-body"/>
+          <text x="105" y="272" class="batt-label">B1</text>
+          <circle cx="75" cy="315" r="12" class="batt-neg"/>
+          <circle cx="195" cy="315" r="12" class="batt-pos"/>
+          <text x="66" y="342" class="batt-small">−</text><text x="190" y="342" class="batt-small">+</text>
+
+          <!-- B2 -->
+          <rect x="300" y="240" width="190" height="120" rx="14" class="batt-body"/>
+          <text x="365" y="272" class="batt-label">B2</text>
+          <circle cx="335" cy="315" r="12" class="batt-neg"/>
+          <circle cx="455" cy="315" r="12" class="batt-pos"/>
+          <text x="326" y="342" class="batt-small">−</text><text x="450" y="342" class="batt-small">+</text>
+
+          <!-- B3 -->
+          <rect x="560" y="240" width="190" height="120" rx="14" class="batt-body"/>
+          <text x="625" y="272" class="batt-label">B3</text>
+          <circle cx="595" cy="315" r="12" class="batt-neg"/>
+          <circle cx="715" cy="315" r="12" class="batt-pos"/>
+          <text x="586" y="342" class="batt-small">−</text><text x="710" y="342" class="batt-small">+</text>
+
+          <!-- B4 -->
+          <rect x="820" y="240" width="190" height="120" rx="14" class="batt-body"/>
+          <text x="885" y="272" class="batt-label">B4</text>
+          <circle cx="855" cy="315" r="12" class="batt-neg"/>
+          <circle cx="975" cy="315" r="12" class="batt-pos"/>
+          <text x="846" y="342" class="batt-small">−</text><text x="970" y="342" class="batt-small">+</text>
+
+          <!-- series links -->
+          <path class="batt-red" d="M207 315H270"/>
+          <path class="batt-black" d="M270 315H323"/>
+          <path class="batt-red" d="M467 315H530"/>
+          <path class="batt-black" d="M530 315H583"/>
+          <path class="batt-red" d="M727 315H790"/>
+          <path class="batt-black" d="M790 315H843"/>
+
+          <!-- outputs -->
+          <path class="batt-black" d="M75 327V455H150"/>
+          <path class="batt-red" d="M975 327V410H845"/>
+          <text x="65" y="480" class="batt-wire-label">Bank −</text>
+          <text x="900" y="397" class="batt-wire-label">Bank +</text>
+
+          <!-- main fuse / disconnect -->
+          <rect x="680" y="390" width="165" height="80" rx="12" class="batt-fuse"/>
+          <text x="712" y="421" class="batt-label">Main Fuse /</text>
+          <text x="703" y="446" class="batt-label">Disconnect</text>
+          <path class="batt-red" d="M845 430H680"/>
+
+          <!-- load -->
+          <rect x="430" y="400" width="190" height="105" rx="14" class="batt-device"/>
+          <text x="486" y="435" class="batt-label">DC Load /</text>
+          <text x="472" y="460" class="batt-label">Inverter Concept</text>
+          <path class="batt-red" d="M680 430H620"/>
+          <path class="batt-black" d="M150 455H430"/>
+
+          <!-- BMS/monitor -->
+          <rect x="345" y="545" width="430" height="105" rx="14" fill="#f7efff" stroke="#8f5dbd" stroke-width="3"/>
+          <text x="445" y="578" class="batt-label">BMS / Battery Monitor Concept</text>
+          <text x="375" y="607" class="batt-small">Sense points may monitor individual cells/modules or battery junctions.</text>
+          <text x="375" y="630" class="batt-small">Exact BMS topology, power switching, balancing, and lead order are chemistry- and product-specific.</text>
+
+          <!-- sense leads -->
+          <path class="batt-sense" d="M75 315V545"/>
+          <path class="batt-sense" d="M270 315V525H430V545"/>
+          <path class="batt-sense" d="M530 315V515H510V545"/>
+          <path class="batt-sense" d="M790 315V525H600V545"/>
+          <path class="batt-sense" d="M975 315V535H690V545"/>
+
+          <text x="800" y="610" class="batt-small">Purple dashed lines = monitoring/sense concept</text>
+          <text x="800" y="633" class="batt-small">not a universal BMS wiring diagram</text>
+
+          <!-- parallel strings callout -->
+          <rect x="800" y="60" width="280" height="120" rx="14" fill="#eef7ff" stroke="#9fc8ef" stroke-width="2"/>
+          <text x="825" y="90" class="batt-label">Parallel Strings — Advanced Note</text>
+          <text x="825" y="117" class="batt-small">Multiple equal-voltage series strings can</text>
+          <text x="825" y="138" class="batt-small">be paralleled in some approved systems.</text>
+          <text x="825" y="159" class="batt-small">Protection and current sharing matter.</text>
+
+          <!-- bottom safety -->
+          <rect x="40" y="660" width="1040" height="22" rx="8" fill="#fff3d6" stroke="#e5a84a" stroke-width="2"/>
+          <text x="60" y="676" class="batt-small">High-energy battery banks require product-specific design for protection, cable sizing, disconnecting means, enclosure, ventilation/thermal control, and service procedures.</text>
+
+        </svg>
+      </div>
+
+      <div class="concept-grid" style="margin-top:12px">
+        <div class="concept-card"><strong>Series string</strong><p>Voltage adds from battery to battery. Each intermediate junction becomes important for diagnosis and, in some systems, monitoring.</p></div>
+        <div class="concept-card"><strong>Bank outputs</strong><p>The free negative and free positive terminals become the bank output points. Protective devices and disconnecting means are selected for the actual system voltage and available fault current.</p></div>
+        <div class="concept-card"><strong>BMS / monitor</strong><p>Monitoring can include cell/module voltage, current, temperature, SOC estimation, fault limits, and balancing. Exact connections are specific to the battery and BMS design.</p></div>
+        <div class="concept-card"><strong>Parallel strings</strong><p>Parallel strings add current/capacity capability, but matching, individual string protection, conductor resistance, current sharing, and manufacturer limits become important design issues.</p></div>
+      </div>
+
+      <div class="warning"><strong>Advanced safety boundary:</strong> never infer BMS sense-lead order, pack assembly sequence, allowable parallel arrangement, fuse rating, or cable size from a generic drawing. Incorrect battery connections can create extreme fault current, arcing, fire, thermal runaway, or explosion. Use the exact manufacturer documentation and qualified-person procedures for real systems.</div>
+    </div>
+  </section>
+
+  <section class="panel" data-ate-level="technical">
+    <h2>Series / Parallel Battery Bank Calculator <span class="ate-level-badge">Technical</span></h2>
     <p class="lead">Build a simple matched battery bank from identical batteries.</p>
     <div class="grid four">
       <div class="field"><label for="bankVoltage">Battery voltage (V)</label><input id="bankVoltage" type="number" min="0.001" step="any" value="12"></div>
@@ -165,8 +423,8 @@
     <div class="warning">Battery banks should use compatible batteries with the same chemistry, nominal voltage, capacity, age, state of charge, and manufacturer guidance. Do not mix battery types or randomly combine unmatched batteries.</div>
   </section>
 
-  <section class="panel">
-    <h2>Ah ↔ Wh Converter</h2>
+  <section class="panel" data-ate-level="technical">
+    <h2>Ah ↔ Wh Converter <span class="ate-level-badge">Technical</span></h2>
     <div class="grid three">
       <div class="field"><label for="convV">Voltage (V)</label><input id="convV" type="number" min="0.001" step="any" value="12"></div>
       <div class="field"><label for="convAh">Amp-hours (Ah)</label><input id="convAh" type="number" min="0" step="any" value="100"></div>
@@ -179,8 +437,8 @@
     <div id="convFormula" class="formula">Wh ≈ V × Ah.</div>
   </section>
 
-  <section class="panel">
-    <h2>Battery Runtime Calculator</h2>
+  <section class="panel" data-ate-level="technical">
+    <h2>Battery Runtime Calculator <span class="ate-level-badge">Technical</span></h2>
     <p class="lead">Estimate runtime from battery energy, load power, usable depth of discharge, and conversion efficiency.</p>
     <div class="grid four">
       <div class="field"><label for="runV">Battery/bank voltage (V)</label><input id="runV" type="number" min="0.001" step="any" value="12"></div>
@@ -198,8 +456,8 @@
     <p class="note">Real runtime varies with battery chemistry, temperature, discharge rate, battery age, inverter behavior, cutoff voltage, and manufacturer capacity-test conditions.</p>
   </section>
 
-  <section class="panel">
-    <h2>Charge-Time Calculator</h2>
+  <section class="panel" data-ate-level="technical">
+    <h2>Charge-Time Calculator <span class="ate-level-badge">Technical</span></h2>
     <div class="grid four">
       <div class="field"><label for="chgAh">Battery capacity (Ah)</label><input id="chgAh" type="number" min="0.001" step="any" value="100"></div>
       <div class="field"><label for="chgSoc">Starting SOC (%)</label><input id="chgSoc" type="number" min="0" max="100" step="1" value="20"></div>
@@ -214,8 +472,8 @@
     <p class="note">Many chemistries do not charge at constant current all the way to full. Absorption, tapering, balancing, temperature, and BMS/charger limits can make actual charge time longer.</p>
   </section>
 
-  <section class="panel">
-    <h2>Voltage Sag & Internal Resistance</h2>
+  <section class="panel" data-ate-level="technical">
+    <h2>Voltage Sag & Internal Resistance <span class="ate-level-badge">Technical</span></h2>
     <p class="lead">Estimate terminal voltage under load using a simple internal-resistance model.</p>
     <div class="grid three">
       <div class="field"><label for="sagOpen">Open-circuit voltage (V)</label><input id="sagOpen" type="number" min="0" step="any" value="12.8"></div>
@@ -230,8 +488,8 @@
     <div id="sagFormula" class="formula">Vloaded ≈ Voc − I × Rinternal.</div>
   </section>
 
-  <section class="panel">
-    <h2>State of Charge Demonstration</h2>
+  <section class="panel" data-ate-level="technical">
+    <h2>State of Charge Demonstration <span class="ate-level-badge">Technical</span></h2>
     <p class="lead">Move the state-of-charge control to visualize usable energy. This is not a voltage-to-SOC lookup table.</p>
     <div class="grid two">
       <div class="field"><label for="socValue">State of charge (%)</label><input id="socValue" type="range" min="0" max="100" step="1" value="80"></div>
@@ -245,8 +503,8 @@
     <div class="warning">Battery voltage alone is not a universal SOC indicator. Voltage-vs-SOC behavior depends on chemistry, temperature, rest time, load/charge current, age, and cell balance.</div>
   </section>
 
-  <section class="panel">
-    <h2>12 V / 24 V / 48 V Bank Builder</h2>
+  <section class="panel" data-ate-level="technical">
+    <h2>12 V / 24 V / 48 V Bank Builder <span class="ate-level-badge">Technical</span></h2>
     <div class="grid three">
       <div class="field"><label for="builderBatteryV">Battery nominal voltage (V)</label><input id="builderBatteryV" type="number" min="0.001" step="any" value="12"></div>
       <div class="field"><label for="builderTarget">Target bank voltage</label>
@@ -277,8 +535,8 @@
     </div>
   </section>
 
-  <section class="panel">
-    <h2>BMS, Protection & Charging Basics</h2>
+  <section class="panel" data-ate-level="technical">
+    <h2>BMS, Protection & Charging Basics <span class="ate-level-badge">Technical</span></h2>
     <div class="concept-grid">
       <div class="concept-card"><strong>BMS</strong><p>A battery-management system can monitor cells and provide functions such as overcharge, overdischarge, overcurrent, temperature, and balancing protection depending on the design.</p></div>
       <div class="concept-card"><strong>Fuse / Overcurrent Protection</strong><p>Battery systems can deliver very high fault current. Properly selected overcurrent protection is important near energy sources.</p></div>
@@ -288,6 +546,18 @@
       <div class="concept-card"><strong>Cell Balance</strong><p>Series-connected cells can drift apart in SOC. Many lithium packs use balancing to keep cell voltages within safe limits.</p></div>
     </div>
     <div class="warning">Battery packs can store enough energy to cause severe burns, fire, arc hazards, toxic exposure, or explosion if shorted, overcharged, damaged, or incorrectly assembled. Use manufacturer-approved batteries, chargers, BMS/protection devices, fusing, cable sizes, enclosures, and installation practices.</div>
+  </section>
+  <section class="panel" data-ate-level="advanced">
+    <h2>Advanced Battery Diagnostics <span class="ate-level-badge advanced">Advanced</span></h2>
+    <p class="lead">Troubleshooting a battery system means separating battery condition, connections, load behavior, charging behavior, protection, and monitoring instead of judging the whole system from one voltage reading.</p>
+    <div class="concept-grid">
+      <div class="concept-card"><strong>Unexpected voltage drop</strong><p>Consider load current, battery internal resistance, cable resistance, terminal resistance, protection devices, connector condition, and state of charge.</p></div>
+      <div class="concept-card"><strong>One battery differs in a series string</strong><p>Compare individual battery/module measurements under similar conditions. A weak or imbalanced unit can limit the usable performance of the whole string.</p></div>
+      <div class="concept-card"><strong>Parallel-bank imbalance</strong><p>Unequal cable resistance, terminal condition, battery mismatch, or different SOC can cause unequal current sharing.</p></div>
+      <div class="concept-card"><strong>Charging fault</strong><p>Separate source/charger availability from charger settings, battery temperature, BMS limits, wiring voltage drop, battery condition, and charge-stage behavior.</p></div>
+      <div class="concept-card"><strong>BMS trip</strong><p>Identify the protection reason—overvoltage, undervoltage, overcurrent, temperature, cell imbalance, or another product-specific fault—before resetting or bypassing anything.</p></div>
+      <div class="concept-card"><strong>Professional reference mindset</strong><p>Use chemistry-specific limits, battery datasheets, charger documentation, BMS documentation, overcurrent-device ratings, conductor ampacity, enclosure/environment requirements, and applicable codes or standards.</p></div>
+    </div>
   </section>
 </main>
 
