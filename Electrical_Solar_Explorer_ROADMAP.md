@@ -824,3 +824,37 @@ A DONCO-BAYCITY™ App
 - Added to Home/search
 - Cross-linked from Wiring & Installation, Component Pictures, and Home Wiring Overview
 - Appended as Electricity 101 step 12 so previous saved step positions remain unchanged
+
+
+## Detailed Home Wiring Diagrams
+- New companion page: Home Wiring Diagrams
+- Keeps How a House Is Wired as the floor-plan overview
+- Adds separate beginner circuit diagrams for:
+  - basic 120 V receptacle
+  - single-pole light and switch
+  - multiple receptacles in parallel
+  - light plus receptacle on one branch
+  - kitchen/GFCI protection concept
+  - bathroom receptacle/light concept
+  - laundry washer/dryer concept
+  - 240 V appliance branch concept
+- Explicitly shows:
+  - ungrounded/hot path
+  - neutral path
+  - switched hot
+  - equipment grounding path
+- Adds Branch-Circuit Load Planner
+  - sample household loads
+  - watts-to-amps relationship
+  - percent of selected breaker rating
+  - light/moderate/high/over-rating teaching states
+- Overload lessons:
+  - simultaneous loads add together
+  - larger loads often need dedicated circuits
+  - never upsize a breaker merely to stop trips
+  - continuous-load rules may apply
+  - motor/compressor starting current differs from simple resistive loads
+  - kitchen/bath/laundry have special branch-circuit rules
+- Clearly labeled educational diagrams, not installation instructions
+- Added to Home/search and cross-linked from house overview, Wiring & Installation, Protection Devices, and Lugs/Ferrules/Splices
+- Appended as Electricity 101 step 13 so existing saved progress positions remain unchanged
