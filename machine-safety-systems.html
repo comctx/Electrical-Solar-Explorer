@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f3b63"><title>Machine Safety Systems Explorer</title><style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1060px;margin:auto;padding:18px}.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}.danger{margin-top:12px;background:#fdecea;border:1px solid #e4aaa5;border-radius:11px;padding:11px 12px;color:#8a1c13;line-height:1.5;font-weight:800}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}}
+</style><link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script></head><body>
+<header><h1>Machine Safety Systems Explorer</h1><p>Safety relays, safety PLCs, light curtains, guard interlocks, two-hand controls, safety mats, and Safe Torque Off.</p></header><main>
+<section class="ate-level-chooser" data-ate-level-chooser><h2>Choose Your Detail Level</h2><p>Beginner identifies safety devices. Technical explains monitored circuits and safe stopping. Advanced adds redundancy, diagnostics, reset logic, and safety functions.</p><div class="ate-level-buttons"><button data-ate-set-level="basic">Beginner</button><button data-ate-set-level="technical">Technical</button><button data-ate-set-level="advanced">Advanced</button></div><div class="ate-level-status" data-ate-level-status></div></section>
+
+<section class="panel"><h2>Beginner Start Here</h2><div class="grid three">
+<div class="card"><strong>Emergency Stop</strong><p>Manual emergency control intended to stop hazardous machine motion or operation as quickly as the safety design requires.</p><span class="badge">Emergency action</span></div>
+<div class="card"><strong>Safety Relay</strong><p>Purpose-built device that monitors safety inputs and controls outputs with diagnostics and fault detection appropriate to its design.</p><span class="badge">Safety logic</span></div>
+<div class="card"><strong>Safety PLC</strong><p>Programmable controller certified for safety functions, allowing more complex monitored logic and diagnostics.</p><span class="badge">Programmable safety</span></div>
+<div class="card"><strong>Light Curtain</strong><p>Uses an array of light beams to detect entry into a hazardous area and trigger the required safety response.</p><span class="badge">Presence sensing</span></div>
+<div class="card"><strong>Guard Interlock</strong><p>Detects whether a protective guard or door is closed, locked, or opened depending on the safety function.</p><span class="badge">Guard monitoring</span></div>
+<div class="card"><strong>Safe Torque Off (STO)</strong><p>A drive safety function that prevents torque-producing energy from being applied to a motor without necessarily removing all electrical power from the drive.</p><span class="badge">Drive safety</span></div>
+</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Common Machine-Safety Devices <span class="ate-level-badge">Technical</span></h2>
+<table><thead><tr><th>Device</th><th>Purpose</th><th>Important idea</th></tr></thead><tbody>
+<tr><td>E-stop</td><td>Emergency stop command</td><td>Usually manually reset; reset must not automatically restart hazardous motion.</td></tr>
+<tr><td>Guard switch / interlock</td><td>Detect guard position</td><td>Some applications require guard locking until hazardous motion has stopped.</td></tr>
+<tr><td>Light curtain</td><td>Detect entry into a protected field</td><td>Safety distance depends on stopping time, approach speed, and system design.</td></tr>
+<tr><td>Two-hand control</td><td>Requires both operator controls to be actuated within the intended timing relationship</td><td>Designed to keep hands away from a hazard during the dangerous portion of the cycle.</td></tr>
+<tr><td>Safety mat / edge</td><td>Detect presence or pressure in a protected area</td><td>Used where floor or perimeter detection is appropriate.</td></tr>
+<tr><td>STO</td><td>Disable motor torque production</td><td>Does not necessarily isolate line voltage or DC bus energy.</td></tr>
+</tbody></table></section>
+
+<section class="panel" data-ate-level="technical"><h2>Monitored Safety Circuit Concept <span class="ate-level-badge">Technical</span></h2>
+<div class="grid two">
+<div class="card"><strong>Dual-Channel Inputs</strong><p>Many safety circuits use two input channels so certain wiring or contact faults can be detected instead of remaining hidden.</p></div>
+<div class="card"><strong>Feedback / EDM</strong><p>External-device monitoring can verify that contactors or other final switching devices actually returned to the expected state before reset.</p></div>
+<div class="card"><strong>Manual Reset</strong><p>A reset command acknowledges that the safety condition has been restored. Good design prevents reset from becoming an automatic restart command.</p></div>
+<div class="card"><strong>Final Switching Devices</strong><p>Safety outputs may control contactors, drive STO inputs, pneumatic dump valves, or other devices that remove or control hazardous energy.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Safety Functions & Stopping <span class="ate-level-badge advanced">Advanced</span></h2>
+<div class="grid two">
+<div class="card"><strong>Stop Category Concepts</strong><p>Machine safety distinguishes uncontrolled stops that remove power immediately from controlled stops that first decelerate the machine before removing or inhibiting torque.</p></div>
+<div class="card"><strong>Safe Stop Functions</strong><p>Modern drives may support certified functions such as STO and other monitored speed or stop functions depending on equipment and system requirements.</p></div>
+<div class="card"><strong>Risk Reduction</strong><p>The safety function is selected from the machine's hazard and risk assessment, not simply from the availability of a particular sensor or relay.</p></div>
+<div class="card"><strong>Diagnostic Coverage</strong><p>Redundancy alone is not enough; diagnostics determine whether dangerous faults are detected before the safety function is demanded.</p></div>
+<div class="card"><strong>Common-Cause Failures</strong><p>Routing, environment, wiring practices, component diversity, contamination, and power supplies can create failures that affect redundant channels together.</p></div>
+<div class="card"><strong>Validation</strong><p>The completed safety function must be tested against the design assumptions, including sensors, logic, outputs, stopping time, reset behavior, and fault responses.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Typical Safety-System Mistakes <span class="ate-level-badge advanced">Advanced</span></h2>
+<table><thead><tr><th>Mistake</th><th>Why it matters</th></tr></thead><tbody>
+<tr><td>Using a standard PLC alone for a required safety function</td><td>Ordinary control logic may not provide the required fault detection, architecture, diagnostics, or certification.</td></tr>
+<tr><td>Bypassing guard switches</td><td>Defeats the intended protective function and can expose operators to hazardous motion.</td></tr>
+<tr><td>Assuming STO means electrically isolated</td><td>Drive input power and internal DC-bus voltage can remain present.</td></tr>
+<tr><td>Automatic restart after safety reset</td><td>Can create unexpected hazardous motion if the machine starts merely because the safety condition was restored.</td></tr>
+<tr><td>Ignoring stopping time</td><td>A light curtain or guard location can be ineffective if a person can reach the hazard before motion stops.</td></tr>
+</tbody></table>
+<div class="danger">Machine safety design requires a formal risk assessment and applicable machinery-safety standards. This page is educational and does not define a compliant safety circuit for a specific machine.</div></section>
+</main><footer>A DONCO-BAYCITY™ App</footer></body></html>
