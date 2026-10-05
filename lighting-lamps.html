@@ -1,22 +1,263 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f3b63"><title>Lighting & Lamps Explorer</title><style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>Lighting & Lamps Explorer</title>
+<style>
 :root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
-header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
-main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
-.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}
+header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+header p{margin:0;opacity:.93}
+header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1050px;margin:auto;padding:18px}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+h3{margin:0 0 8px;color:var(--navy)}
+.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
 .grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
-.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input,select,button{font:inherit}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff}.result{margin-top:12px;background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
-.btn{min-height:42px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}
+.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+input,select,button{font:inherit}
+input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;color:var(--text)}
+.result{margin-top:12px;background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}
+.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}
+th{background:#eef7ff;color:var(--navy)}
+.diagram-wrap{margin-top:14px;border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:12px;overflow:auto}
+.diagram{width:100%;min-width:820px;height:auto;display:block}
+.box{fill:#fff;stroke:#9fc8ef;stroke-width:3}
+.dark{fill:#263848;stroke:#071a2e;stroke-width:3}
+.term{fill:#ffd43b;stroke:#8a6d00;stroke-width:2}
+.wire-black{fill:none;stroke:#111;stroke-width:6;stroke-linecap:round}
+.wire-white{fill:none;stroke:#fff;stroke-width:7;stroke-linecap:round;filter:drop-shadow(0 0 1px #5d6b76)}
+.wire-red{fill:none;stroke:#c62828;stroke-width:6;stroke-linecap:round}
+.wire-blue{fill:none;stroke:#0b63ce;stroke-width:6;stroke-linecap:round}
+.wire-purple{fill:none;stroke:#7a3db8;stroke-width:5;stroke-linecap:round}
+.dtext{font:800 18px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}
+.dsmall{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#40566a}
 footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
 @media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}}
-</style>  <link rel="stylesheet" href="app-enhancements.css">
-  <script src="app-enhancements.js" defer></script>
-</head><body><header><h1>Lighting & Lamps Explorer</h1><p>Incandescent, fluorescent, HID, LED lighting, drivers, dimming, lumens, lux, and color quality.</p></header><main><nav class="nav">
-<a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a href="motors-controls.html">Motors & Controls</a><a href="generators-alternators.html">Generators & Alternators</a><a href="solar-power-electronics.html">Solar Power Electronics</a><a href="sensors-switches.html">Sensors & Switches</a><a href="fiber-optics.html">Fiber Optics</a><a href="power-electronics-modules.html">Power Electronics & Modules</a><a href="solid-state-switching.html">Solid-State Switching</a><a href="test-equipment.html">Test Equipment</a><a class="active" href="lighting-lamps.html">Lighting & Lamps</a><a href="op-amps-analog.html">Op-Amps & Analog</a><a href="digital-logic.html">Digital Logic</a><a href="plc-automation.html">PLCs & Automation</a><a href="protection-devices.html">Protection Devices</a><a href="grounding-bonding-shielding.html">Grounding & Shielding</a><a href="processors.html">Processors</a></nav>
-<section class="panel"><h2>Lighting Technologies</h2><div class="grid three"><div class="card"><strong>Incandescent</strong><p>Heats a filament until it glows. Simple but inefficient compared with modern sources.</p></div><div class="card"><strong>Halogen</strong><p>Incandescent lamp using halogen chemistry to operate the filament hotter and more compactly.</p></div><div class="card"><strong>Fluorescent</strong><p>Gas discharge produces ultraviolet light that excites phosphor coating; requires a ballast.</p></div><div class="card"><strong>HID</strong><p>High-intensity discharge families include metal-halide and high-pressure sodium lamps.</p></div><div class="card"><strong>LED</strong><p>Semiconductor light source normally powered by a current-regulating driver.</p></div><div class="card"><strong>OLED</strong><p>Organic electroluminescent layers emit light over an area, common in displays.</p></div></div></section>
-<section class="panel"><h2>Lumens, Lux & Efficacy</h2><div class="grid three"><div class="card"><strong>Lumen</strong><p>Total visible light output.</p></div><div class="card"><strong>Lux</strong><p>Lumens per square meter on a surface.</p></div><div class="card"><strong>Lumens per watt</strong><p>Luminous efficacy: visible light output per electrical watt.</p></div></div></section>
-<section class="panel"><h2>Lighting Calculator</h2><div class="grid three"><div class="field"><label>Total lumens</label><input id="lm" type="number" value="1600" min="0"></div><div class="field"><label>Electrical watts</label><input id="lw" type="number" value="15" min="0.1"></div><div class="field"><label>Area (m²)</label><input id="area" type="number" value="10" min="0.1"></div></div><div id="lightOut" class="result"></div><p class="note">The lux result assumes perfectly uniform delivery of all lumens to the area; real rooms have fixture distribution, reflectance, mounting height, and losses.</p></section>
-<section class="panel"><h2>Color & Quality</h2><table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody><tr><td>Color temperature (CCT)</td><td>Warm-to-cool appearance of nominal white light, expressed in kelvin.</td></tr><tr><td>CRI</td><td>General indicator of how colors appear relative to a reference source.</td></tr><tr><td>Dimming</td><td>May use phase-cut, 0–10 V, PWM, DALI, or other control depending on driver/fixture.</td></tr><tr><td>Flicker</td><td>Light output modulation caused by driver behavior or power ripple.</td></tr></tbody></table></section>
-<section class="panel"><h2>Ballasts & LED Drivers</h2><div class="grid two"><div class="card"><strong>Ballast</strong><p>Controls current through gas-discharge lamps and may provide starting voltage.</p></div><div class="card"><strong>LED driver</strong><p>Converts input power into controlled current/voltage suitable for LED strings and may provide dimming and protection.</p></div></div></section></main><footer>A DONCO-BAYCITY™ App</footer><script>function lcalc(){const l=+lm.value,w=+lw.value,a=+area.value;lightOut.textContent="Efficacy: "+(l/w).toFixed(1)+" lm/W · Idealized illuminance: "+(l/a).toFixed(1)+" lux"}[lm,lw,area].forEach(x=>x.addEventListener("input",lcalc));lcalc();</script></body></html>
+</style>
+<link rel="stylesheet" href="app-enhancements.css">
+<script src="app-enhancements.js" defer></script>
+</head>
+<body>
+<header>
+<h1>Lighting & Lamps Explorer</h1>
+<p>Lamps, luminaires, ballasts, LED drivers, photocells, occupancy sensors, dimmers, lighting controls, lumens, lux, and color quality.</p>
+</header>
+<main>
+<nav class="nav">
+<a href="index.html">All Things Electrical</a>
+<a href="electrical-basics.html">Electrical Basics</a>
+<a href="wiring-installation.html">Wiring & Installation</a>
+<a href="home-wiring-diagrams.html">Home Wiring Diagrams</a>
+<a href="sensors-switches.html">Sensors & Switches</a>
+<a href="solid-state-switching.html">Solid-State Switching</a>
+<a class="active" href="lighting-lamps.html">Lighting & Lamps</a>
+</nav>
+
+<section class="ate-level-chooser" data-ate-level-chooser>
+<h2>Choose Your Detail Level</h2>
+<p>Beginner explains the lighting devices. Technical adds control relationships and terminals. Advanced adds dimming methods, control systems, compatibility, power quality, and troubleshooting.</p>
+<div class="ate-level-buttons">
+<button type="button" data-ate-set-level="basic">Beginner</button>
+<button type="button" data-ate-set-level="technical">Technical</button>
+<button type="button" data-ate-set-level="advanced">Advanced</button>
+</div>
+<div class="ate-level-status" data-ate-level-status></div>
+</section>
+
+<section class="panel">
+<h2>Beginner Start Here</h2>
+<p class="lead">A lamp is the light-producing source. A luminaire is the complete lighting unit that may include the lamp or LEDs, housing, optics, driver or ballast, wiring, and controls.</p>
+<div class="grid three">
+<div class="card"><strong>LED</strong><p>Semiconductor light source. Most LED luminaires use an electronic driver to regulate current and sometimes provide dimming.</p><span class="badge">Efficient / electronic driver</span></div>
+<div class="card"><strong>Fluorescent</strong><p>Gas-discharge lamp that produces ultraviolet energy which excites a phosphor coating. It requires a ballast.</p><span class="badge">Ballast required</span></div>
+<div class="card"><strong>HID</strong><p>High-intensity-discharge lighting includes metal-halide and high-pressure sodium systems. Traditional systems use ballasts and often have warm-up/restrike behavior.</p><span class="badge">High-output legacy / specialty</span></div>
+<div class="card"><strong>Ballast</strong><p>Controls current through fluorescent or HID lamps and may provide starting voltage or ignition functions.</p><span class="badge">Gas-discharge control</span></div>
+<div class="card"><strong>LED Driver</strong><p>Converts incoming power into the controlled current or voltage required by LED modules.</p><span class="badge">LED power control</span></div>
+<div class="card"><strong>Photocell</strong><p>Senses ambient light and can turn lighting on when it gets dark and off when daylight returns.</p><span class="badge">Day/night control</span></div>
+<div class="card"><strong>Occupancy Sensor</strong><p>Detects motion or presence and switches or dims lighting automatically.</p><span class="badge">Presence control</span></div>
+<div class="card"><strong>Dimmer</strong><p>Changes light output. The method must match the lamp, driver, ballast, and control system.</p><span class="badge">Light level control</span></div>
+<div class="card"><strong>Lighting-Control Module</strong><p>Receives commands from switches, sensors, timers, networks, or a building controller and then controls one or more lighting circuits.</p><span class="badge">Central / networked control</span></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Lumens, Lux & Efficacy</h2>
+<div class="grid three">
+<div class="card"><strong>Lumen</strong><p>Total visible light output.</p></div>
+<div class="card"><strong>Lux</strong><p>Lumens per square meter on a surface.</p></div>
+<div class="card"><strong>Lumens per watt</strong><p>Luminous efficacy: visible light output per electrical watt.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Lighting Calculator</h2>
+<div class="grid three">
+<div class="field"><label>Total lumens</label><input id="lm" type="number" value="1600" min="0"></div>
+<div class="field"><label>Electrical watts</label><input id="lw" type="number" value="15" min="0.1"></div>
+<div class="field"><label>Area (m²)</label><input id="area" type="number" value="10" min="0.1"></div>
+</div>
+<div id="lightOut" class="result"></div>
+<p class="note">The lux result assumes perfectly uniform delivery of all lumens to the area; real rooms have fixture distribution, reflectance, mounting height, dirt depreciation, and other losses.</p>
+</section>
+
+<section class="panel">
+<h2>Color & Quality</h2>
+<table>
+<thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td>Color temperature (CCT)</td><td>Warm-to-cool appearance of nominal white light, expressed in kelvin.</td></tr>
+<tr><td>CRI</td><td>General indicator of how colors appear relative to a reference source.</td></tr>
+<tr><td>Flicker</td><td>Light-output modulation caused by driver, ballast, control, or power-supply behavior.</td></tr>
+<tr><td>Beam angle</td><td>Describes how broadly or narrowly light is distributed.</td></tr>
+<tr><td>Luminaire efficacy</td><td>Light output divided by input power for the complete luminaire.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="panel">
+<h2>Ballasts & LED Drivers</h2>
+<div class="grid two">
+<div class="card"><strong>Fluorescent / HID Ballast</strong><p>Limits lamp current and may provide starting or ignition functions. Ballast type must match the lamp and fixture design.</p></div>
+<div class="card"><strong>LED Driver</strong><p>Regulates power to LED strings. Drivers may be constant-current or constant-voltage and may include dimming, thermal protection, and communication features.</p></div>
+</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+<h2>Photocell Control Relationship <span class="ate-level-badge">Technical</span></h2>
+<p class="lead">A common photocell arrangement senses daylight and switches the lighting load when ambient light crosses its setpoint.</p>
+<div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 1080 340" aria-label="Photocell lighting control concept">
+<text x="35" y="38" class="dtext">Photocell-controlled luminaire</text>
+<rect x="35" y="65" width="1010" height="235" rx="18" class="box"/>
+<rect x="70" y="120" width="150" height="80" rx="12" class="dark"/>
+<text x="118" y="166" font-size="18" font-weight="800" fill="#fff">SOURCE</text>
+<path d="M220 140H390" class="wire-black"/>
+<path d="M220 190H910" class="wire-white"/>
+<rect x="390" y="105" width="185" height="105" rx="14" class="box"/>
+<text x="446" y="145" class="dtext">Photocell</text>
+<text x="420" y="175" class="dsmall">line in → switched line out</text>
+<path d="M575 140H760" class="wire-red"/>
+<rect x="760" y="105" width="180" height="105" rx="14" class="box"/>
+<text x="805" y="145" class="dtext">Luminaire</text>
+<text x="805" y="175" class="dsmall">driver / ballast + lamp</text>
+<text x="70" y="255" class="dsmall">Neutral usually continues to the load; exact photocell terminals and switching method depend on the device.</text>
+</svg>
+</div>
+<div class="warning">Some photocells require a neutral; others use different wiring arrangements. Never assume wire colors or terminal functions without the actual device diagram.</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+<h2>Occupancy Sensor Control <span class="ate-level-badge">Technical</span></h2>
+<p class="lead">Occupancy sensors may switch the load directly or send a low-voltage/digital command to a controller or lighting module.</p>
+<div class="grid three">
+<div class="card"><strong>PIR</strong><p>Passive infrared sensing responds to changes in infrared energy caused by moving warm objects.</p></div>
+<div class="card"><strong>Ultrasonic</strong><p>Sends ultrasonic energy into a space and detects changes in reflected sound caused by movement.</p></div>
+<div class="card"><strong>Dual Technology</strong><p>Combines two sensing methods to improve detection and reduce false switching in suitable applications.</p></div>
+</div>
+<div class="formula">Typical control idea: sensor detects occupancy → controller or relay output changes state → luminaire turns on or moves to a programmed light level → timeout returns lighting to the unoccupied state.</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+<h2>0–10 V Dimming Relationship <span class="ate-level-badge">Technical</span></h2>
+<p class="lead">Many commercial LED drivers and fluorescent ballasts use separate low-voltage control conductors in addition to the normal power conductors.</p>
+<div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 1080 410" aria-label="0 to 10 volt lighting control concept">
+<text x="35" y="38" class="dtext">Power conductors and dimming-control conductors are separate functions</text>
+<rect x="35" y="65" width="1010" height="305" rx="18" class="box"/>
+<rect x="70" y="115" width="160" height="90" rx="12" class="dark"/>
+<text x="115" y="166" font-size="18" font-weight="800" fill="#fff">AC SOURCE</text>
+<path d="M230 135H740" class="wire-black"/>
+<path d="M230 185H740" class="wire-white"/>
+<rect x="740" y="105" width="230" height="115" rx="14" class="box"/>
+<text x="802" y="145" class="dtext">LED Driver</text>
+<text x="787" y="178" class="dsmall">power input + LED output</text>
+<rect x="95" y="265" width="220" height="80" rx="14" class="box"/>
+<text x="132" y="305" class="dtext">0–10 V Dimmer</text>
+<path d="M315 290H740" class="wire-purple"/>
+<path d="M315 325H740" class="wire-blue"/>
+<text x="498" y="282" class="dsmall">control +</text>
+<text x="498" y="348" class="dsmall">control −</text>
+<text x="755" y="292" class="dsmall">DIM +</text>
+<text x="755" y="330" class="dsmall">DIM −</text>
+</svg>
+</div>
+<div class="warning">0–10 V control conventions and Class 2/line-voltage separation rules depend on the equipment and applicable code. Use the driver's exact instructions.</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+<h2>Dimming & Control Methods <span class="ate-level-badge">Technical</span></h2>
+<table>
+<thead><tr><th>Method</th><th>How it works</th><th>Typical use</th></tr></thead>
+<tbody>
+<tr><td>Forward-phase / leading-edge</td><td>Triac-style phase-cut control removes part of each AC half-cycle.</td><td>Traditional incandescent and compatible electronic loads</td></tr>
+<tr><td>Reverse-phase / trailing-edge</td><td>Electronic switching removes the trailing portion of each half-cycle.</td><td>Many compatible LED and electronic transformer loads</td></tr>
+<tr><td>0–10 V</td><td>Separate analog control signal commands a driver or ballast light level.</td><td>Commercial LED and fluorescent control</td></tr>
+<tr><td>PWM</td><td>LED current is switched rapidly with varying duty cycle.</td><td>LED modules and low-voltage lighting systems</td></tr>
+<tr><td>DALI</td><td>Digital lighting-control protocol addressing compatible drivers and devices.</td><td>Commercial and building lighting systems</td></tr>
+<tr><td>Relay / contactor control</td><td>Controller energizes a relay or contactor that switches one or more lighting circuits.</td><td>Large lighting loads and centralized control</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+<h2>Lighting-Control Modules <span class="ate-level-badge advanced">Advanced</span></h2>
+<div class="grid two">
+<div class="card"><strong>Relay Panel</strong><p>Uses controlled relays to switch branch lighting circuits from schedules, wall stations, sensors, or a building automation system.</p></div>
+<div class="card"><strong>Dimming Module</strong><p>Provides phase-cut, 0–10 V, PWM, digital, or other dimming outputs depending on the supported luminaires and drivers.</p></div>
+<div class="card"><strong>Networked Controller</strong><p>Communicates with occupancy sensors, daylight sensors, wall stations, and gateways over a wired or wireless lighting network.</p></div>
+<div class="card"><strong>Daylight Harvesting</strong><p>Uses a light sensor to reduce electric-light output when sufficient daylight is available.</p></div>
+<div class="card"><strong>Scheduling</strong><p>Turns lighting on, off, or to preset levels according to time, astronomical clock, occupancy, or building-management commands.</p></div>
+<div class="card"><strong>Load Shedding</strong><p>Reduces lighting demand in response to energy-management or demand-response objectives where the system is designed for it.</p></div>
+</div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+<h2>Compatibility, Power Quality & Troubleshooting <span class="ate-level-badge advanced">Advanced</span></h2>
+<table>
+<thead><tr><th>Symptom / concern</th><th>What to consider</th></tr></thead>
+<tbody>
+<tr><td>LED flicker</td><td>Driver compatibility, dimmer type, minimum load, ripple, poor connections, line disturbances, or failing driver components.</td></tr>
+<tr><td>Lights do not dim low enough</td><td>Driver minimum output level, dimmer compatibility, programming limits, control wiring, or minimum-load requirements.</td></tr>
+<tr><td>Ghosting / faint glow when off</td><td>Leakage through electronic controls, illuminated switches, snubbers, induced voltage, or driver sensitivity.</td></tr>
+<tr><td>Ballast or driver overheating</td><td>Input voltage, lamp/LED compatibility, enclosure temperature, ventilation, overload, failed components, or poor connections.</td></tr>
+<tr><td>Occupancy false-on / false-off</td><td>Sensor technology, coverage pattern, mounting location, sensitivity, HVAC movement, partitions, and timeout settings.</td></tr>
+<tr><td>Photocell cycles on and off</td><td>Photocell may be seeing the light it controls, causing feedback; repositioning or shielding may be required.</td></tr>
+<tr><td>Breaker nuisance trips</td><td>LED driver inrush current, circuit loading, breaker characteristics, simultaneous switching, or faults.</td></tr>
+<tr><td>Power factor / harmonics</td><td>Electronic drivers can draw non-sinusoidal current. Larger installations may require power-quality evaluation.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="panel">
+<h2>Lighting Safety</h2>
+<div class="warning">Lighting circuits can contain hazardous line voltage even when lamps are off. Electronic drivers and ballasts may contain stored energy. Follow manufacturer diagrams, de-energize and verify before servicing, and use equipment and controls rated for the supply, load, environment, and application.</div>
+</section>
+
+</main>
+<footer>A DONCO-BAYCITY™ App</footer>
+<script>
+function lcalc(){
+  const l=+lm.value,w=+lw.value,a=+area.value;
+  lightOut.textContent="Efficacy: "+(l/w).toFixed(1)+" lm/W · Idealized illuminance: "+(l/a).toFixed(1)+" lux";
+}
+[lm,lw,area].forEach(x=>x.addEventListener("input",lcalc));
+lcalc();
+</script>
+</body>
+</html>
