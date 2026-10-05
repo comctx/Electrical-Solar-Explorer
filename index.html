@@ -274,6 +274,45 @@
       color:var(--navy);
     }
 
+    /* Home-page category colors: soft enough to stay technical, strong enough to scan quickly */
+    .nav-category{
+      --cat:#0b63ce;
+      --cat-soft:#eef7ff;
+      --cat-border:#b9d7f5;
+    }
+
+    .nav-category h2{
+      border-left-color:var(--cat);
+    }
+
+    .nav-category .tab{
+      background:linear-gradient(180deg,#ffffff 0%,var(--cat-soft) 100%);
+      border-color:var(--cat-border);
+      box-shadow:
+        inset 0 4px 0 var(--cat),
+        0 3px 10px rgba(7,26,46,.05);
+      transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease;
+    }
+
+    .nav-category .tab:hover{
+      transform:translateY(-2px);
+      background:var(--cat-soft);
+      border-color:var(--cat);
+      box-shadow:
+        inset 0 4px 0 var(--cat),
+        0 8px 18px rgba(7,26,46,.10);
+    }
+
+    .category-quick{--cat:#2f80ed;--cat-soft:#eaf4ff;--cat-border:#acd0f6}
+    .category-learning{--cat:#159b7d;--cat-soft:#eaf9f4;--cat-border:#a9dfd0}
+    .category-info{--cat:#64748b;--cat-soft:#f3f6f9;--cat-border:#cbd5df}
+    .category-electrical{--cat:#0877bd;--cat-soft:#eaf7ff;--cat-border:#a8d4ef}
+    .category-power{--cat:#d28a16;--cat-soft:#fff6df;--cat-border:#ebca87}
+    .category-electronics{--cat:#7255c8;--cat-soft:#f2efff;--cat-border:#c9bdf0}
+    .category-industrial{--cat:#167f67;--cat-soft:#eaf8f3;--cat-border:#a9d9cb}
+    .category-digital{--cat:#4263c7;--cat-soft:#eef1ff;--cat-border:#b9c5ef}
+    .category-test{--cat:#c65f39;--cat-soft:#fff0e9;--cat-border:#efbea9}
+
     .panel{
       display:none;
       background:var(--card);
@@ -961,7 +1000,7 @@
     </section>
 
     <div class="tabs">
-      <section class="nav-category">
+      <section class="nav-category category-quick">
         <h2>Quick Tools</h2>
         <div class="category-grid">
           <a class="tab" href="electrical-calculator.html">Electrical Calculator</a>
@@ -971,7 +1010,7 @@
         </div>
       </section>
 
-      <section class="nav-category">
+      <section class="nav-category category-learning">
         <h2>Learning Tools</h2>
         <div class="category-grid">
           <a class="tab" href="beginner-courses.html">Beginner Courses</a>
@@ -987,14 +1026,14 @@
         </div>
       </section>
 
-      <section class="nav-category">
+      <section class="nav-category category-info">
         <h2>App Info</h2>
         <div class="category-grid">
           <a class="tab" href="about-help-safety.html">About, Help & Safety</a>
         </div>
       </section>
 
-      <section class="nav-category">
+      <section class="nav-category category-electrical">
         <h2>Electrical Basics & Wiring</h2>
         <div class="category-grid">
           <a class="tab" href="electrical-basics.html">Electrical Basics</a>
@@ -1015,7 +1054,7 @@
         </div>
       </section>
 
-      <section class="nav-category">
+      <section class="nav-category category-power">
         <h2>Power & Energy</h2>
         <div class="category-grid">
           <a class="tab" href="batteries.html">Batteries</a>
@@ -1040,7 +1079,7 @@
         </div>
       </section>
 
-      <section class="nav-category">
+      <section class="nav-category category-electronics">
         <h2>Electronics & Components</h2>
         <div class="category-grid">
           <a class="tab" href="capacitor.html">Capacitors</a>
@@ -1058,7 +1097,7 @@
         </div>
       </section>
 
-      <section class="nav-category">
+      <section class="nav-category category-industrial">
         <h2>Motors & Industrial Automation</h2>
         <div class="category-grid">
           <a class="tab" href="motors-controls.html">Motors & Controls</a>
@@ -1076,7 +1115,7 @@
         </div>
       </section>
 
-      <section class="nav-category">
+      <section class="nav-category category-digital">
         <h2>Digital & Communications</h2>
         <div class="category-grid">
           <a class="tab" href="processors.html">Processors</a>
@@ -1087,7 +1126,7 @@
         </div>
       </section>
 
-      <section class="nav-category">
+      <section class="nav-category category-test">
         <h2>Test & Troubleshooting</h2>
         <div class="category-grid">
           <a class="tab" href="test-equipment.html">Test Equipment</a>
