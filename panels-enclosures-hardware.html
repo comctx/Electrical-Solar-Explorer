@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f3b63"><title>Panels, Enclosures & Hardware Explorer</title><style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1060px;margin:auto;padding:18px}.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+.diagram-wrap{margin-top:14px;border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:12px;overflow:auto}.diagram{width:100%;min-width:820px;height:auto;display:block}
+.box{fill:#fff;stroke:#9fc8ef;stroke-width:3}.dark{fill:#263848;stroke:#071a2e;stroke-width:3}.rail{fill:#b7c0c7;stroke:#5d6871;stroke-width:3}.dtext{font:800 18px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}.dsmall{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#40566a}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}}
+</style><link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script></head><body>
+<header><h1>Panels, Enclosures & Hardware Explorer</h1><p>Control panels, MCCs, enclosure ratings, DIN rails, mounting hardware, strain relief, and labeling.</p></header><main>
+<section class="ate-level-chooser" data-ate-level-chooser><h2>Choose Your Detail Level</h2><p>Beginner identifies panel hardware. Technical adds layout and enclosure concepts. Advanced adds MCC architecture, environmental protection, heat, segregation, and maintainability.</p><div class="ate-level-buttons"><button data-ate-set-level="basic">Beginner</button><button data-ate-set-level="technical">Technical</button><button data-ate-set-level="advanced">Advanced</button></div><div class="ate-level-status" data-ate-level-status></div></section>
+
+<section class="panel"><h2>Beginner Start Here</h2><div class="grid three">
+<div class="card"><strong>Control Panel</strong><p>An enclosure containing devices that control, protect, monitor, and distribute power to a machine or process.</p><span class="badge">Machine / process control</span></div>
+<div class="card"><strong>MCC</strong><p>A motor control center groups motor starters, drives, protection, disconnecting means, and related control equipment into an organized assembly.</p><span class="badge">Motor distribution</span></div>
+<div class="card"><strong>Enclosure</strong><p>Protects people from live parts and protects electrical equipment from environmental conditions appropriate to its rating.</p><span class="badge">Protection</span></div>
+<div class="card"><strong>DIN Rail</strong><p>Standardized metal rail used to mount terminal blocks, relays, breakers, power supplies, PLC modules, and other control components.</p><span class="badge">Modular mounting</span></div>
+<div class="card"><strong>Strain Relief / Cable Gland</strong><p>Secures a cable where it enters an enclosure so tension is not transferred to internal terminals; some designs also seal the opening.</p><span class="badge">Cable entry</span></div>
+<div class="card"><strong>Labels & Wire Markers</strong><p>Identify devices, terminals, conductors, cables, hazards, and functions so equipment can be operated and serviced correctly.</p><span class="badge">Identification</span></div>
+</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Typical Control-Panel Layout <span class="ate-level-badge">Technical</span></h2><p class="lead">Real panels vary, but good layout separates functions, provides wiring space, and keeps components serviceable.</p>
+<div class="diagram-wrap"><svg class="diagram" viewBox="0 0 1080 590" aria-label="Control panel layout concept">
+<rect x="35" y="40" width="1010" height="510" rx="18" class="box"/><text x="55" y="75" class="dtext">Control enclosure</text>
+<rect x="75" y="105" width="930" height="45" rx="8" class="rail"/><text x="90" y="134" class="dsmall">Top DIN rail: breaker / fuse / power supply / surge protection</text>
+<rect x="75" y="195" width="930" height="45" rx="8" class="rail"/><text x="90" y="224" class="dsmall">Control DIN rail: PLC / relays / safety modules / network devices</text>
+<rect x="75" y="285" width="930" height="45" rx="8" class="rail"/><text x="90" y="314" class="dsmall">Interface rail: terminal blocks / signal conditioners / interposing relays</text>
+<rect x="75" y="385" width="420" height="105" rx="12" class="dark"/><text x="200" y="430" font-size="18" font-weight="800" fill="#fff">POWER SECTION</text><text x="120" y="462" font-size="13" fill="#dbe8f5">contactors / drives / overloads / high-current wiring</text>
+<rect x="585" y="385" width="420" height="105" rx="12" class="dark"/><text x="710" y="430" font-size="18" font-weight="800" fill="#fff">CONTROL SECTION</text><text x="625" y="462" font-size="13" fill="#dbe8f5">PLC I/O / analog / communications / low-level signals</text>
+<text x="75" y="525" class="dsmall">Cable ducts, grounding/bonding points, wire markers, gland plates, and service clearance complete the installation.</text>
+</svg></div></section>
+
+<section class="panel" data-ate-level="technical"><h2>NEMA & IP Enclosure Ratings <span class="ate-level-badge">Technical</span></h2>
+<p class="lead">Both systems describe environmental protection, but they are not simple one-for-one equivalents. Use the exact product rating required for the installation.</p>
+<table><thead><tr><th>System</th><th>What it describes</th><th>Important point</th></tr></thead><tbody>
+<tr><td>NEMA enclosure types</td><td>Enclosure performance for conditions such as indoor use, dust, water, corrosion, oil, ice, and other environments depending on type.</td><td>NEMA types include requirements beyond only ingress of solids and water.</td></tr>
+<tr><td>IP code</td><td>Two principal digits indicate protection against access/solid objects and water ingress.</td><td>Higher numbers generally indicate greater protection in the tested category, but the application still matters.</td></tr>
+<tr><td>Hazardous-location equipment</td><td>Uses separate certification and protection concepts for explosive gas, vapor, dust, or fiber environments.</td><td>Do not infer hazardous-location suitability from an ordinary NEMA/IP enclosure rating.</td></tr>
+</tbody></table></section>
+
+<section class="panel" data-ate-level="technical"><h2>DIN Rail, Wire Duct & Mounting Hardware <span class="ate-level-badge">Technical</span></h2><div class="grid three">
+<div class="card"><strong>DIN Rail</strong><p>Provides repeatable mounting for modular devices. End stops keep components from sliding along the rail.</p></div>
+<div class="card"><strong>Wire Duct / Trunking</strong><p>Routes conductors neatly between devices and helps separate power, control, and signal wiring.</p></div>
+<div class="card"><strong>Backplate</strong><p>Removable metal or insulating mounting plate that supports rails, ducts, contactors, drives, and other equipment.</p></div>
+<div class="card"><strong>Standoffs & Brackets</strong><p>Support devices at the required spacing and orientation while maintaining mechanical strength and clearances.</p></div>
+<div class="card"><strong>Glands / Bushings</strong><p>Protect cable jackets at entry points and can provide sealing, armor termination, bonding, or strain relief depending on design.</p></div>
+<div class="card"><strong>Labels</strong><p>Device tags, terminal numbers, wire markers, cable IDs, panel schedules, and hazard labels help preserve the relationship between drawings and the actual equipment.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Motor Control Centers (MCCs) <span class="ate-level-badge advanced">Advanced</span></h2><div class="grid two">
+<div class="card"><strong>Vertical Bus</strong><p>Distributes power through an MCC section so individual units can connect to the common source.</p></div>
+<div class="card"><strong>Starter / Feeder Unit</strong><p>May contain a disconnect, short-circuit protection, contactor, overload relay, control transformer, VFD, or other load-specific equipment.</p></div>
+<div class="card"><strong>Bucket / Compartment</strong><p>Individual functional unit that may be fixed or withdrawable depending on the MCC design.</p></div>
+<div class="card"><strong>Control & Network Wiring</strong><p>Modern MCCs may include PLC I/O, intelligent overloads, Ethernet networks, fieldbus, and condition-monitoring devices.</p></div>
+<div class="card"><strong>Arc-Flash / Fault Energy</strong><p>MCCs can contain very high fault current. Equipment ratings, upstream protection, working practices, and arc-flash analysis are critical.</p></div>
+<div class="card"><strong>Maintenance</strong><p>Inspection includes mechanical condition, contamination, overheating, connections, interlocks, shutters, cooling, and protective-device condition according to manufacturer procedures.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Panel Design Considerations <span class="ate-level-badge advanced">Advanced</span></h2>
+<div class="grid two">
+<div class="card"><strong>Segregation</strong><p>Separating high-current power conductors from analog, communications, and low-level signals reduces interference and improves serviceability.</p></div>
+<div class="card"><strong>Heat</strong><p>Drives, power supplies, transformers, contactors, and electronics add enclosure heat. Ambient temperature and component derating must be considered.</p></div>
+<div class="card"><strong>Grounding & Bonding</strong><p>Doors, backplates, gland plates, shields, equipment grounds, and enclosure metal need the intended bonding paths.</p></div>
+<div class="card"><strong>Short-Circuit Ratings</strong><p>Components and the complete assembly must be suitable for the available fault current and protective system.</p></div>
+<div class="card"><strong>Serviceability</strong><p>Terminal access, bend space, test points, removable components, documentation pockets, and clear labels reduce maintenance errors.</p></div>
+<div class="card"><strong>Environment</strong><p>Dust, water, oil, corrosive chemicals, sunlight, vibration, altitude, condensation, and washdown conditions influence enclosure and hardware selection.</p></div>
+</div>
+<div class="warning">Control panels and MCCs may contain hazardous voltage and very high fault energy even when a machine is stopped. Real design and service require the applicable standards, equipment documentation, and qualified-person procedures.</div></section>
+</main><footer>A DONCO-BAYCITY™ App</footer></body></html>
