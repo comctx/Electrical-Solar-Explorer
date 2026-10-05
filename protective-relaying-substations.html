@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f3b63"><title>Protective Relaying & Substations Explorer</title><style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1060px;margin:auto;padding:18px}.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+.diagram-wrap{margin-top:14px;border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:12px;overflow:auto}.diagram{width:100%;min-width:820px;height:auto;display:block}
+.box{fill:#fff;stroke:#9fc8ef;stroke-width:3}.dark{fill:#263848;stroke:#071a2e;stroke-width:3}.line{fill:none;stroke:#0b63ce;stroke-width:7;stroke-linecap:round}.trip{fill:none;stroke:#c62828;stroke-width:6;stroke-linecap:round;stroke-dasharray:12 8}.dtext{font:800 18px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}.dsmall{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#40566a}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}}
+</style><link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script></head><body>
+<header><h1>Protective Relaying & Substations Explorer</h1><p>Protective relays, breakers, reclosers, sectionalizers, bus protection, surge arresters, trip circuits, and substation one-lines.</p></header><main>
+<section class="ate-level-chooser" data-ate-level-chooser><h2>Choose Your Detail Level</h2><p>Beginner explains what protection devices do. Technical adds CTs/VTs, trip circuits, and one-line relationships. Advanced adds protection zones, differential and distance protection, coordination, and communications.</p><div class="ate-level-buttons"><button data-ate-set-level="basic">Beginner</button><button data-ate-set-level="technical">Technical</button><button data-ate-set-level="advanced">Advanced</button></div><div class="ate-level-status" data-ate-level-status></div></section>
+
+<section class="panel"><h2>Beginner Start Here</h2><div class="grid three">
+<div class="card"><strong>Protective Relay</strong><p>Monitors electrical quantities and decides when abnormal conditions require an alarm, trip, or other protective action.</p><span class="badge">Decision device</span></div>
+<div class="card"><strong>Circuit Breaker</strong><p>Opens the power circuit when commanded by protection or control equipment and must interrupt the available fault current within its rating.</p><span class="badge">Interrupts current</span></div>
+<div class="card"><strong>Recloser</strong><p>Automatically opens for a fault and can reclose according to its programmed sequence, commonly on distribution systems.</p><span class="badge">Automatic reclosing</span></div>
+<div class="card"><strong>Sectionalizer</strong><p>Works with upstream protection to isolate a faulted section of a distribution circuit after detecting fault-current operations.</p><span class="badge">Fault isolation</span></div>
+<div class="card"><strong>Surge Arrester</strong><p>Limits transient overvoltage from lightning or switching by diverting surge energy to the grounding system.</p><span class="badge">Transient protection</span></div>
+<div class="card"><strong>Substation</strong><p>Switches, protects, measures, and often transforms electrical power between transmission, subtransmission, and distribution systems.</p><span class="badge">Power-system hub</span></div>
+</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Substation One-Line Relationship <span class="ate-level-badge">Technical</span></h2><p class="lead">A one-line diagram simplifies a three-phase power system into a single path so equipment relationships are easier to read.</p>
+<div class="diagram-wrap"><svg class="diagram" viewBox="0 0 1100 430" aria-label="Substation one line concept">
+<text x="35" y="38" class="dtext">Source → disconnect → breaker → bus → transformer → feeder breaker → load</text>
+<rect x="35" y="90" width="150" height="90" rx="12" class="dark"/><text x="84" y="143" font-size="18" font-weight="800" fill="#fff">SOURCE</text>
+<path d="M185 135H285" class="line"/><rect x="285" y="95" width="120" height="80" rx="12" class="box"/><text x="310" y="143" class="dtext">Switch</text>
+<path d="M405 135H500" class="line"/><rect x="500" y="95" width="120" height="80" rx="12" class="box"/><text x="525" y="143" class="dtext">Breaker</text>
+<path d="M620 135H710" class="line"/><path d="M710 85V300" class="line"/><text x="725" y="105" class="dsmall">BUS</text>
+<path d="M710 170H820" class="line"/><rect x="820" y="130" width="145" height="80" rx="12" class="box"/><text x="842" y="178" class="dtext">Transformer</text>
+<path d="M710 245H820" class="line"/><rect x="820" y="225" width="145" height="65" rx="12" class="box"/><text x="847" y="265" class="dtext">Feeder CB</text>
+<path d="M965 257H1040" class="line"/>
+<rect x="460" y="265" width="210" height="100" rx="12" class="box"/><text x="500" y="300" class="dtext">Protective Relay</text><text x="485" y="332" class="dsmall">CT / VT inputs → trip output</text>
+<path d="M565 265V205" class="trip"/><text x="580" y="235" class="dsmall">trip circuit</text>
+</svg></div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Common Protection Functions <span class="ate-level-badge">Technical</span></h2>
+<table><thead><tr><th>Function</th><th>What it watches</th><th>Typical use</th></tr></thead><tbody>
+<tr><td>Overcurrent</td><td>Current above a set threshold, often with time-current behavior</td><td>Feeders, transformers, motors, distribution</td></tr>
+<tr><td>Ground fault / earth fault</td><td>Residual or zero-sequence current indicating current to ground</td><td>Feeders, equipment, generators, transformers</td></tr>
+<tr><td>Undervoltage / overvoltage</td><td>Voltage outside an allowed range</td><td>System supervision, motors, generators, bus protection schemes</td></tr>
+<tr><td>Underfrequency / overfrequency</td><td>System frequency outside limits</td><td>Generation and grid protection</td></tr>
+<tr><td>Directional overcurrent</td><td>Fault current magnitude plus direction</td><td>Networks with multiple sources or loops</td></tr>
+<tr><td>Thermal / overload</td><td>Estimated heating based on current and time</td><td>Motors, transformers, cables</td></tr>
+</tbody></table></section>
+
+<section class="panel" data-ate-level="technical"><h2>CTs, VTs & Trip Circuits <span class="ate-level-badge">Technical</span></h2><div class="grid three">
+<div class="card"><strong>CT Inputs</strong><p>Current transformers scale primary current to a level the relay can measure while preserving the needed accuracy and polarity relationships.</p></div>
+<div class="card"><strong>VT / PT Inputs</strong><p>Voltage transformers provide scaled voltage for protection, metering, synchronization, and directional calculations.</p></div>
+<div class="card"><strong>Trip Output</strong><p>The relay operates a breaker trip circuit so stored mechanical energy in the breaker can open the power contacts.</p></div>
+<div class="card"><strong>DC Control Power</strong><p>Substations often use a station battery/DC system so protection and tripping remain available if AC station service is lost.</p></div>
+<div class="card"><strong>Trip Coil Supervision</strong><p>Some systems monitor breaker trip-circuit continuity so an open fuse, wiring problem, or failed coil can be alarmed.</p></div>
+<div class="card"><strong>Breaker Auxiliary Contacts</strong><p>Contacts such as 52a/52b in common utility notation report breaker position and support interlocking, control, and status logic.</p></div>
+</div><div class="warning">CT secondary circuits require approved shorting and test practices. Never intentionally open an energized CT secondary carrying primary current.</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Differential & Distance Protection <span class="ate-level-badge advanced">Advanced</span></h2><div class="grid two">
+<div class="card"><strong>Differential Protection</strong><p>Compares current entering and leaving a defined protection zone. A significant mismatch can indicate an internal fault.</p></div>
+<div class="card"><strong>Transformer Differential</strong><p>Compensates for transformer ratio, phase shift, CT ratio, and inrush characteristics before deciding whether current difference represents an internal fault.</p></div>
+<div class="card"><strong>Bus Differential</strong><p>Compares currents on circuits connected to a bus to detect faults inside the bus protection zone.</p></div>
+<div class="card"><strong>Distance Protection</strong><p>Estimates apparent impedance from measured voltage and current to determine whether a transmission-line fault is within a protection zone.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Coordination & Protection Zones <span class="ate-level-badge advanced">Advanced</span></h2><div class="grid two">
+<div class="card"><strong>Selective Coordination</strong><p>Protection is arranged so the device nearest a fault clears it when practical, leaving healthy portions of the system energized.</p></div>
+<div class="card"><strong>Primary & Backup Protection</strong><p>Primary protection acts first for its defined zone; backup protection operates if the primary device or breaker fails.</p></div>
+<div class="card"><strong>Zone Overlap</strong><p>CT and breaker locations are chosen so adjacent protection zones overlap and avoid unprotected gaps.</p></div>
+<div class="card"><strong>Breaker Failure Protection</strong><p>If a breaker receives a trip command but fault current continues, a breaker-failure scheme can trip adjacent breakers to clear the fault.</p></div>
+<div class="card"><strong>Communications-Assisted Protection</strong><p>Line protection may exchange permissive, blocking, or direct-trip signals over fiber, microwave, power-line carrier, or other channels.</p></div>
+<div class="card"><strong>Event Records</strong><p>Modern relays can capture oscillography, sequence-of-events data, fault values, and disturbance records for post-event analysis.</p></div>
+</div></section>
+
+<section class="panel"><h2>Safety</h2><div class="warning">Substations and protective-relay systems can involve lethal voltage, arc-flash energy, stored spring energy, station batteries, induced voltage, and extremely high fault current. This page is educational only; field testing, switching, commissioning, and relay work require approved procedures and qualified personnel.</div></section>
+</main><footer>A DONCO-BAYCITY™ App</footer></body></html>
