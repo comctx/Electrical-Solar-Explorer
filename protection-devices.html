@@ -1,26 +1,384 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f3b63"><title>Protection Devices Explorer</title><style>
-:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
-header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
-main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
-.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>Protection Devices Explorer</title>
+<style>
+:root{
+  --navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;
+  --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+    radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+    linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+  color:var(--text);
+}
+header{
+  background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));
+  color:#fff;padding:26px 18px 22px;text-align:center;
+}
+header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+header p{margin:0;opacity:.93}
+header:after{
+  content:"";display:block;width:92px;height:5px;margin:15px auto 0;
+  border-radius:999px;background:var(--yellow);
+}
+main{max-width:1050px;margin:auto;padding:18px}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.nav a{
+  text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;
+  background:#eef7ff;color:var(--navy);font-weight:800;
+}
+.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{
+  background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+  margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09);
+}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+h3{margin:0 0 8px;color:var(--navy)}
+.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
 .grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
-.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input,select,button{font:inherit}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff}.result{margin-top:12px;background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
-.btn{min-height:42px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}
+.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{
+  display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;
+  background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800;
+}
+.other-words{
+  margin-top:14px;background:#fff7cc;border:1px solid #e5c94a;border-radius:13px;padding:14px;
+}
+.other-words strong{display:block;color:var(--navy);font-size:17px;margin-bottom:8px}
+.other-words-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.other-words-item{
+  background:#fff;border:1px solid #eadb82;border-radius:10px;padding:10px;
+  font-weight:800;color:#263b4c;line-height:1.4;
+}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+input,select,button{font:inherit}
+input,select{
+  width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;
+  padding:9px 11px;background:#fff;color:var(--text);
+}
+.result{
+  margin-top:12px;background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;
+  padding:12px;font-weight:800;color:var(--navy);
+}
+.warning{
+  margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;
+  padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700;
+}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}
+th{background:#eef7ff;color:var(--navy)}
+.btn{
+  min-height:42px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;
+  color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer;
+}
+.btn.primary{background:var(--yellow);border-color:#e4ba16}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.diagram-wrap{
+  margin-top:14px;border:1px solid var(--border);border-radius:16px;
+  background:#fbfdff;padding:12px;overflow:auto;
+}
+.diagram{width:100%;min-width:780px;height:auto;display:block}
+.device{fill:#eef7ff;stroke:#071a2e;stroke-width:3}
+.block{fill:#fff;stroke:#9fc8ef;stroke-width:3}
+.contact{stroke:#071a2e;stroke-width:7;stroke-linecap:round}
+.wire{stroke:#263b4c;stroke-width:6;stroke-linecap:round;fill:none}
+.wire-red{stroke:#c62828;stroke-width:6;stroke-linecap:round;fill:none}
+.wire-black{stroke:#111;stroke-width:6;stroke-linecap:round;fill:none}
+.dtext{font:800 18px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}
+.dsmall{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#40566a}
+.terminal{fill:#ffd43b;stroke:#8a6d00;stroke-width:2}
+.breaker-demo{
+  display:grid;grid-template-columns:minmax(270px,.95fr) minmax(0,1.05fr);
+  gap:18px;align-items:center;border:1px solid var(--border);border-radius:16px;
+  background:#fbfdff;padding:16px;
+}
+.breaker-visual{
+  min-height:235px;position:relative;display:flex;align-items:center;justify-content:center;
+}
+.bus{position:absolute;left:13%;right:13%;height:7px;background:#66798a;border-radius:99px}
+.bus.top{top:17%}.bus.bottom{bottom:17%}
+.breaker-body{
+  width:150px;height:120px;border:5px solid var(--navy);border-radius:18px;background:#fff;
+  display:grid;place-items:center;color:var(--navy);font-weight:900;font-size:22px;z-index:2;
+}
+.handle{
+  width:66px;height:20px;border-radius:99px;background:#b8c6d2;border:3px solid #607080;
+  transform:rotate(-20deg);transition:.2s;
+}
+.closed .handle{background:#ffd43b;border-color:#8a6d00;transform:rotate(20deg)}
+.current-dot{
+  position:absolute;width:15px;height:15px;border-radius:50%;background:#ffd43b;
+  left:50%;top:25%;transform:translateX(-50%);opacity:0;
+}
+.closed .current-dot{opacity:1;animation:flow 1.1s linear infinite}
+@keyframes flow{from{top:25%}to{top:72%}}
+.status{
+  margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;
+  border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy);line-height:1.45;
+}
+.status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+.status.warn{background:#fff3d6;border-color:#e5a84a;color:#6a4300}
 footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
-@media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}}
-</style>  <link rel="stylesheet" href="app-enhancements.css">
-  <script src="app-enhancements.js" defer></script>
-</head><body><header><h1>Protection Devices Explorer</h1><p>Fuses, breakers, GFCI/RCD, AFCI, surge protection, overloads, and layered protection.</p></header><main><nav class="nav">
-<a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a href="motors-controls.html">Motors & Controls</a><a href="generators-alternators.html">Generators & Alternators</a><a href="solar-power-electronics.html">Solar Power Electronics</a><a href="sensors-switches.html">Sensors & Switches</a><a href="fiber-optics.html">Fiber Optics</a><a href="power-electronics-modules.html">Power Electronics & Modules</a><a href="solid-state-switching.html">Solid-State Switching</a><a href="test-equipment.html">Test Equipment</a><a class="active" href="protection-devices.html">Protection Devices</a><a href="op-amps-analog.html">Op-Amps & Analog</a><a href="digital-logic.html">Digital Logic</a><a href="plc-automation.html">PLCs & Automation</a><a href="grounding-bonding-shielding.html">Grounding & Shielding</a><a href="lighting-lamps.html">Lighting & Lamps</a><a href="advanced-transformers-distribution.html">Advanced Transformers & Distribution</a>
-  <a href="troubleshooting.html">Troubleshooting</a>
-  <a href="processors.html">Processors</a><a href="grounding-bonding-trainer.html">Grounding & Bonding Trainer</a><a href="home-wiring-overview.html">How a House Is Wired</a><a href="home-wiring-diagrams.html">Home Wiring Diagrams</a></nav>
-<section class="panel"><h2>Protection Devices</h2><div class="grid three"><div class="card"><strong>Fuse</strong><p>Melts and opens when current exceeds its time-current capability.</p></div><div class="card"><strong>Circuit Breaker</strong><p>Automatically opens on specified overcurrent conditions and can normally be reset.</p></div><div class="card"><strong>GFCI / RCD</strong><p>Detects imbalance between conductors that can indicate leakage to ground/earth.</p></div><div class="card"><strong>AFCI</strong><p>Detects signatures associated with certain hazardous arcing conditions.</p></div><div class="card"><strong>Surge Protective Device</strong><p>Limits transient overvoltage by diverting surge energy.</p></div><div class="card"><strong>Thermal Overload</strong><p>Protects motors from sustained overload heating; not a substitute for short-circuit protection.</p></div></div></section>
-<section class="panel"><h2>Fuse vs. Breaker</h2><table><thead><tr><th>Feature</th><th>Fuse</th><th>Breaker</th></tr></thead><tbody><tr><td>Resettable</td><td>No</td><td>Usually yes</td></tr><tr><td>Speed</td><td>Available from very fast to time-delay</td><td>Depends on trip technology and curve</td></tr><tr><td>Current limiting</td><td>Some fuses are strongly current-limiting</td><td>Some breakers are current-limiting</td></tr><tr><td>Maintenance</td><td>Replace after operation</td><td>Reset after cause is corrected, unless damaged</td></tr></tbody></table></section>
-<section class="panel"><h2>Simple Overcurrent Demonstrator</h2><div class="grid three"><div class="field"><label>Load current (A)</label><input id="loadA" type="number" value="12" min="0"></div><div class="field"><label>Protective rating (A)</label><input id="ratedA" type="number" value="15" min="0.1"></div><div class="field"><label>Trip model</label><select id="curve"><option value="1.1">Fast example</option><option value="1.5">Time-delay example</option></select></div></div><div id="protOut" class="result"></div><p class="note">This is only a teaching model, not a breaker/fuse selection tool. Real protection uses manufacturer time-current curves, conductor ampacity, available fault current, equipment ratings, and code rules.</p></section>
-<section class="panel"><h2>Surge & Transient Parts</h2><div class="grid three"><div class="card"><strong>MOV</strong><p>Voltage-dependent device commonly used to clamp transient overvoltage.</p></div><div class="card"><strong>TVS Diode</strong><p>Fast semiconductor transient suppressor for lower-voltage electronics.</p></div><div class="card"><strong>Gas Discharge Tube</strong><p>Handles large surge energy by ionizing a gas path at high voltage.</p></div></div></section>
-<section class="panel"><h2>Protection Is Layered</h2><div class="warning">Different protective devices solve different hazards. Overcurrent protection, ground-fault protection, arc-fault protection, surge protection, motor overload protection, and equipment disconnecting means are not interchangeable.</div></section></main><footer>A DONCO-BAYCITY™ App</footer><script>
-function pcalc(){const l=+loadA.value,r=+ratedA.value,k=+curve.value;const ratio=l/r;protOut.textContent=ratio<=1?"Current is at or below the example rating.":ratio>=k?"This simplified model indicates an overcurrent condition likely to operate the protection.":"Over rating, but time-current behavior may delay operation in a real protective device."}[loadA,ratedA,curve].forEach(x=>x.addEventListener("input",pcalc));pcalc();
-</script></body></html>
+@media(max-width:760px){
+  main{padding:12px}.two,.three,.other-words-grid{grid-template-columns:1fr}
+  .breaker-demo{grid-template-columns:1fr}
+}
+</style>
+<link rel="stylesheet" href="app-enhancements.css">
+<script src="app-enhancements.js" defer></script>
+</head>
+<body>
+<header>
+  <h1>Protection Devices Explorer</h1>
+  <p>Fuses, circuit breakers, GFCI/RCD, AFCI, surge protection, overloads, and breaker technologies from miniature to high-voltage systems.</p>
+</header>
+
+<main>
+<nav class="nav">
+  <a href="index.html">All Things Electrical</a>
+  <a href="electrical-basics.html">Electrical Basics</a>
+  <a href="wiring-installation.html">Wiring & Installation</a>
+  <a href="batteries.html">Batteries</a>
+  <a href="power-supplies.html">Power Supplies & Rectifiers</a>
+  <a href="transformers.html">Transformers</a>
+  <a href="motors-controls.html">Motors & Controls</a>
+  <a href="test-equipment.html">Test Equipment</a>
+  <a class="active" href="protection-devices.html">Protection Devices</a>
+</nav>
+
+<section class="ate-level-chooser" data-ate-level-chooser>
+  <h2>Choose Your Detail Level</h2>
+  <p>Begin with what a breaker does and the difference between MCB and MCCB. Technical adds air, vacuum, SF₆, and oil interruption methods. Advanced adds arc interruption, trip units, interrupting ratings, coordination, and maintenance.</p>
+  <div class="ate-level-buttons">
+    <button type="button" data-ate-set-level="basic">Beginner</button>
+    <button type="button" data-ate-set-level="technical">Technical</button>
+    <button type="button" data-ate-set-level="advanced">Advanced</button>
+  </div>
+  <div class="ate-level-status" data-ate-level-status></div>
+</section>
+
+<section class="panel">
+  <h2>Beginner Start Here</h2>
+  <p class="lead">A circuit breaker is an automatically operated switch that opens a circuit when current or fault conditions exceed what the breaker is designed to allow.</p>
+  <div class="grid three">
+    <div class="card"><strong>MCB — Miniature Circuit Breaker</strong><p>Compact low-voltage breaker commonly used on smaller branch circuits. Many use thermal-magnetic trip elements.</p><span class="badge">Small branch circuits</span></div>
+    <div class="card"><strong>MCCB — Molded-Case Circuit Breaker</strong><p>Larger low-voltage breaker family used for feeders, machinery, and higher-current circuits. Many models have adjustable or electronic trip functions.</p><span class="badge">Feeders / larger loads</span></div>
+    <div class="card"><strong>Air Circuit Breaker</strong><p>Uses air as the interrupting medium. Low-voltage power circuit breakers often use arc chutes to cool and divide the arc.</p><span class="badge">Low-voltage distribution</span></div>
+    <div class="card"><strong>Vacuum Circuit Breaker</strong><p>Interrupts current inside a sealed vacuum interrupter. Vacuum breakers are widely used in medium-voltage equipment.</p><span class="badge">Medium voltage</span></div>
+    <div class="card"><strong>SF₆ Circuit Breaker</strong><p>Uses sulfur hexafluoride gas or related gas-insulated technology to help interrupt arcs in medium- and high-voltage equipment.</p><span class="badge">Medium / high voltage</span></div>
+    <div class="card"><strong>Oil Circuit Breaker</strong><p>Uses insulating oil to help cool and extinguish the arc. It is mainly associated with older high-voltage switchgear and legacy systems.</p><span class="badge">Legacy high-voltage systems</span></div>
+  </div>
+  <div class="other-words">
+    <strong>In Other Words</strong>
+    <div class="other-words-grid">
+      <div class="other-words-item">MCB and MCCB describe breaker construction and application classes.</div>
+      <div class="other-words-item">Air, vacuum, SF₆, and oil describe how the breaker controls the arc when opening.</div>
+      <div class="other-words-item">A breaker must interrupt the available fault current safely — not just carry normal load current.</div>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Protection Devices</h2>
+  <div class="grid three">
+    <div class="card"><strong>Fuse</strong><p>Melts and opens when current exceeds its time-current capability.</p></div>
+    <div class="card"><strong>Circuit Breaker</strong><p>Automatically opens on specified overcurrent or fault conditions and can normally be reset after the cause is corrected.</p></div>
+    <div class="card"><strong>GFCI / RCD</strong><p>Detects imbalance between conductors that can indicate leakage to ground or earth.</p></div>
+    <div class="card"><strong>AFCI</strong><p>Detects signatures associated with certain hazardous arcing conditions.</p></div>
+    <div class="card"><strong>Surge Protective Device</strong><p>Limits transient overvoltage by diverting surge energy.</p></div>
+    <div class="card"><strong>Thermal Overload</strong><p>Protects motors from sustained overload heating; it is not a substitute for short-circuit protection.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>Breaker Terminal & Internal Path <span class="ate-level-badge">Technical</span></h2>
+  <p class="lead">This simplified diagram shows the electrical path through a typical low-voltage breaker. Real breakers vary widely in construction.</p>
+  <div class="diagram-wrap">
+    <svg class="diagram" viewBox="0 0 1060 520" aria-label="Simplified circuit breaker terminal and internal path diagram">
+      <text x="35" y="38" class="dtext">Typical single-pole breaker relationship</text>
+      <rect x="35" y="65" width="990" height="185" rx="18" class="device"/>
+      <circle cx="95" cy="155" r="12" class="terminal"/>
+      <text x="55" y="135" class="dsmall">LINE</text>
+      <path d="M107 155H275" class="wire-red"/>
+      <rect x="275" y="110" width="155" height="90" rx="12" class="block"/>
+      <text x="310" y="145" class="dtext">Trip Unit</text>
+      <text x="295" y="175" class="dsmall">thermal / magnetic / electronic</text>
+      <path d="M430 155H540" class="wire"/>
+      <circle cx="555" cy="155" r="8" fill="#071a2e"/>
+      <circle cx="680" cy="155" r="8" fill="#071a2e"/>
+      <path d="M560 150L665 112" class="contact"/>
+      <text x="567" y="205" class="dsmall">Main contacts</text>
+      <path d="M688 155H825" class="wire-black"/>
+      <circle cx="840" cy="155" r="12" class="terminal"/>
+      <text x="820" y="135" class="dsmall">LOAD</text>
+      <rect x="525" y="285" width="210" height="125" rx="14" class="block"/>
+      <text x="565" y="325" class="dtext">Arc Chamber</text>
+      <text x="555" y="352" class="dsmall">arc chute / vacuum bottle /</text>
+      <text x="570" y="375" class="dsmall">gas or oil medium</text>
+      <path d="M620 200V285" stroke="#0b63ce" stroke-width="4" stroke-dasharray="9 7"/>
+      <text x="650" y="245" class="dsmall">arc is controlled here as contacts part</text>
+      <text x="35" y="470" class="dsmall">The trip unit decides when to release the mechanism. The contacts interrupt current, and the arc-control system helps extinguish the arc safely.</text>
+    </svg>
+  </div>
+  <div class="warning">Terminal orientation, line/load markings, neutral switching, pole arrangement, and grounding/bonding rules depend on the exact breaker and equipment. Always follow the manufacturer diagram and applicable electrical rules.</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>Breaker Types Compared <span class="ate-level-badge">Technical</span></h2>
+  <table>
+    <thead><tr><th>Breaker type</th><th>Common application area</th><th>Arc interruption method</th><th>Key characteristic</th></tr></thead>
+    <tbody>
+      <tr><td>MCB</td><td>Low-voltage branch circuits</td><td>Usually air / arc chute</td><td>Compact, fixed trip characteristics on many models</td></tr>
+      <tr><td>MCCB</td><td>Low-voltage feeders, machinery, larger loads</td><td>Usually air / arc chute</td><td>Higher current capability; many models offer adjustable or electronic trips</td></tr>
+      <tr><td>Air Circuit Breaker (ACB)</td><td>Low-voltage switchboards and large distribution systems</td><td>Air with arc chutes or arc-control structures</td><td>Often draw-out, serviceable, and paired with advanced trip units</td></tr>
+      <tr><td>Vacuum Circuit Breaker (VCB)</td><td>Medium-voltage switchgear</td><td>Vacuum interrupter bottle</td><td>Compact sealed interrupter with strong dielectric recovery</td></tr>
+      <tr><td>SF₆ Circuit Breaker</td><td>Medium- and high-voltage switchgear / substations</td><td>SF₆ gas or gas-insulated interruption system</td><td>Excellent arc-control and insulation performance, with specialized gas handling requirements</td></tr>
+      <tr><td>Oil Circuit Breaker</td><td>Mostly legacy medium/high-voltage equipment</td><td>Insulating oil</td><td>Older technology with greater maintenance and fire-management concerns</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>Breaker Operation Demonstrator <span class="ate-level-badge">Technical</span></h2>
+  <p class="lead">See the difference between a breaker carrying current and a breaker that has opened.</p>
+  <div class="breaker-demo">
+    <div id="breakerVisual" class="breaker-visual closed">
+      <div class="bus top"></div><div class="bus bottom"></div>
+      <div class="breaker-body"><div id="breakerHandle" class="handle"></div><div>BREAKER</div></div>
+      <div class="current-dot"></div>
+    </div>
+    <div>
+      <h3 id="breakerTitle">Breaker Closed</h3>
+      <p id="breakerExplain" class="lead">The contacts are closed, so current can flow through the protected circuit.</p>
+      <div class="row">
+        <button id="closeBreaker" class="btn primary" type="button">Close Breaker</button>
+        <button id="tripBreaker" class="btn" type="button">Simulate Trip</button>
+      </div>
+      <div id="breakerStatus" class="status good">Current path is complete in this simplified model.</div>
+      <p class="note">A real breaker may trip because of thermal overload, magnetic short-circuit response, electronic protection logic, ground fault, or other functions depending on the breaker and trip unit.</p>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Fuse vs. Breaker</h2>
+  <table>
+    <thead><tr><th>Feature</th><th>Fuse</th><th>Breaker</th></tr></thead>
+    <tbody>
+      <tr><td>Resettable</td><td>No</td><td>Usually yes</td></tr>
+      <tr><td>Speed</td><td>Available from very fast to time-delay</td><td>Depends on trip technology and time-current curve</td></tr>
+      <tr><td>Current limiting</td><td>Some fuses are strongly current-limiting</td><td>Some breakers are current-limiting</td></tr>
+      <tr><td>Maintenance</td><td>Replace after operation</td><td>Reset only after the cause is corrected and the breaker/equipment are verified suitable for continued service</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>Simple Overcurrent Demonstrator</h2>
+  <div class="grid three">
+    <div class="field"><label>Load current (A)</label><input id="loadA" type="number" value="12" min="0"></div>
+    <div class="field"><label>Protective rating (A)</label><input id="ratedA" type="number" value="15" min="0.1"></div>
+    <div class="field"><label>Trip model</label><select id="curve"><option value="1.1">Fast example</option><option value="1.5">Time-delay example</option></select></div>
+  </div>
+  <div id="protOut" class="result"></div>
+  <p class="note">This is only a teaching model, not a breaker or fuse selection tool. Real protection uses manufacturer time-current curves, conductor ampacity, available fault current, equipment ratings, system voltage, load type, and applicable code requirements.</p>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Arc Interruption <span class="ate-level-badge advanced">Advanced</span></h2>
+  <div class="grid two">
+    <div class="card"><strong>Air / Arc Chute</strong><p>The opening arc is stretched, cooled, and divided into smaller arc segments by arc runners and splitter plates until current can be interrupted.</p></div>
+    <div class="card"><strong>Vacuum</strong><p>Contacts separate inside a sealed vacuum bottle. The arc is supported by metal vapor briefly, then dielectric strength recovers rapidly after current interruption.</p></div>
+    <div class="card"><strong>SF₆ Gas</strong><p>Gas flow and dielectric properties are used to cool and deionize the arc path in suitable interrupter designs.</p></div>
+    <div class="card"><strong>Oil</strong><p>Arc energy decomposes part of the oil and creates gases that help cool and deionize the arc zone. Oil condition and fire risk are important maintenance concerns.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Trip Units & Protection Functions <span class="ate-level-badge advanced">Advanced</span></h2>
+  <table>
+    <thead><tr><th>Function</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>Long-time protection</td><td>Responds to sustained overloads that can overheat conductors or equipment.</td></tr>
+      <tr><td>Short-time protection</td><td>Allows intentional delay for coordination while still clearing high-current faults.</td></tr>
+      <tr><td>Instantaneous protection</td><td>Trips with little intentional delay when current exceeds a high threshold.</td></tr>
+      <tr><td>Ground-fault protection</td><td>Detects current returning by unintended paths in systems where this function is provided.</td></tr>
+      <tr><td>Electronic trip unit</td><td>Uses current sensing and electronic logic to implement adjustable protection functions and sometimes metering/communications.</td></tr>
+      <tr><td>Thermal-magnetic trip</td><td>Uses heat for overload response and magnetic force for high-current fault response.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Interrupting Rating, Coordination & Maintenance <span class="ate-level-badge advanced">Advanced</span></h2>
+  <div class="grid two">
+    <div class="card"><strong>Interrupting Rating</strong><p>A breaker must be able to safely interrupt the prospective fault current at its rated system voltage. Normal ampere rating alone does not tell you this.</p></div>
+    <div class="card"><strong>Available Fault Current</strong><p>Depends on the source, transformer impedance, conductor impedance, generators, motors, and other system conditions.</p></div>
+    <div class="card"><strong>Selective Coordination</strong><p>Protection is coordinated so the device closest to a fault clears first when the system design and rules require it, minimizing unnecessary outages.</p></div>
+    <div class="card"><strong>Current Limiting</strong><p>Some breakers and fuses can substantially reduce peak let-through current and energy compared with the available prospective fault.</p></div>
+    <div class="card"><strong>Inspection & Testing</strong><p>Larger breakers may require inspection, cleaning, lubrication, contact checks, insulation testing, trip-unit testing, and mechanism maintenance according to manufacturer instructions.</p></div>
+    <div class="card"><strong>After a Major Fault</strong><p>A breaker that interrupted a severe fault should not simply be reset without determining the fault cause and checking the breaker and connected equipment as required by the manufacturer.</p></div>
+  </div>
+  <div class="warning">SF₆ is a very potent greenhouse gas. Equipment containing it requires appropriate leak prevention, recovery, servicing, and end-of-life handling. Modern switchgear increasingly uses alternative gases, vacuum interruption, or other designs depending on voltage class and manufacturer.</div>
+</section>
+
+<section class="panel">
+  <h2>Surge & Transient Parts</h2>
+  <div class="grid three">
+    <div class="card"><strong>MOV</strong><p>Voltage-dependent device commonly used to clamp transient overvoltage.</p></div>
+    <div class="card"><strong>TVS Diode</strong><p>Fast semiconductor transient suppressor for lower-voltage electronics.</p></div>
+    <div class="card"><strong>Gas Discharge Tube</strong><p>Handles large surge energy by ionizing a gas path at high voltage.</p></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Protection Is Layered</h2>
+  <div class="warning">Different protective devices solve different hazards. Overcurrent protection, ground-fault protection, arc-fault protection, surge protection, motor overload protection, and disconnecting means are not interchangeable.</div>
+</section>
+</main>
+
+<footer>A DONCO-BAYCITY™ App</footer>
+
+<script>
+function pcalc(){
+  const l=+loadA.value,r=+ratedA.value,k=+curve.value;
+  const ratio=l/r;
+  protOut.textContent=
+    ratio<=1
+      ?"Current is at or below the example rating."
+      :ratio>=k
+        ?"This simplified model indicates an overcurrent condition likely to operate the protection."
+        :"Over rating, but time-current behavior may delay operation in a real protective device.";
+}
+[loadA,ratedA,curve].forEach(x=>x.addEventListener("input",pcalc));
+pcalc();
+
+let breakerClosed=true;
+function drawBreaker(){
+  breakerVisual.classList.toggle("closed",breakerClosed);
+  breakerTitle.textContent=breakerClosed?"Breaker Closed":"Breaker Open / Tripped";
+  breakerExplain.textContent=breakerClosed
+    ?"The contacts are closed, so current can flow through the protected circuit."
+    :"The contacts have opened, interrupting the current path in this simplified model.";
+  breakerStatus.className="status "+(breakerClosed?"good":"warn");
+  breakerStatus.textContent=breakerClosed
+    ?"Current path is complete in this simplified model."
+    :"Current path is open. In a real fault event, the breaker must also safely extinguish the arc.";
+}
+closeBreaker.onclick=()=>{breakerClosed=true;drawBreaker()};
+tripBreaker.onclick=()=>{breakerClosed=false;drawBreaker()};
+drawBreaker();
+</script>
+</body>
+</html>
