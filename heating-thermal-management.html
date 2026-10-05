@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f3b63"><title>Heating & Thermal Management Explorer</title><style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1060px;margin:auto;padding:18px}.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;font:inherit}
+.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700}.result strong{font-size:clamp(20px,4vw,28px);color:var(--navy)}
+.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three,.results{grid-template-columns:1fr}}
+</style><link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script></head><body>
+<header><h1>Heating & Thermal Management Explorer</h1><p>Heating elements, heat sinks, fans, thermal interfaces, temperature sensors, and cooling of electrical equipment.</p></header><main>
+<section class="ate-level-chooser" data-ate-level-chooser><h2>Choose Your Detail Level</h2><p>Beginner identifies heating and cooling parts. Technical adds sensors and thermal paths. Advanced adds transformer and switchgear cooling, losses, and protection concepts.</p><div class="ate-level-buttons"><button data-ate-set-level="basic">Beginner</button><button data-ate-set-level="technical">Technical</button><button data-ate-set-level="advanced">Advanced</button></div><div class="ate-level-status" data-ate-level-status></div></section>
+
+<section class="panel"><h2>Beginner Start Here</h2><div class="grid three">
+<div class="card"><strong>Resistive Heater</strong><p>Turns electrical energy into heat as current flows through a resistive element.</p><span class="badge">Intentional heating</span></div>
+<div class="card"><strong>Heat Sink</strong><p>Conducts heat away from a component and increases surface area so heat can move into the surrounding air.</p><span class="badge">Passive cooling</span></div>
+<div class="card"><strong>Thermal Pad / Compound</strong><p>Fills microscopic gaps between surfaces so heat transfers more effectively from a device to a heat sink or chassis.</p><span class="badge">Thermal interface</span></div>
+<div class="card"><strong>Cooling Fan</strong><p>Moves air across hot parts, heat sinks, filters, or enclosures to increase heat removal.</p><span class="badge">Forced air</span></div>
+<div class="card"><strong>Temperature Sensor</strong><p>Measures temperature so equipment can display, control, alarm, or shut down when temperatures are too high or too low.</p><span class="badge">Monitor & protect</span></div>
+<div class="card"><strong>Thermal Protection</strong><p>Thermostats, electronic controls, or protective relays can reduce load or disconnect equipment before excessive heat causes damage.</p><span class="badge">Protection</span></div>
+</div></section>
+
+<section class="panel"><h2>Resistive Heating Calculator</h2><p class="lead">For a simple resistive heater, voltage, resistance, current, and power are related by Ohm's law.</p>
+<div class="grid two"><div class="field"><label>Voltage (V)</label><input id="hv" type="number" value="120" min="0" step="any"></div><div class="field"><label>Resistance (Ω)</label><input id="hr" type="number" value="24" min="0.001" step="any"></div></div>
+<div class="results"><div class="result"><small>Current</small><strong id="hi">—</strong></div><div class="result"><small>Power</small><strong id="hp">—</strong></div><div class="result"><small>Energy in 1 hour</small><strong id="he">—</strong></div></div><div class="formula">Ideal resistive example only. Real heater resistance can change with temperature and construction.</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Temperature Sensors <span class="ate-level-badge">Technical</span></h2>
+<table><thead><tr><th>Sensor</th><th>How it works</th><th>Typical strengths</th></tr></thead><tbody>
+<tr><td>RTD</td><td>Metal resistance changes predictably with temperature, commonly using platinum elements.</td><td>Accuracy, stability, industrial process measurement</td></tr>
+<tr><td>Thermocouple</td><td>Two dissimilar metals produce a small voltage related to the temperature difference between junctions.</td><td>Wide temperature range, rugged, fast response</td></tr>
+<tr><td>NTC thermistor</td><td>Resistance decreases as temperature increases.</td><td>Sensitive temperature measurement, electronic protection, inrush applications</td></tr>
+<tr><td>PTC thermistor</td><td>Resistance increases as temperature rises, sometimes sharply over a designed range.</td><td>Protection, self-regulating heating, motor winding monitoring</td></tr>
+<tr><td>Thermostat</td><td>Switches a contact or electronic output when temperature crosses a setpoint.</td><td>Simple on/off control and overtemperature protection</td></tr>
+</tbody></table>
+<div class="warning">RTDs, thermocouples, and thermistors are not interchangeable. Their wiring, excitation, compensation, polarity, and input modules must match the sensor type.</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Thermal Path: Device → Interface → Heat Sink → Air <span class="ate-level-badge">Technical</span></h2>
+<div class="grid three">
+<div class="card"><strong>1. Heat Source</strong><p>Semiconductors, resistors, transformers, motors, contacts, and conductors produce heat from electrical and magnetic losses.</p></div>
+<div class="card"><strong>2. Thermal Interface</strong><p>Pads, grease, insulators, clamps, and mounting pressure reduce thermal resistance between mating surfaces.</p></div>
+<div class="card"><strong>3. Heat Sink / Chassis</strong><p>Conductive material spreads heat and increases area available for convection and radiation.</p></div>
+<div class="card"><strong>4. Airflow</strong><p>Natural convection or fans move heat away. Blocked filters, failed fans, and poor cabinet airflow can raise temperature dramatically.</p></div>
+<div class="card"><strong>5. Ambient</strong><p>The surrounding air or liquid is the final heat sink. High ambient temperature reduces cooling margin.</p></div>
+<div class="card"><strong>6. Temperature Feedback</strong><p>Sensors can command fans, alarms, derating, or shutdown when thermal limits are approached.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Transformer Cooling <span class="ate-level-badge advanced">Advanced</span></h2>
+<div class="grid two">
+<div class="card"><strong>Dry-Type Cooling</strong><p>Heat leaves windings and core through air and solid insulation. Natural ventilation or forced-air fans may be used depending on design.</p></div>
+<div class="card"><strong>Liquid-Immersed Cooling</strong><p>Insulating liquid carries heat from the active parts to the tank, radiators, or heat exchangers. Pumps and fans may assist on larger units.</p></div>
+<div class="card"><strong>Temperature Rise</strong><p>Transformer insulation life is strongly affected by operating temperature. Loading, ambient temperature, harmonics, ventilation, and cooling condition all matter.</p></div>
+<div class="card"><strong>Monitoring</strong><p>Systems may monitor top-oil temperature, winding temperature estimates, fan/pump status, alarms, and gas or pressure conditions depending on transformer type.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Switchgear & Control-Panel Cooling <span class="ate-level-badge advanced">Advanced</span></h2>
+<div class="grid two">
+<div class="card"><strong>Natural Ventilation</strong><p>Uses enclosure openings and buoyancy-driven airflow where the design and environment allow it.</p></div>
+<div class="card"><strong>Filtered Fans</strong><p>Move outside air through a panel while filtering dust. Filter condition and airflow direction matter.</p></div>
+<div class="card"><strong>Heat Exchanger / Air Conditioner</strong><p>Used when ambient conditions, contamination, or internal heat load require closed-loop or active enclosure cooling.</p></div>
+<div class="card"><strong>Hot Spots</strong><p>Loose connections, overloaded conductors, aging contacts, harmonics, blocked airflow, and poor component spacing can create localized overheating.</p></div>
+<div class="card"><strong>Derating</strong><p>Drives, power supplies, breakers, and electronic modules may require reduced loading at high temperature or altitude.</p></div>
+<div class="card"><strong>Condensation Control</strong><p>Panel heaters and hygrostats may be used to keep enclosure temperature above dew point in cold or humid environments.</p></div>
+</div><div class="warning">Thermal systems can involve hot surfaces, mains voltage, stored energy, pressurized equipment, rotating fans, and insulating liquids. Use manufacturer limits and qualified-person procedures for real equipment.</div></section>
+</main><footer>A DONCO-BAYCITY™ App</footer>
+<script>function calc(){const v=+hv.value,r=+hr.value;if(r<=0){hi.textContent=hp.textContent=he.textContent="—";return}const i=v/r,p=v*i;hi.textContent=i.toFixed(2)+" A";hp.textContent=p.toFixed(1)+" W";he.textContent=(p/1000).toFixed(3)+" kWh"}[hv,hr].forEach(x=>x.addEventListener("input",calc));calc();</script></body></html>
