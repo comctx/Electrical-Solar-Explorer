@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>Metering & Instrumentation Explorer</title>
+<style>
+:root{
+  --navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;
+  --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+    radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+    linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+  color:var(--text);min-height:100vh;
+}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}
+header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+header p{margin:0;opacity:.93}
+header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1060px;margin:auto;padding:18px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+h3{margin:0 0 8px;color:var(--navy)}
+.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}
+.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.other-words{margin-top:14px;background:#fff7cc;border:1px solid #e5c94a;border-radius:13px;padding:14px}
+.other-words strong{display:block;color:var(--navy);font-size:17px;margin-bottom:8px}
+.other-words-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.other-words-item{background:#fff;border:1px solid #eadb82;border-radius:10px;padding:10px;font-weight:800;color:#263b4c;line-height:1.4}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}
+th{background:#eef7ff;color:var(--navy)}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit;color:var(--text)}
+.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}
+.result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+.result strong{font-size:clamp(20px,4vw,28px);color:var(--navy)}
+.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+.danger{margin-top:12px;background:#fdecea;border:1px solid #e4aaa5;border-radius:11px;padding:11px 12px;color:#8a1c13;line-height:1.5;font-weight:800}
+.diagram-wrap{margin-top:14px;border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:12px;overflow:auto}
+.diagram{width:100%;min-width:800px;height:auto;display:block}
+.box{fill:#fff;stroke:#9fc8ef;stroke-width:3}
+.dark{fill:#263848;stroke:#071a2e;stroke-width:3}
+.meter{fill:#eef7ff;stroke:#0b63ce;stroke-width:3}
+.term{fill:#ffd43b;stroke:#8a6d00;stroke-width:2}
+.wire-red{fill:none;stroke:#c62828;stroke-width:6;stroke-linecap:round}
+.wire-black{fill:none;stroke:#111;stroke-width:6;stroke-linecap:round}
+.wire-blue{fill:none;stroke:#0b63ce;stroke-width:6;stroke-linecap:round}
+.wire-green{fill:none;stroke:#2e7d32;stroke-width:6;stroke-linecap:round}
+.dtext{font:800 18px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}
+.dsmall{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#40566a}
+.related-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.related-link{display:block;text-decoration:none;color:var(--navy);font-weight:900;text-align:center;background:#eef7ff;border:1px solid #9fc8ef;border-radius:12px;padding:14px}
+.related-link span{display:block;color:var(--muted);font-weight:700;font-size:12px;margin-top:5px;line-height:1.35}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){main{padding:12px}.two,.three,.other-words-grid,.results,.related-grid{grid-template-columns:1fr}}
+</style>
+<link rel="stylesheet" href="app-enhancements.css">
+<script src="app-enhancements.js" defer></script>
+</head>
+<body>
+<header>
+  <h1>Metering & Instrumentation Explorer</h1>
+  <p>Ammeters, voltmeters, wattmeters, CTs, PTs/VTs, energy meters, power-quality tools, transducers, shunts, and indicating devices.</p>
+</header>
+
+<main>
+<section class="ate-level-chooser" data-ate-level-chooser>
+  <h2>Choose Your Detail Level</h2>
+  <p>Beginner explains what each instrument measures. Technical adds connection relationships and scaling. Advanced adds instrument transformers, burden, power quality, transducers, and measurement safety.</p>
+  <div class="ate-level-buttons">
+    <button type="button" data-ate-set-level="basic">Beginner</button>
+    <button type="button" data-ate-set-level="technical">Technical</button>
+    <button type="button" data-ate-set-level="advanced">Advanced</button>
+  </div>
+  <div class="ate-level-status" data-ate-level-status></div>
+</section>
+
+<section class="panel">
+  <h2>Beginner Start Here</h2>
+  <p class="lead">Electrical instruments answer different questions: how much voltage is present, how much current is flowing, how much power is being used, and whether the electrical system is healthy.</p>
+  <div class="grid three">
+    <div class="card"><strong>Voltmeter</strong><p>Measures electrical potential difference between two points. A voltmeter is normally connected across the points being measured.</p><span class="badge">Voltage</span></div>
+    <div class="card"><strong>Ammeter</strong><p>Measures current. Traditional ammeter measurement places the current-measuring path in series with the circuit.</p><span class="badge">Current</span></div>
+    <div class="card"><strong>Wattmeter</strong><p>Measures real electrical power by using both voltage and current information.</p><span class="badge">Power</span></div>
+    <div class="card"><strong>Multimeter</strong><p>Combines several measurements in one instrument, commonly voltage, current, resistance, continuity, and often additional functions.</p><span class="badge">Multiple measurements</span></div>
+    <div class="card"><strong>Clamp Meter</strong><p>Measures current by sensing the magnetic field around a conductor, allowing many current measurements without opening the circuit.</p><span class="badge">Current without series insertion</span></div>
+    <div class="card"><strong>Oscilloscope</strong><p>Displays voltage as a waveform over time so you can see shape, timing, ripple, noise, pulses, and transients.</p><span class="badge">Waveform</span></div>
+    <div class="card"><strong>Energy Meter / Smart Meter</strong><p>Measures accumulated electrical energy, commonly in kilowatt-hours. Smart meters can also record interval data, demand, and communicate readings.</p><span class="badge">kWh</span></div>
+    <div class="card"><strong>Power-Quality Analyzer</strong><p>Evaluates voltage, current, frequency, power factor, harmonics, sags, swells, interruptions, and other power-quality conditions.</p><span class="badge">System health</span></div>
+    <div class="card"><strong>Pilot Light / Indicating Lamp</strong><p>Provides a visible machine or panel indication such as POWER ON, RUNNING, FAULT, or READY.</p><span class="badge">Status indication</span></div>
+  </div>
+
+  <div class="other-words">
+    <strong>In Other Words</strong>
+    <div class="other-words-grid">
+      <div class="other-words-item">Voltmeter asks: “How much electrical pressure is between these points?”</div>
+      <div class="other-words-item">Ammeter asks: “How much current is flowing through this path?”</div>
+      <div class="other-words-item">Wattmeter asks: “How fast is electrical energy being transferred?”</div>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Measurement Devices at a Glance</h2>
+  <table>
+    <thead><tr><th>Device</th><th>Measures / does</th><th>Common result</th></tr></thead>
+    <tbody>
+      <tr><td>Voltmeter / DMM</td><td>Potential difference</td><td>V, mV</td></tr>
+      <tr><td>Ammeter / clamp meter</td><td>Current</td><td>A, mA</td></tr>
+      <tr><td>Wattmeter</td><td>Real power</td><td>W, kW</td></tr>
+      <tr><td>Energy meter</td><td>Accumulated energy</td><td>Wh, kWh, MWh</td></tr>
+      <tr><td>Power-quality analyzer</td><td>Voltage/current quality and power quantities</td><td>V, A, Hz, PF, THD, events</td></tr>
+      <tr><td>Oscilloscope</td><td>Signal versus time</td><td>Waveform, frequency, timing, amplitude</td></tr>
+      <tr><td>LCR-type instrumentation</td><td>Component impedance properties</td><td>L, C, R, ESR, Q depending on instrument</td></tr>
+      <tr><td>Transducer</td><td>Converts a measured quantity to a usable signal</td><td>4–20 mA, 0–10 V, digital, other</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>How the Basic Meters Connect <span class="ate-level-badge">Technical</span></h2>
+  <p class="lead">The key idea is series versus parallel. The drawings below are relationship diagrams, not live-work instructions.</p>
+
+  <div class="diagram-wrap">
+    <svg class="diagram" viewBox="0 0 1080 690" aria-label="Ammeter voltmeter and wattmeter connection concepts">
+      <text x="35" y="38" class="dtext">1. Ammeter — current path passes through the instrument</text>
+      <rect x="35" y="65" width="1010" height="145" rx="18" class="box"/>
+      <rect x="65" y="105" width="130" height="65" rx="12" class="dark"/>
+      <text x="104" y="144" font-size="17" font-weight="800" fill="#fff">SOURCE</text>
+      <path d="M195 125H360" class="wire-red"/>
+      <circle cx="435" cy="125" r="46" class="meter"/><text x="421" y="132" class="dtext">A</text>
+      <path d="M481 125H690" class="wire-red"/>
+      <rect x="690" y="95" width="145" height="65" rx="12" class="box"/><text x="742" y="135" class="dtext">LOAD</text>
+      <path d="M835 140H935V170H130V170" class="wire-black"/>
+      <text x="865" y="105" class="dsmall">series path</text>
+
+      <text x="35" y="275" class="dtext">2. Voltmeter — instrument is connected across two points</text>
+      <rect x="35" y="300" width="1010" height="145" rx="18" class="box"/>
+      <rect x="65" y="340" width="130" height="65" rx="12" class="dark"/>
+      <text x="104" y="379" font-size="17" font-weight="800" fill="#fff">SOURCE</text>
+      <path d="M195 360H730" class="wire-red"/>
+      <rect x="730" y="330" width="145" height="65" rx="12" class="box"/><text x="782" y="370" class="dtext">LOAD</text>
+      <path d="M875 375H950V415H130V405" class="wire-black"/>
+      <circle cx="525" cy="372" r="46" class="meter"/><text x="511" y="379" class="dtext">V</text>
+      <path d="M525 326V360" class="wire-blue"/><path d="M525 418V415" class="wire-blue"/>
+      <text x="570" y="415" class="dsmall">parallel measurement</text>
+
+      <text x="35" y="510" class="dtext">3. Wattmeter — uses both current and voltage information</text>
+      <rect x="35" y="535" width="1010" height="130" rx="18" class="box"/>
+      <rect x="65" y="570" width="130" height="65" rx="12" class="dark"/>
+      <text x="104" y="609" font-size="17" font-weight="800" fill="#fff">SOURCE</text>
+      <path d="M195 585H370" class="wire-red"/>
+      <circle cx="455" cy="585" r="46" class="meter"/><text x="438" y="592" class="dtext">W</text>
+      <path d="M501 585H760" class="wire-red"/>
+      <rect x="760" y="555" width="145" height="65" rx="12" class="box"/><text x="812" y="595" class="dtext">LOAD</text>
+      <path d="M905 600H965V645H130V635" class="wire-black"/>
+      <path d="M455 631V645" class="wire-blue"/>
+      <text x="520" y="635" class="dsmall">current path + voltage reference</text>
+    </svg>
+  </div>
+
+  <div class="warning">Never move a meter lead into a current jack and then place the meter directly across a voltage source. Meter category rating, fuse rating, probe rating, lead condition, and the measurement environment all matter.</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>CTs and PTs / VTs <span class="ate-level-badge">Technical</span></h2>
+  <p class="lead">Instrument transformers let meters and protective relays work with currents and voltages that would otherwise be too large or unsafe to connect directly.</p>
+  <div class="grid two">
+    <div class="card"><strong>Current Transformer — CT</strong><p>The primary current creates magnetic flux that produces a smaller secondary current proportional to the primary. Common secondary ratings include 5 A and 1 A systems, depending on equipment and region.</p><span class="badge">Current scaling</span></div>
+    <div class="card"><strong>Potential / Voltage Transformer — PT / VT</strong><p>Steps system voltage down to a standardized lower voltage for metering, relaying, and control while also providing isolation appropriate to its design.</p><span class="badge">Voltage scaling</span></div>
+  </div>
+
+  <div class="diagram-wrap">
+    <svg class="diagram" viewBox="0 0 1080 455" aria-label="CT and PT VT measurement concepts">
+      <text x="35" y="38" class="dtext">Current transformer (CT)</text>
+      <rect x="35" y="65" width="1010" height="155" rx="18" class="box"/>
+      <path d="M75 135H1000" class="wire-red"/>
+      <text x="70" y="110" class="dsmall">primary conductor</text>
+      <circle cx="455" cy="135" r="66" fill="none" stroke="#0b63ce" stroke-width="14"/>
+      <text x="430" y="143" class="dtext">CT</text>
+      <path d="M430 200V245H655" class="wire-blue"/>
+      <path d="M480 200V270H655" class="wire-black"/>
+      <rect x="655" y="225" width="175" height="65" rx="12" class="meter"/>
+      <text x="690" y="265" class="dtext">Meter / Relay</text>
+
+      <text x="35" y="340" class="dtext">PT / VT — connected across the system voltage</text>
+      <rect x="35" y="365" width="1010" height="70" rx="18" class="box"/>
+      <path d="M90 385H330" class="wire-red"/><path d="M90 415H330" class="wire-black"/>
+      <rect x="330" y="375" width="155" height="50" rx="12" class="dark"/>
+      <text x="377" y="406" font-size="17" font-weight="800" fill="#fff">PT / VT</text>
+      <path d="M485 385H665" class="wire-blue"/><path d="M485 415H665" class="wire-black"/>
+      <rect x="665" y="375" width="175" height="50" rx="12" class="meter"/>
+      <text x="700" y="406" class="dtext">Meter / Relay</text>
+    </svg>
+  </div>
+
+  <div class="danger">CT SAFETY: Never intentionally open-circuit the secondary of an energized current transformer carrying primary current. Dangerous secondary voltage can develop. CT secondary circuits are handled with approved shorting/test procedures and equipment-specific practices.</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>CT Ratio Calculator <span class="ate-level-badge">Technical</span></h2>
+  <div class="grid three">
+    <div class="field"><label for="ctPrimaryRated">CT primary rating (A)</label><input id="ctPrimaryRated" type="number" value="400" min="0.001" step="any"></div>
+    <div class="field"><label for="ctSecondaryRated">CT secondary rating (A)</label><input id="ctSecondaryRated" type="number" value="5" min="0.001" step="any"></div>
+    <div class="field"><label for="ctMeasuredSecondary">Measured secondary current (A)</label><input id="ctMeasuredSecondary" type="number" value="3.25" min="0" step="any"></div>
+  </div>
+  <div class="results">
+    <div class="result"><small>CT ratio</small><strong id="ctRatioOut">—</strong></div>
+    <div class="result"><small>Estimated primary current</small><strong id="ctPrimaryOut">—</strong></div>
+    <div class="result"><small>Secondary % of rating</small><strong id="ctPctOut">—</strong></div>
+  </div>
+  <div id="ctFormula" class="formula">Primary current ≈ secondary current × CT ratio.</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>Transducers, Shunts & Pilot Devices <span class="ate-level-badge">Technical</span></h2>
+  <div class="grid three">
+    <div class="card"><strong>Current Transducer</strong><p>Converts measured current into a standard control signal such as 4–20 mA, 0–10 V, or a digital value.</p></div>
+    <div class="card"><strong>Voltage Transducer</strong><p>Converts system voltage into an isolated or scaled output that a PLC, meter, or monitoring system can use.</p></div>
+    <div class="card"><strong>Temperature Transducer</strong><p>Accepts a sensor such as an RTD or thermocouple and converts temperature into a standardized signal.</p></div>
+    <div class="card"><strong>Pressure Transducer</strong><p>Converts pressure into an electrical signal for control, monitoring, or data collection.</p></div>
+    <div class="card"><strong>Current Shunt</strong><p>A precision low-resistance element placed in series. Current is inferred from the small voltage drop across the shunt.</p></div>
+    <div class="card"><strong>Pilot Light / Indicating Lamp</strong><p>Connects to a control or status circuit and gives the operator a visual indication. Color meanings depend on the machine standard and design.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>4–20 mA Scaling Calculator <span class="ate-level-badge">Technical</span></h2>
+  <p class="lead">Convert a standard 4–20 mA transducer signal into an engineering value.</p>
+  <div class="grid three">
+    <div class="field"><label for="maValue">Signal current (mA)</label><input id="maValue" type="number" value="12" min="0" step="any"></div>
+    <div class="field"><label for="engLow">Engineering low</label><input id="engLow" type="number" value="0" step="any"></div>
+    <div class="field"><label for="engHigh">Engineering high</label><input id="engHigh" type="number" value="100" step="any"></div>
+  </div>
+  <div class="results">
+    <div class="result"><small>Scaled value</small><strong id="scaledOut">—</strong></div>
+    <div class="result"><small>Signal span</small><strong id="spanOut">—</strong></div>
+    <div class="result"><small>Percent of span</small><strong id="pctSpanOut">—</strong></div>
+  </div>
+  <div class="formula">4 mA represents the low end; 20 mA represents the high end of the configured range.</div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Energy Meters & Smart Meters <span class="ate-level-badge advanced">Advanced</span></h2>
+  <div class="grid two">
+    <div class="card"><strong>Energy accumulation</strong><p>Energy meters integrate power over time. A 1 kW load operating for 2 hours uses 2 kWh under the simplified constant-load example.</p></div>
+    <div class="card"><strong>Demand</strong><p>Many meters track average power over a defined demand interval, which can matter for commercial and industrial billing.</p></div>
+    <div class="card"><strong>Interval data</strong><p>Smart meters can record usage in time blocks, allowing utilities or facility systems to examine load patterns over the day.</p></div>
+    <div class="card"><strong>Communications</strong><p>Modern meters may communicate readings, alarms, configuration, or power-quality information through utility or industrial networks.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Power-Quality Measurements <span class="ate-level-badge advanced">Advanced</span></h2>
+  <table>
+    <thead><tr><th>Measurement / event</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td>Frequency</td><td>How fast the AC waveform repeats, normally near the system nominal frequency.</td></tr>
+      <tr><td>Power factor</td><td>Relationship between real power and apparent power. Distortion and phase displacement can both matter.</td></tr>
+      <tr><td>Voltage sag / dip</td><td>Temporary reduction in RMS voltage.</td></tr>
+      <tr><td>Voltage swell</td><td>Temporary increase in RMS voltage.</td></tr>
+      <tr><td>Interruption</td><td>Voltage falls very low or disappears for a period of time.</td></tr>
+      <tr><td>Harmonics</td><td>Frequency components at integer multiples of the fundamental, often produced by nonlinear loads.</td></tr>
+      <tr><td>THD</td><td>Total harmonic distortion summarizes harmonic content relative to the fundamental.</td></tr>
+      <tr><td>Transient</td><td>Fast, short-duration disturbance such as a switching or lightning-related impulse.</td></tr>
+      <tr><td>Unbalance</td><td>Difference among phase voltages or currents in a polyphase system.</td></tr>
+      <tr><td>Flicker</td><td>Voltage fluctuation that can produce visible lighting variation.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Instrument-Transformer Details <span class="ate-level-badge advanced">Advanced</span></h2>
+  <div class="grid two">
+    <div class="card"><strong>Ratio</strong><p>The instrument transformer ratio converts the secondary measurement back to the primary system quantity.</p></div>
+    <div class="card"><strong>Burden</strong><p>The connected meter, relay, wiring, and terminals load the secondary circuit. Excessive burden can increase ratio and phase error.</p></div>
+    <div class="card"><strong>Accuracy class</strong><p>Metering and protection CTs/VTs are selected for different accuracy and performance requirements.</p></div>
+    <div class="card"><strong>Polarity</strong><p>Polarity markings matter for directional relays, differential protection, real/reactive power calculations, and multi-CT measurements.</p></div>
+    <div class="card"><strong>Protection CT behavior</strong><p>Protection CTs may be designed to maintain useful performance at high fault current where metering CTs can behave differently.</p></div>
+    <div class="card"><strong>Secondary grounding</strong><p>Instrument-transformer secondary grounding is system- and equipment-specific. Follow the exact drawing, applicable standards, and manufacturer requirements.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Shunt Measurement <span class="ate-level-badge advanced">Advanced</span></h2>
+  <p class="lead">A shunt converts current into a small measurable voltage drop.</p>
+  <div class="grid three">
+    <div class="field"><label for="shuntMvRated">Rated shunt drop (mV)</label><input id="shuntMvRated" type="number" value="50" min="0.001" step="any"></div>
+    <div class="field"><label for="shuntARated">Rated current (A)</label><input id="shuntARated" type="number" value="500" min="0.001" step="any"></div>
+    <div class="field"><label for="shuntMvMeasured">Measured shunt drop (mV)</label><input id="shuntMvMeasured" type="number" value="18" min="0" step="any"></div>
+  </div>
+  <div class="results">
+    <div class="result"><small>Estimated current</small><strong id="shuntCurrentOut">—</strong></div>
+    <div class="result"><small>Shunt resistance</small><strong id="shuntResistanceOut">—</strong></div>
+    <div class="result"><small>Shunt power at measured current</small><strong id="shuntPowerOut">—</strong></div>
+  </div>
+  <div class="formula">For a linear shunt, current is proportional to the measured millivolt drop.</div>
+</section>
+
+<section class="panel">
+  <h2>Related Pages</h2>
+  <div class="related-grid">
+    <a class="related-link" href="test-equipment.html">Test Equipment<span>DMMs, clamp meters, insulation testing, test practices, and general instruments.</span></a>
+    <a class="related-link" href="oscilloscope-lab.html">Oscilloscope Lab<span>Interactive waveform and oscilloscope concepts.</span></a>
+    <a class="related-link" href="sensors-switches.html">Sensors & Switches<span>Pressure, temperature, proximity, photoelectric, and process sensing.</span></a>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Measurement Safety</h2>
+  <div class="warning">Instrument selection must match the system voltage, available fault energy, measurement category, environment, and the manufacturer's ratings. Use correctly rated leads and accessories, inspect equipment before use, and follow qualified-person procedures for hazardous electrical measurements.</div>
+  <div class="danger">Do not use a general oscilloscope ground clip, meter, probe, CT, shunt, or transducer on an energized power system unless its connection method, isolation, voltage/current rating, and safety category are specifically suitable for that measurement.</div>
+</section>
+</main>
+
+<footer>A DONCO-BAYCITY™ App</footer>
+
+<script>
+function fmt(n,d=2){
+  return Number.isFinite(n)?n.toLocaleString(undefined,{maximumFractionDigits:d}):"—";
+}
+function ctCalc(){
+  const pr=+ctPrimaryRated.value,sr=+ctSecondaryRated.value,sm=+ctMeasuredSecondary.value;
+  if(pr<=0||sr<=0){ctRatioOut.textContent=ctPrimaryOut.textContent=ctPctOut.textContent="—";return;}
+  const ratio=pr/sr,primary=sm*ratio,pct=sm/sr*100;
+  ctRatioOut.textContent=fmt(ratio,3)+":1";
+  ctPrimaryOut.textContent=fmt(primary,2)+" A";
+  ctPctOut.textContent=fmt(pct,1)+"%";
+  ctFormula.textContent="CT ratio = "+fmt(pr,2)+" A ÷ "+fmt(sr,2)+" A = "+fmt(ratio,3)+":1. Estimated primary current = "+fmt(sm,3)+" A × "+fmt(ratio,3)+" = "+fmt(primary,2)+" A.";
+}
+[ctPrimaryRated,ctSecondaryRated,ctMeasuredSecondary].forEach(x=>x.addEventListener("input",ctCalc));ctCalc();
+
+function maCalc(){
+  const ma=+maValue.value,lo=+engLow.value,hi=+engHigh.value;
+  const pct=(ma-4)/16;
+  const scaled=lo+pct*(hi-lo);
+  scaledOut.textContent=fmt(scaled,2);
+  spanOut.textContent=fmt(hi-lo,2);
+  pctSpanOut.textContent=fmt(pct*100,1)+"%";
+}
+[maValue,engLow,engHigh].forEach(x=>x.addEventListener("input",maCalc));maCalc();
+
+function shuntCalc(){
+  const mvR=+shuntMvRated.value,aR=+shuntARated.value,mvM=+shuntMvMeasured.value;
+  if(mvR<=0||aR<=0){shuntCurrentOut.textContent=shuntResistanceOut.textContent=shuntPowerOut.textContent="—";return;}
+  const current=aR*(mvM/mvR);
+  const r=(mvR/1000)/aR;
+  const power=current*current*r;
+  shuntCurrentOut.textContent=fmt(current,2)+" A";
+  shuntResistanceOut.textContent=fmt(r*1000,4)+" mΩ";
+  shuntPowerOut.textContent=fmt(power,2)+" W";
+}
+[shuntMvRated,shuntARated,shuntMvMeasured].forEach(x=>x.addEventListener("input",shuntCalc));shuntCalc();
+</script>
+</body>
+</html>
