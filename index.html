@@ -38,6 +38,7 @@
       color:white;
       padding:26px 18px 22px;
       text-align:center;
+      position:relative;
     }
 
     header h1{
@@ -59,6 +60,26 @@
       margin:16px auto 0;
       border-radius:999px;
       background:var(--yellow);
+    }
+
+    .donco-logo{
+      position:absolute;
+      top:14px;
+      right:18px;
+      width:110px;
+      max-height:54px;
+      height:auto;
+      object-fit:contain;
+    }
+
+    @media(max-width:620px){
+      .donco-logo{
+        position:static;
+        display:block;
+        width:92px;
+        max-height:44px;
+        margin:0 auto 10px;
+      }
     }
 
     main{
@@ -994,6 +1015,7 @@
 
 <body class="home-page">
   <header>
+    <img class="donco-logo" src="/Garage-Sale-map/donco_logo_footer.png" alt="DONCO-BAYCITY logo">
     <h1>All Things Electrical</h1>
     <p>Electrical & Solar Explorer</p>
   </header>
