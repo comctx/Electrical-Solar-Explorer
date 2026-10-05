@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f3b63"><title>Power Factor & Harmonics Explorer</title><style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1060px;margin:auto;padding:18px}.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;font:inherit}
+.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700}.result strong{font-size:clamp(20px,4vw,28px);color:var(--navy)}
+.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three,.results{grid-template-columns:1fr}}
+</style><link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script></head><body>
+<header><h1>Power Factor & Harmonics Explorer</h1><p>Power factor, capacitor banks, harmonics, resonance, passive filters, active filters, and mitigation.</p></header><main>
+
+<section class="ate-level-chooser" data-ate-level-chooser><h2>Choose Your Detail Level</h2><p>Beginner explains why current can be higher than the useful power suggests. Technical adds calculations and correction methods. Advanced adds harmonics, resonance, detuned banks, and active filtering.</p><div class="ate-level-buttons"><button data-ate-set-level="basic">Beginner</button><button data-ate-set-level="technical">Technical</button><button data-ate-set-level="advanced">Advanced</button></div><div class="ate-level-status" data-ate-level-status></div></section>
+
+<section class="panel"><h2>Beginner Start Here</h2><div class="grid three">
+<div class="card"><strong>Real Power (kW)</strong><p>The portion of electrical power converted into useful work, heat, light, motion, or other energy.</p><span class="badge">Useful power</span></div>
+<div class="card"><strong>Apparent Power (kVA)</strong><p>RMS voltage times RMS current, without assuming all current contributes to useful real power.</p><span class="badge">Equipment loading</span></div>
+<div class="card"><strong>Power Factor</strong><p>Ratio of real power to apparent power. A lower power factor means more current is required for the same real power.</p><span class="badge">kW ÷ kVA</span></div>
+<div class="card"><strong>Reactive Power (kVAR)</strong><p>Power that moves back and forth between the source and reactive elements such as inductance and capacitance.</p><span class="badge">Reactive exchange</span></div>
+<div class="card"><strong>Harmonics</strong><p>Frequency components at integer multiples of the fundamental frequency, often created by nonlinear loads.</p><span class="badge">Waveform distortion</span></div>
+<div class="card"><strong>Power-Factor Correction</strong><p>Capacitors or electronic equipment can reduce reactive current or correct power factor in suitable systems.</p><span class="badge">Reduce unnecessary current</span></div>
+</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Power-Factor Calculator <span class="ate-level-badge">Technical</span></h2><div class="grid three">
+<div class="field"><label>Real power (kW)</label><input id="kw" type="number" value="80" min="0" step="any"></div>
+<div class="field"><label>Power factor</label><input id="pf" type="number" value="0.8" min="0.01" max="1" step="0.01"></div>
+<div class="field"><label>Line voltage (V, 3-phase)</label><input id="v" type="number" value="480" min="1" step="any"></div>
+</div>
+<div class="results"><div class="result"><small>Apparent power</small><strong id="kva">—</strong></div><div class="result"><small>Reactive power</small><strong id="kvar">—</strong></div><div class="result"><small>Approx. line current</small><strong id="amps">—</strong></div></div>
+<div class="formula">For this balanced three-phase teaching example: kVA = kW ÷ PF, and current ≈ kVA × 1000 ÷ (√3 × line voltage).</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Power-Factor Correction Methods <span class="ate-level-badge">Technical</span></h2><div class="grid three">
+<div class="card"><strong>Fixed Capacitor</strong><p>Provides a constant amount of capacitive reactive power for a relatively steady inductive load.</p></div>
+<div class="card"><strong>Automatic Capacitor Bank</strong><p>Switches capacitor steps in and out as system reactive demand changes.</p></div>
+<div class="card"><strong>At the Motor</strong><p>Correction may be applied near a motor so reactive current does not flow through as much upstream distribution equipment, when the design permits it.</p></div>
+<div class="card"><strong>Central Correction</strong><p>A larger bank at a main bus can correct many loads together, often under automatic control.</p></div>
+<div class="card"><strong>Synchronous / Electronic VAR Support</strong><p>Some rotating machines and power-electronic systems can source or absorb reactive power dynamically.</p></div>
+<div class="card"><strong>Do Not Overcorrect</strong><p>Too much capacitance can create leading power factor, switching transients, resonance, or voltage-control problems.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Harmonics & Nonlinear Loads <span class="ate-level-badge advanced">Advanced</span></h2>
+<table><thead><tr><th>Source / effect</th><th>What happens</th></tr></thead><tbody>
+<tr><td>Rectifiers, VFDs, switched-mode supplies, LED drivers</td><td>Current may be drawn in pulses rather than as a sinusoid, producing harmonic current.</td></tr>
+<tr><td>Transformer heating</td><td>Harmonic currents increase copper and stray losses and can raise transformer temperature.</td></tr>
+<tr><td>Neutral loading</td><td>Triplen harmonics in four-wire systems can add in the neutral rather than cancel.</td></tr>
+<tr><td>Capacitors</td><td>Capacitor impedance decreases with frequency, so harmonic current and resonance require attention when capacitor banks are installed.</td></tr>
+<tr><td>Motors</td><td>Voltage distortion can create additional losses, heating, vibration, or torque pulsation.</td></tr>
+<tr><td>Protective / control equipment</td><td>Waveform distortion can affect metering, sensing, nuisance operation, and communication depending on equipment design.</td></tr>
+</tbody></table></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Displacement PF vs. True PF <span class="ate-level-badge advanced">Advanced</span></h2><div class="grid two">
+<div class="card"><strong>Displacement Power Factor</strong><p>Describes the phase angle relationship between the fundamental-frequency voltage and current.</p></div>
+<div class="card"><strong>True Power Factor</strong><p>Real power divided by true RMS apparent power, so it includes both phase displacement and waveform distortion.</p></div>
+<div class="card"><strong>Why the distinction matters</strong><p>A nonlinear load can have nearly aligned fundamental voltage/current while still drawing distorted current and therefore have a true power factor below one.</p></div>
+<div class="card"><strong>Measurement</strong><p>Power-quality analyzers can separate fundamental and harmonic quantities and report true RMS, power factor, THD, and individual harmonic components.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Harmonic Mitigation <span class="ate-level-badge advanced">Advanced</span></h2><div class="grid three">
+<div class="card"><strong>Line Reactor / DC Choke</strong><p>Adds impedance that can reduce current peaks and some harmonic current in drive or rectifier applications.</p></div>
+<div class="card"><strong>Passive Harmonic Filter</strong><p>Uses tuned inductors, capacitors, and sometimes resistors to provide low-impedance paths or shape system impedance at selected frequencies.</p></div>
+<div class="card"><strong>Active Harmonic Filter</strong><p>Measures distortion and injects compensating current electronically to reduce selected harmonic currents.</p></div>
+<div class="card"><strong>Multi-Pulse / Low-Harmonic Drives</strong><p>Special rectifier arrangements or active-front-end drives can reduce line-side harmonic current.</p></div>
+<div class="card"><strong>Detuned Capacitor Bank</strong><p>Series reactors shift the capacitor-bank resonance away from dominant harmonics and limit harmonic current in systems designed for this approach.</p></div>
+<div class="card"><strong>System Study</strong><p>Large capacitor or filter projects should consider source impedance, transformer size, existing harmonics, resonance, switching, and future load changes.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Resonance & Capacitor-Bank Cautions <span class="ate-level-badge advanced">Advanced</span></h2><div class="grid two">
+<div class="card"><strong>Parallel Resonance</strong><p>System inductance and capacitance can create a high-impedance condition near a harmonic frequency, magnifying voltage distortion.</p></div>
+<div class="card"><strong>Series Resonance</strong><p>A low-impedance path near resonance can draw large harmonic current through capacitors or reactors.</p></div>
+<div class="card"><strong>Switching Transients</strong><p>Energizing capacitor banks can create high inrush current and transient voltage depending on system conditions and switching method.</p></div>
+<div class="card"><strong>Protection</strong><p>Capacitor banks may require dedicated fuses, breakers, discharge resistors, contactors, unbalance protection, temperature monitoring, and rated switching equipment.</p></div>
+</div><div class="warning">Power-factor correction and harmonic filters can materially change system impedance and fault/transient behavior. Real installations should be engineered from measured system data and equipment ratings rather than sized from a single power-factor number alone.</div></section>
+</main><footer>A DONCO-BAYCITY™ App</footer>
+<script>function calc(){const p=+kw.value,f=+pf.value,volts=+v.value;if(f<=0||volts<=0){kva.textContent=kvar.textContent=amps.textContent="—";return}const s=p/f;const q=Math.sqrt(Math.max(0,s*s-p*p));const i=s*1000/(Math.sqrt(3)*volts);kva.textContent=s.toFixed(2)+" kVA";kvar.textContent=q.toFixed(2)+" kVAR";amps.textContent=i.toFixed(1)+" A"}[kw,pf,v].forEach(x=>x.addEventListener("input",calc));calc();</script></body></html>
