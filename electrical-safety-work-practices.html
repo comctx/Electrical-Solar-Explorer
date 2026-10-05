@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f3b63"><title>Electrical Safety & Work Practices Explorer</title><style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1060px;margin:auto;padding:18px}.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+.danger{margin-top:12px;background:#fdecea;border:1px solid #e4aaa5;border-radius:11px;padding:11px 12px;color:#8a1c13;line-height:1.5;font-weight:800}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}}
+</style><link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script></head><body>
+<header><h1>Electrical Safety & Work Practices Explorer</h1><p>Lockout/tagout, absence-of-voltage verification, stored energy, arc-flash concepts, PPE, and safer troubleshooting habits.</p></header><main>
+
+<section class="ate-level-chooser" data-ate-level-chooser><h2>Choose Your Detail Level</h2><p>Beginner focuses on core safety ideas. Technical adds verification, PPE, boundaries, and stored-energy concepts. Advanced adds energized-work decision making, arc-flash risk, and troubleshooting discipline.</p><div class="ate-level-buttons"><button data-ate-set-level="basic">Beginner</button><button data-ate-set-level="technical">Technical</button><button data-ate-set-level="advanced">Advanced</button></div><div class="ate-level-status" data-ate-level-status></div></section>
+
+<section class="panel"><h2>Beginner Start Here</h2><div class="grid three">
+<div class="card"><strong>De-Energize First</strong><p>The preferred condition for electrical work is equipment placed in an electrically safe state before contact with parts that could otherwise be energized.</p><span class="badge">Primary safety principle</span></div>
+<div class="card"><strong>Lockout / Tagout</strong><p>Energy-isolating devices are secured and identified so equipment cannot be restarted or re-energized unexpectedly while work is being performed.</p><span class="badge">Control hazardous energy</span></div>
+<div class="card"><strong>Verify Before Touching</strong><p>Opening a switch or breaker does not by itself prove conductors are de-energized. The absence of hazardous voltage must be verified with suitable equipment and procedure.</p><span class="badge">Test, don't assume</span></div>
+<div class="card"><strong>Stored Energy</strong><p>Capacitors, batteries, springs, rotating equipment, elevated loads, pressure, and thermal energy can remain hazardous after normal power is removed.</p><span class="badge">More than electricity</span></div>
+<div class="card"><strong>PPE</strong><p>Personal protective equipment is selected for the hazard and task; it supplements safe work practices rather than replacing de-energization and isolation.</p><span class="badge">Last line of defense</span></div>
+<div class="card"><strong>Qualified Work</strong><p>Hazardous electrical tasks require the training, authorization, equipment, procedures, and judgment appropriate to the system being worked on.</p><span class="badge">Know the limits</span></div>
+</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Lockout / Tagout Concept <span class="ate-level-badge">Technical</span></h2>
+<table><thead><tr><th>Concept</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>Identify energy sources</td><td>Recognize electrical and non-electrical sources that can energize or move the equipment.</td></tr>
+<tr><td>Shut down normally</td><td>Bring the machine or process to a controlled stopped condition before isolation.</td></tr>
+<tr><td>Isolate energy</td><td>Use the actual energy-isolating devices provided for the equipment and system.</td></tr>
+<tr><td>Secure isolation</td><td>Locks and tags communicate and help preserve the isolation according to the site's approved program.</td></tr>
+<tr><td>Release / control stored energy</td><td>Address capacitors, pressure, springs, gravity, rotating parts, heat, batteries, and other retained energy.</td></tr>
+<tr><td>Verify the condition</td><td>Confirm isolation and absence of hazardous energy using the approved verification method before work proceeds.</td></tr>
+</tbody></table>
+<div class="warning">This is a learning summary, not a substitute for an employer's energy-control program, equipment-specific procedure, or applicable safety standard.</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Absence-of-Voltage Verification <span class="ate-level-badge">Technical</span></h2><div class="grid two">
+<div class="card"><strong>Suitable Test Instrument</strong><p>The tester and probes must be appropriate for the circuit voltage, measurement category, environment, and available fault energy.</p></div>
+<div class="card"><strong>Known-Source Check</strong><p>A common safe-work principle is to confirm the tester is functioning before and after the absence-of-voltage check using an approved known source or proving method.</p></div>
+<div class="card"><strong>Test All Relevant Conductors</strong><p>Systems can have multiple phases, neutrals, DC buses, backfeed paths, control transformers, or alternate sources. The approved procedure defines what must be checked.</p></div>
+<div class="card"><strong>Do Not Rely on Indicators Alone</strong><p>Pilot lights, HMI status, breaker handles, contactor position, and non-contact detectors can provide useful information but do not by themselves establish an electrically safe condition.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Shock & Arc-Flash Concepts <span class="ate-level-badge">Technical</span></h2>
+<div class="grid two">
+<div class="card"><strong>Shock Hazard</strong><p>Current through the body can cause injury or death. Risk depends on voltage, contact path, skin condition, duration, environment, and other factors.</p></div>
+<div class="card"><strong>Arc Flash</strong><p>An electrical arc can release intense thermal energy, pressure, molten material, light, and sound in a very short time.</p></div>
+<div class="card"><strong>Arc Blast</strong><p>High fault current can create pressure and mechanical forces that damage equipment and injure people near the event.</p></div>
+<div class="card"><strong>Working Distance</strong><p>Thermal exposure changes with distance from an arc source. Arc-flash analyses use equipment and system data to estimate incident energy at defined working distances.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Personal Protective Equipment <span class="ate-level-badge">Technical</span></h2>
+<div class="grid three">
+<div class="card"><strong>Voltage-Rated Gloves</strong><p>Used with required protectors and inspection/testing practices for tasks where shock protection is necessary.</p></div>
+<div class="card"><strong>Eye / Face Protection</strong><p>Safety glasses, goggles, face shields, or arc-rated face protection are selected to match the hazard.</p></div>
+<div class="card"><strong>Arc-Rated Clothing</strong><p>Selected from the facility's electrical-safety program and hazard assessment when arc-flash exposure exists.</p></div>
+<div class="card"><strong>Insulated Tools</strong><p>Tools intended for electrical work must be properly rated and maintained; ordinary plastic-handled tools are not automatically insulated tools.</p></div>
+<div class="card"><strong>Hearing / Head Protection</strong><p>May be required as part of the overall electrical and jobsite hazard assessment.</p></div>
+<div class="card"><strong>Test Equipment</strong><p>Meters and probes are part of the safety system too: ratings, fuses, lead condition, and correct jack/function selection matter.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Safer Troubleshooting Discipline <span class="ate-level-badge advanced">Advanced</span></h2>
+<div class="grid two">
+<div class="card"><strong>Plan Measurements</strong><p>Decide what the measurement will prove before exposing equipment or placing probes. Unnecessary live probing adds risk without adding diagnostic value.</p></div>
+<div class="card"><strong>Use Schematics</strong><p>Follow the energy path and control path on the drawing so measurements are targeted rather than exploratory.</p></div>
+<div class="card"><strong>Establish Reference Points</strong><p>Know whether a measurement is phase-to-phase, phase-to-neutral, phase-to-ground, across a device, or referenced to an isolated circuit.</p></div>
+<div class="card"><strong>Control Automatic Restart</strong><p>PLCs, thermostats, pressure switches, remote SCADA commands, timers, and drives can restart equipment without a local button press.</p></div>
+<div class="card"><strong>Backfeed Awareness</strong><p>Generators, UPS systems, PV inverters, stored-energy systems, control transformers, and interconnected circuits can energize equipment from unexpected directions.</p></div>
+<div class="card"><strong>After the Repair</strong><p>Restore guards, covers, bonding, settings, labels, and protective devices before returning equipment to normal operation.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>When Energized Work Is Considered <span class="ate-level-badge advanced">Advanced</span></h2>
+<p class="lead">Working on exposed energized parts is not the default troubleshooting method. Whether it is permitted or justified is determined by the applicable rules, the employer's program, the task, and the hazards involved.</p>
+<div class="grid two">
+<div class="card"><strong>Justification</strong><p>The organization must determine whether de-energization is infeasible for the specific task or creates an additional hazard under the applicable safety framework.</p></div>
+<div class="card"><strong>Risk Assessment</strong><p>Shock and arc-flash hazards are evaluated so appropriate boundaries, PPE, tools, work methods, and controls can be selected.</p></div>
+<div class="card"><strong>Job Briefing</strong><p>Workers need a shared understanding of the task, hazards, roles, isolation boundaries, unexpected-energy sources, and emergency considerations.</p></div>
+<div class="card"><strong>Stop-Work Judgment</strong><p>Changing conditions, unclear labeling, unexpected voltage, damaged equipment, missing drawings, or unsuitable tools are reasons to stop and reassess.</p></div>
+</div>
+<div class="danger">This page does not authorize live electrical work. Hazardous energized work requires the applicable training, qualification, permits or approvals, risk assessment, PPE, tools, and procedures for the site and equipment.</div></section>
+</main><footer>A DONCO-BAYCITY™ App</footer></body></html>
