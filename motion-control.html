@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f3b63"><title>Motion Control Explorer</title><style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1060px;margin:auto;padding:18px}.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}}
+</style><link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script></head><body>
+<header><h1>Motion Control Explorer</h1><p>Servo drives, stepper drives, encoders, resolvers, position loops, speed loops, torque control, braking, and regeneration.</p></header><main>
+<section class="ate-level-chooser" data-ate-level-chooser><h2>Choose Your Detail Level</h2><p>Beginner explains motion-control parts. Technical adds feedback and control loops. Advanced adds tuning, braking, regeneration, and precision concepts.</p><div class="ate-level-buttons"><button data-ate-set-level="basic">Beginner</button><button data-ate-set-level="technical">Technical</button><button data-ate-set-level="advanced">Advanced</button></div><div class="ate-level-status" data-ate-level-status></div></section>
+
+<section class="panel"><h2>Beginner Start Here</h2><div class="grid three">
+<div class="card"><strong>Servo Motor</strong><p>Motor used with feedback and a servo drive for controlled position, speed, or torque.</p><span class="badge">Closed-loop motion</span></div>
+<div class="card"><strong>Servo Drive</strong><p>Power-electronic controller that commands motor current and uses feedback to follow motion instructions accurately.</p><span class="badge">Motion amplifier</span></div>
+<div class="card"><strong>Stepper Motor</strong><p>Moves in discrete angular steps. Many systems run open-loop; some add feedback for closed-loop operation.</p><span class="badge">Incremental motion</span></div>
+<div class="card"><strong>Encoder</strong><p>Produces electrical signals representing shaft position, speed, or direction.</p><span class="badge">Digital feedback</span></div>
+<div class="card"><strong>Resolver</strong><p>Rugged rotary transformer that provides analog sine/cosine position information for a drive or controller.</p><span class="badge">Rugged position feedback</span></div>
+<div class="card"><strong>Motion Controller</strong><p>Generates the position, speed, and trajectory commands sent to one or more drives.</p><span class="badge">Coordinates motion</span></div>
+</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Motion-Control Loops <span class="ate-level-badge">Technical</span></h2>
+<div class="grid three">
+<div class="card"><strong>Current / Torque Loop</strong><p>Fast inner loop controls motor current, which closely relates to torque in many motor types.</p></div>
+<div class="card"><strong>Speed Loop</strong><p>Uses velocity feedback to make actual motor speed follow a speed command.</p></div>
+<div class="card"><strong>Position Loop</strong><p>Compares commanded position with measured position and generates the motion needed to reduce position error.</p></div>
+<div class="card"><strong>Feedforward</strong><p>Adds predicted command terms to reduce following error during acceleration or steady motion.</p></div>
+<div class="card"><strong>Trajectory</strong><p>Defines how position changes over time, including acceleration, deceleration, velocity, and sometimes jerk limits.</p></div>
+<div class="card"><strong>Home / Index</strong><p>Establishes a known machine reference position so absolute motion can be related to the mechanism.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Feedback Devices Compared <span class="ate-level-badge">Technical</span></h2>
+<table><thead><tr><th>Device</th><th>Output idea</th><th>Typical advantage</th></tr></thead><tbody>
+<tr><td>Incremental encoder</td><td>Pulse channels indicate movement and direction; index pulse may mark one revolution.</td><td>Simple, common, high resolution.</td></tr>
+<tr><td>Absolute encoder</td><td>Position code directly represents shaft position, sometimes across multiple turns.</td><td>Position can be retained or recovered without homing depending on design.</td></tr>
+<tr><td>Resolver</td><td>Analog sine/cosine signals from a rotary transformer.</td><td>Rugged in heat, vibration, and harsh environments.</td></tr>
+<tr><td>Hall sensors</td><td>Magnetic switching signals indicate rotor sector or position.</td><td>Simple commutation feedback in many BLDC systems.</td></tr>
+</tbody></table></section>
+
+<section class="panel" data-ate-level="technical"><h2>Servo vs. Stepper <span class="ate-level-badge">Technical</span></h2>
+<table><thead><tr><th>Feature</th><th>Servo system</th><th>Stepper system</th></tr></thead><tbody>
+<tr><td>Feedback</td><td>Normally closed-loop</td><td>Often open-loop, though closed-loop versions exist</td></tr>
+<tr><td>High-speed torque</td><td>Generally strong over a wider speed range</td><td>Torque tends to fall more sharply as speed increases</td></tr>
+<tr><td>Position verification</td><td>Drive continuously compares command and feedback</td><td>Open-loop systems assume commanded steps were completed</td></tr>
+<tr><td>Complexity</td><td>More tuning, feedback, and drive configuration</td><td>Often simpler for modest motion requirements</td></tr>
+</tbody></table></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Braking & Regeneration <span class="ate-level-badge advanced">Advanced</span></h2>
+<div class="grid two">
+<div class="card"><strong>DC-Bus Regeneration</strong><p>During deceleration or overhauling loads, motor energy can flow back into the drive DC bus.</p></div>
+<div class="card"><strong>Braking Resistor</strong><p>A braking transistor can connect a resistor across the DC bus so regenerated energy is converted to heat when bus voltage rises.</p></div>
+<div class="card"><strong>Regenerative Drive</strong><p>An active front end can return energy to the AC supply when the equipment and grid connection are designed for regenerative operation.</p></div>
+<div class="card"><strong>Mechanical Brake</strong><p>Holding or safety brakes may secure a vertical or gravity-loaded axis when the motor is stopped; they are not the same as dynamic motor braking.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Tuning & Precision <span class="ate-level-badge advanced">Advanced</span></h2>
+<div class="grid two">
+<div class="card"><strong>Gain</strong><p>Higher loop gain can improve stiffness and error correction but too much gain can cause oscillation, noise amplification, or instability.</p></div>
+<div class="card"><strong>Inertia Ratio</strong><p>Load inertia reflected to the motor affects acceleration, tuning, and achievable response.</p></div>
+<div class="card"><strong>Following Error</strong><p>Difference between commanded and actual position. Drives may alarm if the error exceeds configured limits.</p></div>
+<div class="card"><strong>Backlash</strong><p>Mechanical clearance in gears, screws, and couplings can create lost motion even when the motor feedback is accurate.</p></div>
+<div class="card"><strong>Resonance</strong><p>Flexible couplings, belts, frames, and loads can resonate; notch filters and mechanical changes may be used in advanced tuning.</p></div>
+<div class="card"><strong>Electronic Gearing / Cam</strong><p>Controllers can synchronize one axis to another using programmable ratios or motion profiles.</p></div>
+</div><div class="warning">Motion systems can create sudden high-force movement. Disable hazardous energy and control unexpected restart before working on motors, drives, brakes, couplings, or mechanisms.</div></section>
+</main><footer>A DONCO-BAYCITY™ App</footer></body></html>
