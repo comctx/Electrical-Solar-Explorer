@@ -237,6 +237,53 @@ summary:focus-visible{
 html[data-ate-theme="dark"] .ate-finder-card{background:#122235;border-color:#31475b}html[data-ate-theme="dark"] .ate-finder-head{color:#fff}html[data-ate-theme="dark"] .ate-finder-head button,html[data-ate-theme="dark"] .ate-finder-card input,html[data-ate-theme="dark"] .ate-finder-result{background:#172b40;color:#edf4fb;border-color:#3a5871}html[data-ate-theme="dark"] .ate-finder-result strong{color:#fff}html[data-ate-theme="dark"] .ate-finder-result span,html[data-ate-theme="dark"] .ate-finder-meta{color:#a9bbca}
 
 
+/* DONCO branding */
+.ate-brand-header{
+  position:relative;
+}
+.ate-donco-brand{
+  position:absolute;
+  top:12px;
+  right:14px;
+  z-index:6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:104px;
+  min-height:48px;
+  padding:4px 6px;
+  border-radius:12px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.22);
+  text-decoration:none;
+  backdrop-filter:blur(3px);
+}
+.ate-donco-brand img{
+  display:block;
+  max-width:92px;
+  max-height:44px;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+}
+.ate-donco-brand:hover{
+  background:rgba(255,255,255,.20);
+}
+@media(max-width:620px){
+  .ate-donco-brand{
+    position:static;
+    width:max-content;
+    max-width:110px;
+    min-height:0;
+    margin:0 auto 10px;
+    padding:3px 6px;
+  }
+  .ate-donco-brand img{
+    max-width:86px;
+    max-height:38px;
+  }
+}
+
 /* Shared page consistency */
 .ate-polished-page .ate-polished-header{
   box-shadow:0 7px 20px rgba(7,26,46,.16);
