@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0f3b63">
+  <title>Inverters & Converters Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+      --good:#1f7a4d;--warn:#8a5a00;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:#fff;padding:24px 18px 20px;text-align:center;
+    }
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1050px;margin:0 auto;padding:18px}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px;
+    }
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    h3{margin:0 0 8px;color:var(--navy)}
+    .lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+    .grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+    .card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}
+    .card p{margin:0;color:#33495b;line-height:1.5}
+    .badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+    .other-words{margin-top:14px;background:#fff7cc;border:1px solid #e5c94a;border-radius:13px;padding:14px}
+    .other-words strong{display:block;color:var(--navy);font-size:17px;margin-bottom:8px}
+    .other-words-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .other-words-item{background:#fff;border:1px solid #eadb82;border-radius:10px;padding:10px;font-weight:800;color:#263b4c;line-height:1.4}
+    .flow{
+      display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:8px;align-items:center;
+      border:1px solid var(--border);border-radius:15px;background:#fbfdff;padding:14px;margin-top:12px;
+    }
+    .flow-box{border:2px solid #9fc8ef;border-radius:12px;background:white;padding:16px 10px;text-align:center;font-weight:900;color:var(--navy);min-height:78px;display:flex;align-items:center;justify-content:center}
+    .flow-arrow{text-align:center;font-weight:900;color:var(--electric);font-size:24px}
+    .diagram-wrap{margin-top:14px;border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:12px;overflow:auto}
+    .diagram{width:100%;min-width:780px;height:auto;display:block}
+    .device{fill:#eef7ff;stroke:#071a2e;stroke-width:3}
+    .block{fill:#fff;stroke:#9fc8ef;stroke-width:3}
+    .wire-red{fill:none;stroke:#c62828;stroke-width:6;stroke-linecap:round}
+    .wire-black{fill:none;stroke:#111;stroke-width:6;stroke-linecap:round}
+    .wire-blue{fill:none;stroke:#0b63ce;stroke-width:6;stroke-linecap:round}
+    .wire-green{fill:none;stroke:#2e7d32;stroke-width:6;stroke-linecap:round}
+    .dtext{font:800 18px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}
+    .dsmall{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#40566a}
+    .terminal{fill:#ffd43b;stroke:#8a6d00;stroke-width:2}
+    .warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+    table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+    th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;font:inherit;color:var(--text)}
+    .results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}
+    .result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .result strong{font-size:clamp(20px,4vw,28px);color:var(--navy)}
+    .formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+    .related-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+    .related-link{
+      display:block;text-decoration:none;color:var(--navy);font-weight:900;text-align:center;
+      background:#eef7ff;border:1px solid #9fc8ef;border-radius:12px;padding:14px;
+    }
+    .related-link span{display:block;color:var(--muted);font-weight:700;font-size:12px;margin-top:5px;line-height:1.35}
+    footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+    @media(max-width:760px){
+      main{padding:12px}.two,.three,.other-words-grid,.results,.related-grid{grid-template-columns:1fr}
+      .flow{grid-template-columns:1fr}.flow-arrow{transform:rotate(90deg)}
+    }
+  </style>
+  <link rel="stylesheet" href="app-enhancements.css">
+  <script src="app-enhancements.js" defer></script>
+</head>
+<body>
+<header>
+  <h1>Inverters & Converters Explorer</h1>
+  <p>DC→AC, AC→DC, and DC→DC power conversion without duplicating the deeper specialist pages.</p>
+</header>
+
+<main>
+  <section class="ate-level-chooser" data-ate-level-chooser>
+    <h2>Choose Your Detail Level</h2>
+    <p>Begin with the three conversion directions. Technical adds terminals and power-flow relationships. Advanced adds switching topologies, PWM, isolation, harmonics, and design concerns.</p>
+    <div class="ate-level-buttons">
+      <button type="button" data-ate-set-level="basic">Beginner</button>
+      <button type="button" data-ate-set-level="technical">Technical</button>
+      <button type="button" data-ate-set-level="advanced">Advanced</button>
+    </div>
+    <div class="ate-level-status" data-ate-level-status></div>
+  </section>
+
+  <section class="panel">
+    <h2>Beginner Start Here</h2>
+    <p class="lead">The easiest way to understand these devices is to look at what kind of electricity goes in and what kind comes out.</p>
+
+    <div class="grid three">
+      <div class="card">
+        <strong>DC → AC = Inverter</strong>
+        <p>Takes direct current from a battery, solar DC bus, or other DC source and creates alternating current for an AC load.</p>
+        <span class="badge">Example: battery → 120 V AC</span>
+      </div>
+      <div class="card">
+        <strong>AC → DC = Rectifier / Power Supply</strong>
+        <p>Takes alternating current and produces direct current. Rectification is usually followed by filtering and often regulation.</p>
+        <span class="badge">Example: wall AC → electronics DC</span>
+      </div>
+      <div class="card">
+        <strong>DC → DC = Converter</strong>
+        <p>Changes one DC voltage level to another. It may step voltage down, step it up, or do either depending on the circuit.</p>
+        <span class="badge">Buck / Boost / Buck-Boost</span>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-box">Battery / DC Source</div><div class="flow-arrow">→</div>
+      <div class="flow-box">INVERTER</div><div class="flow-arrow">→</div>
+      <div class="flow-box">AC Load</div>
+    </div>
+    <div class="flow">
+      <div class="flow-box">AC Source</div><div class="flow-arrow">→</div>
+      <div class="flow-box">RECTIFIER / SUPPLY</div><div class="flow-arrow">→</div>
+      <div class="flow-box">DC Load</div>
+    </div>
+    <div class="flow">
+      <div class="flow-box">DC Source</div><div class="flow-arrow">→</div>
+      <div class="flow-box">DC–DC CONVERTER</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Different DC Voltage</div>
+    </div>
+
+    <div class="other-words">
+      <strong>In Other Words</strong>
+      <div class="other-words-grid">
+        <div class="other-words-item">Inverter: makes AC from DC.</div>
+        <div class="other-words-item">Rectifier: makes DC from AC.</div>
+        <div class="other-words-item">DC–DC converter: changes DC voltage while staying DC.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Go Deeper Without Repeating the App</h2>
+    <p class="lead">This page is the conversion overview. The existing specialist pages keep the detailed material where it already belongs.</p>
+    <div class="related-grid">
+      <a class="related-link" href="power-supplies.html">Power Supplies & Rectifiers<span>Detailed AC→DC, bridges, filters, regulators, ripple, and supply behavior.</span></a>
+      <a class="related-link" href="solar-power-electronics.html">Solar Power Electronics<span>Detailed solar and battery inverter concepts, PV flow, and inverter loading.</span></a>
+      <a class="related-link" href="power-electronics-modules.html">Power Electronics & Modules<span>Power switches, half-bridges, modules, losses, gate drive, and thermal design.</span></a>
+    </div>
+  </section>
+
+  <section class="panel" data-ate-level="technical">
+    <h2>Input & Output Terminals <span class="ate-level-badge">Technical</span></h2>
+    <p class="lead">These diagrams show common electrical relationships. Exact terminal names, grounding, bonding, isolation, and connector arrangements depend on the equipment.</p>
+
+    <div class="diagram-wrap">
+      <svg class="diagram" viewBox="0 0 1080 690" aria-label="Inverter rectifier and DC-DC converter terminal relationships">
+        <text x="35" y="38" class="dtext">1. DC → AC Inverter</text>
+        <rect x="35" y="65" width="1010" height="165" rx="18" class="device"/>
+        <circle cx="95" cy="145" r="12" class="terminal"/><circle cx="95" cy="190" r="12" class="terminal"/>
+        <text x="57" y="137" class="dsmall">DC +</text><text x="57" y="205" class="dsmall">DC −</text>
+        <path d="M107 145H300" class="wire-red"/><path d="M107 190H300" class="wire-black"/>
+        <rect x="300" y="105" width="250" height="90" rx="14" class="block"/>
+        <text x="385" y="142" class="dtext">INVERTER</text><text x="348" y="171" class="dsmall">switching bridge + control</text>
+        <path d="M550 135H760" class="wire-blue"/><path d="M550 175H760" class="wire-blue"/>
+        <circle cx="770" cy="135" r="12" class="terminal"/><circle cx="770" cy="175" r="12" class="terminal"/>
+        <text x="800" y="142" class="dsmall">AC output conductor</text><text x="800" y="182" class="dsmall">AC output conductor</text>
+        <text x="800" y="210" class="dsmall">L/N or other naming depends on design</text>
+
+        <text x="35" y="290" class="dtext">2. AC → DC Rectifier / Power Supply</text>
+        <rect x="35" y="315" width="1010" height="165" rx="18" class="device"/>
+        <circle cx="95" cy="385" r="12" class="terminal"/><circle cx="95" cy="430" r="12" class="terminal"/>
+        <text x="50" y="378" class="dsmall">AC in</text><text x="50" y="445" class="dsmall">AC in</text>
+        <path d="M107 385H285" class="wire-blue"/><path d="M107 430H285" class="wire-blue"/>
+        <rect x="285" y="355" width="300" height="90" rx="14" class="block"/>
+        <text x="344" y="392" class="dtext">RECTIFY / FILTER</text><text x="342" y="421" class="dsmall">and regulate if required</text>
+        <path d="M585 385H780" class="wire-red"/><path d="M585 430H780" class="wire-black"/>
+        <circle cx="790" cy="385" r="12" class="terminal"/><circle cx="790" cy="430" r="12" class="terminal"/>
+        <text x="820" y="392" class="dsmall">DC +</text><text x="820" y="437" class="dsmall">DC −</text>
+
+        <text x="35" y="540" class="dtext">3. DC → DC Converter</text>
+        <rect x="35" y="565" width="1010" height="100" rx="18" class="device"/>
+        <circle cx="95" cy="605" r="12" class="terminal"/><circle cx="95" cy="640" r="12" class="terminal"/>
+        <text x="40" y="600" class="dsmall">VIN +</text><text x="40" y="655" class="dsmall">VIN −</text>
+        <path d="M107 605H300" class="wire-red"/><path d="M107 640H300" class="wire-black"/>
+        <rect x="300" y="580" width="300" height="70" rx="14" class="block"/>
+        <text x="360" y="612" class="dtext">BUCK / BOOST</text><text x="370" y="638" class="dsmall">or buck-boost stage</text>
+        <path d="M600 605H790" class="wire-red"/><path d="M600 640H790" class="wire-black"/>
+        <circle cx="800" cy="605" r="12" class="terminal"/><circle cx="800" cy="640" r="12" class="terminal"/>
+        <text x="830" y="612" class="dsmall">VOUT +</text><text x="830" y="647" class="dsmall">VOUT −</text>
+      </svg>
+    </div>
+
+    <div class="warning">Do not assume that an AC output neutral is bonded to ground, that DC negative is grounded, or that input and output are isolated. Those relationships are equipment-specific and must be verified from the manufacturer documentation.</div>
+  </section>
+
+  <section class="panel" data-ate-level="technical">
+    <h2>DC–DC Converter Types <span class="ate-level-badge">Technical</span></h2>
+    <div class="grid three">
+      <div class="card"><strong>Buck Converter</strong><p>Steps DC voltage down. In an ideal continuous-conduction model, output voltage is approximately duty cycle × input voltage.</p><span class="badge">Step down</span></div>
+      <div class="card"><strong>Boost Converter</strong><p>Steps DC voltage up by storing energy in an inductor and releasing it to the output at a higher voltage.</p><span class="badge">Step up</span></div>
+      <div class="card"><strong>Buck-Boost Converter</strong><p>Can produce an output magnitude above or below the input depending on topology and control method. Some versions invert polarity; others do not.</p><span class="badge">Step up or down</span></div>
+      <div class="card"><strong>Isolated DC–DC</strong><p>Uses a transformer or coupled magnetic structure at switching frequency to provide electrical isolation and voltage conversion.</p><span class="badge">Isolation possible</span></div>
+      <div class="card"><strong>Charge Pump</strong><p>Uses switched capacitors instead of an inductor for certain low-power voltage conversion tasks.</p><span class="badge">Capacitor conversion</span></div>
+      <div class="card"><strong>Bidirectional Converter</strong><p>Moves power in either direction between DC buses, such as battery charging and discharging systems.</p><span class="badge">Two-way power flow</span></div>
+    </div>
+  </section>
+
+  <section class="panel" data-ate-level="technical">
+    <h2>DC–DC Power & Current Calculator <span class="ate-level-badge">Technical</span></h2>
+    <p class="lead">Estimate input current and conversion loss from output voltage, output current, input voltage, and efficiency.</p>
+    <div class="grid three">
+      <div class="field"><label for="dcVin">Input voltage (V DC)</label><input id="dcVin" type="number" min="0.001" step="any" value="24"></div>
+      <div class="field"><label for="dcVout">Output voltage (V DC)</label><input id="dcVout" type="number" min="0" step="any" value="12"></div>
+      <div class="field"><label for="dcIout">Output current (A)</label><input id="dcIout" type="number" min="0" step="any" value="5"></div>
+      <div class="field"><label for="dcEff">Efficiency (%)</label><input id="dcEff" type="number" min="1" max="100" step="0.1" value="92"></div>
+    </div>
+    <div class="results">
+      <div class="result"><small>Output power</small><strong id="dcPout">—</strong></div>
+      <div class="result"><small>Estimated input current</small><strong id="dcIin">—</strong></div>
+      <div class="result"><small>Estimated conversion loss</small><strong id="dcLoss">—</strong></div>
+    </div>
+    <div id="dcFormula" class="formula">Pout = Vout × Iout. Pin ≈ Pout ÷ efficiency. Iin ≈ Pin ÷ Vin.</div>
+  </section>
+
+  <section class="panel" data-ate-level="advanced">
+    <h2>Inside a DC → AC Inverter <span class="ate-level-badge advanced">Advanced</span></h2>
+    <table>
+      <thead><tr><th>Stage</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>DC bus</td><td>Provides the energy source and usually includes bulk capacitance, protection, sensing, and precharge in larger systems.</td></tr>
+        <tr><td>Switching bridge</td><td>MOSFETs, IGBTs, SiC devices, or other power switches alternate the DC bus across the output path.</td></tr>
+        <tr><td>PWM / modulation</td><td>Controls switch timing so the average output follows the desired AC waveform.</td></tr>
+        <tr><td>Dead time</td><td>Briefly keeps complementary switches off during transitions to reduce shoot-through risk.</td></tr>
+        <tr><td>Output filter</td><td>Inductors and capacitors can reduce switching-frequency components when the design requires a filtered waveform.</td></tr>
+        <tr><td>Feedback & protection</td><td>Monitors voltage, current, temperature, bus conditions, and faults so the controller can regulate or shut down.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel" data-ate-level="advanced">
+    <h2>Advanced Conversion Concepts <span class="ate-level-badge advanced">Advanced</span></h2>
+    <div class="grid two">
+      <div class="card"><strong>Switching Frequency</strong><p>Higher frequency can shrink magnetics and filters but increases switching losses, EMI challenges, and layout sensitivity.</p></div>
+      <div class="card"><strong>Duty Cycle</strong><p>The fraction of each switching period that a controlled switch is on. Duty cycle strongly affects ideal buck and boost relationships.</p></div>
+      <div class="card"><strong>Continuous vs. Discontinuous Conduction</strong><p>Inductor current may remain above zero throughout a cycle or fall to zero. The operating equations and control behavior can change.</p></div>
+      <div class="card"><strong>Isolation</strong><p>Galvanic isolation separates input and output conductive paths, often using a high-frequency transformer and isolated feedback/control methods.</p></div>
+      <div class="card"><strong>Harmonics & THD</strong><p>Real inverter waveforms contain harmonic content. Modulation, switching frequency, filtering, and load behavior affect total harmonic distortion.</p></div>
+      <div class="card"><strong>EMI & Layout</strong><p>Fast voltage and current edges interact with parasitic inductance and capacitance, making loop area, grounding, shielding, filtering, and snubbing important.</p></div>
+    </div>
+  </section>
+
+  <section class="panel" data-ate-level="advanced">
+    <h2>Troubleshooting & Design Checks <span class="ate-level-badge advanced">Advanced</span></h2>
+    <table>
+      <thead><tr><th>Check</th><th>What to look for</th></tr></thead>
+      <tbody>
+        <tr><td>Input voltage</td><td>Correct range, polarity, ripple, sag under load, and transient conditions.</td></tr>
+        <tr><td>Output voltage</td><td>Correct magnitude, regulation, ripple, waveform shape, and behavior under changing load.</td></tr>
+        <tr><td>Current</td><td>Unexpected overload, startup/inrush current, current limit operation, or unbalanced phase/current paths.</td></tr>
+        <tr><td>Switch temperature</td><td>Excess conduction or switching loss, inadequate cooling, poor thermal interface, or abnormal load.</td></tr>
+        <tr><td>Gate drive</td><td>Correct amplitude, timing, dead time, rise/fall behavior, and isolation where required.</td></tr>
+        <tr><td>Inductors / transformers</td><td>Saturation, overheating, insulation stress, abnormal noise, or incorrect turns/flux conditions.</td></tr>
+        <tr><td>Capacitors</td><td>ESR heating, ripple-current stress, bulging/leakage, loss of capacitance, or excessive DC-link ripple.</td></tr>
+        <tr><td>Protection events</td><td>Overvoltage, undervoltage, overcurrent, short-circuit, ground fault, overtemperature, and communication/control faults.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Safety</h2>
+    <div class="warning">Inverters and converters can contain hazardous AC, high-voltage DC buses, and capacitors that remain charged after power is removed. This page teaches power-conversion concepts, not live-work procedures. Follow manufacturer service instructions, isolate all sources, verify de-energization, discharge stored energy safely, and use properly rated test equipment and protective devices.</div>
+  </section>
+</main>
+
+<footer>A DONCO-BAYCITY™ App</footer>
+
+<script>
+  function fmt(n,d=2){
+    if(!Number.isFinite(n)) return "—";
+    return n.toLocaleString(undefined,{maximumFractionDigits:d});
+  }
+  function updateDcDc(){
+    const vin=Math.max(.001,Number(document.getElementById("dcVin").value)||.001);
+    const vout=Math.max(0,Number(document.getElementById("dcVout").value)||0);
+    const iout=Math.max(0,Number(document.getElementById("dcIout").value)||0);
+    const eff=Math.min(1,Math.max(.01,(Number(document.getElementById("dcEff").value)||1)/100));
+    const pout=vout*iout;
+    const pin=pout/eff;
+    const iin=pin/vin;
+    const loss=pin-pout;
+
+    document.getElementById("dcPout").textContent=fmt(pout,2)+" W";
+    document.getElementById("dcIin").textContent=fmt(iin,2)+" A";
+    document.getElementById("dcLoss").textContent=fmt(loss,2)+" W";
+    document.getElementById("dcFormula").textContent=
+      "Pout = "+fmt(vout,2)+" V × "+fmt(iout,2)+" A = "+fmt(pout,2)+
+      " W. At "+fmt(eff*100,1)+"% efficiency, Pin ≈ "+fmt(pin,2)+
+      " W and Iin ≈ "+fmt(iin,2)+" A.";
+  }
+  ["dcVin","dcVout","dcIout","dcEff"].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener("input",updateDcDc);
+    el.addEventListener("change",updateDcDc);
+  });
+  updateDcDc();
+</script>
+</body>
+</html>
