@@ -96,6 +96,18 @@ html:not([data-ate-detail-level="advanced"]) [data-ate-exact-level="advanced"]{d
 </div>
 </section>
 
+<section class="panel">
+<h2>Motor Starting Methods</h2>
+<p class="lead">Different starters all have the same basic job — get the motor from stopped to running — but they do it in different ways.</p>
+<div class="grid two">
+  <div class="card"><strong>DOL / Direct-on-Line Starter</strong><p>Connects a motor directly to the supply through a contactor and overload relay. It is simple and common, but starting current and starting torque are relatively high.</p><span class="badge">Full-voltage start</span></div>
+  <div class="card"><strong>Star-Delta / Wye-Delta Starter</strong><p>Starts a suitable six-lead three-phase motor in star (wye) to reduce starting current and torque, then reconnects it in delta for normal running.</p><span class="badge">Reduced-voltage start</span></div>
+  <div class="card"><strong>Soft Starter</strong><p>Uses power electronics to gradually increase motor voltage during starting, reducing electrical and mechanical shock.</p><span class="badge">Electronic ramp</span></div>
+  <div class="card"><strong>VFD</strong><p>Controls both voltage and frequency, allowing controlled acceleration plus speed control while the motor is running.</p><span class="badge">Start + speed control</span></div>
+</div>
+<div class="formula">Think of it this way: <strong>DOL = full voltage immediately</strong>; <strong>star-delta = temporary reduced-voltage connection</strong>; <strong>soft starter = electronic voltage ramp</strong>; <strong>VFD = controlled frequency and voltage</strong>.</div>
+</section>
+
 <section class="panel" data-ate-level="technical">
 <h2>Associated Motor Parts & Controls <span class="ate-level-badge">Technical</span></h2>
 <ul class="parts-list">
@@ -157,8 +169,8 @@ html:not([data-ate-detail-level="advanced"]) [data-ate-exact-level="advanced"]{d
 </section>
 
 <section class="panel" data-ate-level="technical">
-<h2>Motor Starter Terminal Connections <span class="ate-level-badge">Technical</span></h2>
-<p class="lead">This section shows where the major conductors terminate in a typical three-phase motor-starter concept. Terminal names vary by manufacturer, so treat this as a relationship diagram rather than a field-wiring instruction.</p>
+<h2>DOL (Direct-on-Line) Starter Terminal Connections <span class="ate-level-badge">Technical</span></h2>
+<p class="lead">A DOL starter applies full line voltage to the motor when the contactor closes. This section shows where the major conductors terminate in a typical three-phase DOL motor-starter concept. Terminal names vary by manufacturer, so treat this as a relationship diagram rather than a field-wiring instruction.</p>
 
 <div data-ate-exact-level="technical">
 <div class="level-intro"><p><strong>Technical view:</strong> follow the three power conductors through the contactor and overload relay to the motor. The contactor coil is a separate control circuit using terminals commonly labeled <strong>A1</strong> and <strong>A2</strong>.</p></div>
@@ -356,6 +368,122 @@ html:not([data-ate-detail-level="advanced"]) [data-ate-exact-level="advanced"]{d
 
 <div class="warning"><strong>Safety boundary:</strong> industrial motor circuits can involve hazardous mains voltage, high fault current, stored energy, rotating machinery, and automatic restart. This diagram is educational only. Real installation and troubleshooting require the correct drawings, equipment instructions, lockout/tagout practices, applicable code, and qualified-person procedures.</div>
 </div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+<h2>Star-Delta / Wye-Delta Starting <span class="ate-level-badge">Technical</span></h2>
+<p class="lead">A star-delta starter uses three contactors to change the motor winding connection during acceleration. The motor must be designed and terminalled for this starting method.</p>
+
+<div data-ate-exact-level="technical">
+<div class="level-intro"><p><strong>Technical view:</strong> the main contactor connects the supply, the star contactor temporarily joins the three winding ends together for starting, and the delta contactor reconnects the windings for normal running. Star and delta contactors must never be closed at the same time.</p></div>
+
+<div class="control-diagram-wrap">
+<svg class="control-diagram" viewBox="0 0 1100 560" aria-label="Star delta motor starter terminal relationship concept">
+  <text x="40" y="40" class="term-label">Star-Delta / Wye-Delta starter relationship</text>
+
+  <rect x="35" y="75" width="150" height="305" rx="14" class="term-box"/>
+  <text x="69" y="108" class="term-label">3-Phase Source</text>
+  <circle cx="145" cy="155" r="12" class="term-contact"/><text x="70" y="160" class="term-label">L1</text>
+  <circle cx="145" cy="220" r="12" class="term-contact"/><text x="70" y="225" class="term-label">L2</text>
+  <circle cx="145" cy="285" r="12" class="term-contact"/><text x="70" y="290" class="term-label">L3</text>
+
+  <rect x="255" y="90" width="190" height="250" rx="15" class="term-dark"/>
+  <text x="300" y="123" font-size="17" font-weight="800" fill="#fff">Main Contactor</text>
+  <circle cx="295" cy="165" r="12" class="term-contact"/><text x="282" y="192" font-size="11" fill="#fff">L1</text>
+  <circle cx="350" cy="165" r="12" class="term-contact"/><text x="337" y="192" font-size="11" fill="#fff">L2</text>
+  <circle cx="405" cy="165" r="12" class="term-contact"/><text x="392" y="192" font-size="11" fill="#fff">L3</text>
+  <circle cx="295" cy="275" r="12" class="term-contact"/><text x="282" y="302" font-size="11" fill="#fff">T1</text>
+  <circle cx="350" cy="275" r="12" class="term-contact"/><text x="337" y="302" font-size="11" fill="#fff">T2</text>
+  <circle cx="405" cy="275" r="12" class="term-contact"/><text x="392" y="302" font-size="11" fill="#fff">T3</text>
+
+  <rect x="515" y="70" width="250" height="350" rx="20" class="term-motor"/>
+  <text x="588" y="105" class="term-label">6-Lead Motor</text>
+  <text x="545" y="135" class="term-small">One end of each winding</text>
+  <circle cx="555" cy="175" r="12" class="term-contact"/><text x="580" y="180" class="term-label">U1</text>
+  <circle cx="555" cy="235" r="12" class="term-contact"/><text x="580" y="240" class="term-label">V1</text>
+  <circle cx="555" cy="295" r="12" class="term-contact"/><text x="580" y="300" class="term-label">W1</text>
+  <text x="650" y="135" class="term-small">Other end of each winding</text>
+  <circle cx="720" cy="175" r="12" class="term-contact"/><text x="680" y="180" class="term-label">U2</text>
+  <circle cx="720" cy="235" r="12" class="term-contact"/><text x="680" y="240" class="term-label">V2</text>
+  <circle cx="720" cy="295" r="12" class="term-contact"/><text x="680" y="300" class="term-label">W2</text>
+
+  <path class="term-wire-a" d="M157 155H295"/>
+  <path class="term-wire-b" d="M157 220H225V165H350"/>
+  <path class="term-wire-c" d="M157 285H210V165H405"/>
+
+  <path class="term-wire-a" d="M295 287H480V175H543"/>
+  <path class="term-wire-b" d="M350 287H465V235H543"/>
+  <path class="term-wire-c" d="M405 287H450V295H543"/>
+
+  <rect x="825" y="70" width="225" height="170" rx="15" class="term-dark"/>
+  <text x="875" y="105" font-size="17" font-weight="800" fill="#fff">Star Contactor</text>
+  <circle cx="865" cy="155" r="12" class="term-contact"/>
+  <circle cx="930" cy="155" r="12" class="term-contact"/>
+  <circle cx="995" cy="155" r="12" class="term-contact"/>
+  <path class="term-control" d="M865 190H995"/>
+  <text x="845" y="220" font-size="12" fill="#dbe8f5">START: U2, V2, W2 joined together</text>
+
+  <rect x="825" y="285" width="225" height="210" rx="15" class="term-dark"/>
+  <text x="870" y="320" font-size="17" font-weight="800" fill="#fff">Delta Contactor</text>
+  <circle cx="865" cy="365" r="12" class="term-contact"/>
+  <circle cx="930" cy="365" r="12" class="term-contact"/>
+  <circle cx="995" cy="365" r="12" class="term-contact"/>
+  <text x="845" y="405" font-size="12" fill="#dbe8f5">RUN: winding ends are cross-connected</text>
+  <text x="845" y="427" font-size="12" fill="#dbe8f5">into the motor's required delta pattern</text>
+  <text x="845" y="462" font-size="12" fill="#ffd43b">Star and delta are interlocked.</text>
+
+  <path class="term-control" d="M732 175H800V155H853"/>
+  <path class="term-control" d="M732 235H785V155H918"/>
+  <path class="term-control" d="M732 295H770V155H983"/>
+
+  <path class="term-control" d="M732 175H805V365H853"/>
+  <path class="term-control" d="M732 235H790V365H918"/>
+  <path class="term-control" d="M732 295H775V365H983"/>
+
+  <rect x="40" y="435" width="725" height="90" rx="12" fill="#fffbed" stroke="#e5c94a" stroke-width="2"/>
+  <text x="60" y="462" class="term-label">Sequence</text>
+  <text x="60" y="487" class="term-small">1. Main + Star close → reduced winding voltage for starting.</text>
+  <text x="60" y="510" class="term-small">2. Star opens → short transition delay → Delta closes for normal running.</text>
+</svg>
+</div>
+
+<div class="grid three" style="margin-top:12px">
+  <div class="card"><strong>Main contactor</strong><p>Connects the three-phase source to the motor starter power circuit.</p></div>
+  <div class="card"><strong>Star / Wye contactor</strong><p>Temporarily joins U2, V2, and W2 together during the reduced-voltage starting period.</p></div>
+  <div class="card"><strong>Delta contactor</strong><p>Reconnects the motor windings into the required delta arrangement for normal running.</p></div>
+  <div class="card"><strong>Timer / controller</strong><p>Determines when the starter changes from star to delta after the motor has accelerated.</p></div>
+  <div class="card"><strong>Interlocking</strong><p>Mechanical and electrical interlocks prevent the star and delta contactors from closing together.</p></div>
+  <div class="card"><strong>Six motor leads</strong><p>The starter needs access to both ends of all three stator windings. The motor nameplate and manufacturer diagram determine the actual terminal arrangement.</p></div>
+</div>
+</div>
+
+<div data-ate-exact-level="advanced">
+<div class="level-intro"><p><strong>Advanced view:</strong> star starting reduces each winding's voltage compared with delta operation. As a result, line starting current is reduced, but starting torque is also reduced substantially. The method is suitable only where the motor and load can accelerate with that reduced torque.</p></div>
+
+<div class="grid two">
+  <div class="card"><strong>Reduced starting current</strong><p>For the classic star-delta method on a motor intended to run in delta at the line voltage, starting line current is roughly one-third of the corresponding DOL starting current under idealized conditions.</p></div>
+  <div class="card"><strong>Reduced starting torque</strong><p>Motor torque is approximately proportional to the square of applied winding voltage, so star starting provides roughly one-third of the DOL starting torque under the same idealized assumptions.</p></div>
+  <div class="card"><strong>Open transition</strong><p>Many starters briefly disconnect the motor between star and delta. The transition can create current and torque transients depending on speed, phase relationship, and load.</p></div>
+  <div class="card"><strong>Closed transition</strong><p>More complex systems can use transition components to avoid a completely open interval, reducing some transition disturbances.</p></div>
+  <div class="card"><strong>Transition timing</strong><p>Changing too early can produce a large current surge because the motor has not accelerated enough. Changing too late can leave the motor operating unnecessarily in the reduced-torque star condition.</p></div>
+  <div class="card"><strong>Motor suitability</strong><p>The motor must have the correct winding voltage rating and six accessible winding terminals. Not every three-phase motor is suitable for star-delta starting on a given supply.</p></div>
+</div>
+
+<div class="warning"><strong>Safety boundary:</strong> star-delta power wiring is not a field-wiring recipe. Incorrect contactor sequencing or winding connections can create a severe phase-to-phase fault or damage the motor. Use the actual starter schematic, motor nameplate, manufacturer documentation, lockout/tagout, and qualified-person procedures.</div>
+</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+<h2>Starting Method Comparison <span class="ate-level-badge">Technical</span></h2>
+<table>
+<thead><tr><th>Method</th><th>Starting current</th><th>Starting torque</th><th>Speed control after start</th><th>Typical reason to use it</th></tr></thead>
+<tbody>
+<tr><td>DOL / across-the-line</td><td>Highest of these methods</td><td>High</td><td>No</td><td>Simple, rugged starting where the supply and load can tolerate it</td></tr>
+<tr><td>Star-delta / wye-delta</td><td>Reduced</td><td>Reduced</td><td>No</td><td>Lower starting current with a suitable six-lead motor and load</td></tr>
+<tr><td>Soft starter</td><td>Controlled / reduced</td><td>Controlled / reduced</td><td>Generally no</td><td>Smoother acceleration and less electrical/mechanical shock</td></tr>
+<tr><td>VFD</td><td>Controlled</td><td>Controlled</td><td>Yes</td><td>Controlled acceleration plus adjustable operating speed and process control</td></tr>
+</tbody>
+</table>
 </section>
 
 <section class="panel" data-ate-level="technical">
