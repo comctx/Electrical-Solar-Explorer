@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0f3b63">
+  <title>Thyristors Explorer</title>
+  <style>
+    :root{
+      --navy:#071a2e;--electric:#0b63ce;--electric2:#1594ff;--yellow:#ffd43b;
+      --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+      --good:#1f7a4d;--danger:#b42318;--warn:#8a5a00;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+        linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+      color:var(--text);min-height:100vh;
+    }
+    header{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--electric) 68%,var(--electric2) 100%);
+      color:#fff;padding:24px 18px 20px;text-align:center;
+    }
+    header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+    header p{margin:0;opacity:.92}
+    header::after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+    main{max-width:1050px;margin:0 auto;padding:18px}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+      box-shadow:0 10px 28px rgba(7,26,46,.09);margin-bottom:16px;
+    }
+    h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+    h3{margin:0 0 8px;color:var(--navy)}
+    .lead,.note{color:var(--muted);line-height:1.55}
+    .lead{margin:0 0 16px}.note{font-size:13px;margin:10px 0 0}
+    .grid{display:grid;gap:12px}
+    .two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .card{
+      border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px;
+    }
+    .card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}
+    .card p{margin:0;color:#33495b;line-height:1.5}
+    .badge{
+      display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;
+      background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800;
+    }
+    .other-words{
+      margin-top:14px;background:#fff7cc;border:1px solid #e5c94a;border-radius:13px;padding:14px;
+    }
+    .other-words strong{display:block;color:var(--navy);font-size:17px;margin-bottom:8px}
+    .other-words-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .other-words-item{
+      background:#fff;border:1px solid #eadb82;border-radius:10px;padding:10px;
+      font-weight:800;color:#263b4c;line-height:1.4;
+    }
+    .diagram-wrap{
+      margin-top:14px;border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:12px;overflow:auto;
+    }
+    .diagram{width:100%;min-width:760px;height:auto;display:block}
+    .device{fill:#eef7ff;stroke:#071a2e;stroke-width:3}
+    .wire{fill:none;stroke:#263b4c;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+    .wire-red{fill:none;stroke:#c62828;stroke-width:6;stroke-linecap:round}
+    .wire-black{fill:none;stroke:#111;stroke-width:6;stroke-linecap:round}
+    .wire-blue{fill:none;stroke:#0b63ce;stroke-width:5;stroke-linecap:round}
+    .symbol{fill:none;stroke:#071a2e;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+    .symbol-fill{fill:#071a2e}
+    .dtext{font:700 18px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}
+    .dsmall{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#40566a}
+    .terminal{fill:#ffd43b;stroke:#8a6d00;stroke-width:2}
+    .warning{
+      margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;
+      padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700;
+    }
+    table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+    th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}
+    th{background:#eef7ff;color:var(--navy)}
+    .sim{
+      display:grid;grid-template-columns:minmax(250px,.9fr) minmax(0,1.1fr);gap:18px;
+      border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:16px;align-items:center;
+    }
+    .scr-visual{
+      min-height:250px;position:relative;display:flex;align-items:center;justify-content:center;
+    }
+    .bus{position:absolute;left:18%;right:18%;height:7px;background:#66798a;border-radius:99px}
+    .bus.top{top:16%}.bus.bottom{bottom:16%}
+    .load{
+      position:absolute;top:3%;width:110px;height:45px;border:4px solid #8a8f95;border-radius:10px;
+      background:#e6edf3;text-align:center;line-height:37px;font-weight:900;color:var(--navy);
+    }
+    .scr-body{
+      width:110px;height:110px;border:7px solid var(--navy);border-radius:18px;background:#fff;
+      display:grid;place-items:center;font-weight:900;font-size:23px;color:var(--navy);z-index:2;
+    }
+    .gate-line{position:absolute;left:9%;top:50%;width:37%;height:6px;background:#66798a}
+    .gate-dot{
+      position:absolute;left:7%;top:50%;transform:translateY(-50%);
+      width:26px;height:26px;border-radius:50%;background:#c6d4df;border:4px solid #607080;
+    }
+    .flow-dot{
+      position:absolute;width:15px;height:15px;border-radius:50%;background:var(--yellow);
+      left:50%;top:25%;transform:translateX(-50%);opacity:0;
+    }
+    .latched .flow-dot{opacity:1;animation:flow 1.05s linear infinite}
+    .latched .load{background:#fff7cc;border-color:#e5c94a}
+    .gate-fired .gate-dot{background:var(--yellow);border-color:#c49a00}
+    @keyframes flow{from{top:25%}to{top:73%}}
+    .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    button,input{font:inherit}
+    .btn{
+      min-height:43px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;
+      color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer;
+    }
+    .btn.primary{background:var(--yellow);border-color:#e4ba16}
+    .status{
+      margin-top:12px;border-radius:10px;padding:11px 12px;font-weight:800;
+      border:1px solid #b9d7f5;background:#eef7ff;color:var(--navy);line-height:1.45;
+    }
+    .status.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+    .field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+    input{
+      width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;
+      padding:9px 11px;background:#fff;color:var(--text);
+    }
+    .results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+    .result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;min-width:0}
+    .result small{display:block;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .result strong{font-size:clamp(20px,4vw,28px);color:var(--navy);word-break:break-word}
+    .formula{
+      margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;
+      padding:11px 12px;line-height:1.5;font-weight:700;
+    }
+    footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+    @media(max-width:760px){
+      main{padding:12px}.two,.three,.other-words-grid,.results{grid-template-columns:1fr}
+      .sim{grid-template-columns:1fr}
+    }
+  </style>
+  <link rel="stylesheet" href="app-enhancements.css">
+  <script src="app-enhancements.js" defer></script>
+</head>
+<body>
+<header>
+  <h1>Thyristors Explorer</h1>
+  <p>SCRs, TRIACs, DIACs, latching, AC phase control, terminals, protection, and high-power switching concepts.</p>
+</header>
+
+<main>
+  <section class="ate-level-chooser" data-ate-level-chooser>
+    <h2>Choose Your Detail Level</h2>
+    <p>Start with what SCRs, TRIACs, and DIACs do. Technical adds terminal connections and latching behavior. Advanced adds phase control, commutation, dv/dt, di/dt, and protection concepts.</p>
+    <div class="ate-level-buttons">
+      <button type="button" data-ate-set-level="basic">Beginner</button>
+      <button type="button" data-ate-set-level="technical">Technical</button>
+      <button type="button" data-ate-set-level="advanced">Advanced</button>
+    </div>
+    <div class="ate-level-status" data-ate-level-status></div>
+  </section>
+
+  <section class="panel">
+    <h2>Beginner Start Here</h2>
+    <p class="lead">A thyristor is a semiconductor switch built for controlling power. The three names you will see most often here are SCR, TRIAC, and DIAC.</p>
+    <div class="grid three">
+      <div class="card">
+        <strong>SCR</strong>
+        <p>A silicon-controlled rectifier is a one-direction latching switch. A gate pulse turns it on, and current through the main path keeps it on until that current falls low enough.</p>
+        <span class="badge">DC / controlled rectification</span>
+      </div>
+      <div class="card">
+        <strong>TRIAC</strong>
+        <p>A TRIAC is a bidirectional thyristor used mainly with AC. It can control current on both halves of an AC waveform.</p>
+        <span class="badge">AC power control</span>
+      </div>
+      <div class="card">
+        <strong>DIAC</strong>
+        <p>A DIAC is a two-terminal bidirectional trigger device. It is often paired with a TRIAC to help produce a repeatable trigger point.</p>
+        <span class="badge">Trigger device</span>
+      </div>
+      <div class="card">
+        <strong>Why they are useful</strong>
+        <p>They can control heaters, lamps, motor soft starters, controlled rectifiers, and other power loads without mechanical contacts.</p>
+        <span class="badge">High-power switching</span>
+      </div>
+      <div class="card">
+        <strong>Latching</strong>
+        <p>An SCR or TRIAC does not behave like an ordinary transistor switch. After triggering, main current usually determines when it turns off.</p>
+        <span class="badge">Important behavior</span>
+      </div>
+      <div class="card">
+        <strong>Ratings matter</strong>
+        <p>Voltage, current, surge current, holding current, gate trigger requirements, switching rate, and temperature all matter in real equipment.</p>
+        <span class="badge">Check the datasheet</span>
+      </div>
+    </div>
+
+    <div class="other-words">
+      <strong>In Other Words</strong>
+      <div class="other-words-grid">
+        <div class="other-words-item">SCR: trigger it, then current keeps it latched on.</div>
+        <div class="other-words-item">TRIAC: an AC switch that can conduct in either direction.</div>
+        <div class="other-words-item">DIAC: a small trigger device often used to fire a TRIAC.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" data-ate-level="technical">
+    <h2>Terminal Connections <span class="ate-level-badge">Technical</span></h2>
+    <p class="lead">These are electrical terminal relationships, not package pin numbers. Actual pin order varies by part number and package.</p>
+
+    <div class="diagram-wrap">
+      <svg class="diagram" viewBox="0 0 1040 620" aria-label="SCR TRIAC and DIAC terminal diagrams">
+        <text x="35" y="38" class="dtext">SCR — Anode, Cathode, Gate</text>
+        <rect x="35" y="60" width="290" height="230" rx="18" class="device"/>
+        <circle cx="180" cy="90" r="10" class="terminal"/>
+        <circle cx="180" cy="260" r="10" class="terminal"/>
+        <circle cx="85" cy="185" r="10" class="terminal"/>
+        <path d="M180 100V150M180 210V250M105 185H145" class="symbol"/>
+        <path d="M145 150H215L180 190Z" class="symbol"/>
+        <path d="M140 205H220" class="symbol"/>
+        <path d="M145 185L115 165" class="symbol"/>
+        <text x="200" y="100" class="dsmall">Anode (A)</text>
+        <text x="200" y="265" class="dsmall">Cathode (K)</text>
+        <text x="50" y="215" class="dsmall">Gate (G)</text>
+
+        <text x="375" y="38" class="dtext">TRIAC — MT1, MT2, Gate</text>
+        <rect x="375" y="60" width="290" height="230" rx="18" class="device"/>
+        <circle cx="520" cy="90" r="10" class="terminal"/>
+        <circle cx="520" cy="260" r="10" class="terminal"/>
+        <circle cx="425" cy="185" r="10" class="terminal"/>
+        <path d="M520 100V138M520 212V250M445 185H485" class="symbol"/>
+        <path d="M480 145L540 175L480 205Z" class="symbol"/>
+        <path d="M560 145L500 175L560 205Z" class="symbol"/>
+        <path d="M485 185L455 165" class="symbol"/>
+        <text x="540" y="100" class="dsmall">MT2</text>
+        <text x="540" y="265" class="dsmall">MT1</text>
+        <text x="392" y="215" class="dsmall">Gate (G)</text>
+
+        <text x="715" y="38" class="dtext">DIAC — Two terminals</text>
+        <rect x="715" y="60" width="290" height="230" rx="18" class="device"/>
+        <circle cx="760" cy="175" r="10" class="terminal"/>
+        <circle cx="960" cy="175" r="10" class="terminal"/>
+        <path d="M770 175H815M905 175H950" class="symbol"/>
+        <path d="M815 145L865 175L815 205Z" class="symbol"/>
+        <path d="M905 145L855 175L905 205Z" class="symbol"/>
+        <text x="745" y="220" class="dsmall">A1</text>
+        <text x="945" y="220" class="dsmall">A2</text>
+
+        <text x="35" y="345" class="dtext">Low-voltage SCR load concept</text>
+        <rect x="35" y="375" width="970" height="205" rx="18" class="device"/>
+        <text x="65" y="415" class="dsmall">+12 V example source</text>
+        <circle cx="110" cy="470" r="14" class="terminal"/>
+        <text x="98" y="505" class="dtext">+</text>
+        <rect x="250" y="440" width="150" height="60" rx="12" fill="#fff7cc" stroke="#8a6d00" stroke-width="3"/>
+        <text x="298" y="477" class="dtext">LOAD</text>
+        <rect x="570" y="425" width="150" height="95" rx="14" fill="#eef7ff" stroke="#071a2e" stroke-width="3"/>
+        <text x="615" y="462" class="dtext">SCR</text>
+        <text x="596" y="490" class="dsmall">A → K path</text>
+        <circle cx="570" cy="470" r="9" class="terminal"/>
+        <circle cx="720" cy="470" r="9" class="terminal"/>
+        <circle cx="620" cy="520" r="9" class="terminal"/>
+        <circle cx="900" cy="470" r="14" class="terminal"/>
+        <text x="886" y="505" class="dtext">−</text>
+        <path d="M124 470H250" class="wire-red"/>
+        <path d="M400 470H561" class="wire-red"/>
+        <path d="M729 470H886" class="wire-black"/>
+        <path d="M620 529V550H500" class="wire-blue"/>
+        <rect x="390" y="530" width="110" height="35" rx="8" fill="#e9f3ff" stroke="#0b63ce" stroke-width="2"/>
+        <text x="407" y="554" class="dsmall">Gate drive</text>
+        <text x="430" y="445" class="dsmall">Main current</text>
+        <text x="640" y="548" class="dsmall">Gate trigger</text>
+      </svg>
+    </div>
+
+    <div class="warning">The diagrams show terminal relationships for learning. Never infer a real device pinout from the symbol or package shape. Verify the exact manufacturer datasheet before connecting hardware.</div>
+  </section>
+
+  <section class="panel" data-ate-level="technical">
+    <h2>SCR Latching Simulator <span class="ate-level-badge">Technical</span></h2>
+    <p class="lead">See the key difference between a thyristor and an ordinary transistor switch: a short gate pulse can start conduction, but removing the gate signal does not normally turn the SCR off.</p>
+
+    <div class="sim">
+      <div id="scrVisual" class="scr-visual">
+        <div class="bus top"></div>
+        <div class="bus bottom"></div>
+        <div class="load">LOAD</div>
+        <div class="gate-line"></div>
+        <div class="gate-dot"></div>
+        <div class="scr-body">SCR</div>
+        <div class="flow-dot"></div>
+      </div>
+      <div>
+        <h3 id="scrTitle">SCR OFF</h3>
+        <p id="scrExplain" class="lead">The SCR is blocking in this simplified example.</p>
+        <div class="row">
+          <button id="scrTrigger" class="btn primary" type="button">Pulse Gate</button>
+          <button id="scrReleaseGate" class="btn" type="button">Remove Gate Signal</button>
+          <button id="scrDropCurrent" class="btn" type="button">Drop Main Current</button>
+          <button id="scrReset" class="btn" type="button">Reset</button>
+        </div>
+        <div id="scrStatus" class="status">No main current is flowing.</div>
+        <p class="note">This simulator illustrates latching only. A real SCR requires sufficient gate trigger current, latching current, holding current, correct polarity, and operation within voltage/current/thermal ratings.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" data-ate-level="technical">
+    <h2>SCR, TRIAC, and DIAC Compared <span class="ate-level-badge">Technical</span></h2>
+    <table>
+      <thead>
+        <tr><th>Device</th><th>Main terminals</th><th>Gate?</th><th>Direction</th><th>Typical role</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>SCR</td><td>Anode, Cathode</td><td>Yes</td><td>Primarily one direction</td><td>Controlled rectification, DC control, motor soft starters in back-to-back arrangements</td></tr>
+        <tr><td>TRIAC</td><td>MT1, MT2</td><td>Yes</td><td>Bidirectional</td><td>AC switching and phase control</td></tr>
+        <tr><td>DIAC</td><td>Two main terminals</td><td>No separate gate</td><td>Bidirectional trigger conduction after breakover</td><td>Triggering TRIACs and relaxation-type trigger circuits</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel" data-ate-level="advanced">
+    <h2>Phase-Angle Control <span class="ate-level-badge advanced">Advanced</span></h2>
+    <p class="lead">A TRIAC controller can delay turn-on during each AC half-cycle. For a purely resistive load, the idealized delivered RMS voltage and power fraction can be estimated from the firing angle.</p>
+
+    <div class="grid three">
+      <div class="field">
+        <label for="sourceVrms">Source RMS voltage (V)</label>
+        <input id="sourceVrms" type="number" min="0" step="any" value="120">
+      </div>
+      <div class="field">
+        <label for="firingAngle">Firing angle α (degrees)</label>
+        <input id="firingAngle" type="number" min="0" max="180" step="1" value="90">
+      </div>
+      <div class="field">
+        <label for="loadResistance">Resistive load (Ω)</label>
+        <input id="loadResistance" type="number" min="0.001" step="any" value="24">
+      </div>
+    </div>
+
+    <div class="results">
+      <div class="result"><small>Ideal output RMS</small><strong id="phaseVrms">—</strong></div>
+      <div class="result"><small>Power fraction</small><strong id="phaseFraction">—</strong></div>
+      <div class="result"><small>Ideal resistive-load power</small><strong id="phasePower">—</strong></div>
+    </div>
+    <div id="phaseFormula" class="formula">For a resistive load: power fraction = [(π − α) + ½sin(2α)] ÷ π, with α in radians.</div>
+    <div class="warning">This is an ideal resistive-load learning model. Motors, transformers, LED drivers, inductive loads, nonlinear loads, EMI filters, and real TRIAC behavior require a different analysis and manufacturer guidance.</div>
+  </section>
+
+  <section class="panel" data-ate-level="advanced">
+    <h2>Advanced Thyristor Behavior <span class="ate-level-badge advanced">Advanced</span></h2>
+    <table>
+      <thead><tr><th>Term</th><th>What it means</th><th>Why it matters</th></tr></thead>
+      <tbody>
+        <tr><td>Latching current</td><td>The minimum main current generally needed just after triggering so the device remains on after the gate pulse ends.</td><td>If current never rises high enough, the device may not latch reliably.</td></tr>
+        <tr><td>Holding current</td><td>The main current below which the device returns to the blocking state.</td><td>Explains why SCRs and TRIACs naturally turn off near AC current zero crossing.</td></tr>
+        <tr><td>Commutation</td><td>The process of forcing current low enough for a thyristor to turn off.</td><td>AC circuits often provide natural commutation; DC circuits may require forced commutation.</td></tr>
+        <tr><td>dv/dt</td><td>Rate of change of voltage across the device.</td><td>Excessive dv/dt can cause unwanted turn-on or stress.</td></tr>
+        <tr><td>di/dt</td><td>Rate of rise of current after turn-on.</td><td>Too-fast current rise can concentrate current before conduction spreads through the silicon.</td></tr>
+        <tr><td>Snubber</td><td>Often an RC network placed around a switching device or load.</td><td>Can reduce voltage transients and dv/dt in suitable circuits.</td></tr>
+        <tr><td>Gate quadrants</td><td>TRIAC triggering behavior depends on the polarities of gate current and main-terminal voltage.</td><td>Trigger sensitivity is not identical in every quadrant.</td></tr>
+        <tr><td>Surge current</td><td>Short-duration current capability above the continuous rating.</td><td>Critical with lamps, motors, transformers, and capacitor-charging loads.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel" data-ate-level="advanced">
+    <h2>Selection & Troubleshooting Notes <span class="ate-level-badge advanced">Advanced</span></h2>
+    <div class="grid two">
+      <div class="card"><strong>Check the exact trigger requirement</strong><p>Gate trigger current and voltage vary by part and temperature. A controller must provide the required trigger under worst-case conditions.</p></div>
+      <div class="card"><strong>Watch heat</strong><p>On-state voltage drop multiplied by load current produces heat. High-current applications often require serious thermal design.</p></div>
+      <div class="card"><strong>Expect leakage</strong><p>Solid-state devices and modules can pass small off-state currents. “Off” is not the same as mechanically isolated.</p></div>
+      <div class="card"><strong>Consider the load</strong><p>Resistive, inductive, capacitive, transformer, motor, and electronic loads can stress the switch very differently.</p></div>
+      <div class="card"><strong>Verify turn-off conditions</strong><p>If current never falls below holding current, a thyristor may remain latched even after the gate signal is removed.</p></div>
+      <div class="card"><strong>Use the datasheet</strong><p>Voltage, repetitive peak ratings, RMS/current ratings, surge limits, thermal impedance, gate limits, and package pinout are device-specific.</p></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Where Thyristors Are Used</h2>
+    <div class="grid three">
+      <div class="card"><strong>Heater control</strong><p>SCR and TRIAC controllers regulate power to resistive heaters using burst firing or phase control.</p></div>
+      <div class="card"><strong>Lighting dimmers</strong><p>TRIAC phase control has long been used with compatible AC lighting loads.</p></div>
+      <div class="card"><strong>Motor soft starters</strong><p>Back-to-back SCRs can gradually increase applied AC voltage during motor starting.</p></div>
+      <div class="card"><strong>Controlled rectifiers</strong><p>SCR bridges can control the average DC output from an AC source.</p></div>
+      <div class="card"><strong>Crowbar protection</strong><p>An SCR can intentionally short a protected rail after an overvoltage trigger so an upstream protective device clears the fault.</p></div>
+      <div class="card"><strong>Industrial power control</strong><p>High-power thyristor assemblies are used where rugged high-voltage and high-current switching is required.</p></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Safety</h2>
+    <div class="warning">Many thyristor applications involve hazardous mains or industrial voltages. This page teaches device behavior and terminal relationships, not live-work procedures. De-energize equipment, verify absence of voltage, discharge stored energy, use proper overcurrent protection, and follow the equipment manufacturer and applicable electrical-safety practices.</div>
+  </section>
+</main>
+
+<footer>A DONCO-BAYCITY™ App</footer>
+
+<script>
+  let scrLatched=false;
+  let gateActive=false;
+
+  function renderScr(){
+    const visual=document.getElementById("scrVisual");
+    visual.classList.toggle("latched",scrLatched);
+    visual.classList.toggle("gate-fired",gateActive);
+
+    document.getElementById("scrTitle").textContent=scrLatched?"SCR LATCHED ON":"SCR OFF";
+    document.getElementById("scrExplain").textContent=scrLatched
+      ?"Main current is flowing. In this simplified model, removing the gate signal does not turn the SCR off."
+      :"The SCR is blocking in this simplified example.";
+
+    const status=document.getElementById("scrStatus");
+    status.className="status"+(scrLatched?" good":"");
+    if(scrLatched && gateActive) status.textContent="Gate pulse applied. Main current has reached the latching condition.";
+    else if(scrLatched) status.textContent="Gate signal removed, but the SCR remains on because main current is still above holding current.";
+    else status.textContent="No main current is flowing.";
+  }
+
+  document.getElementById("scrTrigger").addEventListener("click",()=>{
+    gateActive=true;
+    scrLatched=true;
+    renderScr();
+  });
+  document.getElementById("scrReleaseGate").addEventListener("click",()=>{
+    gateActive=false;
+    renderScr();
+  });
+  document.getElementById("scrDropCurrent").addEventListener("click",()=>{
+    scrLatched=false;
+    gateActive=false;
+    renderScr();
+  });
+  document.getElementById("scrReset").addEventListener("click",()=>{
+    scrLatched=false;
+    gateActive=false;
+    renderScr();
+  });
+
+  function fmt(n,d=2){
+    if(!Number.isFinite(n)) return "—";
+    return n.toLocaleString(undefined,{maximumFractionDigits:d});
+  }
+
+  function updatePhase(){
+    const source=Math.max(0,Number(document.getElementById("sourceVrms").value)||0);
+    const deg=Math.min(180,Math.max(0,Number(document.getElementById("firingAngle").value)||0));
+    const resistance=Math.max(.001,Number(document.getElementById("loadResistance").value)||.001);
+    const a=deg*Math.PI/180;
+    const fraction=Math.max(0,Math.min(1,((Math.PI-a)+(0.5*Math.sin(2*a)))/Math.PI));
+    const out=source*Math.sqrt(fraction);
+    const power=(out*out)/resistance;
+
+    document.getElementById("phaseVrms").textContent=fmt(out,2)+" V";
+    document.getElementById("phaseFraction").textContent=fmt(fraction*100,1)+"%";
+    document.getElementById("phasePower").textContent=fmt(power,1)+" W";
+    document.getElementById("phaseFormula").textContent=
+      "α = "+fmt(deg,1)+"°. Ideal resistive-load power fraction ≈ "+fmt(fraction*100,1)+
+      "%, giving about "+fmt(out,2)+" V RMS from a "+fmt(source,2)+" V RMS source.";
+  }
+
+  ["sourceVrms","firingAngle","loadResistance"].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener("input",updatePhase);
+    el.addEventListener("change",updatePhase);
+  });
+
+  renderScr();
+  updatePhase();
+</script>
+</body>
+</html>
