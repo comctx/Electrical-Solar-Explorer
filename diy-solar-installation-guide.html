@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>DIY Solar Installation Guide</title>
+<style>
+:root{
+  --navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--green:#1f7a4d;
+  --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--soft:#eef7ff;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}
+header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+header p{margin:0;opacity:.94}
+header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1100px;margin:auto;padding:18px}
+.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 8px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+h3{margin:0 0 8px;color:var(--navy)}
+.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+input,select,button{font:inherit}
+input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;color:var(--text)}
+.btn{min-height:44px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:9px 12px;cursor:pointer}
+.btn.primary{background:var(--yellow);border-color:#e4ba16}.btn.good{background:#eaf7ef;border-color:#9ed0b3;color:#185c3b}
+.results{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}
+.result small{display:block;color:var(--muted);font-weight:700}.result strong{font-size:clamp(20px,4vw,28px);color:var(--navy);word-break:break-word}
+.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+.danger{margin-top:12px;background:#fdecea;border:1px solid #e4aaa5;border-radius:11px;padding:11px 12px;color:#8a1c13;line-height:1.5;font-weight:800}
+.goodbox{margin-top:12px;background:#eaf7ef;border:1px solid #9ed0b3;border-radius:11px;padding:11px 12px;color:#185c3b;line-height:1.5;font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.architecture{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.architecture button{border:2px solid #b9d7f5;background:#f8fbff;border-radius:14px;padding:14px;color:var(--navy);font-weight:900;cursor:pointer;text-align:left}
+.architecture button span{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-top:5px;line-height:1.35}
+.architecture button.active{border-color:#e4ba16;background:#fff7cc;box-shadow:0 0 0 3px rgba(255,212,59,.18)}
+.flow{display:grid;grid-template-columns:repeat(9,minmax(80px,1fr));gap:7px;align-items:center;margin-top:14px}
+.flowbox{padding:12px 8px;border:2px solid #9fc8ef;background:#f8fbff;border-radius:12px;text-align:center;font-weight:850;color:var(--navy);min-height:68px;display:grid;place-items:center}
+.arrow{text-align:center;font-size:22px;color:var(--blue);font-weight:900}
+.checklist{display:grid;gap:9px;margin-top:12px}
+.checkrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:11px;align-items:start;border:1px solid var(--border);border-radius:12px;padding:11px;background:#fbfdff}
+.checkrow input{width:22px;height:22px;min-height:0;margin-top:2px}
+.checkrow strong{display:block;color:var(--navy);margin-bottom:3px}
+.checkrow span{display:block;color:var(--muted);font-size:13px;line-height:1.4}
+.progress-wrap{margin-top:12px}.progress-line{height:18px;background:#e6edf3;border-radius:999px;overflow:hidden;border:1px solid #cfd9e3}
+.progress-line>div{height:100%;width:0;background:linear-gradient(90deg,#1594ff,#1f7a4d);transition:width .2s ease}
+.progress-text{margin-top:7px;font-weight:850;color:var(--navy)}
+.step{display:grid;grid-template-columns:54px minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--border);border-radius:14px;padding:13px;background:#fff;margin-top:10px}
+.stepnum{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--yellow);color:var(--navy);font-weight:950}
+.step strong{display:block;color:var(--navy);font-size:16px;margin-bottom:4px}.step p{margin:0;color:#33495b;line-height:1.48}
+.related{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.related a{text-decoration:none;color:var(--navy);font-weight:900;text-align:center;background:#eef7ff;border:1px solid #9fc8ef;border-radius:12px;padding:14px}
+.related a span{display:block;color:var(--muted);font-weight:700;font-size:12px;margin-top:5px;line-height:1.35}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:800px){main{padding:12px}.two,.three,.four,.results,.architecture,.related{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}}
+</style>
+<link rel="stylesheet" href="app-enhancements.css">
+<script src="app-enhancements.js" defer></script>
+</head>
+<body>
+<header>
+  <h1>DIY Solar Installation Guide</h1>
+  <p>A complete project path from “Should I install solar?” to permits, equipment, installation, inspection, Permission to Operate, startup, and maintenance.</p>
+</header>
+
+<main>
+<section class="ate-level-chooser" data-ate-level-chooser>
+  <h2>Choose Your Detail Level</h2>
+  <p>Beginner walks through the project in plain English. Technical adds system relationships and design checks. Advanced adds string design, batteries, interconnection, commissioning, and deeper engineering considerations.</p>
+  <div class="ate-level-buttons">
+    <button type="button" data-ate-set-level="basic">Beginner</button>
+    <button type="button" data-ate-set-level="technical">Technical</button>
+    <button type="button" data-ate-set-level="advanced">Advanced</button>
+  </div>
+  <div class="ate-level-status" data-ate-level-status></div>
+</section>
+
+<section class="panel">
+  <h2>Start Here: What Kind of Solar System?</h2>
+  <p class="lead">Choose the kind of project you are considering. The guide still shows all three, but the system-flow diagram below changes to match your choice.</p>
+  <div class="architecture">
+    <button type="button" data-solar-type="grid" class="active">Grid-Tied<span>Solar reduces utility energy use. Normally shuts down during a grid outage unless the system has approved backup capability.</span></button>
+    <button type="button" data-solar-type="hybrid">Hybrid + Battery<span>Solar plus battery storage, normally with a hybrid inverter or compatible battery system and a protected-load/backup arrangement.</span></button>
+    <button type="button" data-solar-type="offgrid">Off-Grid<span>No utility connection. The system must supply the loads from PV, batteries, and often a backup generator.</span></button>
+  </div>
+  <div id="systemFlow" class="flow" aria-live="polite"></div>
+  <div id="systemNote" class="formula"></div>
+</section>
+
+<section class="panel">
+  <h2>Solar System Estimator</h2>
+  <p class="lead">This gives you a first-pass array size. It is for planning only, not permit-ready design.</p>
+  <div class="grid three">
+    <div class="field"><label>Average monthly electricity use (kWh)</label><input id="monthlyKwh" type="number" value="900" min="1" step="1"></div>
+    <div class="field"><label>Percent of use you want solar to cover</label><input id="offsetPct" type="number" value="100" min="1" max="150" step="1"></div>
+    <div class="field"><label>Average peak-sun hours per day</label><input id="sunHours" type="number" value="4.5" min="0.5" max="10" step="0.1"></div>
+    <div class="field"><label>Overall system factor</label><input id="systemFactor" type="number" value="0.80" min="0.4" max="1" step="0.01"></div>
+    <div class="field"><label>Panel rating (W)</label><input id="panelWatts" type="number" value="450" min="100" max="800" step="5"></div>
+    <div class="field"><label>Approx. panel area (ft²)</label><input id="panelArea" type="number" value="22" min="5" max="40" step="0.5"></div>
+  </div>
+  <div class="results">
+    <div class="result"><small>Target annual solar energy</small><strong id="targetEnergy">—</strong></div>
+    <div class="result"><small>Estimated array size</small><strong id="arraySize">—</strong></div>
+    <div class="result"><small>Approx. panel count</small><strong id="panelCount">—</strong></div>
+    <div class="result"><small>Approx. panel area</small><strong id="roofArea">—</strong></div>
+  </div>
+  <div class="formula">Estimate: required DC array kW ≈ annual target kWh ÷ (peak-sun hours × 365 × system factor). Actual design depends on local weather data, shading, orientation, module temperature, inverter sizing, utility export rules, and site conditions.</div>
+</section>
+
+<section class="panel">
+  <h2>The Complete Project — Hello to Goodbye</h2>
+  <p class="lead">This is the order I would want a homeowner to follow. Do not buy the major equipment first and hope the permit/utility process works afterward.</p>
+
+  <div class="step"><div class="stepnum">1</div><div><strong>Decide what you want solar to do</strong><p>Lower the electric bill, provide outage backup, support an off-grid property, charge an EV, or a combination. Your goal determines the architecture and budget.</p></div></div>
+  <div class="step"><div class="stepnum">2</div><div><strong>Collect 12 months of electricity use</strong><p>Use utility bills or account history. Record monthly kWh, seasonal peaks, major loads, rate plan, and whether future loads such as an EV, heat pump, workshop, or electric water heater are coming.</p></div></div>
+  <div class="step"><div class="stepnum">3</div><div><strong>Survey the site</strong><p>Check roof age, usable roof planes, structural condition, ground-mount options, shade, orientation, access paths, equipment locations, service panel, meter, and likely cable/raceway routes.</p></div></div>
+  <div class="step"><div class="stepnum">4</div><div><strong>Choose grid-tied, hybrid, or off-grid</strong><p>Select string inverter, microinverter, optimizer, or hybrid architecture. If batteries are involved, decide what loads must operate during an outage and for how long.</p></div></div>
+  <div class="step"><div class="stepnum">5</div><div><strong>Make the preliminary size and layout</strong><p>Estimate array kW and panel count, sketch the roof/ground layout, identify setbacks and service access, and decide where the inverter, battery, disconnects, and other equipment could go.</p></div></div>
+  <div class="step"><div class="stepnum">6</div><div><strong>Check the rules before ordering equipment</strong><p>Contact the local permitting authority and utility. Find out required drawings, structural requirements, electrical rules, rapid-shutdown requirements, approved equipment/listings, interconnection forms, fees, inspections, and export limitations.</p></div></div>
+  <div class="step"><div class="stepnum">7</div><div><strong>Build the design package</strong><p>Prepare the site plan, module layout, one-line diagram, equipment schedule, conductor/raceway information, grounding/bonding method, overcurrent/disconnect information, labels, datasheets, and structural documentation required by the authority having jurisdiction and utility.</p></div></div>
+  <div class="step"><div class="stepnum">8</div><div><strong>Submit permits and utility interconnection</strong><p>Get the required approvals or conditional approvals before committing to equipment that might not be accepted. Correct plan-review comments before installation.</p></div></div>
+  <div class="step"><div class="stepnum">9</div><div><strong>Order the approved equipment</strong><p>Panels, racking, inverter/microinverters, batteries if used, rapid-shutdown equipment where required, combiner equipment, disconnects, overcurrent protection, raceway, conductors, grounding/bonding hardware, labels, and monitoring equipment.</p></div></div>
+  <div class="step"><div class="stepnum">10</div><div><strong>Install the mechanical system</strong><p>Lay out attachment points, mount racking, preserve roof weatherproofing, maintain required clearances, install modules, manage cables, and install ground-mount foundations/structure when applicable. Follow the racking and roof manufacturer's instructions.</p></div></div>
+  <div class="step"><div class="stepnum">11</div><div><strong>Install electrical equipment and pathways</strong><p>Mount inverter, batteries, disconnects, combiners, junction equipment, raceways, and labels. Route conductors with proper support, bend radius, environmental protection, and separation. The actual electrical connections must follow the approved drawings and equipment instructions.</p></div></div>
+  <div class="step"><div class="stepnum">12</div><div><strong>Complete inspection and corrections</strong><p>Do not hide work that must be inspected. Correct any structural, labeling, wiring, grounding/bonding, equipment-location, or documentation issues identified by the inspector.</p></div></div>
+  <div class="step"><div class="stepnum">13</div><div><strong>Utility meter / Permission to Operate</strong><p>For grid-connected systems, complete the utility's final interconnection steps. The utility may change or reconfigure metering. Do not export or operate in parallel with the grid until the utility authorizes it.</p></div></div>
+  <div class="step"><div class="stepnum">14</div><div><strong>Commission, monitor, and maintain</strong><p>Follow the manufacturer's startup sequence, verify monitoring, record baseline production, test approved backup modes, save drawings/settings/serial numbers, and periodically check for alarms, damage, loose hardware, shading changes, water intrusion, or abnormal production.</p></div></div>
+</section>
+
+<section class="panel">
+  <h2>My DIY Solar Project Checklist</h2>
+  <p class="lead">Tap each item as you finish it. Progress is saved on this device.</p>
+  <div class="progress-wrap"><div class="progress-line"><div id="projectProgressBar"></div></div><div id="projectProgressText" class="progress-text">0 of 14 complete</div></div>
+  <div id="projectChecklist" class="checklist"></div>
+  <button id="resetChecklist" type="button" class="btn" style="margin-top:12px">Reset Checklist</button>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>System Architecture & Equipment Relationships <span class="ate-level-badge">Technical</span></h2>
+  <table>
+    <thead><tr><th>Part</th><th>What connects conceptually</th><th>What to verify</th></tr></thead>
+    <tbody>
+      <tr><td>PV modules / strings</td><td>Modules are arranged in approved series/parallel combinations before the inverter or module-level electronics.</td><td>Voc/Isc/Vmp/Imp, temperature correction, connector compatibility, string limits, rapid shutdown, wire rating.</td></tr>
+      <tr><td>Combiner / transition equipment</td><td>Multiple source circuits may be combined and protected before continuing toward conversion equipment.</td><td>Number of inputs, overcurrent protection, DC rating, environment, disconnecting function, surge protection.</td></tr>
+      <tr><td>Inverter</td><td>Receives PV DC or module-level AC depending on architecture and interfaces with the building electrical system.</td><td>DC input window, max voltage/current, AC output rating, grid profile, ground-fault/arc-fault functions, listing.</td></tr>
+      <tr><td>Battery system</td><td>Battery modules connect through an approved battery inverter/charger or hybrid system with required protection and communications.</td><td>Compatible battery/inverter pair, voltage, current, enclosure, spacing, fire/thermal requirements, disconnects, backup-load design.</td></tr>
+      <tr><td>AC interconnection</td><td>Inverter output connects to approved service/distribution equipment through the permitted interconnection method.</td><td>Panel/bus rating, breaker/disconnect requirements, utility rules, backfeed limits, conductor/OCPD sizing, labels.</td></tr>
+    </tbody>
+  </table>
+  <div class="warning">This table shows relationships, not a field-wiring recipe. Terminal names and permitted interconnection methods vary by inverter, battery, service equipment, local code, and utility.</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>What a Permit-Ready Package Usually Needs <span class="ate-level-badge">Technical</span></h2>
+  <div class="grid three">
+    <div class="card"><strong>Site Plan</strong><p>Property/building outline, array location, service/meter location, equipment locations, and relevant access or setback information.</p></div>
+    <div class="card"><strong>Roof / Array Layout</strong><p>Panel count, orientation, attachment/racking system, roof planes, pathways, obstructions, and required clearances.</p></div>
+    <div class="card"><strong>One-Line Diagram</strong><p>Shows the electrical relationship from array through conversion/protection equipment to service or loads.</p></div>
+    <div class="card"><strong>Equipment Schedule</strong><p>Manufacturer/model, ratings, listing information, quantities, and datasheets for modules, inverter, batteries, racking, and major protection equipment.</p></div>
+    <div class="card"><strong>Electrical Details</strong><p>Conductor types/sizes, raceways, overcurrent protection, disconnects, grounding/bonding, rapid shutdown, labels, and interconnection method.</p></div>
+    <div class="card"><strong>Structural Information</strong><p>Roof framing, attachment method, loads, engineering letters/calculations, or ground-mount foundation information when required.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>DIY Boundary: What You Can Plan vs. What May Require a Pro <span class="ate-level-badge">Technical</span></h2>
+  <table>
+    <thead><tr><th>Often reasonable DIY planning/work</th><th>May require licensed/qualified/utility work depending on location</th></tr></thead>
+    <tbody>
+      <tr><td>Energy-use study, preliminary sizing, shade survey, equipment research, layout drafts, permit research.</td><td>Service equipment modifications, meter equipment, line-side connections, utility-owned equipment, energized work.</td></tr>
+      <tr><td>Preparing paperwork, equipment lists, datasheets, labels, monitoring plan, project records.</td><td>Final electrical terminations or testing where the jurisdiction requires a licensed electrician or qualified person.</td></tr>
+      <tr><td>Mechanical racking/module installation if local rules, roof conditions, fall protection, and structural requirements allow it.</td><td>Structural engineering, specialty roofing, steep/high roof work, battery/fire-code work, or tasks outside the installer's training.</td></tr>
+    </tbody>
+  </table>
+  <div class="danger">Never treat “DIY” as permission to work energized. Utility service conductors and some meter/service equipment can remain energized even when the main breaker is off.</div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Advanced PV Design Checks <span class="ate-level-badge advanced">Advanced</span></h2>
+  <div class="grid two">
+    <div class="card"><strong>Cold-Weather Voc</strong><p>PV open-circuit voltage rises as cell temperature falls. Maximum string Voc after the required temperature correction must stay below the inverter/controller maximum DC input rating.</p></div>
+    <div class="card"><strong>Current & Parallel Strings</strong><p>Source-circuit and output-circuit currents, overcurrent protection, conductor ampacity, connector ratings, and equipment input-current limits must all be coordinated.</p></div>
+    <div class="card"><strong>MPPT Window</strong><p>String operating voltage should remain inside the inverter's useful MPPT range across expected operating temperatures.</p></div>
+    <div class="card"><strong>Voltage Drop</strong><p>Long DC or AC runs increase conductor loss and may affect inverter operation or economics. Use the Wire & Voltage-Drop Lab as a learning aid.</p></div>
+    <div class="card"><strong>DC/AC Ratio</strong><p>PV array DC nameplate can differ from inverter AC rating. Clipping, local climate, orientation, export limits, economics, and inverter manufacturer guidance affect the chosen ratio.</p></div>
+    <div class="card"><strong>Rapid Shutdown / Module Electronics</strong><p>Required functions and equipment depend on the applicable rules, system architecture, and listed product combinations.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Battery Backup Estimator <span class="ate-level-badge advanced">Advanced</span></h2>
+  <p class="lead">Estimate nominal battery energy for selected critical loads.</p>
+  <div class="grid three">
+    <div class="field"><label>Average critical load (W)</label><input id="criticalW" type="number" value="500" min="1" step="1"></div>
+    <div class="field"><label>Desired backup time (hours)</label><input id="backupHours" type="number" value="12" min="0.5" step="0.5"></div>
+    <div class="field"><label>Usable system fraction</label><input id="batteryFactor" type="number" value="0.80" min="0.2" max="1" step="0.01"></div>
+  </div>
+  <div class="results">
+    <div class="result"><small>Load energy needed</small><strong id="loadEnergy">—</strong></div>
+    <div class="result"><small>Estimated nominal battery</small><strong id="batteryKwh">—</strong></div>
+    <div class="result"><small>Average load</small><strong id="loadKw">—</strong></div>
+    <div class="result"><small>Backup target</small><strong id="backupOut">—</strong></div>
+  </div>
+  <div class="formula">Nominal battery estimate ≈ load watts × hours ÷ usable system fraction. Real design also considers inverter losses, surge loads, battery temperature, aging, chemistry, reserve state of charge, generator support, and manufacturer limits.</div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Commissioning: Before You Call It Finished <span class="ate-level-badge advanced">Advanced</span></h2>
+  <div class="grid two">
+    <div class="card"><strong>Mechanical Inspection</strong><p>Attachments, module clamps, torque where specified, cable support, roof penetrations, equipment clearances, covers, and weather seals.</p></div>
+    <div class="card"><strong>Electrical Inspection</strong><p>Conductor identification, polarity where applicable, terminations, grounding/bonding, labels, disconnects, overcurrent protection, raceway, and equipment settings.</p></div>
+    <div class="card"><strong>Manufacturer Startup</strong><p>Use the actual inverter, battery, rapid-shutdown, and monitoring startup procedures rather than improvising a sequence.</p></div>
+    <div class="card"><strong>Monitoring Baseline</strong><p>Record initial production, string/module status, battery state, firmware/settings, and alarms so future troubleshooting has a reference.</p></div>
+    <div class="card"><strong>Backup Test</strong><p>For approved battery systems, test the intended backup mode and confirm that only the designed loads remain energized.</p></div>
+    <div class="card"><strong>Project Records</strong><p>Save permit drawings, inspection approvals, utility PTO, datasheets, warranties, serial numbers, photos, passwords, network settings, and maintenance notes.</p></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Maintenance After Startup</h2>
+  <div class="grid three">
+    <div class="card"><strong>Watch Production</strong><p>Monitoring trends are often the easiest way to notice an inverter fault, failed module-level device, shading change, or communication problem.</p></div>
+    <div class="card"><strong>Visual Checks</strong><p>Look for damaged modules, loose cable management, animal damage, corrosion, water intrusion, failed seals, vegetation, or racking movement.</p></div>
+    <div class="card"><strong>Cleaning</strong><p>Clean only when site conditions and manufacturer guidance justify it. Many arrays receive enough natural cleaning from rain.</p></div>
+    <div class="card"><strong>Battery Health</strong><p>Review state-of-charge behavior, alarms, temperature, firmware, warranty requirements, and capacity changes where a battery system is installed.</p></div>
+    <div class="card"><strong>Roof Work</strong><p>Coordinate future roofing, chimney, HVAC, or electrical work so PV wiring, attachments, grounding/bonding, and shutdown equipment are not damaged.</p></div>
+    <div class="card"><strong>Keep Documentation</strong><p>Update drawings and labels if equipment is replaced or the system is expanded.</p></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Related Solar Tools</h2>
+  <div class="related">
+    <a href="solar-power-electronics.html">Solar Power Electronics<span>Inverters, controllers, combiners, protection, batteries, and system parts.</span></a>
+    <a href="solar-pv-lab.html">Solar PV Lab<span>Experiment with series/parallel strings, shading, sun hours, and controller behavior.</span></a>
+    <a href="solar-calculator.html">Solar Calculator<span>Additional solar calculations and planning tools.</span></a>
+    <a href="batteries.html">Batteries<span>Battery types, ratings, charging, safety, and stored energy.</span></a>
+    <a href="grounding-bonding-shielding.html">Grounding & Bonding<span>Understand grounding, bonding, and protective relationships.</span></a>
+    <a href="wire-voltage-drop-lab.html">Wire & Voltage-Drop Lab<span>Explore conductor length, current, resistance, and voltage drop.</span></a>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Final Safety & Approval Boundary</h2>
+  <div class="warning">Solar is unusual because exposed modules can produce DC whenever illuminated. Turning off the main breaker does not necessarily remove PV or battery voltage. Use the approved shutdown procedure, equipment instructions, permits, inspections, and qualified-person requirements for the actual installation.</div>
+  <div class="goodbox"><strong>For a grid-connected project, the finish line is not “the panels are mounted.”</strong> The finish line is: approved installation → passed inspection → utility interconnection complete → Permission to Operate → successful startup and monitoring.</div>
+</section>
+</main>
+
+<footer>A DONCO-BAYCITY™ App</footer>
+
+<script>
+const ARCH_KEY="ateDiySolarArchitecture";
+const CHECK_KEY="ateDiySolarChecklist";
+
+const flows={
+  grid:{
+    boxes:["PV Modules","Module Electronics / Strings","Inverter","AC Disconnect / Protection","Service Equipment"],
+    note:"Grid-tied path: PV produces power for the building and may export through the utility-approved interconnection. Standard grid-tied solar normally stops producing usable AC during an outage unless approved backup equipment is included."
+  },
+  hybrid:{
+    boxes:["PV Modules","PV / Hybrid Inverter","Battery","Backup / Load Control","Service + Grid"],
+    note:"Hybrid path: PV, battery, utility, and sometimes a generator are coordinated by compatible equipment. Backup loads and transfer/islanding behavior must be deliberately designed."
+  },
+  offgrid:{
+    boxes:["PV Modules","Charge Controller / Hybrid Inverter","Battery Bank","Off-Grid Inverter","AC / DC Loads"],
+    note:"Off-grid path: there is no utility safety net. Array, battery, inverter, and often generator capacity must be designed around worst-season energy and surge loads, not only annual averages."
+  }
+};
+
+function setArchitecture(type){
+  if(!flows[type]) type="grid";
+  localStorage.setItem(ARCH_KEY,type);
+  document.querySelectorAll("[data-solar-type]").forEach(b=>b.classList.toggle("active",b.dataset.solarType===type));
+  const flow=document.getElementById("systemFlow");
+  flow.replaceChildren();
+  flows[type].boxes.forEach((name,i)=>{
+    const box=document.createElement("div"); box.className="flowbox"; box.textContent=name; flow.appendChild(box);
+    if(i<flows[type].boxes.length-1){const a=document.createElement("div");a.className="arrow";a.textContent="→";flow.appendChild(a);}
+  });
+  systemNote.textContent=flows[type].note;
+}
+document.querySelectorAll("[data-solar-type]").forEach(b=>b.addEventListener("click",()=>setArchitecture(b.dataset.solarType)));
+setArchitecture(localStorage.getItem(ARCH_KEY)||"grid");
+
+function solarEstimate(){
+  const m=+monthlyKwh.value,p=+offsetPct.value/100,s=+sunHours.value,f=+systemFactor.value,w=+panelWatts.value,a=+panelArea.value;
+  if(m<=0||p<=0||s<=0||f<=0||w<=0||a<=0){targetEnergy.textContent=arraySize.textContent=panelCount.textContent=roofArea.textContent="—";return;}
+  const annual=m*12*p;
+  const kw=annual/(s*365*f);
+  const n=Math.ceil(kw*1000/w);
+  const actual=n*w/1000;
+  targetEnergy.textContent=annual.toFixed(0)+" kWh/yr";
+  arraySize.textContent=actual.toFixed(2)+" kW DC";
+  panelCount.textContent=n+" panels";
+  roofArea.textContent=(n*a).toFixed(0)+" ft²";
+}
+[monthlyKwh,offsetPct,sunHours,systemFactor,panelWatts,panelArea].forEach(x=>x.addEventListener("input",solarEstimate));
+solarEstimate();
+
+const checklistItems=[
+  ["Define project goal","Bill reduction, backup, off-grid, EV charging, or a combination."],
+  ["Collect 12 months of energy use","Record monthly kWh, rate plan, seasonal loads, and future electric loads."],
+  ["Survey roof / property","Check roof condition, shading, orientation, structure, access, service equipment, and equipment locations."],
+  ["Choose system architecture","Grid-tied, hybrid/battery, or off-grid."],
+  ["Create preliminary system size","Estimate array kW, panel count, layout, battery needs, and major equipment."],
+  ["Check local permit + utility rules","Confirm drawings, equipment rules, rapid shutdown, inspections, interconnection, and export limits."],
+  ["Prepare the design package","Site plan, one-line, layout, equipment schedule, electrical details, structural information."],
+  ["Submit permits / interconnection","Resolve plan-review comments before installation."],
+  ["Order approved equipment","Buy equipment that matches the approved design and listed compatibility requirements."],
+  ["Install racking / modules","Follow structural, roof, fall-protection, racking, and weatherproofing requirements."],
+  ["Install electrical equipment / pathways","Follow approved drawings and manufacturer instructions; use qualified/licensed help where required."],
+  ["Pass inspections","Correct deficiencies and obtain final local approval."],
+  ["Receive utility Permission to Operate","Complete meter/interconnection steps before operating in parallel with the grid."],
+  ["Commission + monitor + maintain","Perform approved startup, verify monitoring/backup behavior, and save project records."]
+];
+
+function getChecks(){try{const x=JSON.parse(localStorage.getItem(CHECK_KEY)||"[]");return Array.isArray(x)?x:[]}catch{return []}}
+function saveChecks(x){localStorage.setItem(CHECK_KEY,JSON.stringify(x))}
+function renderChecklist(){
+  const saved=getChecks();
+  projectChecklist.replaceChildren();
+  checklistItems.forEach((item,i)=>{
+    const row=document.createElement("label");row.className="checkrow";
+    const cb=document.createElement("input");cb.type="checkbox";cb.checked=!!saved[i];
+    cb.addEventListener("change",()=>{const next=getChecks();next[i]=cb.checked;saveChecks(next);renderChecklist();});
+    const text=document.createElement("div");text.innerHTML="<strong></strong><span></span>";text.querySelector("strong").textContent=(i+1)+". "+item[0];text.querySelector("span").textContent=item[1];
+    row.append(cb,text);projectChecklist.appendChild(row);
+  });
+  const done=saved.filter(Boolean).length,total=checklistItems.length,pct=Math.round(done/total*100);
+  projectProgressBar.style.width=pct+"%";
+  projectProgressText.textContent=done+" of "+total+" complete — "+pct+"%";
+}
+resetChecklist.addEventListener("click",()=>{if(confirm("Reset the DIY Solar Project Checklist?")){localStorage.removeItem(CHECK_KEY);renderChecklist();}});
+renderChecklist();
+
+function batteryEstimate(){
+  const w=+criticalW.value,h=+backupHours.value,f=+batteryFactor.value;
+  if(w<=0||h<=0||f<=0){loadEnergy.textContent=batteryKwh.textContent=loadKw.textContent=backupOut.textContent="—";return;}
+  const need=w*h/1000,nom=need/f;
+  loadEnergy.textContent=need.toFixed(2)+" kWh";
+  batteryKwh.textContent=nom.toFixed(2)+" kWh";
+  loadKw.textContent=(w/1000).toFixed(2)+" kW";
+  backupOut.textContent=h.toFixed(1)+" h";
+}
+[criticalW,backupHours,batteryFactor].forEach(x=>x.addEventListener("input",batteryEstimate));
+batteryEstimate();
+</script>
+</body>
+</html>
