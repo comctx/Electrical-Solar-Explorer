@@ -4,6 +4,7 @@ const RECENT_KEY="ateRecent";
 const THEME_KEY="ateTheme";
 const DETAIL_LEVEL_KEY="ateDetailLevel";
 const MAX_RECENT=8;
+const DONCO_LOGO_SRC="https://raw.githubusercontent.com/comctx/Garage-Sale-map/main/donco_logo_footer.png";
 
 function safeParse(key,fallback){
   try{const v=JSON.parse(localStorage.getItem(key)||"null");return v??fallback}catch{return fallback}
@@ -113,6 +114,25 @@ function openPageFinder(){
   });
   setTimeout(()=>input.focus(),0);
 }
+function makeDoncoLogo(){
+  const header=document.querySelector("header");
+  if(!header||header.querySelector(".ate-donco-brand")) return;
+  header.classList.add("ate-brand-header");
+  const link=document.createElement("a");
+  link.className="ate-donco-brand";
+  link.href=isHome()?"#":"index.html";
+  link.setAttribute("aria-label","DONCO — All Things Electrical home");
+  link.title="DONCO";
+  const img=document.createElement("img");
+  img.src=DONCO_LOGO_SRC;
+  img.alt="DONCO logo";
+  img.loading="eager";
+  img.decoding="async";
+  img.addEventListener("error",()=>link.remove(),{once:true});
+  link.appendChild(img);
+  header.prepend(link);
+}
+
 function makeToolbar(){
   const bar=document.createElement("div");
   bar.className="ate-toolbar";
@@ -321,6 +341,7 @@ function applySharedPolish(){
 
 document.addEventListener("DOMContentLoaded",()=>{
   normalizeHomeLinks();
+  makeDoncoLogo();
   applySharedPolish();
   initDetailLevels();
   recordRecent();
