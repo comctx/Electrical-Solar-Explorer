@@ -4,138 +4,412 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0f3b63">
-<title>Test Equipment Explorer</title>
+<title>Tools & Test Equipment Explorer</title>
 <style>
-:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
-header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
-main{max-width:1050px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}.nav a.active{background:var(--yellow);border-color:#e4ba16}
-.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
-.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
-.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input,select,button{font:inherit}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff}.result{margin-top:12px;background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
-.meter{max-width:430px;margin:auto;background:#2f3944;border:8px solid #171d22;border-radius:24px;padding:18px;color:#fff}.display{background:#b9c987;color:#17210f;border:4px inset #7d8a60;border-radius:8px;padding:18px;font-family:monospace;font-size:34px;text-align:right;min-height:78px}.dial{margin:18px auto;width:150px;height:150px;border-radius:50%;background:#596773;border:12px solid #111820;display:grid;place-items:center;font-weight:900}.probe-row{display:flex;justify-content:space-between;gap:10px}.probe{flex:1;padding:10px;border-radius:10px;text-align:center;font-weight:800}.red{background:#b42318}.black{background:#111820}
-.scope{background:#06182a;border-radius:16px;padding:12px}.scope svg{display:block;width:100%;height:auto}.btn{min-height:42px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}.btn.primary{background:var(--yellow);border-color:#e4ba16}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;--good:#1f7a4d;--orange:#c65f39}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}
+header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+header p{margin:0;opacity:.93}
+header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1080px;margin:auto;padding:18px}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.nav a{text-decoration:none;padding:10px 12px;border:1px solid #9fc8ef;border-radius:11px;background:#eef7ff;color:var(--navy);font-weight:800}
+.nav a.active{background:var(--yellow);border-color:#e4ba16}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 7px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+h3{margin:0 0 7px;color:var(--navy)}
+.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}
+.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:12px;color:#6a4300;line-height:1.55;font-weight:700}
+.danger{margin-top:12px;background:#fdecea;border:1px solid #e4aaa5;border-radius:11px;padding:12px;color:#8a1c13;line-height:1.55;font-weight:800}
+.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}
+th{background:#eef7ff;color:var(--navy)}
+.diagram{margin-top:12px;border:1px solid #b9d7f5;border-radius:14px;padding:12px;background:#f8fbff;overflow:auto}
+.diagram svg{display:block;width:100%;min-width:620px;height:auto}
+.meter{max-width:430px;margin:auto;background:#2f3944;border:8px solid #171d22;border-radius:24px;padding:18px;color:#fff}
+.display{background:#b9c987;color:#17210f;border:4px inset #7d8a60;border-radius:8px;padding:18px;font-family:monospace;font-size:34px;text-align:right;min-height:78px}
+.dial{margin:18px auto;width:150px;height:150px;border-radius:50%;background:#596773;border:12px solid #111820;display:grid;place-items:center;font-weight:900}
+.probe-row{display:flex;justify-content:space-between;gap:10px}.probe{flex:1;padding:10px;border-radius:10px;text-align:center;font-weight:800}.red{background:#b42318}.black{background:#111820}
+.scope{background:#06182a;border-radius:16px;padding:12px}.scope svg{display:block;width:100%;height:auto}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+input,select,button{font:inherit}input,select{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;color:var(--text)}
+.result{margin-top:12px;background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px;font-weight:800;color:var(--navy)}
+.btn{min-height:42px;border:1px solid #9fc8ef;border-radius:10px;background:#eef7ff;color:var(--navy);font-weight:800;padding:8px 12px;cursor:pointer}
+.tool-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tool-answer{margin-top:12px;border:2px solid #9fc8ef;background:#eef7ff;border-radius:13px;padding:14px;line-height:1.5}
+.related{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.related a{text-decoration:none;color:var(--navy);font-weight:900;text-align:center;background:#eef7ff;border:1px solid #9fc8ef;border-radius:12px;padding:14px}
+.related a span{display:block;color:var(--muted);font-weight:700;font-size:12px;margin-top:5px;line-height:1.35}
 footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
-@media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}}
+@media(max-width:760px){main{padding:12px}.two,.three,.four,.tool-picker,.related{grid-template-columns:1fr}}
 </style>
-  <link rel="stylesheet" href="app-enhancements.css">
-  <script src="app-enhancements.js" defer></script>
+<link rel="stylesheet" href="app-enhancements.css">
+<script src="app-enhancements.js" defer></script>
 </head>
 <body>
-<header><h1>Test Equipment Explorer</h1><p>Multimeters, clamp meters, oscilloscopes, continuity and diode testing, insulation resistance, logic probes, and safe measurement concepts.</p></header>
+<header>
+  <h1>Tools & Test Equipment Explorer</h1>
+  <p>What each electrical tool does, when to use it, how it connects, what it can tell you, and the mistakes to avoid.</p>
+</header>
 <main>
 <nav class="nav">
-<a href="index.html">All Things Electrical</a><a href="electrical-basics.html">Electrical Basics</a><a href="wiring-installation.html">Wiring & Installation</a><a href="batteries.html">Batteries</a><a href="power-supplies.html">Power Supplies & Rectifiers</a><a href="capacitor.html">Capacitors</a><a href="inductors.html">Inductors & Coils</a><a href="transformers.html">Transformers</a><a href="diodes.html">Diodes</a><a href="led-lcd.html">LEDs & LCDs</a><a href="transistors.html">Transistors</a><a href="vacuum-tubes.html">Vacuum Tubes</a><a href="relays.html">Relays & Contactors</a><a href="integrated-circuits.html">Integrated Circuits</a><a href="crystals-oscillators.html">Crystals & Oscillators</a><a href="motors-controls.html">Motors & Controls</a><a href="generators-alternators.html">Generators & Alternators</a><a href="solar-power-electronics.html">Solar Power Electronics</a><a href="sensors-switches.html">Sensors & Switches</a><a href="fiber-optics.html">Fiber Optics</a><a href="power-electronics-modules.html">Power Electronics & Modules</a><a href="solid-state-switching.html">Solid-State Switching</a><a class="active" href="test-equipment.html">Test Equipment</a><a href="troubleshooting.html">Troubleshooting</a>
-  <a href="processors.html">Processors</a>
-<a href="oscilloscope-lab.html">Oscilloscope Lab</a><a href="ac-fundamentals-lab.html">AC Fundamentals Lab</a></nav>
+  <a href="index.html">All Things Electrical</a>
+  <a href="electrical-safety-work-practices.html">Electrical Safety</a>
+  <a href="metering-instrumentation.html">Metering & Instrumentation</a>
+  <a href="oscilloscope-lab.html">Oscilloscope Lab</a>
+  <a href="troubleshooting.html">Troubleshooting</a>
+  <a class="active" href="test-equipment.html">Tools & Test Equipment</a>
+</nav>
 
-<section class="panel">
-<h2>Beginner Start Here</h2>
-<div class="grid three">
-<div class="card"><strong>Digital Multimeter</strong><p>Measures voltage, resistance, continuity, and often current, diode drop, capacitance, frequency, and temperature.</p><span class="badge">General-purpose</span></div>
-<div class="card"><strong>Clamp Meter</strong><p>Measures current by sensing the magnetic field around a conductor, usually without opening the circuit.</p><span class="badge">Current measurement</span></div>
-<div class="card"><strong>Oscilloscope</strong><p>Displays voltage versus time so you can see waveform shape, frequency, amplitude, noise, and timing.</p><span class="badge">Waveforms</span></div>
-<div class="card"><strong>Megohmmeter</strong><p>Applies a higher test voltage to measure insulation resistance in megohms or gigohms.</p><span class="badge">Insulation testing</span></div>
-<div class="card"><strong>Logic Probe</strong><p>Shows digital HIGH, LOW, and sometimes pulse activity in logic circuits.</p><span class="badge">Digital troubleshooting</span></div>
-<div class="card"><strong>Continuity Tester</strong><p>Indicates whether a low-resistance electrical path exists between two points.</p><span class="badge">Open/closed path</span></div>
-</div>
+<section class="ate-level-chooser" data-ate-level-chooser>
+  <h2>Choose Your Detail Level</h2>
+  <p>Beginner explains the tools. Technical shows measurement relationships and practical selection. Advanced adds measurement category, grounding, instrument limitations, and diagnostic strategy.</p>
+  <div class="ate-level-buttons">
+    <button type="button" data-ate-set-level="basic">Beginner</button>
+    <button type="button" data-ate-set-level="technical">Technical</button>
+    <button type="button" data-ate-set-level="advanced">Advanced</button>
+  </div>
+  <div class="ate-level-status" data-ate-level-status></div>
 </section>
 
 <section class="panel">
-<h2>Virtual Multimeter</h2>
-<p class="lead">Choose a meter function and a simulated circuit condition.</p>
-<div class="grid two">
-<div class="meter">
-<div id="meterDisplay" class="display">0.000 V</div>
-<div class="dial" id="dialLabel">DC V</div>
-<div class="probe-row"><div class="probe black">COM</div><div class="probe red">V Ω</div></div>
-</div>
-<div>
-<div class="field"><label>Meter function</label><select id="meterMode"><option value="dcv">DC volts</option><option value="acv">AC volts</option><option value="ohms">Resistance</option><option value="continuity">Continuity</option><option value="diode">Diode test</option></select></div>
-<div class="field" style="margin-top:10px"><label>Simulated condition</label><select id="meterCase"></select></div>
-<div id="meterExplain" class="result"></div>
-<div class="formula">Voltage is measured across two points. Current is measured through a circuit path. Resistance/continuity testing is normally done on de-energized circuits.</div>
-</div>
-</div>
+  <h2>Beginner Start Here</h2>
+  <p class="lead">A good electrical toolbox has two groups: tools that <strong>measure what is happening</strong>, and tools that <strong>let you build or service the system correctly</strong>.</p>
+  <div class="grid three">
+    <div class="card"><strong>Digital Multimeter (DMM)</strong><p>Measures voltage, resistance, continuity, and often current, diode drop, capacitance, frequency, and temperature.</p><span class="badge">General-purpose tester</span></div>
+    <div class="card"><strong>Clamp Meter</strong><p>Measures current by sensing the magnetic field around one conductor, usually without opening the circuit.</p><span class="badge">Current</span></div>
+    <div class="card"><strong>Non-Contact Voltage Tester</strong><p>Can indicate the presence of an AC electric field near a conductor. Useful as a screening tool, not proof that a circuit is de-energized.</p><span class="badge">Quick check</span></div>
+    <div class="card"><strong>Megohmmeter / Insulation Tester</strong><p>Applies a higher DC test voltage to evaluate insulation resistance.</p><span class="badge">Insulation condition</span></div>
+    <div class="card"><strong>LCR Meter</strong><p>Measures inductance, capacitance, and resistance; some models also measure ESR, Q, D, and test frequency behavior.</p><span class="badge">Components</span></div>
+    <div class="card"><strong>Oscilloscope</strong><p>Displays voltage versus time so you can see waveform shape, amplitude, frequency, noise, ripple, and timing.</p><span class="badge">Waveforms</span></div>
+    <div class="card"><strong>Thermal Camera / IR Thermometer</strong><p>Finds abnormal heating that may point to overloaded, loose, unbalanced, or failing equipment.</p><span class="badge">Heat patterns</span></div>
+    <div class="card"><strong>Phase Rotation Tester</strong><p>Identifies the phase sequence of a three-phase source before connecting or commissioning rotation-sensitive equipment.</p><span class="badge">Three-phase</span></div>
+    <div class="card"><strong>Ground / Earth Tester</strong><p>Measures grounding-electrode or earth-system performance using an appropriate method and instrument.</p><span class="badge">Grounding system</span></div>
+  </div>
 </section>
 
 <section class="panel">
-<h2>Oscilloscope Explorer</h2>
-<div class="grid two">
-<div class="scope">
-<svg viewBox="0 0 700 300">
-<defs><pattern id="grid" width="35" height="30" patternUnits="userSpaceOnUse"><path d="M35 0H0V30" fill="none" stroke="#17334e" stroke-width="1"/></pattern></defs>
-<rect width="700" height="300" fill="url(#grid)"/><line x1="0" y1="150" x2="700" y2="150" stroke="#365a7a"/>
-<path id="scopeWave" d="" fill="none" stroke="#ffd43b" stroke-width="5"/>
-</svg>
-</div>
-<div>
-<div class="field"><label>Waveform</label><select id="waveType"><option value="sine">Sine wave</option><option value="square">Square wave</option><option value="triangle">Triangle wave</option></select></div>
-<div class="field" style="margin-top:10px"><label>Frequency (Hz)</label><input id="scopeFreq" type="number" value="60" min="0.1" step="any"></div>
-<div class="field" style="margin-top:10px"><label>Peak amplitude (V)</label><input id="scopeAmp" type="number" value="5" min="0" step="any"></div>
-<div id="scopeReadout" class="result"></div>
-</div>
-</div>
+  <h2>Hand & Installation Tools</h2>
+  <div class="grid four">
+    <div class="card"><strong>Insulated Screwdrivers</strong><p>Used where appropriately rated insulated hand tools are required. Insulation does not make unsafe energized work acceptable.</p></div>
+    <div class="card"><strong>Nut Drivers / Socket Set</strong><p>Useful for terminals, panels, equipment covers, lugs, and mechanical hardware. Use the correct size to avoid damage.</p></div>
+    <div class="card"><strong>Pliers & Cutters</strong><p>Needle-nose, lineman's, side cutters, and specialty pliers handle, form, grip, and cut conductors and hardware.</p></div>
+    <div class="card"><strong>Wire Strippers</strong><p>Remove insulation without nicking or reducing the conductor strands.</p></div>
+    <div class="card"><strong>Crimping Tool</strong><p>Forms a controlled mechanical/electrical connection when the terminal, conductor, and crimp die are a matched system.</p></div>
+    <div class="card"><strong>Torque Tools</strong><p>Torque screwdriver or torque wrench helps tighten terminals to the equipment manufacturer's specified value.</p></div>
+    <div class="card"><strong>Heat Gun</strong><p>Useful for heat-shrink tubing and controlled heating. Keep it away from combustible or heat-sensitive materials.</p></div>
+    <div class="card"><strong>Labeler / Wire Markers</strong><p>Clear identification makes installation, maintenance, and troubleshooting safer and faster.</p></div>
+    <div class="card"><strong>Fish Tape / Pulling Tools</strong><p>Help route conductors through approved raceways. Pulling tension and bend limits still matter.</p></div>
+    <div class="card"><strong>Conduit Bender</strong><p>Forms field bends in compatible conduit while maintaining usable raceway geometry.</p></div>
+    <div class="card"><strong>Soldering / Desoldering Tools</strong><p>Used for electronic assembly and repair, not as a substitute for approved building-wiring terminations.</p></div>
+    <div class="card"><strong>Bench Vise / Drill Press</strong><p>Useful fabrication tools for controlled mechanical work, mounting, drilling, brackets, and prototypes.</p></div>
+  </div>
 </section>
 
 <section class="panel">
-<h2>Clamp Meter Concepts</h2>
-<div class="grid two">
-<div class="card"><strong>Clamp one conductor</strong><p>For ordinary current measurement, the clamp surrounds one current-carrying conductor so its magnetic field can be measured.</p></div>
-<div class="card"><strong>Do not clamp the whole cord</strong><p>If equal current flows out and back through conductors inside the same clamp, their magnetic fields largely cancel.</p></div>
-<div class="card"><strong>AC clamp meters</strong><p>Traditional transformer-style clamps measure AC current. Many modern meters also measure DC using Hall-effect sensing.</p></div>
-<div class="card"><strong>Inrush mode</strong><p>Some clamp meters capture short starting-current events from motors, transformers, and other loads.</p></div>
-</div>
+  <h2>Which Tool Should I Reach For?</h2>
+  <div class="tool-picker">
+    <div class="field">
+      <label for="jobSelect">What do you want to check?</label>
+      <select id="jobSelect">
+        <option value="voltage">Voltage at two points</option>
+        <option value="current">Current in one conductor</option>
+        <option value="dead">Is this circuit really de-energized?</option>
+        <option value="insulation">Cable / motor insulation condition</option>
+        <option value="component">Capacitor / inductor / component value</option>
+        <option value="waveform">Waveform, ripple, timing, noise</option>
+        <option value="heat">Unexpected hot spot</option>
+        <option value="phase">Three-phase sequence</option>
+        <option value="earth">Grounding electrode / earth performance</option>
+        <option value="terminal">Correct terminal tightness</option>
+      </select>
+    </div>
+    <div id="toolAnswer" class="tool-answer"></div>
+  </div>
 </section>
 
 <section class="panel">
-<h2>Continuity & Diode Test</h2>
-<table><thead><tr><th>Mode</th><th>What it tells you</th></tr></thead><tbody>
-<tr><td>Continuity</td><td>Checks for a low-resistance path. Many meters beep below a manufacturer-defined threshold.</td></tr>
-<tr><td>Resistance</td><td>Measures opposition to DC test current from the meter.</td></tr>
-<tr><td>Diode test</td><td>Applies a small current and displays forward voltage drop when the semiconductor junction conducts.</td></tr>
-<tr><td>Open circuit</td><td>Meter may show OL, over-range, or a very large resistance value.</td></tr>
-</tbody></table>
+  <h2>Virtual Multimeter</h2>
+  <p class="lead">Choose a meter function and a simulated circuit condition.</p>
+  <div class="grid two">
+    <div class="meter">
+      <div id="meterDisplay" class="display">0.000 V</div>
+      <div class="dial" id="dialLabel">DC V</div>
+      <div class="probe-row"><div class="probe black">COM</div><div class="probe red">V Ω</div></div>
+    </div>
+    <div>
+      <div class="field"><label>Meter function</label><select id="meterMode"><option value="dcv">DC volts</option><option value="acv">AC volts</option><option value="ohms">Resistance</option><option value="continuity">Continuity</option><option value="diode">Diode test</option></select></div>
+      <div class="field" style="margin-top:10px"><label>Simulated condition</label><select id="meterCase"></select></div>
+      <div id="meterExplain" class="result"></div>
+      <div class="formula">Voltage is measured across two points. Current is measured through a circuit path or with an appropriate current clamp. Resistance/continuity testing is normally done on de-energized circuits.</div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>How the Main Measurements Connect <span class="ate-level-badge">Technical</span></h2>
+  <div class="diagram">
+    <svg viewBox="0 0 920 390" role="img" aria-label="Conceptual diagrams for voltage, current clamp, and insulation testing">
+      <defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#0b63ce"/></marker></defs>
+      <rect x="20" y="20" width="270" height="340" rx="16" fill="#eef7ff" stroke="#9fc8ef" stroke-width="2"/>
+      <text x="155" y="50" text-anchor="middle" font-weight="800" fill="#071a2e">Voltage — across two points</text>
+      <line x1="65" y1="125" x2="245" y2="125" stroke="#222" stroke-width="5"/>
+      <rect x="105" y="105" width="100" height="40" rx="6" fill="#fff7cc" stroke="#c6a51c"/><text x="155" y="130" text-anchor="middle" font-weight="700">LOAD</text>
+      <circle cx="90" cy="215" r="33" fill="#fff" stroke="#0b63ce" stroke-width="3"/><text x="90" y="222" text-anchor="middle" font-size="22" font-weight="900">V</text>
+      <line x1="75" y1="185" x2="105" y2="145" stroke="#b42318" stroke-width="3"/>
+      <line x1="105" y1="145" x2="105" y2="125" stroke="#b42318" stroke-width="3"/>
+      <line x1="105" y1="245" x2="205" y2="145" stroke="#111" stroke-width="3"/>
+      <line x1="205" y1="145" x2="205" y2="125" stroke="#111" stroke-width="3"/>
+      <text x="155" y="300" text-anchor="middle" fill="#33495b">Meter probes span the two test points.</text>
+
+      <rect x="325" y="20" width="270" height="340" rx="16" fill="#eef7ff" stroke="#9fc8ef" stroke-width="2"/>
+      <text x="460" y="50" text-anchor="middle" font-weight="800" fill="#071a2e">Clamp current — one conductor</text>
+      <line x1="380" y1="115" x2="540" y2="115" stroke="#b42318" stroke-width="7"/>
+      <ellipse cx="460" cy="115" rx="42" ry="58" fill="none" stroke="#0b63ce" stroke-width="9"/>
+      <rect x="425" y="175" width="70" height="80" rx="12" fill="#2f3944" stroke="#171d22" stroke-width="5"/>
+      <text x="460" y="208" text-anchor="middle" fill="#fff" font-weight="800">CLAMP</text>
+      <text x="460" y="231" text-anchor="middle" fill="#b9c987" font-weight="800">A</text>
+      <line x1="380" y1="290" x2="540" y2="290" stroke="#222" stroke-width="7"/>
+      <text x="460" y="330" text-anchor="middle" fill="#33495b">Do not clamp both out-and-back conductors.</text>
+
+      <rect x="630" y="20" width="270" height="340" rx="16" fill="#eef7ff" stroke="#9fc8ef" stroke-width="2"/>
+      <text x="765" y="50" text-anchor="middle" font-weight="800" fill="#071a2e">Insulation test — isolated equipment</text>
+      <rect x="705" y="105" width="120" height="70" rx="8" fill="#fff" stroke="#071a2e" stroke-width="3"/><text x="765" y="135" text-anchor="middle" font-weight="800">MOTOR /</text><text x="765" y="156" text-anchor="middle" font-weight="800">CABLE</text>
+      <rect x="690" y="235" width="150" height="65" rx="10" fill="#fff3d6" stroke="#e5a84a" stroke-width="3"/><text x="765" y="263" text-anchor="middle" font-weight="800">INSULATION</text><text x="765" y="284" text-anchor="middle" font-weight="800">TESTER</text>
+      <line x1="725" y1="235" x2="725" y2="175" stroke="#b42318" stroke-width="3" marker-end="url(#arrow)"/>
+      <line x1="805" y1="235" x2="805" y2="175" stroke="#111" stroke-width="3" marker-end="url(#arrow)"/>
+      <text x="765" y="330" text-anchor="middle" fill="#8a1c13" font-weight="700">De-energize, isolate, discharge, then test.</text>
+    </svg>
+  </div>
+  <div class="warning">These diagrams show measurement relationships, not permission to probe energized equipment. Follow the instrument manufacturer, equipment documentation, applicable safe-work procedures, and qualified-person requirements.</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>Test Leads, Probes & Accessories <span class="ate-level-badge">Technical</span></h2>
+  <div class="grid three">
+    <div class="card"><strong>Standard Probes</strong><p>General point-to-point measurements. Finger guards, insulation condition, exposed tip length, and rating matter.</p></div>
+    <div class="card"><strong>Alligator / Grabber Clips</strong><p>Can make a secure connection before energization when the procedure and equipment allow it, reducing the need to hold probes by hand.</p></div>
+    <div class="card"><strong>Fused Leads</strong><p>Specialized leads can add protection in some high-energy measurement applications. They do not replace correct instrument rating or technique.</p></div>
+    <div class="card"><strong>Current Clamps</strong><p>Some scopes and meters accept external current probes for AC, DC, leakage, or high-frequency measurements.</p></div>
+    <div class="card"><strong>Differential Probes</strong><p>Used with compatible oscilloscopes for voltage between two non-ground-referenced points within the probe's rating.</p></div>
+    <div class="card"><strong>Temperature Probes</strong><p>Thermocouples or contact probes can measure temperature where infrared methods are limited by emissivity or line of sight.</p></div>
+  </div>
 </section>
 
 <section class="panel">
-<h2>Insulation Resistance Testing</h2>
-<div class="grid two">
-<div class="card"><strong>Megohmmeter</strong><p>Applies a specified DC test voltage and measures very high resistance through insulation.</p></div>
-<div class="card"><strong>Why ordinary ohms mode differs</strong><p>A normal multimeter uses a much lower test voltage and cannot stress insulation the same way.</p></div>
-</div>
-<div class="warning">Insulation testers can generate hundreds or thousands of volts. Equipment must be isolated, discharged, and tested according to manufacturer and safety procedures. Sensitive electronics can be damaged if they are left connected.</div>
+  <h2>Clamp Meter Concepts</h2>
+  <div class="grid two">
+    <div class="card"><strong>Clamp one conductor</strong><p>For ordinary load-current measurement, surround one current-carrying conductor so its magnetic field can be measured.</p></div>
+    <div class="card"><strong>Whole cord usually cancels</strong><p>If equal current flows out and back through conductors inside the same clamp, their magnetic fields largely cancel.</p></div>
+    <div class="card"><strong>AC vs. AC/DC clamps</strong><p>Transformer-style clamps measure AC. Hall-effect or other sensor designs can also measure DC when the meter supports it.</p></div>
+    <div class="card"><strong>Inrush / Low-current modes</strong><p>Some meters capture starting current; leakage-current clamps are designed for much smaller currents and different applications.</p></div>
+  </div>
 </section>
 
 <section class="panel">
-<h2>Logic Probe Basics</h2>
-<div class="grid three">
-<div class="card"><strong>LOW</strong><p>Input voltage falls within the probe's recognized low logic range.</p></div>
-<div class="card"><strong>HIGH</strong><p>Input voltage falls within the recognized high logic range.</p></div>
-<div class="card"><strong>Pulse</strong><p>The signal is changing too quickly to interpret as a steady high or low with a simple indicator.</p></div>
-</div>
-<p class="note">Logic thresholds depend on the logic family and supply voltage. TTL, CMOS, and modern low-voltage logic families do not all use the same thresholds.</p>
+  <h2>Non-Contact Voltage Testers</h2>
+  <div class="grid two">
+    <div class="card"><strong>What they do well</strong><p>Fast screening for an AC electric field near a conductor, receptacle, cable, or device before using a more definitive test method.</p></div>
+    <div class="card"><strong>What they cannot prove</strong><p>A no-beep indication is not sufficient evidence that hazardous voltage is absent. Shielding, cable construction, sensitivity, grounding, position, batteries, and field conditions can affect response.</p></div>
+  </div>
+  <div class="warning">Use an appropriate contact instrument and an approved absence-of-voltage procedure when proving a circuit de-energized. A non-contact tester is not a substitute for that procedure.</div>
 </section>
 
 <section class="panel">
-<h2>Common Measurement Mistakes</h2>
-<table><thead><tr><th>Mistake</th><th>Why it matters</th></tr></thead><tbody>
-<tr><td>Current lead left in amp jack</td><td>Trying to measure voltage with the lead still in a current input can create a short circuit.</td></tr>
-<tr><td>Resistance test on energized circuit</td><td>Can damage the meter and produce meaningless readings.</td></tr>
-<tr><td>Wrong CAT rating</td><td>Meter category and voltage ratings must be appropriate for the measurement environment and transient energy.</td></tr>
-<tr><td>Unfused or improperly fused current input</td><td>Can make a current-measurement mistake much more dangerous.</td></tr>
-<tr><td>Scope ground clip on the wrong point</td><td>Bench oscilloscopes often have earth-referenced grounds; incorrect connection can short a circuit to earth.</td></tr>
-</tbody></table>
+  <h2>LCR Meter & Component Testing</h2>
+  <table>
+    <thead><tr><th>Function</th><th>What it measures</th><th>Useful for</th><th>Watch for</th></tr></thead>
+    <tbody>
+      <tr><td>L — Inductance</td><td>Inductor/coil behavior at the instrument's test conditions.</td><td>Coils, chokes, filters, component identification.</td><td>Reading can change with test frequency, core condition, and DC bias.</td></tr>
+      <tr><td>C — Capacitance</td><td>Capacitive value.</td><td>Capacitors, filters, timing circuits.</td><td>Discharge capacitor first; in-circuit paths can distort readings.</td></tr>
+      <tr><td>R — Resistance</td><td>Resistance, often with better low-value/component features than a basic DMM.</td><td>Resistors, windings, ESR-related checks on supported meters.</td><td>Lead resistance matters at very low values.</td></tr>
+      <tr><td>ESR / D / Q</td><td>Loss-related component characteristics on equipped meters.</td><td>Capacitor health, inductor quality, component comparison.</td><td>Interpret at the correct test frequency and conditions.</td></tr>
+    </tbody>
+  </table>
 </section>
 
 <section class="panel">
-<h2>Measurement Safety</h2>
-<div class="warning">Use test equipment rated for the circuit and environment. Inspect leads and probes, use the correct meter jacks and function, de-energize whenever practical, and verify absence of voltage with an appropriate procedure. For mains or high-energy systems, measurement technique, PPE, instrument category rating, and applicable safe-work procedures are critical.</div>
+  <h2>Insulation Resistance Testing</h2>
+  <div class="grid two">
+    <div class="card"><strong>Megohmmeter</strong><p>Applies a specified DC test voltage and measures very high resistance through insulation.</p></div>
+    <div class="card"><strong>Why DMM ohms mode differs</strong><p>A normal multimeter uses a much lower test voltage and does not stress insulation in the same way.</p></div>
+  </div>
+  <div class="danger">Insulation testers can generate hundreds or thousands of volts. Isolate the equipment, disconnect or protect sensitive electronics as required, control stored energy, discharge after testing, and follow the equipment/tester procedures. Do not simply attach a megohmmeter to an assembled electronic system.</div>
+</section>
+
+<section class="panel">
+  <h2>Thermal Camera & IR Thermometer</h2>
+  <div class="grid three">
+    <div class="card"><strong>Good Uses</strong><p>Comparing similar phases/components, finding abnormal heating, checking bearings, terminals, breakers, fuses, bus connections, motors, and power electronics.</p></div>
+    <div class="card"><strong>Temperature Is Context</strong><p>A hot component is not automatically defective. Compare load, ambient temperature, phase balance, equipment rating, and similar components.</p></div>
+    <div class="card"><strong>Emissivity Matters</strong><p>Shiny metals can give misleading infrared readings. Surface emissivity, reflections, distance, focus, and viewing angle affect results.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>Phase Rotation Tester <span class="ate-level-badge">Technical</span></h2>
+  <div class="diagram">
+    <svg viewBox="0 0 900 260" role="img" aria-label="Conceptual three phase rotation tester relationship">
+      <text x="70" y="55" font-size="19" font-weight="800" fill="#071a2e">3φ SOURCE</text>
+      <line x1="120" y1="85" x2="410" y2="85" stroke="#b42318" stroke-width="6"/><text x="140" y="76" font-weight="800">L1</text>
+      <line x1="120" y1="130" x2="410" y2="130" stroke="#222" stroke-width="6"/><text x="140" y="121" font-weight="800">L2</text>
+      <line x1="120" y1="175" x2="410" y2="175" stroke="#0b63ce" stroke-width="6"/><text x="140" y="166" font-weight="800">L3</text>
+      <rect x="410" y="55" width="220" height="150" rx="16" fill="#eef7ff" stroke="#0b63ce" stroke-width="3"/>
+      <text x="520" y="100" text-anchor="middle" font-size="19" font-weight="900" fill="#071a2e">PHASE ROTATION</text>
+      <text x="520" y="127" text-anchor="middle" font-size="19" font-weight="900" fill="#071a2e">TESTER</text>
+      <text x="520" y="165" text-anchor="middle" font-size="17" font-weight="800" fill="#1f7a4d">ABC / ACB</text>
+      <line x1="630" y1="130" x2="805" y2="130" stroke="#0b63ce" stroke-width="4"/>
+      <text x="715" y="107" text-anchor="middle" fill="#33495b">Verify sequence before</text>
+      <text x="715" y="153" text-anchor="middle" fill="#33495b">rotation-sensitive equipment</text>
+    </svg>
+  </div>
+  <p class="note">The actual tester connection and permitted use depend on the instrument and system. Phase sequence alone does not prove a motor will rotate in the desired direction after all mechanical/electrical relationships are considered.</p>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>Ground / Earth Testing <span class="ate-level-badge">Technical</span></h2>
+  <div class="grid three">
+    <div class="card"><strong>Fall-of-Potential</strong><p>Uses a dedicated earth tester and auxiliary probes/electrodes arranged according to the instrument's test method to evaluate an electrode system.</p></div>
+    <div class="card"><strong>Clamp-On Ground Tester</strong><p>Can measure loop resistance in suitable multi-grounded systems without auxiliary probes. It requires an appropriate closed return path and is not valid for every grounding arrangement.</p></div>
+    <div class="card"><strong>Ground-Bond / Low-Resistance Test</strong><p>Different from earth resistance: it evaluates low-resistance bonding/conductor paths with equipment intended for that purpose.</p></div>
+  </div>
+  <div class="warning">“Ground resistance,” “ground-fault path,” and “equipment bonding” are different measurements. Choose the method based on what you are actually trying to prove.</div>
+</section>
+
+<section class="panel">
+  <h2>Torque, Crimping & Termination Tools</h2>
+  <table>
+    <thead><tr><th>Tool</th><th>Purpose</th><th>Key rule</th></tr></thead>
+    <tbody>
+      <tr><td>Torque screwdriver / wrench</td><td>Applies a specified terminal or fastener torque.</td><td>Use the manufacturer's stated value and the correct tool range; do not treat “tight enough” as a measurement.</td></tr>
+      <tr><td>Ratchet crimper</td><td>Forms a repeatable crimp on compatible terminals.</td><td>Match conductor size, terminal family, material, and die/tool specified for the connection system.</td></tr>
+      <tr><td>Ferrule crimper</td><td>Forms ferrules on stranded conductors for compatible terminals.</td><td>Use the correct ferrule size/length and only where the terminal manufacturer permits it.</td></tr>
+      <tr><td>Compression lug tool</td><td>Compresses larger lugs/splices.</td><td>Correct die index, conductor material, lug range, preparation, and inspection matter.</td></tr>
+      <tr><td>Wire stripper</td><td>Removes insulation.</td><td>Avoid nicked strands, wrong strip length, or damaged insulation at the termination.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>Bench & Electronics Tools</h2>
+  <div class="grid three">
+    <div class="card"><strong>Bench Power Supply</strong><p>Provides adjustable, often current-limited DC for controlled testing and prototyping. Set voltage/current limits before connecting sensitive circuits.</p></div>
+    <div class="card"><strong>Soldering Station</strong><p>Controlled heat for electronic joints. Tip size, temperature, dwell time, flux, cleanliness, and ESD practices affect quality.</p></div>
+    <div class="card"><strong>Desoldering / Rework</strong><p>Solder wick, vacuum desoldering, hot-air rework, preheating, magnification, and ESD controls help remove or replace electronic parts.</p></div>
+    <div class="card"><strong>Logic Probe / Analyzer</strong><p>Logic probe gives quick HIGH/LOW/pulse indication; a logic analyzer captures multiple digital channels over time.</p></div>
+    <div class="card"><strong>Function Generator</strong><p>Produces controlled waveforms for testing amplifiers, filters, timing circuits, and signal paths within equipment ratings.</p></div>
+    <div class="card"><strong>Portable Inverter / Battery Pack</strong><p>Useful temporary power source for low-risk field work when properly rated. Treat its AC output and battery fault current as real electrical hazards.</p></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Oscilloscope Explorer</h2>
+  <div class="grid two">
+    <div class="scope">
+      <svg viewBox="0 0 700 300">
+        <defs><pattern id="grid" width="35" height="30" patternUnits="userSpaceOnUse"><path d="M35 0H0V30" fill="none" stroke="#17334e" stroke-width="1"/></pattern></defs>
+        <rect width="700" height="300" fill="url(#grid)"/><line x1="0" y1="150" x2="700" y2="150" stroke="#365a7a"/>
+        <path id="scopeWave" d="" fill="none" stroke="#ffd43b" stroke-width="5"/>
+      </svg>
+    </div>
+    <div>
+      <div class="field"><label>Waveform</label><select id="waveType"><option value="sine">Sine wave</option><option value="square">Square wave</option><option value="triangle">Triangle wave</option></select></div>
+      <div class="field" style="margin-top:10px"><label>Frequency (Hz)</label><input id="scopeFreq" type="number" value="60" min="0.1" step="any"></div>
+      <div class="field" style="margin-top:10px"><label>Peak amplitude (V)</label><input id="scopeAmp" type="number" value="5" min="0" step="any"></div>
+      <div id="scopeReadout" class="result"></div>
+    </div>
+  </div>
+  <div class="danger">A bench oscilloscope's probe ground is often connected to protective earth. Connecting that ground clip to the wrong point can short the circuit to earth. Use the correct measurement method and probe system for the circuit.</div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>CAT Ratings & Measurement Environment <span class="ate-level-badge advanced">Advanced</span></h2>
+  <p class="lead">Meter voltage rating alone is not enough. IEC measurement categories relate to where the measurement is made and the transient energy the instrument is designed to withstand.</p>
+  <table>
+    <thead><tr><th>Category</th><th>General concept</th><th>Examples</th></tr></thead>
+    <tbody>
+      <tr><td>CAT II</td><td>Loads connected to building receptacle circuits.</td><td>Appliances and portable equipment under the instrument's specified conditions.</td></tr>
+      <tr><td>CAT III</td><td>Building distribution.</td><td>Distribution panels, feeders, fixed equipment, and branch-circuit distribution environments.</td></tr>
+      <tr><td>CAT IV</td><td>Origin / service-side environment.</td><td>Service entrance and other locations with high available transient energy.</td></tr>
+    </tbody>
+  </table>
+  <div class="warning">Use the exact instrument marking and manufacturer documentation. Category definitions, voltage ratings, probe ratings, fused inputs, creepage/clearance, and available fault energy all matter. Never “upgrade” a meter by using higher-rated leads alone.</div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Advanced Measurement Errors <span class="ate-level-badge advanced">Advanced</span></h2>
+  <div class="grid two">
+    <div class="card"><strong>Input Impedance</strong><p>A meter can load the circuit being measured. High-impedance DMMs reduce loading but may display capacitively coupled “ghost” voltage in some situations.</p></div>
+    <div class="card"><strong>Bandwidth</strong><p>A meter or scope can only reproduce signals within its useful bandwidth and rise-time limits. Fast switching edges can be badly misrepresented by an unsuitable instrument or probe.</p></div>
+    <div class="card"><strong>True-RMS vs. Average Responding</strong><p>Non-sinusoidal waveforms from drives, dimmers, rectifiers, and electronic loads may require a true-RMS instrument within its specified bandwidth and crest-factor limits.</p></div>
+    <div class="card"><strong>Lead Resistance</strong><p>Two-wire resistance measurements include lead/contact resistance. Kelvin/four-wire methods are used for accurate very-low-resistance measurements.</p></div>
+    <div class="card"><strong>Common-Mode Limits</strong><p>Differential and isolated measurements must stay inside the probe/instrument common-mode and differential ratings.</p></div>
+    <div class="card"><strong>Instrument Uncertainty</strong><p>Resolution is not the same as accuracy. Account for accuracy specification, range, counts/digits, temperature, calibration, and measurement setup.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Diagnostic Strategy: Measure With a Question <span class="ate-level-badge advanced">Advanced</span></h2>
+  <table>
+    <thead><tr><th>Question</th><th>Likely tool</th><th>What the result can narrow down</th></tr></thead>
+    <tbody>
+      <tr><td>Is the source voltage present where expected?</td><td>DMM / approved voltage tester</td><td>Source, disconnect, fuse/breaker, conductor, or control-path problem.</td></tr>
+      <tr><td>Is the load drawing expected current?</td><td>Clamp meter</td><td>No-load/open circuit, overload, mechanical load, phase imbalance, startup condition.</td></tr>
+      <tr><td>Is insulation degrading?</td><td>Insulation resistance tester</td><td>Moisture, contamination, aging, damaged cable/winding insulation—interpreted with equipment procedures and trends.</td></tr>
+      <tr><td>Is the signal distorted or intermittent?</td><td>Oscilloscope / recorder</td><td>Noise, ripple, switching behavior, timing, transient, sensor/control signal faults.</td></tr>
+      <tr><td>Is a connection heating abnormally?</td><td>Thermal camera + load measurement</td><td>Possible resistance, imbalance, overload, cooling, contact, or mechanical problem that needs confirmation.</td></tr>
+      <tr><td>Is a three-phase motor direction risk present?</td><td>Phase-rotation tester</td><td>Supply phase sequence before commissioning rotation-sensitive equipment.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>Common Measurement Mistakes</h2>
+  <table>
+    <thead><tr><th>Mistake</th><th>Why it matters</th></tr></thead>
+    <tbody>
+      <tr><td>Current lead left in amp jack</td><td>Attempting a voltage measurement with the lead in a current input can create a short circuit.</td></tr>
+      <tr><td>Resistance / continuity test on an energized circuit</td><td>Can damage the instrument, create a hazard, and produce meaningless results.</td></tr>
+      <tr><td>Using a non-contact tester as proof of zero voltage</td><td>It is a screening tool, not a complete absence-of-voltage procedure.</td></tr>
+      <tr><td>Wrong CAT / voltage rating</td><td>An instrument unsuitable for the measurement environment may not withstand available transients or fault energy.</td></tr>
+      <tr><td>Clamping an entire cable</td><td>Outgoing and returning magnetic fields can cancel and show little or no load current.</td></tr>
+      <tr><td>Megging connected electronics</td><td>High test voltage can damage drives, PLCs, surge devices, controls, or other electronics unless isolated as required.</td></tr>
+      <tr><td>Scope ground clip on the wrong point</td><td>Earth-referenced scope grounds can create a direct short to ground.</td></tr>
+      <tr><td>Trusting one thermal image alone</td><td>Emissivity, reflection, loading, and environmental conditions can make a temperature image misleading.</td></tr>
+      <tr><td>Crimping with a generic die</td><td>A terminal can look secure but have poor mechanical pullout strength or electrical performance if the tool/terminal/conductor system is mismatched.</td></tr>
+      <tr><td>Ignoring torque specifications</td><td>Under- or over-torque can damage conductors/terminals and contribute to heating or connection failure.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>Measurement Safety</h2>
+  <div class="danger">Use test equipment rated for the circuit and environment. Inspect the instrument, leads, probes, fuses, and accessories before use. Select the correct function and jack before making contact. De-energize whenever practical, control stored energy, and follow an approved absence-of-voltage process where required. Electrical testing can expose the worker to shock and arc-flash hazards even when the test itself takes only seconds.</div>
+</section>
+
+<section class="panel">
+  <h2>Related Pages</h2>
+  <div class="related">
+    <a href="metering-instrumentation.html">Metering & Instrumentation<span>CTs, VTs/PTs, transducers, shunts, energy meters, and instrumentation.</span></a>
+    <a href="oscilloscope-lab.html">Oscilloscope Lab<span>Practice waveform, amplitude, frequency, and scope concepts.</span></a>
+    <a href="troubleshooting.html">Troubleshooting<span>Use measurements and logic to isolate faults.</span></a>
+    <a href="electrical-safety-work-practices.html">Electrical Safety<span>LOTO, absence-of-voltage verification, stored energy, PPE, and safe-work concepts.</span></a>
+    <a href="lugs-ferrules-splices.html">Lugs, Ferrules & Splices<span>Termination methods and connection quality.</span></a>
+    <a href="grounding-bonding-shielding.html">Grounding & Bonding<span>Grounding, bonding, shields, and fault-current paths.</span></a>
+  </div>
 </section>
 </main>
+
 <footer>A DONCO-BAYCITY™ App</footer>
+
 <script>
 const cases={
  dcv:[["12 V battery","12.60 V","A healthy 12 V battery at rest may read around this value depending on chemistry and state of charge."],["5 V supply","5.02 V","A regulated low-voltage DC supply."],["Open lead","0.000 V","No simulated potential difference between the selected points."]],
@@ -148,8 +422,23 @@ function loadMeterCases(){meterCase.innerHTML="";cases[meterMode.value].forEach(
 function drawMeter(){const x=cases[meterMode.value][+meterCase.value||0];meterDisplay.textContent=x[1];dialLabel.textContent={dcv:"DC V",acv:"AC V",ohms:"Ω",continuity:"BEEP",diode:"DIODE"}[meterMode.value];meterExplain.textContent=x[2]}
 meterMode.onchange=loadMeterCases;meterCase.onchange=drawMeter;loadMeterCases();
 
+const toolAnswers={
+ voltage:"Use a properly rated digital multimeter or approved voltage tester. Voltage is measured across two points. Verify the instrument, range/function, leads, jacks, and measurement category before use.",
+ current:"Use a clamp meter when the current and conductor arrangement are within its rating. Clamp one conductor for ordinary load current. For very small leakage current, use a purpose-designed leakage clamp.",
+ dead:"Use the site's approved absence-of-voltage procedure with an appropriate contact instrument. A non-contact voltage tester can be a useful preliminary screen, but it cannot prove absence of hazardous voltage.",
+ insulation:"Use an insulation resistance tester only after the equipment is de-energized, isolated, stored energy is controlled, and sensitive electronics are disconnected/protected as required by the equipment procedure.",
+ component:"Use an LCR meter for inductance/capacitance/resistance and supported loss measurements. Remove/discharge the component when required; in-circuit parallel paths can change the reading.",
+ waveform:"Use an oscilloscope with a probe/measurement method rated and suitable for the circuit. Check bandwidth, grounding/common-mode limits, attenuation, and probe rating.",
+ heat:"Use a thermal camera for patterns or an IR thermometer for a spot reading, then confirm with load/current and other measurements. Account for emissivity and reflections.",
+ phase:"Use a properly rated phase-rotation tester according to its manufacturer instructions before commissioning rotation-sensitive three-phase equipment.",
+ earth:"Use a dedicated ground/earth tester and the method appropriate to the grounding system: fall-of-potential, selective/clamp method, or another approved technique. Do not confuse earth resistance with equipment-bond continuity.",
+ terminal:"Use the manufacturer-specified torque value with a calibrated/appropriate torque screwdriver or wrench. Correct torque is a measured installation requirement, not a feel test."
+};
+function updateToolAnswer(){toolAnswer.textContent=toolAnswers[jobSelect.value]}
+jobSelect.addEventListener("change",updateToolAnswer);updateToolAnswer();
+
 function drawScope(){
- const type=waveType.value,f=+scopeFreq.value,a=+scopeAmp.value;let d="";
+ const type=waveType.value,f=Math.max(.001,+scopeFreq.value||.001),a=Math.max(0,+scopeAmp.value||0);let d="";
  for(let x=0;x<=700;x+=4){const phase=x/700*Math.PI*4;let yv=0;if(type==="sine")yv=Math.sin(phase);else if(type==="square")yv=Math.sin(phase)>=0?1:-1;else yv=2/Math.PI*Math.asin(Math.sin(phase));const y=150-yv*90;d+=(x===0?"M":" L")+x+" "+y.toFixed(1)}
  scopeWave.setAttribute("d",d);const period=1000/f;scopeReadout.textContent="Frequency: "+f.toFixed(2)+" Hz · Period: "+period.toFixed(3)+" ms · Peak-to-peak: "+(2*a).toFixed(2)+" V";
 }
