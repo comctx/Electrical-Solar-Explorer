@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f3b63"><title>EV Charging & Electrification Explorer</title><style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1060px;margin:auto;padding:18px}.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}}
+</style><link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script></head><body>
+<header><h1>EV Charging & Electrification Explorer</h1><p>EVSE, AC charging, DC fast charging, onboard chargers, load management, battery systems, and bidirectional power concepts.</p></header><main>
+<section class="ate-level-chooser" data-ate-level-chooser><h2>Choose Your Detail Level</h2><p>Beginner explains the charging system. Technical adds AC/DC power flow and load management. Advanced adds bidirectional charging, grid interaction, thermal limits, and protection.</p><div class="ate-level-buttons"><button data-ate-set-level="basic">Beginner</button><button data-ate-set-level="technical">Technical</button><button data-ate-set-level="advanced">Advanced</button></div><div class="ate-level-status" data-ate-level-status></div></section>
+
+<section class="panel"><h2>Beginner Start Here</h2><div class="grid three">
+<div class="card"><strong>EVSE</strong><p>Electric Vehicle Supply Equipment provides the controlled connection between the electrical supply and the vehicle.</p><span class="badge">Charging interface</span></div>
+<div class="card"><strong>Onboard Charger</strong><p>Inside the vehicle, converts AC from the EVSE into DC suitable for charging the traction battery.</p><span class="badge">AC → DC in vehicle</span></div>
+<div class="card"><strong>DC Fast Charger</strong><p>Performs the AC-to-DC conversion outside the vehicle and sends controlled DC power directly to the vehicle battery system.</p><span class="badge">High-power DC</span></div>
+<div class="card"><strong>Battery Management System</strong><p>Monitors cell voltage, temperature, current, state of charge, and other conditions to keep the battery within operating limits.</p><span class="badge">Battery supervision</span></div>
+<div class="card"><strong>Connector & Cable</strong><p>Carries charging power and communication signals between EVSE and vehicle.</p><span class="badge">Power + communication</span></div>
+<div class="card"><strong>Load Management</strong><p>Limits or schedules charging so electrical service, transformer, feeder, or site demand limits are not exceeded.</p><span class="badge">Share available capacity</span></div>
+</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>Charging Power Paths <span class="ate-level-badge">Technical</span></h2>
+<table><thead><tr><th>Charging type</th><th>Where AC becomes DC</th><th>What limits charging power</th></tr></thead><tbody>
+<tr><td>AC charging</td><td>Inside the vehicle's onboard charger</td><td>EVSE circuit rating, onboard charger rating, vehicle battery limits, supply capacity</td></tr>
+<tr><td>DC fast charging</td><td>Inside the external charger</td><td>Charger rating, vehicle voltage/current limits, battery temperature, state of charge, site power</td></tr>
+<tr><td>Bidirectional charging</td><td>Power conversion can operate in both directions where supported</td><td>Vehicle, EVSE, interconnection equipment, controls, and utility/site requirements</td></tr>
+</tbody></table></section>
+
+<section class="panel" data-ate-level="technical"><h2>Site Electrical Considerations <span class="ate-level-badge">Technical</span></h2><div class="grid three">
+<div class="card"><strong>Service Capacity</strong><p>Charging load must fit within available electrical-service capacity or be managed dynamically.</p></div>
+<div class="card"><strong>Feeder & Branch Circuit</strong><p>Conductors, overcurrent protection, disconnecting means, and terminations must match the equipment rating and installation rules.</p></div>
+<div class="card"><strong>Ground-Fault Protection</strong><p>EV charging equipment includes protection functions specific to its design; installation protection must coordinate with the equipment and local rules.</p></div>
+<div class="card"><strong>Demand Management</strong><p>Multiple chargers can share a site power limit by reducing individual charging current when total demand rises.</p></div>
+<div class="card"><strong>Networking</strong><p>Commercial chargers may connect to backend systems for authorization, billing, diagnostics, load control, and software updates.</p></div>
+<div class="card"><strong>Weather / Environment</strong><p>Outdoor equipment, connectors, cable handling, temperature, moisture, impact, and enclosure rating affect installation and reliability.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Fast Charging & Battery Limits <span class="ate-level-badge advanced">Advanced</span></h2>
+<div class="grid two">
+<div class="card"><strong>Voltage Architecture</strong><p>Higher vehicle battery voltage can reduce current for the same charging power, which can reduce conductor losses and cable size requirements.</p></div>
+<div class="card"><strong>Charge Taper</strong><p>Fast-charge power often decreases as the battery approaches a high state of charge because cell voltage and thermal limits become more restrictive.</p></div>
+<div class="card"><strong>Thermal Management</strong><p>Battery packs, charge cables, power modules, and connectors may require liquid or forced-air cooling at high power.</p></div>
+<div class="card"><strong>Power Modules</strong><p>DC fast chargers commonly use modular rectifier/DC-converter stages so output power can be scaled and shared across dispensers.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Vehicle-to-Home / Vehicle-to-Grid <span class="ate-level-badge advanced">Advanced</span></h2>
+<div class="grid two">
+<div class="card"><strong>V2H</strong><p>Vehicle-to-home uses compatible bidirectional equipment so an EV battery can supply selected building loads during supported operating modes.</p></div>
+<div class="card"><strong>V2G</strong><p>Vehicle-to-grid allows controlled export to the electric grid where the vehicle, charger, interconnection system, and utility program support it.</p></div>
+<div class="card"><strong>Islanding / Transfer</strong><p>Backup operation must prevent unsafe energization of utility lines and requires the correct transfer and interconnection equipment.</p></div>
+<div class="card"><strong>Grid Services</strong><p>Aggregated charging systems can potentially respond to demand, frequency, or energy-price signals when allowed by the system and market design.</p></div>
+</div><div class="warning">EV systems can involve high-voltage DC, high fault current, large batteries, stored energy, and thermal hazards. Installation and service require equipment-specific procedures, rated test equipment, and applicable electrical and vehicle-safety rules.</div></section>
+</main><footer>A DONCO-BAYCITY™ App</footer></body></html>
