@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f3b63"><title>SCADA & Industrial Communications Explorer</title><style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1060px;margin:auto;padding:18px}.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+.diagram-wrap{margin-top:14px;border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:12px;overflow:auto}.diagram{width:100%;min-width:820px;height:auto;display:block}
+.box{fill:#fff;stroke:#9fc8ef;stroke-width:3}.dark{fill:#263848;stroke:#071a2e;stroke-width:3}.fiber{fill:none;stroke:#8e44ad;stroke-width:7;stroke-linecap:round}.copper{fill:none;stroke:#0b63ce;stroke-width:7;stroke-linecap:round}.radio{fill:none;stroke:#d97706;stroke-width:5;stroke-linecap:round;stroke-dasharray:12 8}
+.dtext{font:800 18px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}.dsmall{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#40566a}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three{grid-template-columns:1fr}}
+</style><link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script></head><body>
+<header><h1>SCADA & Industrial Communications Explorer</h1><p>SCADA, RTUs, IEDs, gateways, Ethernet switches, protocol converters, utility protocols, and fiber communications.</p></header><main>
+
+<section class="ate-level-chooser" data-ate-level-chooser><h2>Choose Your Detail Level</h2><p>Beginner explains the devices. Technical shows how a control network fits together. Advanced introduces utility protocols, redundancy, time synchronization, cybersecurity, and substation communications.</p><div class="ate-level-buttons"><button data-ate-set-level="basic">Beginner</button><button data-ate-set-level="technical">Technical</button><button data-ate-set-level="advanced">Advanced</button></div><div class="ate-level-status" data-ate-level-status></div></section>
+
+<section class="panel"><h2>Beginner Start Here</h2><div class="grid three">
+<div class="card"><strong>SCADA</strong><p>Supervisory Control and Data Acquisition systems collect information from remote equipment and let operators monitor, alarm, trend, and issue authorized control commands.</p><span class="badge">Supervision</span></div>
+<div class="card"><strong>RTU</strong><p>A Remote Terminal Unit gathers field signals, runs local logic as designed, and communicates data between remote sites and a control center.</p><span class="badge">Remote site interface</span></div>
+<div class="card"><strong>IED</strong><p>An Intelligent Electronic Device is a microprocessor-based device such as a protective relay, meter, controller, or recorder that can measure, protect, control, and communicate.</p><span class="badge">Smart field device</span></div>
+<div class="card"><strong>Ethernet Switch</strong><p>Connects multiple Ethernet devices and forwards network frames to the correct ports.</p><span class="badge">Network connection</span></div>
+<div class="card"><strong>Gateway</strong><p>Connects systems that use different networks, data models, addressing, or protocols.</p><span class="badge">System bridge</span></div>
+<div class="card"><strong>Modem</strong><p>Provides communications over a carrier or medium such as cellular, radio, telephone, or other wide-area link.</p><span class="badge">Remote communications</span></div>
+<div class="card"><strong>Protocol Converter</strong><p>Translates information between protocols when two pieces of equipment cannot communicate directly.</p><span class="badge">Protocol translation</span></div>
+<div class="card"><strong>Fiber Transceiver</strong><p>Converts electrical network signals to optical signals and back, allowing fiber links with electrical isolation and immunity to electromagnetic interference.</p><span class="badge">Optical link</span></div>
+<div class="card"><strong>HMI / Operator Station</strong><p>Presents system status, alarms, trends, and controls to an operator while the underlying PLCs, RTUs, and IEDs perform field functions.</p><span class="badge">Human interface</span></div>
+</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>How a SCADA Network Fits Together <span class="ate-level-badge">Technical</span></h2>
+<div class="diagram-wrap"><svg class="diagram" viewBox="0 0 1100 520" aria-label="SCADA network relationship diagram">
+<text x="35" y="38" class="dtext">Control center ↔ communications network ↔ substation / plant devices</text>
+<rect x="35" y="75" width="230" height="360" rx="16" class="box"/><text x="82" y="112" class="dtext">Control Center</text>
+<rect x="72" y="145" width="155" height="70" rx="12" class="dark"/><text x="115" y="186" font-size="17" font-weight="800" fill="#fff">SCADA Server</text>
+<rect x="72" y="245" width="155" height="70" rx="12" class="dark"/><text x="115" y="286" font-size="17" font-weight="800" fill="#fff">HMI</text>
+<rect x="72" y="345" width="155" height="55" rx="12" class="dark"/><text x="98" y="379" font-size="15" font-weight="800" fill="#fff">Historian / Alarms</text>
+
+<rect x="360" y="125" width="230" height="260" rx="16" class="box"/><text x="410" y="162" class="dtext">Network Layer</text>
+<rect x="400" y="195" width="150" height="55" rx="12" class="dark"/><text x="430" y="229" font-size="16" font-weight="800" fill="#fff">Ethernet Switch</text>
+<rect x="400" y="285" width="150" height="55" rx="12" class="dark"/><text x="443" y="319" font-size="16" font-weight="800" fill="#fff">Gateway</text>
+
+<rect x="690" y="75" width="365" height="360" rx="16" class="box"/><text x="782" y="112" class="dtext">Substation / Plant</text>
+<rect x="735" y="150" width="120" height="60" rx="12" class="dark"/><text x="775" y="187" font-size="17" font-weight="800" fill="#fff">RTU</text>
+<rect x="890" y="150" width="120" height="60" rx="12" class="dark"/><text x="930" y="187" font-size="17" font-weight="800" fill="#fff">IED</text>
+<rect x="735" y="265" width="120" height="60" rx="12" class="dark"/><text x="775" y="302" font-size="17" font-weight="800" fill="#fff">PLC</text>
+<rect x="890" y="265" width="120" height="60" rx="12" class="dark"/><text x="925" y="302" font-size="17" font-weight="800" fill="#fff">Meter</text>
+<rect x="810" y="365" width="120" height="45" rx="12" class="dark"/><text x="837" y="393" font-size="15" font-weight="800" fill="#fff">Field I/O</text>
+
+<path d="M265 220H360" class="fiber"/><text x="277" y="205" class="dsmall">fiber / WAN</text>
+<path d="M590 220H690" class="copper"/><text x="610" y="205" class="dsmall">Ethernet</text>
+<path d="M855 180H890" class="copper"/><path d="M795 210V265" class="copper"/><path d="M950 210V265" class="copper"/><path d="M795 325V365H810" class="copper"/><path d="M950 325V387H930" class="copper"/>
+</svg></div>
+<p class="note">A real system may use redundant servers, routers, firewalls, serial links, radios, private WANs, cellular links, GPS/PTP clocks, and multiple network zones.</p></section>
+
+<section class="panel" data-ate-level="technical"><h2>Protocols Used in Electrical Systems <span class="ate-level-badge">Technical</span></h2>
+<table><thead><tr><th>Protocol / family</th><th>Where it is used</th><th>Basic idea</th></tr></thead><tbody>
+<tr><td>Modbus</td><td>Industrial controls, meters, drives, PLCs, gateways</td><td>Register-oriented protocol available over serial links and TCP/IP.</td></tr>
+<tr><td>DNP3</td><td>Electric utility and remote SCADA systems</td><td>Designed for telemetry and control, including event-oriented data and robust remote communications.</td></tr>
+<tr><td>IEC 61850</td><td>Substation automation and protection</td><td>Standardized data models and communication services for IEDs; includes fast peer-to-peer messaging such as GOOSE.</td></tr>
+<tr><td>EtherNet/IP</td><td>Industrial automation</td><td>Industrial protocol using standard Ethernet and CIP application services.</td></tr>
+<tr><td>PROFINET</td><td>Industrial automation</td><td>Industrial Ethernet used for controller, I/O, drive, and device communications.</td></tr>
+</tbody></table></section>
+
+<section class="panel" data-ate-level="technical"><h2>Gateways & Protocol Converters <span class="ate-level-badge">Technical</span></h2><div class="grid three">
+<div class="card"><strong>Serial-to-Ethernet</strong><p>Connects legacy serial devices to an Ethernet-based system while preserving or translating the application protocol as designed.</p></div>
+<div class="card"><strong>Protocol Translation</strong><p>Maps data points between systems, for example between Modbus registers and another protocol's objects or tags.</p></div>
+<div class="card"><strong>Media Conversion</strong><p>Converts copper Ethernet to fiber without necessarily changing the higher-level network protocol.</p></div>
+<div class="card"><strong>Data Concentrator</strong><p>Collects information from many IEDs or meters and presents it upstream through fewer connections.</p></div>
+<div class="card"><strong>Time Synchronization</strong><p>Accurate timestamps help sequence events and analyze faults. Systems may use NTP, PTP, IRIG-B, GNSS/GPS-derived time, or other methods.</p></div>
+<div class="card"><strong>Configuration</strong><p>Addressing, baud rate, VLANs, protocol parameters, point maps, scaling, and security settings must agree across the communicating devices.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>IEC 61850 & Substation Communications <span class="ate-level-badge advanced">Advanced</span></h2><div class="grid two">
+<div class="card"><strong>Logical Nodes & Data Models</strong><p>IEC 61850 organizes protection, measurement, control, and status information into standardized object models instead of only raw register numbers.</p></div>
+<div class="card"><strong>GOOSE</strong><p>Fast peer-to-peer Ethernet messaging used for time-critical status and protection/control signals within suitable substation designs.</p></div>
+<div class="card"><strong>Sampled Values</strong><p>Digitized current and voltage samples can be communicated over process-bus networks in compatible architectures.</p></div>
+<div class="card"><strong>Station Bus / Process Bus</strong><p>Station-bus networks interconnect IEDs and station-level systems; process-bus architectures extend digital communications closer to primary equipment.</p></div>
+<div class="card"><strong>Fiber in Substations</strong><p>Fiber is valuable around high electromagnetic fields and ground-potential differences because it does not conduct electrical current between endpoints.</p></div>
+<div class="card"><strong>Redundancy</strong><p>Critical networks may use redundant paths, switches, power supplies, servers, or seamless-redundancy techniques to improve availability.</p></div>
+</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>SCADA Reliability & Cybersecurity <span class="ate-level-badge advanced">Advanced</span></h2><div class="grid two">
+<div class="card"><strong>Network Segmentation</strong><p>Control networks are commonly separated into security zones with controlled pathways between operational technology and other networks.</p></div>
+<div class="card"><strong>Least Privilege</strong><p>Users and systems should receive only the permissions required for their authorized functions.</p></div>
+<div class="card"><strong>Logging & Time</strong><p>Consistent timestamps and centralized logs improve event reconstruction, troubleshooting, and security monitoring.</p></div>
+<div class="card"><strong>Change Control</strong><p>Firmware, relay settings, PLC logic, gateway maps, and network configuration need controlled documentation and testing.</p></div>
+<div class="card"><strong>Fail-Safe Operation</strong><p>Loss of communications should not automatically defeat local protection or essential safety functions; behavior is engineered for the application.</p></div>
+<div class="card"><strong>Physical Security</strong><p>Network cabinets, substations, control rooms, ports, and field devices also require physical access controls appropriate to the facility.</p></div>
+</div>
+<div class="warning">SCADA and protection networks can control real electrical equipment. Configuration errors or unauthorized commands can create equipment damage or safety hazards. Use approved engineering, cybersecurity, testing, and change-control procedures.</div></section>
+</main><footer>A DONCO-BAYCITY™ App</footer></body></html>
