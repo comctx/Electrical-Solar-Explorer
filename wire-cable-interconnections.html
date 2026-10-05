@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3b63">
+<title>Wire, Cable & Interconnections Explorer</title>
+<style>
+:root{
+  --navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;
+  --card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 10% 15%,rgba(21,148,255,.16),transparent 32%),
+    radial-gradient(circle at 90% 10%,rgba(255,212,59,.18),transparent 28%),
+    linear-gradient(180deg,#dfeaf4 0%,#edf4f9 42%,#f7fafc 100%);
+  color:var(--text);min-height:100vh;
+}
+header{
+  background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));
+  color:#fff;padding:26px 18px 22px;text-align:center;
+}
+header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}
+header p{margin:0;opacity:.93}
+header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1060px;margin:auto;padding:18px}
+.panel{
+  background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;
+  margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09);
+}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}
+h3{margin:0 0 8px;color:var(--navy)}
+.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}
+.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}
+.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+.other-words{margin-top:14px;background:#fff7cc;border:1px solid #e5c94a;border-radius:13px;padding:14px}
+.other-words strong{display:block;color:var(--navy);font-size:17px;margin-bottom:8px}
+.other-words-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.other-words-item{background:#fff;border:1px solid #eadb82;border-radius:10px;padding:10px;font-weight:800;color:#263b4c;line-height:1.4}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}
+th{background:#eef7ff;color:var(--navy)}
+.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+.diagram-wrap{margin-top:14px;border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:12px;overflow:auto}
+.diagram{width:100%;min-width:820px;height:auto;display:block}
+.box{fill:#fff;stroke:#9fc8ef;stroke-width:3}
+.dark{fill:#263848;stroke:#071a2e;stroke-width:3}
+.term{fill:#ffd43b;stroke:#8a6d00;stroke-width:2}
+.wire-black{fill:none;stroke:#111;stroke-width:6;stroke-linecap:round}
+.wire-red{fill:none;stroke:#c62828;stroke-width:6;stroke-linecap:round}
+.wire-blue{fill:none;stroke:#0b63ce;stroke-width:6;stroke-linecap:round}
+.wire-green{fill:none;stroke:#2e7d32;stroke-width:6;stroke-linecap:round}
+.dtext{font:800 18px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#071a2e}
+.dsmall{font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#40566a}
+.related-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.related-link{
+  display:block;text-decoration:none;color:var(--navy);font-weight:900;text-align:center;
+  background:#eef7ff;border:1px solid #9fc8ef;border-radius:12px;padding:14px;
+}
+.related-link span{display:block;color:var(--muted);font-weight:700;font-size:12px;margin-top:5px;line-height:1.35}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}
+@media(max-width:760px){
+  main{padding:12px}.two,.three,.other-words-grid,.related-grid{grid-template-columns:1fr}
+}
+</style>
+<link rel="stylesheet" href="app-enhancements.css">
+<script src="app-enhancements.js" defer></script>
+</head>
+<body>
+<header>
+  <h1>Wire, Cable & Interconnections Explorer</h1>
+  <p>Conductors, insulation, raceways, terminal systems, connectors, enclosures, busway, and PCB interconnections.</p>
+</header>
+
+<main>
+<section class="ate-level-chooser" data-ate-level-chooser>
+  <h2>Choose Your Detail Level</h2>
+  <p>Beginner identifies the parts. Technical explains how the pieces fit together. Advanced adds insulation systems, shielding, busway, connector classes, and PCB interconnect concepts.</p>
+  <div class="ate-level-buttons">
+    <button type="button" data-ate-set-level="basic">Beginner</button>
+    <button type="button" data-ate-set-level="technical">Technical</button>
+    <button type="button" data-ate-set-level="advanced">Advanced</button>
+  </div>
+  <div class="ate-level-status" data-ate-level-status></div>
+</section>
+
+<section class="panel">
+  <h2>Beginner Start Here</h2>
+  <p class="lead">Electrical energy and signals travel through conductors. The insulation, cable construction, enclosure, raceway, and connector all help make that connection safe and reliable for the intended environment.</p>
+  <div class="grid three">
+    <div class="card"><strong>Wire</strong><p>A single conductor, insulated or bare, used to carry current or signals.</p><span class="badge">Single conductor</span></div>
+    <div class="card"><strong>Cable</strong><p>One or more conductors, and sometimes shields or fibers, combined under a common jacket or construction.</p><span class="badge">Grouped conductors</span></div>
+    <div class="card"><strong>Raceway / Conduit</strong><p>A protective pathway that routes wires or cables between equipment.</p><span class="badge">Mechanical protection</span></div>
+    <div class="card"><strong>Terminal Block</strong><p>Provides an organized point where conductors can be terminated, joined, distributed, or disconnected.</p><span class="badge">Organized termination</span></div>
+    <div class="card"><strong>Connector</strong><p>Lets two electrical or signal paths be joined and separated without permanently splicing the conductors.</p><span class="badge">Removable connection</span></div>
+    <div class="card"><strong>Junction / Pull Box</strong><p>Provides an enclosure for splices, conductor routing, pulling access, or equipment transitions.</p><span class="badge">Access / enclosure</span></div>
+    <div class="card"><strong>Busway / Busduct</strong><p>Uses enclosed busbars to distribute larger amounts of electrical power along a building or industrial system.</p><span class="badge">High-current distribution</span></div>
+    <div class="card"><strong>PCB Trace</strong><p>A copper path on a printed circuit board that connects electronic components.</p><span class="badge">Board conductor</span></div>
+    <div class="card"><strong>Via / Edge Connector</strong><p>A via connects PCB layers through the board; an edge connector provides contact pads at the board edge.</p><span class="badge">PCB interconnect</span></div>
+  </div>
+
+  <div class="other-words">
+    <strong>In Other Words</strong>
+    <div class="other-words-grid">
+      <div class="other-words-item">Wire and cable carry the electricity or signal.</div>
+      <div class="other-words-item">Raceways and enclosures protect and organize the route.</div>
+      <div class="other-words-item">Terminals and connectors complete the electrical path.</div>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Common Wire & Cable Constructions</h2>
+  <table>
+    <thead><tr><th>Type / material</th><th>What it means</th><th>Where you may see it</th></tr></thead>
+    <tbody>
+      <tr><td>THHN / THWN-family building wire</td><td>Single insulated conductor commonly used in raceways. Exact wet/dry and temperature ratings come from the full conductor marking and listing.</td><td>Building wiring, panels, feeders, branch circuits</td></tr>
+      <tr><td>XLPE</td><td>Cross-linked polyethylene insulation with good thermal and dielectric properties.</td><td>Power cable, industrial cable, utility applications</td></tr>
+      <tr><td>PVC</td><td>Polyvinyl chloride is widely used as wire insulation, cable jacket material, and nonmetallic raceway material depending on the product.</td><td>Building, control, communications, general-purpose wiring</td></tr>
+      <tr><td>Mineral-insulated cable</td><td>Conductors are insulated by compacted mineral material inside a metal sheath, providing strong fire and temperature performance in suitable systems.</td><td>Fire-survival, high-temperature, critical circuits</td></tr>
+      <tr><td>Control cable</td><td>Multi-conductor cable intended for control, signaling, instrumentation, or automation circuits.</td><td>Machines, PLC panels, process control</td></tr>
+      <tr><td>Shielded instrumentation cable</td><td>Uses foil, braid, or other shielding to reduce unwanted electrical noise coupling into low-level signals.</td><td>Analog sensors, instrumentation, industrial controls</td></tr>
+      <tr><td>Fiber-optic cable</td><td>Carries information as light instead of electrical current, providing very high bandwidth and immunity to electromagnetic interference.</td><td>Protection, communications, networking, industrial data</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Cable names, insulation types, listings, voltage ratings, temperature ratings, flame ratings, wet-location ratings, and permitted uses vary by jurisdiction and product. Always read the complete cable marking and documentation.</p>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>Raceways, Cable Tray & Routing Systems <span class="ate-level-badge">Technical</span></h2>
+  <div class="grid three">
+    <div class="card"><strong>Conduit</strong><p>Metallic or nonmetallic tubular raceway used to protect and route conductors. Bend radius, fill, support, grounding/bonding, and environment all matter.</p></div>
+    <div class="card"><strong>Cable Tray</strong><p>Open or partially enclosed support system for permitted cables. Common forms include ladder, trough, channel, and wire-mesh tray.</p></div>
+    <div class="card"><strong>Trunking / Wireway</strong><p>Enclosed channel used to route and organize multiple conductors, often with removable covers for access.</p></div>
+    <div class="card"><strong>Surface Raceway</strong><p>Mounted on a surface to route power, control, or communications wiring where concealed pathways are not practical.</p></div>
+    <div class="card"><strong>Flexible Raceway</strong><p>Used where movement, vibration, or installation geometry makes rigid raceway impractical.</p></div>
+    <div class="card"><strong>Separation</strong><p>Power, control, analog, network, and fiber routes may need spacing, shielding, barriers, or separate raceways depending on the system and applicable rules.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>Terminal Blocks, Lugs, Ferrules & Splices <span class="ate-level-badge">Technical</span></h2>
+  <p class="lead">These are the connection points that turn loose conductors into maintainable wiring systems.</p>
+  <div class="diagram-wrap">
+    <svg class="diagram" viewBox="0 0 1080 420" aria-label="Terminal block and conductor termination concept">
+      <text x="35" y="38" class="dtext">Typical panel interconnection concept</text>
+      <rect x="35" y="65" width="1010" height="310" rx="18" class="box"/>
+
+      <rect x="80" y="125" width="180" height="160" rx="14" class="dark"/>
+      <text x="122" y="158" font-size="18" font-weight="800" fill="#fff">FIELD CABLE</text>
+      <text x="105" y="193" font-size="13" fill="#dbe8f5">power / control / signal</text>
+      <path d="M260 175H405" class="wire-red"/>
+      <path d="M260 220H405" class="wire-black"/>
+      <path d="M260 265H405" class="wire-blue"/>
+
+      <rect x="405" y="115" width="230" height="190" rx="14" class="box"/>
+      <text x="447" y="150" class="dtext">Terminal Blocks</text>
+      <circle cx="455" cy="175" r="11" class="term"/><circle cx="585" cy="175" r="11" class="term"/>
+      <circle cx="455" cy="220" r="11" class="term"/><circle cx="585" cy="220" r="11" class="term"/>
+      <circle cx="455" cy="265" r="11" class="term"/><circle cx="585" cy="265" r="11" class="term"/>
+      <path d="M466 175H574" class="wire-red"/>
+      <path d="M466 220H574" class="wire-black"/>
+      <path d="M466 265H574" class="wire-blue"/>
+
+      <path d="M596 175H770" class="wire-red"/>
+      <path d="M596 220H770" class="wire-black"/>
+      <path d="M596 265H770" class="wire-blue"/>
+      <rect x="770" y="125" width="210" height="160" rx="14" class="dark"/>
+      <text x="820" y="158" font-size="18" font-weight="800" fill="#fff">EQUIPMENT</text>
+      <text x="800" y="193" font-size="13" fill="#dbe8f5">contactor / PLC / drive / load</text>
+
+      <text x="80" y="335" class="dsmall">Ferrules may terminate fine-stranded control wire; lugs terminate larger conductors; splices join conductors where the system allows.</text>
+    </svg>
+  </div>
+  <div class="warning">Terminal type, conductor class, strip length, ferrule/lug style, crimp die, and tightening torque must match the equipment and manufacturer instructions. A connection can look tight and still be electrically poor if the termination is incorrect.</div>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>Connector Families <span class="ate-level-badge">Technical</span></h2>
+  <table>
+    <thead><tr><th>Connector family</th><th>Typical purpose</th><th>Important considerations</th></tr></thead>
+    <tbody>
+      <tr><td>Power connectors</td><td>Higher-current equipment, batteries, power supplies, motors, portable equipment</td><td>Voltage/current rating, polarization, contact resistance, heating, environmental sealing</td></tr>
+      <tr><td>Control / industrial connectors</td><td>Sensors, actuators, machine wiring, automation</td><td>Pin assignment, keying, shielding, vibration, IP/environment rating</td></tr>
+      <tr><td>RF / coax connectors</td><td>Radio-frequency signals and antennas</td><td>Characteristic impedance, frequency range, shielding, insertion loss</td></tr>
+      <tr><td>PCB headers</td><td>Board-to-board or wire-to-board electronic connections</td><td>Pitch, current per pin, keying, retention, mating cycles</td></tr>
+      <tr><td>Edge connectors</td><td>Pluggable circuit cards</td><td>Contact plating, insertion cycles, signal integrity, mechanical alignment</td></tr>
+      <tr><td>Fiber connectors</td><td>Optical communication links</td><td>Connector type, cleanliness, polish, insertion loss, bend radius</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="panel" data-ate-level="technical">
+  <h2>Junction Boxes, Pull Boxes & Cable Glands <span class="ate-level-badge">Technical</span></h2>
+  <div class="grid three">
+    <div class="card"><strong>Junction Box</strong><p>Encloses splices or branching connections and provides protection and access where required.</p></div>
+    <div class="card"><strong>Pull Box</strong><p>Provides access that makes long conductor pulls or changes in direction manageable without using the box primarily as equipment.</p></div>
+    <div class="card"><strong>Cable Gland</strong><p>Secures and seals a cable as it enters an enclosure. Depending on design it may also provide strain relief, armor termination, bonding, or environmental sealing.</p></div>
+    <div class="card"><strong>Enclosure Rating</strong><p>Boxes and glands must match the environment: indoor, outdoor, washdown, corrosive, hazardous, dusty, or other conditions.</p></div>
+    <div class="card"><strong>Bend Space</strong><p>Larger conductors require adequate space so insulation and terminations are not damaged by overly tight bends.</p></div>
+    <div class="card"><strong>Accessibility</strong><p>Many wiring methods require junction and pull points to remain accessible for inspection and maintenance.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Busway / Busduct <span class="ate-level-badge advanced">Advanced</span></h2>
+  <p class="lead">Busway distributes large amounts of power using enclosed busbars rather than individual feeder cables for the entire route.</p>
+  <div class="grid two">
+    <div class="card"><strong>Feeder Busway</strong><p>Carries bulk power from one point to another, such as between a transformer and switchgear or between major distribution sections.</p></div>
+    <div class="card"><strong>Plug-In Busway</strong><p>Provides tap-off points where plug-in units can feed loads along the route.</p></div>
+    <div class="card"><strong>Busbar Material</strong><p>Copper or aluminum conductors are commonly used. Joint design, plating, pressure, and thermal expansion are important.</p></div>
+    <div class="card"><strong>Short-Circuit Rating</strong><p>The busway and its tap devices must be able to withstand and interrupt or coordinate with the available fault current as designed.</p></div>
+    <div class="card"><strong>Voltage Drop & Heating</strong><p>Conductor size, length, loading, ambient temperature, enclosure, and joint resistance affect operating temperature and voltage drop.</p></div>
+    <div class="card"><strong>Maintenance</strong><p>Inspection may include joints, plug-in units, signs of overheating, contamination, damage, and torque/condition checks where specified.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>Advanced Cable & Signal Concepts <span class="ate-level-badge advanced">Advanced</span></h2>
+  <div class="grid two">
+    <div class="card"><strong>Shielding</strong><p>Foil and braid shields reduce electric-field and RF coupling. Shield termination strategy depends on frequency, grounding architecture, and equipment design.</p></div>
+    <div class="card"><strong>Twisted Pairs</strong><p>Twisting conductors helps cancel induced noise and is widely used in instrumentation and data systems.</p></div>
+    <div class="card"><strong>Characteristic Impedance</strong><p>At high frequencies, cables behave as transmission lines. Coax and controlled-impedance pairs must match the system impedance to reduce reflections.</p></div>
+    <div class="card"><strong>Ampacity</strong><p>Allowable current depends on conductor material, insulation rating, installation method, number of current-carrying conductors, ambient temperature, terminations, and applicable rules.</p></div>
+    <div class="card"><strong>Voltage Rating</strong><p>Insulation thickness and construction are selected for the intended system voltage and transient environment.</p></div>
+    <div class="card"><strong>Fire / Environmental Rating</strong><p>Cable flame, smoke, sunlight, oil, moisture, chemical, temperature, and mechanical ratings must match the installation environment.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-ate-level="advanced">
+  <h2>PCB Traces, Vias & Edge Connectors <span class="ate-level-badge advanced">Advanced</span></h2>
+  <div class="grid three">
+    <div class="card"><strong>PCB Trace</strong><p>Copper geometry on a board. Width, thickness, length, temperature rise, voltage spacing, and signal behavior all affect design.</p></div>
+    <div class="card"><strong>Via</strong><p>Plated hole that connects copper between PCB layers. Power vias, signal vias, thermal vias, blind vias, and buried vias serve different purposes.</p></div>
+    <div class="card"><strong>Edge Connector</strong><p>Plated pads along a board edge mate with a socket, commonly in plug-in cards and modules.</p></div>
+    <div class="card"><strong>Ground Plane</strong><p>Large copper area used for return paths, shielding, reference potential, heat spreading, or power distribution.</p></div>
+    <div class="card"><strong>Clearance & Creepage</strong><p>Spacing between conductive features matters for voltage withstand, contamination, insulation systems, and safety requirements.</p></div>
+    <div class="card"><strong>Signal Integrity</strong><p>Fast digital and RF signals depend on controlled return paths, impedance, termination, via placement, and layout geometry.</p></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Related Pages</h2>
+  <div class="related-grid">
+    <a class="related-link" href="lugs-ferrules-splices.html">Lugs, Ferrules & Splices<span>Detailed conductor termination and splice methods.</span></a>
+    <a class="related-link" href="fiber-optics.html">Fiber Optics<span>Optical cable, connectors, loss, and communications concepts.</span></a>
+    <a class="related-link" href="radio-rf.html">Radio & RF<span>Coax, RF signals, antennas, and high-frequency behavior.</span></a>
+    <a class="related-link" href="wiring-installation.html">Wiring & Installation<span>Wire sizing, ampacity, installation, grounding, and practical wiring concepts.</span></a>
+    <a class="related-link" href="wire-voltage-drop-lab.html">Wire & Voltage-Drop Lab<span>Explore conductor length, size, current, resistance, and voltage drop.</span></a>
+    <a class="related-link" href="component-identification.html">Component Identification<span>Recognize common electrical and electronic parts.</span></a>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Safety</h2>
+  <div class="warning">Correct conductor, cable, raceway, connector, box, busway, and termination selection depends on voltage, current, fault level, environment, temperature, mechanical protection, fire requirements, and applicable electrical rules. Follow equipment instructions and qualified-person procedures for real installations.</div>
+</section>
+</main>
+
+<footer>A DONCO-BAYCITY™ App</footer>
+</body>
+</html>
