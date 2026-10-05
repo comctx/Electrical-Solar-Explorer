@@ -72,22 +72,24 @@ The interface is intentionally:
 
 The home page groups subjects by category and uses restrained color coding to make a large amount of material easier to scan.
 
-## Safety
+## Safety & Disclaimer
 
-This project is educational.
+**All Things Electrical is an educational reference and training app.** It is not a substitute for licensed electrical design, engineering, inspection, manufacturer instructions, local electrical codes, utility requirements, or qualified professional judgment.
 
-Electrical systems can involve lethal voltage, high fault current, arc-flash energy, stored energy, rotating equipment, batteries, thermal hazards, and automatic restart.
+Electrical systems can involve lethal voltage, high fault current, arc-flash energy, stored energy, rotating equipment, batteries, thermal hazards, automatic restart, and other serious risks.
 
-Real installation, testing, troubleshooting, commissioning, and energized work must follow:
+Users are responsible for following:
 
-- Applicable electrical and safety codes
+- Applicable laws, electrical codes, permits, inspections, and utility requirements
 - Equipment manufacturer instructions
-- Site-specific procedures
+- Site-specific safety and energy-control procedures
 - Proper lockout/tagout practices
 - Correctly rated test equipment and PPE
-- Qualified-person requirements where applicable
+- Qualified-person or licensed-person requirements where applicable
 
-Diagrams and examples in this project are teaching aids and are **not substitutes for project-specific engineering drawings or equipment documentation**.
+Do not perform energized electrical work unless you are properly trained, authorized, and equipped to do so.
+
+Diagrams, calculators, examples, simulators, and troubleshooting steps in this project are teaching aids. They do **not** establish that a particular installation is safe, code-compliant, suitable for a specific site, or approved by an inspector, utility, manufacturer, or other authority.
 
 ## Project Structure
 
