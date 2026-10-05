@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f3b63"><title>Backup & Transfer Power Explorer</title><style>
+:root{--navy:#071a2e;--blue:#0b63ce;--blue2:#1594ff;--yellow:#ffd43b;--card:#fff;--text:#14202b;--muted:#62707d;--border:#cfd9e3}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dfeaf4,#f7fafc);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue) 68%,var(--blue2));color:#fff;padding:26px 18px 22px;text-align:center}header h1{margin:0 0 6px;font-size:clamp(28px,6vw,42px)}header p{margin:0;opacity:.93}header:after{content:"";display:block;width:92px;height:5px;margin:15px auto 0;border-radius:999px;background:var(--yellow)}
+main{max-width:1060px;margin:auto;padding:18px}.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 10px 28px rgba(7,26,46,.09)}
+h2{margin:0 0 6px;color:var(--navy);border-left:5px solid var(--yellow);padding-left:10px}.lead,.note{color:var(--muted);line-height:1.55}.lead{margin:0 0 16px}.note{font-size:13px}
+.grid{display:grid;gap:12px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid #b9d7f5;background:#f8fbff;border-radius:13px;padding:14px}.card strong{display:block;color:var(--navy);font-size:17px;margin-bottom:5px}.card p{margin:0;color:#33495b;line-height:1.5}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:#e9f3ff;border:1px solid #b9d7f5;color:var(--navy);font-size:12px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--border);padding:9px;text-align:left;vertical-align:top}th{background:#eef7ff;color:var(--navy)}
+.field label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}input{width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;font:inherit}
+.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.result{background:#e9f3ff;border:1px solid #b9d7f5;border-radius:12px;padding:12px}.result small{display:block;color:var(--muted);font-weight:700}.result strong{font-size:clamp(20px,4vw,28px);color:var(--navy)}
+.formula{margin-top:12px;background:#fff7cc;border:1px solid #e5c94a;border-radius:11px;padding:11px 12px;line-height:1.5;font-weight:700}.warning{margin-top:12px;background:#fff3d6;border:1px solid #e5a84a;border-radius:11px;padding:11px 12px;color:#6a4300;line-height:1.5;font-weight:700}
+footer{text-align:center;background:var(--navy);color:#dbe8f5;padding:24px 16px;font-size:13px;font-weight:700}@media(max-width:760px){main{padding:12px}.two,.three,.results{grid-template-columns:1fr}}
+</style><link rel="stylesheet" href="app-enhancements.css"><script src="app-enhancements.js" defer></script></head><body>
+<header><h1>Backup & Transfer Power Explorer</h1><p>UPS systems, automatic transfer switches, standby generators, bypass paths, batteries, and emergency power concepts.</p></header><main>
+<section class="ate-level-chooser" data-ate-level-chooser><h2>Choose Your Detail Level</h2><p>Beginner explains backup-power devices. Technical adds transfer logic and UPS types. Advanced adds bypass, grounding, coordination, inrush, and reliability concepts.</p><div class="ate-level-buttons"><button data-ate-set-level="basic">Beginner</button><button data-ate-set-level="technical">Technical</button><button data-ate-set-level="advanced">Advanced</button></div><div class="ate-level-status" data-ate-level-status></div></section>
+
+<section class="panel"><h2>Beginner Start Here</h2><div class="grid three">
+<div class="card"><strong>UPS</strong><p>An uninterruptible power supply keeps selected loads powered for a period of time when normal power fails or becomes unacceptable.</p><span class="badge">Immediate backup</span></div>
+<div class="card"><strong>Standby Generator</strong><p>Produces power from a prime mover such as an engine after utility power is lost.</p><span class="badge">Longer-duration backup</span></div>
+<div class="card"><strong>Transfer Switch</strong><p>Selects which source feeds the load and prevents unintended connection of two sources that are not designed to operate in parallel.</p><span class="badge">Source selection</span></div>
+<div class="card"><strong>ATS</strong><p>An automatic transfer switch detects source conditions and transfers the load according to its programmed sequence.</p><span class="badge">Automatic transfer</span></div>
+<div class="card"><strong>Battery Bank</strong><p>Stores DC energy for UPS operation, control power, emergency lighting, communications, or other backup functions.</p><span class="badge">Stored energy</span></div>
+<div class="card"><strong>Bypass</strong><p>Provides an alternate path around some UPS components for maintenance or fault conditions, depending on system design.</p><span class="badge">Alternate path</span></div>
+</div></section>
+
+<section class="panel" data-ate-level="technical"><h2>UPS Topologies <span class="ate-level-badge">Technical</span></h2>
+<table><thead><tr><th>Type</th><th>Normal operation</th><th>Typical characteristic</th></tr></thead><tbody>
+<tr><td>Standby / offline</td><td>Load normally uses utility power; inverter takes over after a disturbance.</td><td>Simple and economical for smaller loads.</td></tr>
+<tr><td>Line-interactive</td><td>Uses regulation and battery/inverter support to handle some voltage variations without full battery transfer.</td><td>Common for IT and small systems.</td></tr>
+<tr><td>Online / double-conversion</td><td>AC is converted to DC and then back to AC continuously for the protected load.</td><td>Strong isolation from many input disturbances; more conversion loss and heat.</td></tr>
+</tbody></table></section>
+
+<section class="panel" data-ate-level="technical"><h2>Automatic Transfer Sequence <span class="ate-level-badge">Technical</span></h2>
+<table><thead><tr><th>Step</th><th>What happens</th></tr></thead><tbody>
+<tr><td>1. Normal source healthy</td><td>Load is supplied from the preferred source.</td></tr>
+<tr><td>2. Source problem detected</td><td>Controller verifies that voltage/frequency conditions are outside programmed limits for the required time.</td></tr>
+<tr><td>3. Generator start command</td><td>For generator-backed systems, the engine-generator starts and reaches acceptable voltage/frequency.</td></tr>
+<tr><td>4. Transfer</td><td>Load is disconnected from the failed source and connected to the alternate source according to switch design.</td></tr>
+<tr><td>5. Normal source returns</td><td>Controller verifies stable normal power before retransfer.</td></tr>
+<tr><td>6. Cool-down</td><td>Generator may continue unloaded for a programmed period before stopping.</td></tr>
+</tbody></table></section>
+
+<section class="panel" data-ate-level="technical"><h2>Battery Runtime Estimate <span class="ate-level-badge">Technical</span></h2>
+<div class="grid three">
+<div class="field"><label>Battery energy (Wh)</label><input id="wh" type="number" value="1200" min="1" step="any"></div>
+<div class="field"><label>Load (W)</label><input id="load" type="number" value="300" min="1" step="any"></div>
+<div class="field"><label>Overall usable fraction</label><input id="eff" type="number" value="0.8" min="0.01" max="1" step="0.01"></div>
+</div><div class="results"><div class="result"><small>Idealized runtime</small><strong id="runtime">—</strong></div><div class="result"><small>Usable energy</small><strong id="usable">—</strong></div><div class="result"><small>Load energy per hour</small><strong id="perhour">—</strong></div></div><div class="formula">Teaching estimate only. Real runtime depends on battery chemistry, discharge rate, age, temperature, inverter efficiency, low-voltage cutoff, and UPS design.</div></section>
+
+<section class="panel" data-ate-level="advanced"><h2>Advanced Transfer & Reliability Concepts <span class="ate-level-badge advanced">Advanced</span></h2><div class="grid two">
+<div class="card"><strong>Open Transition</strong><p>Load is disconnected from one source before being connected to the other. A brief interruption occurs.</p></div>
+<div class="card"><strong>Closed Transition</strong><p>Sources overlap briefly under controlled conditions. This requires synchronization and equipment designed for momentary paralleling.</p></div>
+<div class="card"><strong>Static Transfer Switch</strong><p>Uses power electronics for very fast source transfer between compatible AC sources.</p></div>
+<div class="card"><strong>Maintenance Bypass</strong><p>Allows service of a UPS while an alternate source feeds the load, when the system is designed for it.</p></div>
+<div class="card"><strong>Selective Coordination</strong><p>Backup systems need protective devices coordinated so faults are isolated without unnecessarily dropping healthy critical loads.</p></div>
+<div class="card"><strong>Neutral / Grounding</strong><p>Whether the neutral is switched and whether the alternate source is separately derived depend on the system design and applicable rules.</p></div>
+<div class="card"><strong>Motor / Transformer Inrush</strong><p>Backup sources must tolerate starting and magnetizing current, not just steady-state watts or kVA.</p></div>
+<div class="card"><strong>Load Shedding</strong><p>Controllers may disconnect lower-priority loads so limited generator or UPS capacity can serve critical loads.</p></div>
+</div><div class="warning">Generator, UPS, and transfer systems can backfeed equipment from unexpected sources. Isolation, neutral switching, grounding, interlocking, battery hazards, and stored energy must be addressed using the actual system drawings and manufacturer procedures.</div></section>
+</main><footer>A DONCO-BAYCITY™ App</footer>
+<script>function calc(){const e=+wh.value,l=+load.value,f=+eff.value;if(e<=0||l<=0||f<=0){runtime.textContent=usable.textContent=perhour.textContent="—";return}const u=e*f,h=u/l;runtime.textContent=h.toFixed(2)+" h";usable.textContent=u.toFixed(0)+" Wh";perhour.textContent=l.toFixed(0)+" Wh/h"}[wh,load,eff].forEach(x=>x.addEventListener("input",calc));calc();</script></body></html>
