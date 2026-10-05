@@ -4,7 +4,7 @@ const RECENT_KEY="ateRecent";
 const THEME_KEY="ateTheme";
 const DETAIL_LEVEL_KEY="ateDetailLevel";
 const MAX_RECENT=8;
-const DONCO_LOGO_SRC="https://raw.githubusercontent.com/comctx/Garage-Sale-map/main/donco_logo_footer.png";
+const DONCO_LOGO_SRC="/Garage-Sale-map/donco_logo_footer.png";
 
 function safeParse(key,fallback){
   try{const v=JSON.parse(localStorage.getItem(key)||"null");return v??fallback}catch{return fallback}
